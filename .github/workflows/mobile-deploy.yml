@@ -78,4 +78,4 @@ jobs:
       - run: pnpm add --global eas-cli
       - run: eas env:pull ${{ inputs.environment }} --non-interactive
       - run: eas update --auto --non-interactive --environment ${{ inputs.environment }}
-      - run: dotenvx run --convention nextjs -- pnpx sentry-expo-upload-sourcemaps dist
+      - run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
