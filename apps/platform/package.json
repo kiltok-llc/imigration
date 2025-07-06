@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "build:check": "next lint --ignore-path . && tsc -noEmit",
+    "build:vercel": "vercel build",
     "clean": "git clean -xdf node_modules .cache .turbo .next",
     "dev": "next dev --turbopack",
     "format": "prettier --write --ignore-path ../../.gitignore --cache --cache-location .cache/.prettiercache",

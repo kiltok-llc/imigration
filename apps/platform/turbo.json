@@ -5,6 +5,10 @@
     "build": {
       "outputs": [".next/**", "!.next/cache/**", "next-env.d.ts"]
     },
+    "build:vercel": {
+      "dependsOn": ["^build"],
+      "outputs": [".vercel/output", "next-env.d.ts"]
+    },
     "dev": {
       "persistent": true
     }
