@@ -8,6 +8,7 @@
     "build:android": "eas build --local ${CI+--non-interactive} --platform android --output build/app.apk",
     "build:check": "tsc --noEmit",
     "build:ios": "eas build --local ${CI+--non-interactive} --platform ios --output build/app.ipa",
+    "build:update": "eas update --auto ${CI+--non-interactive}",
     "clean": "git clean -xdf .cache .expo .turbo dist build android ios node_modules",
     "dev": "expo start",
     "dev:android": "expo start --android",

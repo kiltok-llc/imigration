@@ -5,6 +5,21 @@
     "dev": {
       "persistent": true,
       "interactive": true
+    },
+    "build:ios": {
+      "dependsOn": ["^build"],
+      "outputs": [".cache/tsbuildinfo.json", "ios", ".expo", "build"],
+      "env": ["APP_VARIANT", "SENTRY_AUTH_TOKEN"]
+    },
+    "build:android": {
+      "dependsOn": ["^build"],
+      "outputs": [".cache/tsbuildinfo.json", "android", ".expo", "build"],
+      "env": ["APP_VARIANT", "SENTRY_AUTH_TOKEN"]
+    },
+    "build:update": {
+      "dependsOn": ["^build"],
+      "outputs": [".cache/tsbuildinfo.json", ".expo"],
+      "env": ["APP_VARIANT", "SENTRY_AUTH_TOKEN"]
     }
   }
 }

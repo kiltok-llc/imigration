@@ -22,11 +22,11 @@
       "outputLogs": "new-only"
     },
     "lint:check": {
-      "dependsOn": ["topo", "^build"],
+      "dependsOn": ["topo"],
       "outputs": [".cache/.eslintcache"]
     },
     "lint": {
-      "dependsOn": ["topo", "^build"],
+      "dependsOn": ["topo"],
       "outputs": [".cache/.eslintcache"]
     },
     "//#format:root": {
@@ -38,7 +38,7 @@
       "outputLogs": "new-only"
     },
     "build:check": {
-      "dependsOn": ["topo", "^build"],
+      "dependsOn": ["topo"],
       "outputs": [".cache/tsbuildinfo.json"]
     },
     "clean": {

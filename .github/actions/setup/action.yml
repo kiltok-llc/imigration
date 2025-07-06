@@ -8,9 +8,9 @@ runs:
       with:
         node-version-file: 'package.json'
         cache: 'pnpm'
-    - name: Install CLI Tools
+    - name: Install Turbo CLI
       shell: bash
-      run: pnpm add --global turbo @dotenvx/dotenvx
+      run: pnpm add --global turbo
     - name: Install NPM Dependencies
       shell: bash
       run: pnpm install

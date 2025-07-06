@@ -50,7 +50,7 @@ jobs:
       - run: pnpm add --global eas-cli
       - id: build
         run: |
-          pnpm build:${{ matrix.platform }} --profile ${{ inputs.environment }}
+          turbo build:${{ matrix.platform }} --profile ${{ inputs.environment }}
           echo "artifact-path=$(realpath build/*)" >> $GITHUB_OUTPUT
       - id: diawi
         if: inputs.environment == 'preview'
@@ -76,6 +76,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
-      - run: eas env:pull ${{ inputs.environment }} --non-interactive
       - run: eas update --auto --non-interactive --environment ${{ inputs.environment }}
-      - run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
+      - run: eas env:exec --environment ${{ inputs.environment }} 'pnpx sentry-expo-upload-sourcemaps dist'

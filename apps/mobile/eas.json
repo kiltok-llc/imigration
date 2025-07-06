@@ -12,8 +12,7 @@
       "distribution": "internal",
       "channel": "development",
       "env": {
-        "APP_NAME_SUFFIX": " (Dev)",
-        "APP_IDENTIFIER_SUFFIX": ".dev"
+        "APP_VARIANT": "development"
       }
     },
     "preview": {
@@ -21,13 +20,15 @@
       "distribution": "internal",
       "channel": "preview",
       "env": {
-        "APP_NAME_SUFFIX": " (Staging)",
-        "APP_IDENTIFIER_SUFFIX": ".staging"
+        "APP_VARIANT": "staging"
       }
     },
     "production": {
       "extends": "base",
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "APP_VARIANT": "production"
+      }
     }
   },
   "submit": {
