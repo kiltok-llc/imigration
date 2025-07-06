@@ -1,5 +1,3 @@
-require('ts-node/register');
-
 const { FileStore } = require('metro-cache');
 const path = require('node:path');
 const { getSentryExpoConfig } = require('@sentry/react-native/metro');

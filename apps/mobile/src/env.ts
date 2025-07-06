@@ -19,19 +19,14 @@ export const env = createEnv({
    * the build.
    */
   runtimeEnvStrict: {
-    APP_VARIANT: process.env.APP_VARIANT,
     EXPO_PUBLIC_SENTRY_TRACES_SAMPLE_RATE:
       process.env.EXPO_PUBLIC_SENTRY_TRACES_SAMPLE_RATE,
     EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
     EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
     EXPO_PUBLIC_TRPC_URL: process.env.EXPO_PUBLIC_TRPC_URL,
     NODE_ENV: process.env.NODE_ENV,
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
-  server: {
-    APP_VARIANT: z.enum(['development', 'staging', 'production']),
-    SENTRY_AUTH_TOKEN: z.string().nonempty().optional(),
-  },
+  server: {},
   shared: {
     NODE_ENV: z
       .enum(['development', 'production', 'test'])
