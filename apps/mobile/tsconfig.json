@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/tsconfig/base.json",
+  "extends": "@repo/tsconfig/base.json", // https://github.com/TypeStrong/ts-node/issues/2141
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
