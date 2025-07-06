@@ -37,5 +37,5 @@ jobs:
       - run: pnpm add --global vercel
       - run: vercel link --repo --yes --token=${{ secrets.VERCEL_TOKEN }}
       - run: vercel pull --environment ${{ inputs.environment }} --yes --token ${{ secrets.VERCEL_TOKEN }}
-      - run: turbo build:vercel --target ${{ inputs.environment }} --token ${{ secrets.VERCEL_TOKEN }}
+      - run: turbo build:vercel -- --target ${{ inputs.environment }} --token ${{ secrets.VERCEL_TOKEN }}
       - run: vercel deploy --target ${{ inputs.environment }} --prebuilt --archive tgz --token ${{ secrets.VERCEL_TOKEN }}
