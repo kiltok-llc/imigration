@@ -1,9 +1,8 @@
+require('ts-node/register');
+
 const { FileStore } = require('metro-cache');
 const path = require('node:path');
 const { getSentryExpoConfig } = require('@sentry/react-native/metro');
-
-const config = withTurborepoManagedCache(getSentryExpoConfig(__dirname));
-module.exports = config;
 
 /**
  * Move the Metro cache to the `.cache/metro` folder.
@@ -19,3 +18,6 @@ function withTurborepoManagedCache(config) {
   ];
   return config;
 }
+
+const config = withTurborepoManagedCache(getSentryExpoConfig(__dirname));
+module.exports = config;

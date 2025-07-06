@@ -1,4 +1,6 @@
-import { env } from '@/env';
+import 'ts-node/register';
+// Can't use short import here due to ts-node limitations
+import { env } from './src/env';
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
 const APP_NAME_SUFFIX = {
