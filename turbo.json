@@ -49,6 +49,7 @@
     }
   },
   "globalEnv": ["PORT"],
+  "globalDependencies": [".env*"],
   "globalPassThroughEnv": [
     "NODE_ENV",
     "CI",

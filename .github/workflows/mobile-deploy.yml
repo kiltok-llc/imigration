@@ -48,6 +48,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
+      - run: eas env:pull ${{ inputs.environment }} --non-interactive
       - id: build
         run: |
           turbo build:${{ matrix.platform }} -- --profile ${{ inputs.environment }}
@@ -76,5 +77,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
+      - run: eas env:pull --non-interactive --environment ${{ inputs.environment }}
       - run: turbo build:update -- --environment ${{ inputs.environment }}
-      - run: eas env:exec ${{ inputs.environment }} 'pnpx sentry-expo-upload-sourcemaps dist' --non-interactive
+      - run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist

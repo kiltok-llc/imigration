@@ -10,7 +10,7 @@ runs:
         cache: 'pnpm'
     - name: Install Turbo CLI
       shell: bash
-      run: pnpm add --global turbo
+      run: pnpm add --global turbo @dotenvx/dotenvx
     - name: Install NPM Dependencies
       shell: bash
       run: pnpm install
