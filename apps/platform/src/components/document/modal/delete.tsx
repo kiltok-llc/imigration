@@ -63,10 +63,7 @@ export function DeleteDocumentDialog({
         <DialogContent>
           <form>
             <DialogHeader>
-              <DialogTitle>
-                Delete
-                {document.name}
-              </DialogTitle>
+              <DialogTitle>Delete {document.name}</DialogTitle>
 
               <DialogDescription>
                 Are you sure you want to delete this document? This action

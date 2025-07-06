@@ -63,10 +63,7 @@ export function DeleteSurveyDialog({
         <DialogContent>
           <form>
             <DialogHeader>
-              <DialogTitle>
-                Delete
-                {survey.name}
-              </DialogTitle>
+              <DialogTitle>Delete {survey.name}</DialogTitle>
 
               <DialogDescription>
                 Are you sure you want to delete this survey? This action cannot
