@@ -36,6 +36,8 @@ import {
   useCurrentDocument,
 } from '@/queries/current-document';
 
+// TODO refactor this into DocumentDesignerContext + DocumentDesignerHeader & DocumentDesigner components
+
 export function DocumentEditorPage() {
   const document = useCurrentDocument();
   const designerRef = useRef<Designer>(null);
@@ -139,16 +141,18 @@ function DocumentHeader({
       })
     );
 
+    let hasUnsupportedFields = false;
+
     for (const field of form.getFields()) {
       const name = field.getName();
+      const acroType = field.acroField.FT().decodeText();
       const type = {
-        PDFCheckBox: 'checkbox',
-        PDFTextField: 'text',
-      }[field.constructor.name];
+        Btn: 'checkbox',
+        Tx: 'text',
+      }[field.acroField.FT().decodeText()];
       if (type === undefined) {
-        console.warn(
-          `Field ${name} has unrecognized type: ${field.constructor.name}`
-        );
+        console.warn(`Unsupported field type: ${acroType} (${name})`);
+        hasUnsupportedFields = true;
         continue;
       }
 
@@ -191,6 +195,12 @@ function DocumentHeader({
         type,
         width,
       });
+    }
+
+    if (hasUnsupportedFields) {
+      toast.error(
+        'Some fields in the PDF are not supported. Please check the console for details.'
+      );
     }
 
     designerRef.current.updateTemplate(newTemplate);
