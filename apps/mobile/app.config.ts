@@ -6,10 +6,8 @@ function getAppNameSuffix(): string {
       return ' (Dev)';
     case 'staging':
       return ' (Staging)';
-    case 'production':
-      return '';
     default:
-      throw new Error('Invalid APP_VARIANT environment variable');
+      return '';
   }
 }
 
@@ -19,10 +17,8 @@ function getAppIdentifierSuffix(): string {
       return '.dev';
     case 'staging':
       return '.staging';
-    case 'production':
-      return '';
     default:
-      throw new Error('Invalid APP_VARIANT environment variable');
+      return '';
   }
 }
 
