@@ -12,8 +12,6 @@ import { surveyQueryOptions } from '@/queries/survey';
 
 const I589_SURVEY_ID = '448ce721-8c3c-4b20-9d6e-267b266c1eab';
 
-export { ErrorBoundary } from '@/components/ui/error';
-
 export default function I589SurveyScreen() {
   const title = useSurveyTitle();
 

@@ -72,4 +72,6 @@ function StackWrapper() {
   );
 }
 
+export { ErrorBoundary } from '@/components/ui/error';
+
 export default Sentry.wrap(RootLayout);
