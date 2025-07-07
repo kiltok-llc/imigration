@@ -25,6 +25,8 @@ Sentry.init({
 
   enableNativeFramesTracking: !isRunningInExpoGo(),
 
+  environment: env.EXPO_PUBLIC_SENTRY_ENVIRONMENT ?? env.NODE_ENV,
+
   integrations: [
     Sentry.mobileReplayIntegration(),
     Sentry.feedbackIntegration(),
