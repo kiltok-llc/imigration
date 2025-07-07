@@ -61,7 +61,7 @@ function DocumentList() {
   const trpc = useTRPC();
   const {
     isPending,
-    mutate: generatePdf,
+    mutate: handleGenerate,
     variables,
   } = useMutation(
     trpc.document.generatePdf.mutationOptions({
@@ -93,7 +93,7 @@ function DocumentList() {
             loading={variables?.documentId === document.id && isPending}
             mode='outlined'
             onPress={() =>
-              generatePdf({
+              handleGenerate({
                 documentId: document.id,
                 variables: {},
               })

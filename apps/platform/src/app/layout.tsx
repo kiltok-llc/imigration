@@ -9,6 +9,7 @@ import { BrandFont, CodeFont, PrimaryFont } from '@/components/brand/font';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/query-provider';
+import { TrpcProvider } from '@/providers/trpc-provider';
 
 export const metadata: Metadata = {
   description: 'iMigration Admin Dashboard',
@@ -43,7 +44,9 @@ export default function RootLayout({
         )}
       >
         <QueryProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <TrpcProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </TrpcProvider>
         </QueryProvider>
 
         <Toaster />

@@ -2,10 +2,10 @@ import * as Sentry from '@sentry/react-native';
 import { isRunningInExpoGo } from 'expo';
 import { Stack } from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
-import { PaperProvider, useTheme } from 'react-native-paper';
-import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 
 import '@/polyfill';
+import { PaperProvider, useTheme } from 'react-native-paper';
+import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import tw, { useDeviceContext } from 'twrnc';
 

@@ -1,9 +1,9 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { useMutation } from '@tanstack/react-query';
 import { PropsWithChildren, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
 import { Button } from '@/components/ui/button';
@@ -29,11 +29,18 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ZodFormContext } from '@/lib/form';
-import { raiseStatus } from '@/lib/utils';
+import { useTRPC } from '@/providers/trpc-provider';
 import { CurrentDocument } from '@/queries/current-document';
 
 export const GenerateDocumentFormSchema = z.object({
-  data: z.string(),
+  data: z.string().transform((str, ctx): unknown => {
+    try {
+      return JSON.parse(str);
+    } catch {
+      ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
+      return z.NEVER;
+    }
+  }),
 });
 
 export function GenerateDocumentDialog({
@@ -53,25 +60,25 @@ export function GenerateDocumentDialog({
     handleSubmit,
   } = context;
 
-  const handleGenerate = async (
-    formData: z.output<typeof GenerateDocumentFormSchema>
-  ) => {
-    try {
-      const res = await fetch(`/api/documents/${document.id}/pdf`, {
-        body: formData.data,
-        method: 'POST',
-      }).then(raiseStatus);
+  const trpc = useTRPC();
 
-      const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      window.open(blobUrl);
-    } catch (error: unknown) {
-      console.error('Failed to generate document:', error);
-      toast.error('Failed to generate document');
-    }
-
-    setIsOpen(false);
-  };
+  const { mutate: handleGenerate } = useMutation(
+    trpc.document.generatePdf.mutationOptions({
+      onError: (error) => {
+        console.error('Failed to generate document:', error);
+      },
+      onSettled() {
+        setIsOpen(false);
+      },
+      onSuccess: ({ data }) => {
+        const buffer = Buffer.from(data, 'base64');
+        const blobUrl = URL.createObjectURL(
+          new Blob([buffer], { type: 'application/pdf' })
+        );
+        window.open(blobUrl);
+      },
+    })
+  );
 
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
@@ -110,7 +117,12 @@ export function GenerateDocumentDialog({
             <DialogFooter>
               <Button
                 loading={isSubmitting}
-                onClick={handleSubmit(handleGenerate)}
+                onClick={handleSubmit(({ data }) =>
+                  handleGenerate({
+                    documentId: document.id,
+                    variables: data,
+                  })
+                )}
                 type='submit'
               >
                 Generate
