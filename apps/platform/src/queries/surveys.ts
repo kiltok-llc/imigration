@@ -33,7 +33,7 @@ export const surveysInfiniteQueryOptions = () =>
         datetime && query.lt('updated_at', datetime),
     }),
     meta: {
-      errorMessage: 'Failed to load surveys',
+      errorToast: 'Failed to load surveys',
     },
     select: (data) => data.pages.flat(),
   });

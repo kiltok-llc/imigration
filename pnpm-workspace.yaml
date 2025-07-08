@@ -26,6 +26,7 @@ catalogs:
 nodeLinker: hoisted
 
 onlyBuiltDependencies:
+  - '@sentry/cli'
   - '@tailwindcss/oxide'
   - canvas
   - core-js
@@ -36,4 +37,4 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 patchedDependencies:
-  '@pdfme/generator': patches/@pdfme__generator.patch
+  '@supabase-cache-helpers/storage-react-query': patches/@supabase-cache-helpers__storage-react-query.patch

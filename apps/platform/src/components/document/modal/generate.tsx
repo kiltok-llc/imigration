@@ -2,8 +2,9 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useMutation } from '@tanstack/react-query';
-import { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
 import { Button } from '@/components/ui/button';
@@ -29,18 +30,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ZodFormContext } from '@/lib/form';
-import { useTRPC } from '@/providers/trpc-provider';
+import { supabase } from '@/lib/supabase/client';
+import { unwrap } from '@/lib/supabase/utils';
+import { stringToJSONSchema } from '@/lib/utils';
 import { CurrentDocument } from '@/queries/current-document';
 
 export const GenerateDocumentFormSchema = z.object({
-  data: z.string().transform((str, ctx): unknown => {
-    try {
-      return JSON.parse(str);
-    } catch {
-      ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
-      return z.NEVER;
-    }
-  }),
+  data: stringToJSONSchema.pipe(
+    z.object({
+      textFields: z.record(z.string().nonempty(), z.string().optional()),
+    })
+  ),
 });
 
 export function GenerateDocumentDialog({
@@ -60,25 +60,36 @@ export function GenerateDocumentDialog({
     handleSubmit,
   } = context;
 
-  const trpc = useTRPC();
+  const { mutateAsync: handleGenerate } = useMutation({
+    // Needs to appear before onError for type inference to work correctly
+    onMutate() {
+      const toastId = toast.loading('Generating document...');
+      return { toastId };
+    },
 
-  const { mutate: handleGenerate } = useMutation(
-    trpc.document.generatePdf.mutationOptions({
-      onError: (error) => {
-        console.error('Failed to generate document:', error);
-      },
-      onSettled() {
-        setIsOpen(false);
-      },
-      onSuccess: ({ data }) => {
-        const buffer = Buffer.from(data, 'base64');
-        const blobUrl = URL.createObjectURL(
-          new Blob([buffer], { type: 'application/pdf' })
-        );
-        window.open(blobUrl);
-      },
-    })
-  );
+    async mutationFn({}: z.output<typeof GenerateDocumentFormSchema>) {
+      const blob = await supabase.storage
+        .from('documents')
+        .download(document.id)
+        .then(unwrap);
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+    },
+    onError(error, _, context) {
+      console.error('Error generating document', error);
+      toast.error('Failed to generate document.', {
+        id: context?.toastId,
+      });
+    },
+    onSettled() {
+      setIsOpen(false);
+    },
+    onSuccess(_data, _variables, { toastId }) {
+      toast.success('Generated!', {
+        id: toastId,
+      });
+    },
+  });
 
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
@@ -117,12 +128,7 @@ export function GenerateDocumentDialog({
             <DialogFooter>
               <Button
                 loading={isSubmitting}
-                onClick={handleSubmit(({ data }) =>
-                  handleGenerate({
-                    documentId: document.id,
-                    variables: data,
-                  })
-                )}
+                onClick={handleSubmit((data) => handleGenerate(data))}
                 type='submit'
               >
                 Generate

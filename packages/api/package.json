@@ -5,8 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./trpc": "./src/trpc.ts",
-    "./utils": "./src/utils.ts"
+    "./trpc": "./src/trpc.ts"
   },
   "scripts": {
     "build:check": "tsc --noEmit --emitDeclarationOnly false",
@@ -18,10 +17,8 @@
   },
   "prettier": "@repo/prettier-config",
   "dependencies": {
-    "@pdfme/common": "^5.4.0",
-    "@pdfme/generator": "^5.4.0",
-    "@repo/pdfme-plugins": "workspace:*",
     "@repo/supabase": "workspace:*",
+    "@supabase/storage-js": "^2.8.0",
     "@supabase/supabase-js": "^2.50.0",
     "@trpc/server": "catalog:",
     "superjson": "2.2.2",

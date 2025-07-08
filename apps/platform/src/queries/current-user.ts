@@ -23,7 +23,7 @@ export const currentUserQueryOptions = (id: string) =>
       transform: (data) => data,
     }),
     meta: {
-      errorMessage: 'Failed to load user',
+      errorToast: 'Failed to load user',
     },
   });
 

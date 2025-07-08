@@ -3,8 +3,11 @@ import {
   HydrationBoundary as QueryHydrationBoundary,
 } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 
+import { DocumentShellHeaderSkeleton } from '@/components/document/shell';
+import { DocumentShellHeader } from '@/components/document/shell';
+import { Section } from '@/components/ui/section';
 import { DocumentIdProvider } from '@/lib/app-context';
 import { dbId, validId } from '@/lib/id';
 import { makeQueryClient } from '@/lib/query';
@@ -29,6 +32,12 @@ export default async function DocumentLayout({
   return (
     <QueryHydrationBoundary state={dehydrate(queryClient)}>
       <DocumentIdProvider value={dbId(documentId)}>
+        <Section size='xs'>
+          <Suspense fallback={<DocumentShellHeaderSkeleton />}>
+            <DocumentShellHeader />
+          </Suspense>
+        </Section>
+
         {children}
       </DocumentIdProvider>
     </QueryHydrationBoundary>

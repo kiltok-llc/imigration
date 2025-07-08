@@ -1,0 +1,12 @@
+diff --git a/dist/index.js b/dist/index.js
+index 0dea43aa1c96811fa47c796b88aba65ee0cdc990..7da7239665dd6741275a24da455201f70d3bc38d 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -215,6 +215,7 @@ export {
+   KEY_SEPARATOR,
+   assertStorageKeyInput,
+   buildDirectoryUrlsQueryOpts,
++  buildFileUrlQueryOpts,
+   decode,
+   encode,
+   getBucketId,

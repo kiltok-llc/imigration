@@ -1,9 +1,8 @@
--- supabase custom auth token hook
 create or replace function private.handle_auth_token (event jsonb) returns jsonb language plpgsql stable
 set
-  search_path = '' as $$
+  search_path = '' as $function$
 declare
-  claims     jsonb;
+claims     jsonb;
   new_claims jsonb;
   claim      text;
 begin
@@ -22,6 +21,6 @@ begin
 
   claims = claims || jsonb_build_object('user_id', claims ->> 'sub');
 
-  return jsonb_build_object('claims', claims);
+return jsonb_build_object('claims', claims);
 end;
-$$;
+$function$;

@@ -30,7 +30,7 @@ export const currentSurveyQueryOptions = (id: string) =>
       transformError: redirectMissing,
     }),
     meta: {
-      errorMessage: 'Failed to load survey',
+      errorToast: 'Failed to load survey',
     },
   });
 

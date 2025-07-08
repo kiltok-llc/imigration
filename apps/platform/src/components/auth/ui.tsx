@@ -28,7 +28,7 @@ import { Anchor, Small } from '@/components/ui/typography';
 import {
   createRequiredContext,
   useRequiredContext,
-} from '@/lib/required-context';
+} from '@/hooks/use-required-context';
 import { StyledProps } from '@/lib/utils';
 
 interface AuthAlertType {

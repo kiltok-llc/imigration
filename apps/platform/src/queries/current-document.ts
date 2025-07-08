@@ -1,4 +1,3 @@
-import { DesignerProps } from '@pdfme/common';
 import { Database } from '@repo/supabase/database.types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
@@ -21,20 +20,16 @@ export const currentDocumentQueryOptions = (id: string) =>
       id,
       name,
       description,
-      updatedAt:updated_at,
-      template
+      updatedAt:updated_at
     `
           )
           .eq('id', id)
           .single(),
-      transform: ({ template, ...document }) => ({
-        ...document,
-        template: template as DesignerProps['template'],
-      }),
+      transform: (data) => data,
       transformError: redirectMissing,
     }),
     meta: {
-      errorMessage: 'Failed to load document',
+      errorToast: 'Failed to load document',
     },
   });
 

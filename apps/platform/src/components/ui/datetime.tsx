@@ -55,11 +55,11 @@ function LocalizedDuration({
   readonly verbose: boolean;
 }) {
   return (
-    <Rehydrate>
-      <ErrorBoundary fallback={value ?? '-'} onError={console.warn}>
+    <ErrorBoundary fallback={value ?? '-'} onError={console.warn}>
+      <Rehydrate>
         <LocalizedDurationInner value={value} verbose={verbose} />
-      </ErrorBoundary>
-    </Rehydrate>
+      </Rehydrate>
+    </ErrorBoundary>
   );
 }
 
@@ -179,7 +179,7 @@ export function Datetime({
  * @param value ISO 8601 string
  * @param options Date formatting options
  */
-function LocalizedDatetime({
+export function LocalizedDatetime({
   format,
   local,
   value,
@@ -190,11 +190,11 @@ function LocalizedDatetime({
 }) {
   return (
     <time dateTime={value}>
-      <Rehydrate>
-        <ErrorBoundary fallback={value} onError={console.warn}>
+      <ErrorBoundary fallback={value} onError={console.warn}>
+        <Rehydrate>
           <LocalizedDatetimeInner local={local} value={value} {...format} />
-        </ErrorBoundary>
-      </Rehydrate>
+        </Rehydrate>
+      </ErrorBoundary>
     </time>
   );
 }

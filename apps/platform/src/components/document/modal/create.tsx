@@ -1,8 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { BLANK_A4_PDF } from '@pdfme/common';
-import { Json } from '@repo/supabase/database.types';
+import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -36,6 +36,7 @@ import {
 import { ZodFormContext } from '@/lib/form';
 import { urlId } from '@/lib/id';
 import { supabase } from '@/lib/supabase/client';
+import { unwrapSingle } from '@/lib/supabase/utils';
 
 export const CreateDocumentFormSchema = z.object({
   description: z.string().min(1).max(255),
@@ -54,34 +55,34 @@ export function CreateDocumentDialog({ children }: PropsWithChildren) {
   const {
     formState: { isSubmitSuccessful, isSubmitting },
     handleSubmit,
-    reset,
   } = context;
-  const handleCreate = async (
-    formData: z.output<typeof CreateDocumentFormSchema>
-  ) => {
-    const { data: document, error } = await supabase
-      .from('documents')
-      .insert({
-        description: formData.description,
-        name: formData.name,
-        template: {
-          basePdf: BLANK_A4_PDF as Json,
-          schemas: [[]],
-        },
-      })
-      .select()
-      .single();
 
-    if (error) {
-      console.error(error);
-      toast.error('Failed to create document');
-      reset({}, { keepValues: true });
-      return;
-    }
+  const { mutateAsync: handleInsert } = useInsertMutation(
+    supabase.from('documents'),
+    ['id'],
+    'id',
+    { throwOnError: true }
+  );
+  const { mutateAsync: handleCreate } = useMutation({
+    // Needs to appear before onError for type inference to work correctly
+    onMutate() {
+      const toastId = toast.loading('Creating document...');
+      return { toastId };
+    },
 
-    toast.success('Document created!');
-    router.push(`/documents/${urlId(document.id)}`);
-  };
+    mutationFn: async ({
+      description,
+      name,
+    }: z.output<typeof CreateDocumentFormSchema>) =>
+      handleInsert([{ description, name }]).then(unwrapSingle),
+    onError(_error, _variables, context) {
+      toast.error('Failed to create document', { id: context?.toastId });
+    },
+    onSuccess(document, _variables, { toastId }) {
+      toast.success('Document created!', { id: toastId });
+      router.push(`/documents/${urlId(document.id)}`);
+    },
+  });
 
   return (
     <Dialog>
@@ -137,7 +138,7 @@ export function CreateDocumentDialog({ children }: PropsWithChildren) {
             <DialogFooter>
               <Button
                 loading={isSubmitting || isSubmitSuccessful}
-                onClick={handleSubmit(handleCreate)}
+                onClick={handleSubmit((data) => handleCreate(data))}
                 type='submit'
               >
                 Create

@@ -2,6 +2,7 @@ import { GenericSchema } from '@repo/supabase/generic';
 import { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 import {
   defaultShouldDehydrateQuery,
+  MutationCache,
   QueryCache,
   QueryClient,
 } from '@tanstack/react-query';
@@ -33,19 +34,52 @@ export function makeQueryClient() {
         staleTime: 60 * 1000,
       },
     },
+    mutationCache: new MutationCache({
+      onError(error, _variables, _context, mutation) {
+        console.error('Mutation Error', error);
+
+        if (mutation.meta?.errorToast) {
+          toast.error(mutation.meta.errorToast as string, {
+            id: mutation.mutationId,
+          });
+        }
+      },
+      onMutate(_variables, mutation) {
+        // TODO remove
+        console.log('mutation id', mutation.mutationId);
+
+        if (mutation.meta?.loadingToast) {
+          toast.loading(mutation.meta.loadingToast as string, {
+            id: mutation.mutationId,
+          });
+        }
+      },
+      onSuccess(_data, _variables, _context, mutation) {
+        if (mutation.meta?.successToast) {
+          toast.success(mutation.meta.successToast as string, {
+            id: mutation.mutationId,
+          });
+        }
+      },
+    }),
     queryCache: new QueryCache({
       onError: (error, query) => {
-        console.error(error);
-        // eslint-disable-next-line unicorn/prefer-global-this
-        if (typeof window !== 'undefined' && query.meta?.errorMessage) {
-          toast.error(query.meta.errorMessage as string);
+        console.error('Query Error', JSON.stringify(error), typeof error);
+
+        if (globalThis !== undefined && query.meta?.errorToast) {
+          toast.error(query.meta.errorToast as string);
+        }
+      },
+      onSuccess: (_data, query) => {
+        if (globalThis !== undefined && query.meta?.successToast) {
+          toast.success(query.meta.successToast as string);
         }
       },
     }),
   });
 }
 
-export const unwrap = async <
+export const unwrapQuery = async <
   Schema extends GenericSchema,
   Row extends Record<string, unknown>,
   Result,

@@ -1,3 +1,0 @@
-{
-  "*": ["pnpm format --ignore-unknown --", "pnpm lint --no-warn-ignored --"]
-}

@@ -34,6 +34,8 @@ export function DeleteSurveyDialog({
     handleSubmit,
   } = context;
 
+  // TODO port to cache-helpers mutations
+
   const handleDelete = async () => {
     const { error } = await supabase
       .from('surveys')

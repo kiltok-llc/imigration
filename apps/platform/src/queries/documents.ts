@@ -23,8 +23,7 @@ export const documentsInfiniteQueryOptions = () =>
             id,
             name,
             description,
-            updatedAt:updated_at,
-            template
+            updatedAt:updated_at
             `
           )
           .order('updated_at', { ascending: false })
@@ -33,7 +32,7 @@ export const documentsInfiniteQueryOptions = () =>
         datetime && query.lt('updated_at', datetime),
     }),
     meta: {
-      errorMessage: 'Failed to load documents',
+      errorToast: 'Failed to load documents',
     },
     select: (data) => data.pages.flat(),
   });

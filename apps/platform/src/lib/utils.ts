@@ -3,6 +3,7 @@ import { formatHex } from 'culori';
 import { ForwardedRef, PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { Temporal } from 'temporal-polyfill';
+import z from 'zod/v4';
 
 export type Assign<T, U> = Omit<T, keyof U> & U;
 
@@ -129,3 +130,12 @@ export function zip<A, B>(as: A[], bs: B[]): [A, B][] {
     ? (as.map((a, i) => [a, bs[i]]) as [A, B][])
     : (bs.map((b, i) => [as[i], b]) as [A, B][]);
 }
+
+export const stringToJSONSchema = z.string().transform((str, ctx): unknown => {
+  try {
+    return JSON.parse(str);
+  } catch {
+    ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
+    return z.NEVER;
+  }
+});

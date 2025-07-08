@@ -5,18 +5,18 @@ import {
 } from '@repo/supabase/error';
 import { GenericSchema } from '@repo/supabase/generic';
 import { isPostgrestTransformBuilder } from '@supabase-cache-helpers/postgrest-core';
-import { encode } from '@supabase-cache-helpers/postgrest-react-query';
+import { encode as encodePostgrest } from '@supabase-cache-helpers/postgrest-react-query';
+import { type StoragePrivacy } from '@supabase-cache-helpers/storage-core';
+import {
+  encode as encodeStorage,
+  StorageFileApi,
+} from '@supabase-cache-helpers/storage-react-query';
 import {
   PostgrestBuilder,
   PostgrestFilterBuilder,
 } from '@supabase/postgrest-js';
-import {
-  AuthTokenResponsePassword,
-  PostgrestError,
-  SupabaseClient,
-  User,
-  UserResponse,
-} from '@supabase/supabase-js';
+import { TransformOptions } from '@supabase/storage-js';
+import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import {
   GetNextPageParamFunction,
   GetPreviousPageParamFunction,
@@ -29,6 +29,7 @@ import { notFound } from 'next/navigation';
 
 import { supabase } from '@/lib/supabase/client';
 import { createServerSupabase } from '@/lib/supabase/server';
+import { raiseStatus } from '@/lib/utils';
 
 export type InferDataType<T> =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,48 +41,48 @@ export type InferInfiniteDataType<T> =
 
 export type QueryBuilder<T> = (client: SupabaseClient<Database>) => T;
 
-export const isMissingError = (err: unknown) => {
+export const isMissingError = (err: PostgrestError) => {
   return (
-    err instanceof PostgrestError &&
-    (err.code === PGRST_SINGULAR_RESPONSE_ITEM_COUNT_MISMATCH || // no rows found (or too many!)
-      err.code === PG_INVALID_TEXT_REPRESENTATION) // invalid uuid
+    err.code === PGRST_SINGULAR_RESPONSE_ITEM_COUNT_MISMATCH || // no rows found (or too many!)
+    err.code === PG_INVALID_TEXT_REPRESENTATION // invalid uuid
   );
 };
 
-export const redirectMissing = (err: unknown) => {
-  if (
-    err instanceof PostgrestError &&
-    (err.code === PGRST_SINGULAR_RESPONSE_ITEM_COUNT_MISMATCH || // no rows found (or too many!)
-      err.code === PG_INVALID_TEXT_REPRESENTATION) // invalid uuid
-  ) {
+export const redirectMissing = (err: null | unknown) => {
+  if (err === null) {
+    console.debug('Not found (null error), redirecting...');
+    notFound();
+  }
+
+  if (err instanceof PostgrestError && isMissingError(err)) {
     console.debug(`Not found (error code ${err.code}), redirecting...`);
     notFound();
   }
+
   throw err;
 };
 
-export const unwrapUser = ({ data, error }: UserResponse): { user: User } => {
-  if (error) {
-    throw error;
-  }
-  return data;
-};
-
-export const unwrapAuthTokenPassword = ({
+export const unwrap = <T>({
   data,
   error,
-}: AuthTokenResponsePassword) => {
-  if (error) {
+}: {
+  data: null | T;
+  error: unknown;
+}): T => {
+  if (data === null || error) {
     throw error;
   }
   return data;
 };
 
-export const unwrapSignout = ({ error }: { error: Error | null }) => {
-  if (error) {
-    throw error;
+export const unwrapSingle = <T>(data: null | T[]): T => {
+  if (data === null || data.length === 0) {
+    throw new Error('No data found');
   }
-  return null;
+  if (data.length > 1) {
+    throw new Error('Expected a single item, but found multiple');
+  }
+  return data[0]!;
 };
 
 export const isomorphicSupabase = async () =>
@@ -131,7 +132,7 @@ export const supabaseInfiniteQueryOptions = <
 
       return transform(result.data, pageParam as TPageParam);
     },
-    queryKey: encode(queryBuilder(supabase), true),
+    queryKey: encodePostgrest(queryBuilder(supabase), true),
     ...options,
   });
 
@@ -153,6 +154,7 @@ export const supabaseQueryOptions = <
     queryFn: async ({ signal }) => {
       const client = await isomorphicSupabase();
       const query = queryBuilder(client);
+
       if (isPostgrestTransformBuilder(query)) {
         query.abortSignal(signal);
       }
@@ -161,10 +163,100 @@ export const supabaseQueryOptions = <
       try {
         result = await query.throwOnError();
       } catch (error) {
-        console.log('query fail', query, error);
         return transformError(error);
       }
       return transform(result.data);
     },
-    queryKey: encode(queryBuilder(supabase), false),
+    queryKey: encodePostgrest(queryBuilder(supabase), false),
+  });
+
+export const supabaseFileDownloadQueryOptions = <
+  Check extends boolean = false,
+>({
+  checkExists,
+  file: fileBuilder,
+  mode,
+  path,
+  transform,
+}: {
+  checkExists?: Check;
+  file: QueryBuilder<StorageFileApi>;
+  mode: StoragePrivacy;
+  path: string;
+  transform?: TransformOptions;
+}) =>
+  queryOptions({
+    queryFn: async (): Promise<Check extends true ? Blob | null : Blob> => {
+      const client = await isomorphicSupabase();
+      const file = fileBuilder(client);
+
+      if (checkExists) {
+        const exists = await file.exists(path).then(unwrap);
+
+        if (!exists) {
+          return null as never;
+        }
+      }
+
+      if (mode === 'private') {
+        return await file
+          .download(path, {
+            transform,
+          })
+          .then(unwrap);
+      }
+
+      const {
+        data: { publicUrl },
+      } = file.getPublicUrl(path, { transform });
+      return await fetch(publicUrl)
+        .then(raiseStatus)
+        .then((res) => res.blob());
+    },
+    queryKey: encodeStorage([fileBuilder(supabase), path]),
+  });
+
+export const supabaseFileUrlQueryOptions = <Check extends boolean = false>({
+  checkExists,
+  file: fileBuilder,
+  mode,
+  path,
+  transform,
+}: {
+  checkExists?: Check;
+  file: QueryBuilder<StorageFileApi>;
+  mode: StoragePrivacy;
+  path: string;
+  transform?: TransformOptions;
+}) =>
+  queryOptions({
+    queryFn: async (): Promise<Check extends true ? null | string : string> => {
+      const client = await isomorphicSupabase();
+      const file = fileBuilder(client);
+
+      if (checkExists) {
+        const exists = await file
+          .exists(path)
+          .then(unwrap)
+          .catch((_) => false);
+
+        if (!exists) {
+          return null as never;
+        }
+      }
+
+      if (mode === 'private') {
+        return await file
+          .createSignedUrl(path, 3600, { transform })
+          .then(unwrap)
+          .then(({ signedUrl }) => signedUrl);
+      }
+
+      const {
+        data: { publicUrl },
+      } = file.getPublicUrl(path, { transform });
+
+      return publicUrl;
+    },
+    queryKey: encodeStorage([fileBuilder(supabase), path]),
   });

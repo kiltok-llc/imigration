@@ -3,6 +3,7 @@
 import { ChevronDownIcon, LogOutIcon, SidebarIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Breadcrumbs } from '@/components/app/breadcrumbs';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { useSidebar } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   CurrentNamedAvatar,
   NamedAvatarSkeleton,
@@ -41,7 +43,9 @@ export function AppShellHeader() {
         <Separator orientation='vertical' />
       </div>
 
-      <Breadcrumbs />
+      <ErrorBoundary fallback={<Skeleton size='label' />}>
+        <Breadcrumbs />
+      </ErrorBoundary>
 
       <div className='flex-1' />
 

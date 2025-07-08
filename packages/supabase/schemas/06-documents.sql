@@ -11,8 +11,7 @@ create table documents (
     0 < length(description)
     and length(description) < 255
   ),
-  updated_at timestamptz not null default now(),
-  template jsonb not null default '{}'::jsonb
+  updated_at timestamptz not null default now()
 );
 
 alter table documents enable row level security;
@@ -28,7 +27,7 @@ revoke insert on documents
 from
   authenticated;
 
-grant insert (name, description, template) on documents to authenticated;
+grant insert (name, description) on documents to authenticated;
 
 create policy authenticated_insert on documents for insert to authenticated
 with
@@ -41,7 +40,7 @@ from
   authenticated;
 
 grant
-update (name, description, template) on documents to authenticated;
+update (name, description) on documents to authenticated;
 
 create policy authenticated_update on documents
 for update

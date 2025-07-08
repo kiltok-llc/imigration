@@ -15,7 +15,7 @@ const { TRPCProvider: TRPCClientProvider, useTRPC } =
 export { useTRPC };
 
 function getTrpcUrl() {
-  if (globalThis.window !== undefined) {
+  if (globalThis !== undefined) {
     return '/api/trpc';
   }
   if (env.VERCEL_URL) {

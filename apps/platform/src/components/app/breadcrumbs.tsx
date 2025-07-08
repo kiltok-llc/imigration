@@ -9,7 +9,6 @@ import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useSelectedLayoutSegments } from 'next/navigation';
 import { Fragment, ReactNode, Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
 import {
   Breadcrumb,
@@ -41,26 +40,6 @@ function BreadcrumbItemQuery<Q, E, D, K extends QueryKey>({
     </div>
   );
 }
-
-const breadcrumbConfig: BreadcrumbConfig = {
-  '': () => <HomeIcon />,
-  '/documents/[documentId]': (documentId: string) => (
-    <ErrorBoundary fallback={<Skeleton size='label' />}>
-      <BreadcrumbItemQuery
-        queryOptions={currentDocumentQueryOptions(dbId(documentId))}
-        select={(document) => document.name}
-      />
-    </ErrorBoundary>
-  ),
-  '/surveys/[surveyId]': (surveyId: string) => (
-    <ErrorBoundary fallback={<Skeleton size='label' />}>
-      <BreadcrumbItemQuery
-        queryOptions={currentSurveyQueryOptions(dbId(surveyId))}
-        select={(survey) => survey.name}
-      />
-    </ErrorBoundary>
-  ),
-};
 
 // [
 //   [ '', '${base}', '' ],
@@ -98,14 +77,33 @@ const useRoute = (
   );
 };
 
+// TODO fix rendering issues
 export function Breadcrumbs() {
   const routes = useRoute('/');
+
+  const breadcrumbConfig: BreadcrumbConfig = {
+    '': () => <HomeIcon />,
+    '/documents/[documentId]': (documentId: string) => (
+      <BreadcrumbItemQuery
+        queryOptions={currentDocumentQueryOptions(dbId(documentId))}
+        select={(document) => document.name}
+      />
+    ),
+    '/surveys/[surveyId]': (surveyId: string) => (
+      <BreadcrumbItemQuery
+        queryOptions={currentSurveyQueryOptions(dbId(surveyId))}
+        select={(survey) => survey.name}
+      />
+    ),
+  };
+
   const crumbs = routes
     .filter(({ route }) => breadcrumbConfig[route] !== null)
     .map(({ href, route, segment }) => ({
       crumb: breadcrumbConfig[route]?.(segment) ?? titleCase(segment),
       href,
     }));
+
   return (
     <Breadcrumb className='overflow-hidden px-2 whitespace-nowrap'>
       <BreadcrumbList>

@@ -27,10 +27,10 @@ const queryClient = new QueryClient({
     onError(error, _variables, _context, mutation) {
       console.error('Mutation Error', error);
 
-      if (mutation.meta?.errorMessage) {
+      if (mutation.meta?.errorToast) {
         Toast.show({
           text1: 'Application Error',
-          text2: mutation.meta.errorMessage as string,
+          text2: mutation.meta.errorToast as string,
           type: 'error',
         });
       }
@@ -40,10 +40,10 @@ const queryClient = new QueryClient({
     onError(error, query) {
       console.error('Query Error', error);
 
-      if (query.meta?.errorMessage) {
+      if (query.meta?.errorToast) {
         Toast.show({
           text1: 'Application Error',
-          text2: query.meta.errorMessage as string,
+          text2: query.meta.errorToast as string,
           type: 'error',
         });
       }

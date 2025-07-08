@@ -19,7 +19,7 @@ export const documentsQueryOptions = () =>
       transform: (data) => data,
     }),
     meta: {
-      errorMessage: 'Failed to load documents',
+      errorToast: 'Failed to load documents',
     },
   });
 

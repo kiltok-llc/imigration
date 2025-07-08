@@ -23,7 +23,7 @@ export const surveyQueryOptions = (id: string) =>
       transform: (data) => data,
     }),
     meta: {
-      errorMessage: 'Failed to load survey',
+      errorToast: 'Failed to load survey',
     },
   });
 

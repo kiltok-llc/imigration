@@ -59,6 +59,12 @@ export default defineConfig([
       // Must disable the base rule for @typescript-eslint/no-unused-vars to work properly
       'no-unused-vars': 'off',
       'object-shorthand': 'error',
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          partitionByNewLine: true,
+        },
+      ],
       'prefer-const': ['error', { destructuring: 'all' }],
       'prefer-destructuring': 'error',
       'prefer-template': 'error',

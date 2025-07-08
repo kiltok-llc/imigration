@@ -27,7 +27,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import {
   createRequiredContext,
   useRequiredContext,
-} from '@/lib/required-context';
+} from '@/hooks/use-required-context';
 import { cn } from '@/lib/utils';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';

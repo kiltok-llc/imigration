@@ -19,7 +19,7 @@ import { Label } from '@/components/ui/label';
 import {
   createRequiredContext,
   useRequiredContext,
-} from '@/lib/required-context';
+} from '@/hooks/use-required-context';
 import { cn } from '@/lib/utils';
 
 const Form = FormProvider;

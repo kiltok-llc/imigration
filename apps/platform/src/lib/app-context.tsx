@@ -5,7 +5,7 @@ import { ProviderProps } from 'react';
 import {
   createRequiredContext,
   useRequiredContext,
-} from '@/lib/required-context';
+} from '@/hooks/use-required-context';
 
 const UserIdContext = createRequiredContext<string>();
 export const useUserId = () => useRequiredContext(UserIdContext);

@@ -66,7 +66,7 @@ function DocumentList() {
   } = useMutation(
     trpc.document.generatePdf.mutationOptions({
       meta: {
-        errorMessage: 'Failed to generate PDF.',
+        errorToast: 'Failed to generate PDF.',
       },
       async onSuccess({ data }) {
         const fileUri = `${FileSystem.cacheDirectory}${randomId()}.pdf`;
