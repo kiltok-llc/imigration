@@ -2,7 +2,7 @@
 
 import { useUpload } from '@supabase-cache-helpers/storage-react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FileScanIcon } from 'lucide-react';
+import { FileScanIcon, FilesIcon } from 'lucide-react';
 import { ChangeEvent, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,6 @@ import {
   FormSection,
   FormSectionContent,
   FormSectionHeader,
-  FormSectionSubtitle,
   FormSectionTitle,
 } from '@/components/ui/form-layout';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,7 +31,6 @@ export function PDFFormSection() {
     <FormSection>
       <FormSectionHeader>
         <FormSectionTitle>PDF Configuration</FormSectionTitle>
-        <FormSectionSubtitle></FormSectionSubtitle>
       </FormSectionHeader>
       <FormSectionContent>
         <PDFLastUpdated documentId={document.id} />
@@ -128,7 +126,7 @@ function PDFPreviewButton({ documentId }: { documentId: string }) {
 
   return (
     <Button disabled={!url} onClick={() => window.open(url!)}>
-      Preview Current PDF
+      <FilesIcon /> Preview Current PDF
     </Button>
   );
 }
@@ -166,9 +164,14 @@ function PDFUploadButton({ documentId }: { documentId: string }) {
         .then(unwrap);
     },
     onSuccess() {
-      // Invalidate storage schema queries to refresh the PDF metadata
       void queryClient.invalidateQueries({
         queryKey: ['postgrest', 'null', 'storage'],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ['storage', 'documents', `${documentId}.pdf`],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ['pdf', 'documents', documentId],
       });
     },
   });

@@ -20,11 +20,10 @@ export const createServerSupabase = async () => {
             for (const { name, options, value } of cookiesToSet) {
               cookieStore.set(name, value, options);
             }
-          } catch (error) {
+          } catch {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
-            console.debug('Supabase auth set cookie error', error);
           }
         },
       },

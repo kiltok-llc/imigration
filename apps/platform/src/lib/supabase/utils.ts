@@ -86,7 +86,6 @@ export const unwrapSingle = <T>(data: null | T[]): T => {
 };
 
 export const isomorphicSupabase = async () =>
-  // eslint-disable-next-line unicorn/prefer-global-this
   typeof window === 'undefined' ? await createServerSupabase() : supabase;
 
 export const supabaseInfiniteQueryOptions = <
@@ -194,26 +193,26 @@ export const supabaseFileDownloadQueryOptions = <
         const exists = await file.exists(path).then(unwrap);
 
         if (!exists) {
+          console.debug('File does not exist:', path);
           return null as never;
         }
       }
 
-      if (mode === 'private') {
-        return await file
-          .download(path, {
-            transform,
-          })
-          .then(unwrap);
+      switch (mode) {
+        case 'private': {
+          return file.download(path, { transform }).then(unwrap);
+        }
+        case 'public': {
+          const {
+            data: { publicUrl },
+          } = file.getPublicUrl(path, { transform });
+          return fetch(publicUrl)
+            .then(raiseStatus)
+            .then((res) => res.blob());
+        }
       }
-
-      const {
-        data: { publicUrl },
-      } = file.getPublicUrl(path, { transform });
-      return await fetch(publicUrl)
-        .then(raiseStatus)
-        .then((res) => res.blob());
     },
-    queryKey: encodeStorage([fileBuilder(supabase), path]),
+    queryKey: [...encodeStorage([fileBuilder(supabase), path]), 'download'],
   });
 
 export const supabaseFileUrlQueryOptions = <Check extends boolean = false>({
@@ -258,5 +257,5 @@ export const supabaseFileUrlQueryOptions = <Check extends boolean = false>({
 
       return publicUrl;
     },
-    queryKey: encodeStorage([fileBuilder(supabase), path]),
+    queryKey: [...encodeStorage([fileBuilder(supabase), path]), 'url'],
   });

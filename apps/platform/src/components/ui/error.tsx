@@ -14,17 +14,22 @@ import {
 import {
   H4,
   MultilineCode,
+  MultilineCodeContent,
   MultilineCodeCopy,
 } from '@/components/ui/typography';
 import { env } from '@/env';
 
 export function ErrorFallback({
+  error,
   message,
   resetErrorBoundary,
 }: {
-  readonly message?: string;
-  readonly resetErrorBoundary?: () => void;
+  error: Error;
+  message?: string;
+  resetErrorBoundary?: () => void;
 }) {
+  message = message || error.message;
+
   return (
     <div className='flex flex-1 flex-col items-center justify-center gap-4'>
       <CircleAlertIcon className='text-destructive size-10' />
@@ -52,9 +57,8 @@ export function ErrorFallback({
                 </DialogDescription>
               </DialogHeader>
 
-              <MultilineCode className='max-h-60 overflow-auto'>
-                {message}
-
+              <MultilineCode className='max-h-60 min-h-30'>
+                <MultilineCodeContent>{message}</MultilineCodeContent>
                 <MultilineCodeCopy value={message} />
               </MultilineCode>
             </DialogContent>

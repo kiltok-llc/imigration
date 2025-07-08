@@ -29,13 +29,11 @@ export const titleCase = (str: string, pattern: RegExp | string = ' ') =>
     .join(' ');
 
 export function cssHex(variable: string) {
-  // eslint-disable-next-line unicorn/prefer-global-this
   if (typeof window === 'undefined') {
     return;
   }
 
   return formatHex(
-    // eslint-disable-next-line unicorn/prefer-global-this
     window.getComputedStyle(document.body).getPropertyValue(variable)
   );
 }

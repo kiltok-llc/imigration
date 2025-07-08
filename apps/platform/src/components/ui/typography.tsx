@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { twc } from 'react-twc';
 
 import { Button } from '@/components/ui/button';
+import { useCopyValue } from '@/hooks/use-copy';
 
 export const H1 = twc.h1`lg::text-5xl' text-4xl font-extrabold tracking-tight`;
 
@@ -24,17 +25,21 @@ export const Muted = twc.span`text-muted-foreground text-sm`;
 
 export const InlineCode = twc.code`bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold`;
 
-export const MultilineCode = twc.pre`bg-muted group relative overflow-x-auto rounded p-4 font-mono text-sm font-semibold`;
+export const MultilineCode = twc.div`bg-muted group relative rounded p-4`;
+
+export const MultilineCodeContent = twc.pre`overflow-auto font-mono text-sm font-semibold break-words whitespace-pre-wrap`;
 
 export function MultilineCodeCopy({
   value,
 }: {
   readonly value: null | string;
 }) {
+  const [_, copy] = useCopyValue(value);
   return (
     <Button
-      className='absolute top-2 right-2 hidden group-hover:block'
+      className='absolute top-2 right-2 opacity-0 group-hover:opacity-100'
       disabled={value === null}
+      onClick={copy}
       size='icon'
       variant='outline'
     >

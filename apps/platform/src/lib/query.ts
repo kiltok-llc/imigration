@@ -40,24 +40,21 @@ export function makeQueryClient() {
 
         if (mutation.meta?.errorToast) {
           toast.error(mutation.meta.errorToast as string, {
-            id: mutation.mutationId,
+            id: `mutation-${mutation.mutationId}`,
           });
         }
       },
       onMutate(_variables, mutation) {
-        // TODO remove
-        console.log('mutation id', mutation.mutationId);
-
         if (mutation.meta?.loadingToast) {
           toast.loading(mutation.meta.loadingToast as string, {
-            id: mutation.mutationId,
+            id: `mutation-${mutation.mutationId}`,
           });
         }
       },
       onSuccess(_data, _variables, _context, mutation) {
         if (mutation.meta?.successToast) {
           toast.success(mutation.meta.successToast as string, {
-            id: mutation.mutationId,
+            id: `mutation-${mutation.mutationId}`,
           });
         }
       },
@@ -66,12 +63,12 @@ export function makeQueryClient() {
       onError: (error, query) => {
         console.error('Query Error', JSON.stringify(error), typeof error);
 
-        if (globalThis !== undefined && query.meta?.errorToast) {
+        if (typeof window !== 'undefined' && query.meta?.errorToast) {
           toast.error(query.meta.errorToast as string);
         }
       },
       onSuccess: (_data, query) => {
-        if (globalThis !== undefined && query.meta?.successToast) {
+        if (typeof window !== 'undefined' && query.meta?.successToast) {
           toast.success(query.meta.successToast as string);
         }
       },
