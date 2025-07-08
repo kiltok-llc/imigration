@@ -35,6 +35,3 @@ onlyBuiltDependencies:
   - sharp
   - supabase
   - unrs-resolver
-
-patchedDependencies:
-  '@supabase-cache-helpers/storage-react-query': patches/@supabase-cache-helpers__storage-react-query.patch
