@@ -1,10 +1,27 @@
 'use client';
 
-import { TrashIcon } from 'lucide-react';
+import { PDFDocument, PDFField } from '@cantoo/pdf-lib';
+import { useMutation } from '@tanstack/react-query';
+import { ChevronsUpDown, SquareArrowOutUpRight, TrashIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { PDFProvider, usePDF } from '@/components/document/pdf-provider';
 import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   FormList,
   FormListHeader,
@@ -27,13 +44,16 @@ import {
 } from '@/components/ui/form-layout';
 import { Input } from '@/components/ui/input';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { useCurrentDocument } from '@/queries/current-document';
+
+type PreviewData = {
+  dataUri: string;
+  name: string;
+};
 
 export function GenerationFormSection() {
   const document = useCurrentDocument();
@@ -56,28 +76,102 @@ export function GenerationFormSection() {
   );
 }
 
-function AddTextFieldDropdown() {
+function AddFieldComboBox() {
   const pdf = usePDF();
+  const fields = useMemo(() => pdf.getForm().getFields(), [pdf]);
+  const [comboOpen, setComboOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
 
-  console.log('pdf', pdf);
-  console.log('pdf pages', pdf.getPages());
+  const { data: preview, mutate: handlePreview } = useMutation({
+    meta: {
+      errorToast: 'Failed to open preview.',
+      loadingToast: 'Loading preview...',
+      successToast: 'Preview opened in new tab.',
+    },
+    mutationFn: async (field: PDFField) => {
+      const previewPdf = await PDFDocument.create();
+      const page = pdf.findPageForAnnotationRef(field.ref);
+      if (!page) {
+        throw new Error('Page not found for the field');
+      }
+      const pageIdx = pdf
+        .getPages()
+        .findIndex((p) => p.ref.tag === page.ref.tag);
+      const [copiedPage] = await previewPdf.copyPages(pdf, [pageIdx]);
+      previewPdf.addPage(copiedPage);
+      const dataUri = await previewPdf.saveAsBase64({
+        dataUri: true,
+        updateFieldAppearances: true,
+      });
+      return {
+        dataUri,
+        name: field.getName(),
+      };
+    },
+    onSuccess() {
+      setPreviewOpen(true);
+    },
+  });
 
   return (
-    <Select onValueChange={console.log}>
-      <SelectTrigger
-        className={buttonVariants({
-          rounded: 'lg',
-          size: 'xl',
-          variant: 'dashed',
-        })}
-      >
-        <SelectValue placeholder='Add field...' />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value='csv'>CSV file</SelectItem>
-        <SelectItem value='exchange'>Exchange</SelectItem>
-      </SelectContent>
-    </Select>
+    <>
+      <Dialog onOpenChange={setPreviewOpen} open={previewOpen}>
+        <PDFDialogContent preview={preview} />
+      </Dialog>
+      <Popover onOpenChange={setComboOpen} open={comboOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            aria-expanded={comboOpen}
+            className={buttonVariants({
+              rounded: 'lg',
+              size: 'xl',
+              variant: 'dashed',
+            })}
+            role='combobox'
+            variant='outline'
+          >
+            {value
+              ? fields.map((f) => f.getName()).find((name) => name === value)
+              : 'Add field...'}
+            <ChevronsUpDown className='opacity-50' />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-full p-0'>
+          <Command>
+            <CommandInput className='h-9' placeholder='Search fields...' />
+            <CommandList>
+              <CommandEmpty>Field not found.</CommandEmpty>
+              <CommandGroup>
+                {fields.map((field) => (
+                  <CommandItem
+                    key={field.getName()}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? '' : currentValue);
+                      setComboOpen(false);
+                    }}
+                    value={field.getName()}
+                  >
+                    {field.getName()}
+                    <Button
+                      className='ml-auto'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePreview(field);
+                      }}
+                      size='icon'
+                      variant='outline'
+                    >
+                      <SquareArrowOutUpRight />
+                    </Button>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }
 
@@ -85,7 +179,7 @@ function GenerationFormContent() {
   return (
     <FormList name=''>
       <FormListHeader>
-        <FormListTitle>Text Fields</FormListTitle>
+        <FormListTitle>Fields</FormListTitle>
         <FormListMessage />
       </FormListHeader>
       <FormListItems>
@@ -129,7 +223,22 @@ function GenerationFormContent() {
           </div>
         )}
       </FormListItems>
-      <AddTextFieldDropdown />
+      <AddFieldComboBox />
     </FormList>
+  );
+}
+
+function PDFDialogContent({ preview }: { preview: PreviewData | undefined }) {
+  return (
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>
+          Field Preview: <span className='font-mono'>{preview?.name}</span>
+        </DialogTitle>
+      </DialogHeader>
+      <iframe src={preview?.dataUri}>
+        Your browser does not support iframes.
+      </iframe>
+    </DialogContent>
   );
 }
