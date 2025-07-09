@@ -42,6 +42,8 @@ export function makeQueryClient() {
           toast.error(mutation.meta.errorToast as string, {
             id: `mutation-${mutation.mutationId}`,
           });
+        } else {
+          toast.dismiss(`mutation-${mutation.mutationId}`);
         }
       },
       onMutate(_variables, mutation) {
@@ -56,6 +58,8 @@ export function makeQueryClient() {
           toast.success(mutation.meta.successToast as string, {
             id: `mutation-${mutation.mutationId}`,
           });
+        } else {
+          toast.dismiss(`mutation-${mutation.mutationId}`);
         }
       },
     }),

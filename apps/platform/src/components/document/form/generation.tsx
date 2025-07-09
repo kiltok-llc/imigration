@@ -87,7 +87,6 @@ function AddFieldComboBox() {
     meta: {
       errorToast: 'Failed to open preview.',
       loadingToast: 'Loading preview...',
-      successToast: 'Preview opened in new tab.',
     },
     mutationFn: async (field: PDFField) => {
       const previewPdf = await PDFDocument.create();
@@ -230,15 +229,15 @@ function GenerationFormContent() {
 
 function PDFDialogContent({ preview }: { preview: PreviewData | undefined }) {
   return (
-    <DialogContent>
+    <DialogContent size='full'>
       <DialogHeader>
         <DialogTitle>
           Field Preview: <span className='font-mono'>{preview?.name}</span>
         </DialogTitle>
+        <iframe className='flex-1' src={preview?.dataUri}>
+          Your browser does not support iframes.
+        </iframe>
       </DialogHeader>
-      <iframe src={preview?.dataUri}>
-        Your browser does not support iframes.
-      </iframe>
     </DialogContent>
   );
 }

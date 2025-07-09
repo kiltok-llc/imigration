@@ -8,6 +8,13 @@ import { ChangeEvent, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { LocalizedDatetime } from '@/components/ui/datetime';
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
   FormSection,
   FormSectionContent,
   FormSectionHeader,
@@ -125,9 +132,21 @@ function PDFPreviewButton({ documentId }: { documentId: string }) {
   });
 
   return (
-    <Button disabled={!url} onClick={() => window.open(url!)}>
-      <FilesIcon /> Preview Current PDF
-    </Button>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button disabled={!url}>
+          <FilesIcon /> Preview Current PDF
+        </Button>
+      </DialogTrigger>
+      <DialogContent size='full'>
+        <DialogHeader>
+          <DialogTitle>PDF Preview</DialogTitle>
+          <iframe className='flex-1' src={url ?? undefined}>
+            Your browser does not support iframes.
+          </iframe>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
 }
 
