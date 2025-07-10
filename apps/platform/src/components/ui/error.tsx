@@ -24,11 +24,11 @@ export function ErrorFallback({
   message,
   resetErrorBoundary,
 }: {
-  error: Error;
+  error?: Error;
   message?: string;
   resetErrorBoundary?: () => void;
 }) {
-  message = message || error.message;
+  message = message || error?.message;
 
   return (
     <div className='flex flex-1 flex-col items-center justify-center gap-4'>
