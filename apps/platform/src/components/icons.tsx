@@ -3,10 +3,10 @@ import { FC, SVGProps } from 'react';
 import { cn } from '@/lib/utils';
 
 type TrafficIconProps = SVGProps<SVGSVGElement> & {
-  readonly hover?: string;
-  readonly normal?: string;
-  readonly press?: string;
-  readonly unfocus?: string;
+  hover?: string;
+  normal?: string;
+  press?: string;
+  unfocus?: string;
 };
 
 interface TrafficIcons {

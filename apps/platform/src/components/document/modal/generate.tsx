@@ -33,7 +33,7 @@ import { ZodFormContext } from '@/lib/form';
 import { supabase } from '@/lib/supabase/client';
 import { unwrap } from '@/lib/supabase/utils';
 import { stringToJSONSchema } from '@/lib/utils';
-import { CurrentDocument } from '@/queries/current-document';
+import { Document } from '@/queries/document';
 
 export const GenerateDocumentFormSchema = z.object({
   data: stringToJSONSchema.pipe(
@@ -46,7 +46,7 @@ export const GenerateDocumentFormSchema = z.object({
 export function GenerateDocumentDialog({
   children,
   document,
-}: PropsWithChildren<{ readonly document: CurrentDocument }>) {
+}: PropsWithChildren<{ document: Document }>) {
   const [isOpen, setIsOpen] = useState(false);
   const context: ZodFormContext<typeof GenerateDocumentFormSchema> = useForm({
     defaultValues: {

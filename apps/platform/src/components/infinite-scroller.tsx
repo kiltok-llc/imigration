@@ -9,10 +9,10 @@ export default function InfiniteScroller({
   hasNextPage,
   isFetchingNextPage,
 }: {
-  readonly count: number;
-  readonly fetchNextPage: () => void;
-  readonly hasNextPage: boolean;
-  readonly isFetchingNextPage: boolean;
+  count: number;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 }) {
   const { isIntersecting, ref } = useIntersectionObserver();
 

@@ -7,7 +7,7 @@ import { NavItemOut } from '@/hooks/use-active-nav';
 export default function NavTabs({
   navigation,
 }: {
-  readonly navigation: NavItemOut<{ name: string }>[];
+  navigation: NavItemOut<{ name: string }>[];
 }) {
   const segment = useSelectedLayoutSegment();
   return (

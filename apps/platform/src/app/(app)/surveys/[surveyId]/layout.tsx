@@ -13,13 +13,13 @@ import { Section } from '@/components/ui/section';
 import { SurveyIdProvider } from '@/lib/app-context';
 import { dbId, validId } from '@/lib/id';
 import { makeQueryClient } from '@/lib/query';
-import { currentSurveyQueryOptions } from '@/queries/current-survey';
+import { surveyQueryOptions } from '@/queries/survey';
 
 export default async function SurveyLayout({
   children,
   params,
 }: PropsWithChildren<{
-  readonly params: Promise<{ surveyId: string }>;
+  params: Promise<{ surveyId: string }>;
 }>) {
   const { surveyId } = await params;
 
@@ -29,7 +29,7 @@ export default async function SurveyLayout({
   }
 
   const queryClient = makeQueryClient();
-  void queryClient.prefetchQuery(currentSurveyQueryOptions(dbId(surveyId)));
+  void queryClient.prefetchQuery(surveyQueryOptions(dbId(surveyId)));
 
   return (
     <QueryHydrationBoundary state={dehydrate(queryClient)}>

@@ -31,8 +31,8 @@ export function Duration({
   value,
   verbose = false,
 }: {
-  readonly value?: string;
-  readonly verbose?: boolean;
+  value?: string;
+  verbose?: boolean;
 }) {
   return (
     <CopyTooltip copyValue={value}>
@@ -51,8 +51,8 @@ function LocalizedDuration({
   value,
   verbose,
 }: {
-  readonly value?: string;
-  readonly verbose: boolean;
+  value?: string;
+  verbose: boolean;
 }) {
   return (
     <ErrorBoundary fallback={value ?? '-'} onError={console.warn}>
@@ -140,8 +140,8 @@ export function Datetime({
   tz = true,
   value,
 }: Intl.DateTimeFormatOptions & {
-  readonly tz?: boolean;
-  readonly value?: string;
+  tz?: boolean;
+  value?: string;
 }) {
   return (
     <CopyTooltip copyValue={value}>
@@ -184,9 +184,9 @@ export function LocalizedDatetime({
   local,
   value,
 }: {
-  readonly format: Intl.DateTimeFormatOptions;
-  readonly local?: boolean;
-  readonly value?: string;
+  format: Intl.DateTimeFormatOptions;
+  local?: boolean;
+  value?: string;
 }) {
   return (
     <time dateTime={value}>

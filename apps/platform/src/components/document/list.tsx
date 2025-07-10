@@ -134,11 +134,7 @@ function DocumentListEmpty() {
   );
 }
 
-function DocumentRow({
-  document,
-}: {
-  readonly document: DocumentsInfinite[number];
-}) {
+function DocumentRow({ document }: { document: DocumentsInfinite[number] }) {
   return (
     <TableRow>
       <TableCell>{document.name}</TableCell>

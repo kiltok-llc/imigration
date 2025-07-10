@@ -11,7 +11,7 @@ function NavigationMenu({
   viewport = true,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
-  readonly viewport?: boolean;
+  viewport?: boolean;
 }) {
   return (
     <NavigationMenuPrimitive.Root

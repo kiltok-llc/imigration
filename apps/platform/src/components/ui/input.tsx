@@ -1,8 +1,41 @@
-import * as React from 'react';
+import { Slot, Slottable } from '@radix-ui/react-slot';
+import { ChangeEventHandler, ComponentProps, useRef } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-function Input({ className, ...props }: React.ComponentProps<'input'>) {
+export function FileUpload({
+  asChild = false,
+  children,
+  onChange,
+  ...props
+}: Omit<ComponentProps<typeof Button>, 'onChange'> & {
+  asChild?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+}) {
+  const Comp = asChild ? Slot : Button;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <Comp
+      onClick={() => {
+        fileInputRef.current?.click();
+      }}
+      {...props}
+    >
+      <Slottable>{children}</Slottable>
+      <input
+        accept='application/pdf'
+        className='hidden'
+        onChange={onChange}
+        ref={fileInputRef}
+        type='file'
+      />
+    </Comp>
+  );
+}
+
+export function Input({ className, ...props }: ComponentProps<'input'>) {
   return (
     <input
       className={cn(
@@ -16,5 +49,3 @@ function Input({ className, ...props }: React.ComponentProps<'input'>) {
     />
   );
 }
-
-export { Input };

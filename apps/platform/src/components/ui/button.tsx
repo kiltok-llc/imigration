@@ -62,9 +62,9 @@ function Button({
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
-    readonly asChild?: boolean;
-    readonly loading?: boolean;
-    readonly preventShrink?: boolean;
+    asChild?: boolean;
+    loading?: boolean;
+    preventShrink?: boolean;
   }) {
   const Comp = asChild ? Slot : 'button';
 

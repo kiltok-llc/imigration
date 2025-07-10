@@ -11,7 +11,11 @@ create table documents (
     0 < length(description)
     and length(description) < 255
   ),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  generated_fields jsonb not null default '[]'::jsonb check (
+    jsonb_typeof(generated_fields) = 'array'
+    and pg_column_size(generated_fields) < 10000
+  )
 );
 
 alter table documents enable row level security;
@@ -27,7 +31,7 @@ revoke insert on documents
 from
   authenticated;
 
-grant insert (name, description) on documents to authenticated;
+grant insert (name, description, generated_fields) on documents to authenticated;
 
 create policy authenticated_insert on documents for insert to authenticated
 with
@@ -40,7 +44,7 @@ from
   authenticated;
 
 grant
-update (name, description) on documents to authenticated;
+update (name, description, generated_fields) on documents to authenticated;
 
 create policy authenticated_update on documents
 for update

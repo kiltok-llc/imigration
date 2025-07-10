@@ -100,10 +100,10 @@ export function AuthFooter({
   signin,
   signup,
 }: {
-  readonly forgot?: string;
-  readonly notice?: boolean;
-  readonly signin?: string;
-  readonly signup?: string;
+  forgot?: string;
+  notice?: boolean;
+  signin?: string;
+  signup?: string;
 }) {
   return (
     <div className='space-y-4'>
@@ -149,13 +149,13 @@ export function AuthForm({
   submitAction,
   submitText,
 }: {
-  readonly confirmPassword?: boolean;
-  readonly email?: boolean;
-  readonly password?: boolean;
-  readonly submitAction: (
+  confirmPassword?: boolean;
+  email?: boolean;
+  password?: boolean;
+  submitAction: (
     args: AuthActionParams
   ) => Promise<SafeReturn<{ message: string }>>;
-  readonly submitText: string;
+  submitText: string;
 }) {
   const { clearAlert, setErrorAlert, setMessageAlert } =
     useRequiredContext(AuthContext);
@@ -275,9 +275,9 @@ export function AuthSocialButton({
   id: _provider,
   name,
 }: {
-  readonly icon: ReactNode;
-  readonly id: string;
-  readonly name: string;
+  icon: ReactNode;
+  id: string;
+  name: string;
 }) {
   const [pending, setPending] = useState<boolean>(false);
   return (

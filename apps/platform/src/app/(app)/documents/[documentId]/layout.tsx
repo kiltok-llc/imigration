@@ -11,13 +11,13 @@ import { Section } from '@/components/ui/section';
 import { DocumentIdProvider } from '@/lib/app-context';
 import { dbId, validId } from '@/lib/id';
 import { makeQueryClient } from '@/lib/query';
-import { currentDocumentQueryOptions } from '@/queries/current-document';
+import { documentQueryOptions } from '@/queries/document';
 
 export default async function DocumentLayout({
   children,
   params,
 }: PropsWithChildren<{
-  readonly params: Promise<{ documentId: string }>;
+  params: Promise<{ documentId: string }>;
 }>) {
   const { documentId } = await params;
 
@@ -27,7 +27,7 @@ export default async function DocumentLayout({
   }
 
   const queryClient = makeQueryClient();
-  void queryClient.prefetchQuery(currentDocumentQueryOptions(dbId(documentId)));
+  void queryClient.prefetchQuery(documentQueryOptions(dbId(documentId)));
 
   return (
     <QueryHydrationBoundary state={dehydrate(queryClient)}>

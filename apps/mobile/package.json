@@ -35,6 +35,8 @@
     "@repo/tsconfig": "workspace:*",
     "@sentry/react-native": "~6.14.0",
     "@shopify/react-native-skia": "2.0.0-next.4",
+    "@supabase-cache-helpers/postgrest-core": "^0.12.1",
+    "@supabase-cache-helpers/postgrest-react-query": "^1.13.4",
     "@t3-oss/env-core": "^0.13.8",
     "@tanstack/react-query": "catalog:",
     "@trpc/client": "catalog:",

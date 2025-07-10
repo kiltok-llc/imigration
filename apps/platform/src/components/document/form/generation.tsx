@@ -1,16 +1,28 @@
 'use client';
 
-import { PDFDocument, PDFField, rgb } from '@cantoo/pdf-lib';
+import {
+  PDFButton,
+  PDFCheckBox,
+  PDFDocument,
+  PDFDropdown,
+  PDFField,
+  PDFOptionList,
+  PDFRadioGroup,
+  PDFSignature,
+  PDFTextField,
+  rgb,
+} from '@cantoo/pdf-lib';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ChevronsUpDown,
+  EqualIcon,
   PlusIcon,
   SquareArrowOutUpRight,
   SquareArrowOutUpRightIcon,
   TrashIcon,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import z from 'zod/v4';
 
@@ -58,15 +70,13 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ZodFormContext } from '@/lib/form';
-import { useCurrentDocument } from '@/queries/current-document';
+import { FieldType, GeneratedFieldsSchema } from '@/lib/schema/documents';
+import { supabase } from '@/lib/supabase/client';
+import { titleCase } from '@/lib/utils';
+import { useCurrentDocument } from '@/queries/document';
 
 const GenerationFormSchema = z.object({
-  fields: z.array(
-    z.object({
-      label: z.string().default(''),
-      name: z.string(),
-    })
-  ),
+  fields: GeneratedFieldsSchema,
 });
 
 export function GenerationFormSection() {
@@ -74,50 +84,79 @@ export function GenerationFormSection() {
 
   const context: ZodFormContext<typeof GenerationFormSchema> = useForm({
     defaultValues: {
-      fields: [] as { name: string }[], // TODO
+      fields: document.generatedFields,
     },
-    resolver: standardSchemaResolver(GenerationFormSchema),
+    resolver: standardSchemaResolver(GenerationFormSchema, undefined, {
+      raw: true,
+    }),
+  });
+
+  const { handleSubmit, reset } = context;
+
+  useEffect(() => {
+    reset({ fields: document.generatedFields }, { keepValues: true });
+  }, [document.generatedFields, reset]);
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: handleSave } = useMutation({
+    meta: {
+      errorToast: 'Failed to save generated fields.',
+      loadingToast: 'Saving...',
+      successToast: 'Saved!',
+    },
+    async mutationFn({ fields }: z.input<typeof GenerationFormSchema>) {
+      await supabase
+        .from('documents')
+        .update({
+          generated_fields: fields,
+        })
+        .eq('id', document.id)
+        .throwOnError();
+    },
+    onSuccess() {
+      void queryClient.invalidateQueries({
+        queryKey: ['supabase', 'public', 'documents', document.id],
+      });
+    },
   });
 
   return (
     <FormProvider {...context}>
-      <FormSection>
-        <FormSectionHeader>
-          <FormSectionTitle>Generation Options</FormSectionTitle>
-        </FormSectionHeader>
-        <FormSectionContent>
-          <PDFProvider documentId={document.id}>
-            <GenerationFormContent />
-          </PDFProvider>
-        </FormSectionContent>
-      </FormSection>
+      <form onSubmit={handleSubmit((data) => handleSave(data))}>
+        <FormSection>
+          <FormSectionHeader>
+            <FormSectionTitle>Generation Options</FormSectionTitle>
+          </FormSectionHeader>
+          <FormSectionContent>
+            <PDFProvider documentId={document.id}>
+              <GenerationFormContent />
+            </PDFProvider>
+          </FormSectionContent>
+        </FormSection>
+      </form>
     </FormProvider>
   );
 }
 
-const usePdfFields = (pdf: PDFDocument) =>
-  useMemo(() => {
-    const fields = new Map<string, [PDFField, number]>();
-    for (const field of pdf.getForm().getFields()) {
-      const page = pdf.findPageForAnnotationRef(field.ref);
-      if (!page) {
-        console.warn(`Field ${field.getName()} has no associated page.`);
-        continue;
-      }
+function getFieldType(field: PDFField): FieldType {
+  if (field instanceof PDFButton) {
+    return 'button';
+  } else if (field instanceof PDFCheckBox) {
+    return 'checkbox';
+  } else if (field instanceof PDFDropdown) {
+    return 'dropdown';
+  } else if (field instanceof PDFOptionList) {
+    return 'select';
+  } else if (field instanceof PDFTextField) {
+    return 'text';
+  } else if (field instanceof PDFRadioGroup) {
+    return 'radio';
+  } else if (field instanceof PDFSignature) {
+    return 'signature';
+  }
 
-      const idx = pdf.getPages().findIndex((p) => p.ref.tag === page.ref.tag);
-      if (idx === -1) {
-        console.warn(
-          `Field ${field.getName()} has an invalid page index: ${idx}`
-        );
-        continue;
-      }
-
-      fields.set(field.getName(), [field, idx]);
-    }
-
-    return fields;
-  }, [pdf]);
+  throw new Error(`Unsupported field type: ${field.constructor.name}`);
+}
 
 const usePdfPages = (pdf: PDFDocument) =>
   useMemo(() => {
@@ -136,60 +175,193 @@ const usePdfPages = (pdf: PDFDocument) =>
     return pages;
   }, [pdf]);
 
+async function createPDFPreview(pdf: PDFDocument, fieldName: string) {
+  // Find the field in the PDF
+  const field = pdf.getForm().getField(fieldName);
+  const page = pdf.findPageForAnnotationRef(field.ref)!;
+  const pageIdx = pdf.getPages().findIndex((p) => p.ref.tag === page.ref.tag);
+
+  // Create Preview PDF with just the page containing our field
+  const previewPdf = await PDFDocument.create();
+  const [copiedPage] = await previewPdf.copyPages(pdf, [pageIdx]);
+  if (!copiedPage) {
+    throw new Error(`Could not copy page ${page} from PDF`);
+  }
+  previewPdf.addPage(copiedPage);
+  await previewPdf.save();
+
+  // Draw a box around the field
+  for (const widget of field.acroField.getWidgets()) {
+    const { height, width, x, y } = widget.getRectangle();
+    const padding = 4;
+    copiedPage.drawRectangle({
+      borderColor: rgb(1, 0, 0),
+      borderWidth: 2,
+      height: height + padding * 2,
+      width: width + padding * 2,
+      x: x - padding,
+      y: y - padding,
+    });
+  }
+
+  // Render the preview PDF
+  return await previewPdf.saveAsBase64({
+    dataUri: true,
+    updateFieldAppearances: true,
+  });
+}
+
+function GeneratedFieldItem({
+  index,
+  onPreview,
+  onRemove,
+}: {
+  field: z.input<typeof GenerationFormSchema>['fields'][number];
+  index: number;
+  onPreview: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <div className='grid grid-cols-[1fr_min-content] gap-2'>
+      <div className='grid gap-2'>
+        <div className='grid grid-cols-[min-content_auto_min-content] gap-2'>
+          <FormField
+            name={`fields.${index}.name`}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Field ID</FormLabel>
+                <pre className='font-mono text-sm'>{field.value}</pre>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name={`fields.${index}.type`}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type</FormLabel>
+                <pre className='font-mono text-sm'>
+                  {titleCase(field.value)}
+                </pre>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button onClick={onPreview} size='icon'>
+            <SquareArrowOutUpRightIcon />
+          </Button>
+        </div>
+        <FormField
+          name={`fields.${index}.label`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Label</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name={`fields.${index}.expression`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Expression</FormLabel>
+              <FormControl>
+                <span className='inline-flex items-center gap-2 font-mono text-sm'>
+                  <Input {...field} />
+                  <EqualIcon />
+                  <pre className='min-w-16'>null</pre>
+                </span>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      <Button
+        className='self-center'
+        onClick={onRemove}
+        size='icon'
+        type='button'
+        variant='destructive'
+      >
+        <TrashIcon />
+      </Button>
+    </div>
+  );
+}
+
+function GenerationFormComboBoxItem({
+  disabled,
+  field,
+  label,
+  onPreview,
+}: {
+  disabled: boolean;
+  field: PDFField;
+  label?: string;
+  onPreview: () => void;
+}) {
+  return (
+    <CommandItem
+      disabled={disabled}
+      key={field.getName()}
+      value={field.getName()}
+    >
+      {field.getName()}
+
+      {label && <span>({label})</span>}
+
+      <Button
+        className='ml-auto'
+        onClick={(e) => {
+          e.stopPropagation();
+          onPreview();
+        }}
+        size='icon'
+        variant='outline'
+      >
+        <SquareArrowOutUpRight />
+      </Button>
+      <FormListAddButton
+        value={{
+          expression: '',
+          label: field.getName().split('.').pop() || '',
+          name: field.getName(),
+          type: getFieldType(field),
+        }}
+      >
+        <Button size='icon' variant='outline'>
+          <PlusIcon />
+        </Button>
+      </FormListAddButton>
+    </CommandItem>
+  );
+}
+
 function GenerationFormContent() {
   const pdf = usePDF();
-  const fields = usePdfFields(pdf);
-  const pages = usePdfPages(pdf);
 
+  const pages = usePdfPages(pdf);
   const [comboOpen, setComboOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const { getValues } = useFormContext();
+  const {
+    formState: { isDirty, isSubmitting },
+    watch,
+  }: ZodFormContext<typeof GenerationFormSchema> = useFormContext();
+  const formFields = watch('fields');
 
   const { data: preview, mutate: handlePreview } = useMutation({
     meta: {
       errorToast: 'Failed to open preview.',
       loadingToast: 'Loading preview...',
     },
-    mutationFn: async (fieldName: string) => {
-      // Find the field by name
-      if (!fields.has(fieldName)) {
-        throw new Error(`Field ${fieldName} not found in PDF`);
-      }
-      const [field, page] = fields.get(fieldName)!;
-
-      // Create Preview PDF with just the page containing our field
-      const previewPdf = await PDFDocument.create();
-      const [copiedPage] = await previewPdf.copyPages(pdf, [page]);
-      if (!copiedPage) {
-        throw new Error(`Could not copy page ${page} from PDF`);
-      }
-      previewPdf.addPage(copiedPage);
-      await previewPdf.save();
-
-      // Draw a box around the field
-      for (const widget of field.acroField.getWidgets()) {
-        const { height, width, x, y } = widget.getRectangle();
-        const padding = 4;
-        copiedPage.drawRectangle({
-          borderColor: rgb(1, 0, 0),
-          borderWidth: 2,
-          height: height + padding * 2,
-          width: width + padding * 2,
-          x: x - padding,
-          y: y - padding,
-        });
-      }
-
-      // Render the preview PDF
-      const dataUri = await previewPdf.saveAsBase64({
-        dataUri: true,
-        updateFieldAppearances: true,
-      });
-
-      return {
-        dataUri,
-        name: field.getName(),
-      };
+    mutationFn: async (name: string) => {
+      const dataUri = await createPDFPreview(pdf, name);
+      return { dataUri, name };
     },
     onSuccess() {
       setPreviewOpen(true);
@@ -214,58 +386,18 @@ function GenerationFormContent() {
         </Dialog>
 
         <FormListHeader>
-          <FormListTitle>Fields</FormListTitle>
+          <FormListTitle>Generated Fields</FormListTitle>
           <FormListMessage />
         </FormListHeader>
-        <FormListItems>
+        <FormListItems<z.input<typeof GenerationFormSchema>, 'fields'>>
           {(field, index, remove) => (
-            <div
-              className='grid grid-cols-[1fr_min-content] gap-2'
+            <GeneratedFieldItem
+              field={field}
+              index={index}
               key={field.id}
-            >
-              <div className='grid gap-2'>
-                <FormField
-                  name={`fields.${index}.name`}
-                  render={({ field }) => (
-                    <FormItem className='col-span-2'>
-                      <FormLabel>Name</FormLabel>
-                      <pre className='font-mono text-sm'>{field.value}</pre>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name={`fields.${index}.label`}
-                  render={({ field }) => (
-                    <FormItem className='col-span-2'>
-                      <FormLabel>Label</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  className='col-span-2'
-                  onClick={() => {
-                    handlePreview(getValues(`fields.${index}.name` as const));
-                  }}
-                >
-                  <SquareArrowOutUpRightIcon />
-                  Show Preview
-                </Button>
-              </div>
-              <Button
-                className='self-center'
-                onClick={remove}
-                size='icon'
-                type='button'
-                variant='destructive'
-              >
-                <TrashIcon />
-              </Button>
-            </div>
+              onPreview={() => handlePreview(field.name)}
+              onRemove={remove}
+            />
           )}
         </FormListItems>
 
@@ -277,6 +409,7 @@ function GenerationFormContent() {
             <Button
               aria-expanded={comboOpen}
               className={buttonVariants({
+                className: 'min-h-20',
                 rounded: 'lg',
                 size: 'xl',
                 variant: 'dashed',
@@ -284,7 +417,7 @@ function GenerationFormContent() {
               role='combobox'
               variant='outline'
             >
-              Add field...
+              Add Generated Field
               <ChevronsUpDown className='opacity-50' />
             </Button>
           </PopoverTrigger>
@@ -298,34 +431,19 @@ function GenerationFormContent() {
                   {[...pages].map(([page, fields]) => (
                     <CommandGroup heading={`Page ${page}`} key={page}>
                       {fields.map((field) => (
-                        <CommandItem
+                        <GenerationFormComboBoxItem
+                          disabled={formFields.some(
+                            ({ name }) => name === field.getName()
+                          )}
+                          field={field}
                           key={field.getName()}
-                          value={field.getName()}
-                        >
-                          {field.getName()}
-
-                          <Button
-                            className='ml-auto'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handlePreview(field.getName());
-                            }}
-                            size='icon'
-                            variant='outline'
-                          >
-                            <SquareArrowOutUpRight />
-                          </Button>
-                          <FormListAddButton
-                            value={{
-                              label: field.getName(), // Default label is the name
-                              name: field.getName(),
-                            }}
-                          >
-                            <Button size='icon' variant='outline'>
-                              <PlusIcon />
-                            </Button>
-                          </FormListAddButton>
-                        </CommandItem>
+                          label={
+                            formFields.find(
+                              ({ name }) => name === field.getName()
+                            )?.label
+                          }
+                          onPreview={() => handlePreview(field.getName())}
+                        />
                       ))}
                     </CommandGroup>
                   ))}
@@ -334,6 +452,10 @@ function GenerationFormContent() {
             </Command>
           </PopoverContent>
         </Popover>
+
+        <Button disabled={!isDirty} loading={isSubmitting} type='submit'>
+          Save Generated Fields
+        </Button>
       </FormList>
     </>
   );

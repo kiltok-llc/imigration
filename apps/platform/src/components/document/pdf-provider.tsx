@@ -17,7 +17,7 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import { supabaseFileDownloadQueryOptions } from '@/lib/supabase/utils';
+import { isomorphicSupabase, unwrap } from '@/lib/supabase/utils';
 
 const DocumentPdfContext = createRequiredContext<PDFDocument>();
 
@@ -52,33 +52,43 @@ function PDFProviderInner({
   children,
   documentId,
 }: PropsWithChildren<{ documentId: string }>) {
-  const { data: blob } = useSuspenseQuery({
-    ...supabaseFileDownloadQueryOptions({
-      checkExists: true,
-      file: (supabase) => supabase.storage.from('documents'),
-      mode: 'private',
-      path: `${documentId}.pdf`,
-    }),
-    meta: {
-      errorToast: 'Failed to download PDF',
-    },
-  });
-
   const { data: pdf } = useSuspenseQuery({
     meta: {
       errorToast: 'Failed to load PDF',
     },
     queryFn: async () => {
-      if (blob === null) {
+      const client = await isomorphicSupabase();
+      const file = client.storage.from('documents');
+      const path = `${documentId}.pdf`;
+
+      const exists = await file
+        .exists(path)
+        .then(unwrap)
+        .catch((error) => {
+          // TODO should this be throwing error on file missing?
+          console.debug('Error checking file existence:', error);
+          return false;
+        });
+
+      if (!exists) {
+        console.debug('File does not exist:', path);
         return null;
       }
 
+      const blob = await file.download(path).then(unwrap);
       return await PDFDocument.load(await blob.arrayBuffer(), {
         password: '',
         updateMetadata: true,
       });
     },
-    queryKey: ['pdf', 'documents', documentId],
+    queryKey: [
+      'supabase',
+      'storage',
+      'documents',
+      documentId,
+      'pdf',
+      'document',
+    ],
   });
 
   if (!pdf) {

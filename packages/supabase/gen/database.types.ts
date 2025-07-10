@@ -12,18 +12,21 @@ export type Database = {
       documents: {
         Row: {
           description: string;
+          generated_fields: Json;
           id: string;
           name: string;
           updated_at: string;
         };
         Insert: {
           description?: string;
+          generated_fields?: Json;
           id?: string;
           name?: string;
           updated_at?: string;
         };
         Update: {
           description?: string;
+          generated_fields?: Json;
           id?: string;
           name?: string;
           updated_at?: string;

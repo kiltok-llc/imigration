@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ZodFormContext } from '@/lib/form';
 import { supabase } from '@/lib/supabase/client';
-import { CurrentSurvey } from '@/queries/current-survey';
+import { Survey } from '@/queries/survey';
 
 export const DuplicateSurveyFormSchema = z.object({
   description: z.string().min(1).max(255),
@@ -42,7 +42,7 @@ export const DuplicateSurveyFormSchema = z.object({
 export function DuplicateSurveyDialog({
   children,
   survey,
-}: PropsWithChildren<{ readonly survey: CurrentSurvey }>) {
+}: PropsWithChildren<{ survey: Survey }>) {
   const [isOpen, setIsOpen] = useState(false);
 
   const context: ZodFormContext<typeof DuplicateSurveyFormSchema> = useForm({
@@ -62,7 +62,7 @@ export function DuplicateSurveyDialog({
     });
   }, [survey, reset, isSubmitSuccessful]);
 
-  // TODO port to cache-helpers mutations
+  // TODO port to mutations
 
   const handleDuplicate = async (
     formData: z.output<typeof DuplicateSurveyFormSchema>

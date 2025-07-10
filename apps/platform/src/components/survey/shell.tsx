@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
 import { H3, Muted } from '@/components/ui/typography';
-import { useCurrentSurvey } from '@/queries/current-survey';
+import { useCurrentSurvey } from '@/queries/survey';
 
 export function SurveyShellHeader() {
   const survey = useCurrentSurvey();

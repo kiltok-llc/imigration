@@ -139,7 +139,7 @@ export function FormGlobalMessage<
   name,
   ...props
 }: React.ComponentProps<'p'> & {
-  readonly name: keyof FieldErrors<TFieldValues>;
+  name: keyof FieldErrors<TFieldValues>;
 }) {
   const {
     formState: { errors },

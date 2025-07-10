@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ZodFormContext } from '@/lib/form';
 import { supabase } from '@/lib/supabase/client';
-import { CurrentSurvey } from '@/queries/current-survey';
+import { Survey } from '@/queries/survey';
 
 export const EditSurveyFormSchema = z.object({
   description: z.string().min(1).max(255),
@@ -41,7 +41,7 @@ export const EditSurveyFormSchema = z.object({
 export function EditSurveyDialog({
   children,
   survey,
-}: PropsWithChildren<{ readonly survey: CurrentSurvey }>) {
+}: PropsWithChildren<{ survey: Survey }>) {
   const [isOpen, setIsOpen] = useState(false);
   const context: ZodFormContext<typeof EditSurveyFormSchema> = useForm({
     resolver: standardSchemaResolver(EditSurveyFormSchema),

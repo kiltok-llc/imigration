@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-import { useCurrentSurvey } from '@/queries/current-survey';
+import { useCurrentSurvey } from '@/queries/survey';
 
 const ClientSurveyEditor = dynamic(() => import('./client-survey-editor'), {
   ssr: false,

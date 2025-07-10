@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ZodFormContext } from '@/lib/form';
 import { supabase } from '@/lib/supabase/client';
-import { CurrentDocument } from '@/queries/current-document';
+import { Document } from '@/queries/document';
 
 export const EditDocumentFormSchema = z.object({
   description: z.string().min(1).max(255),
@@ -41,7 +41,7 @@ export const EditDocumentFormSchema = z.object({
 export function EditDocumentDialog({
   children,
   document,
-}: PropsWithChildren<{ readonly document: CurrentDocument }>) {
+}: PropsWithChildren<{ document: Document }>) {
   const [isOpen, setIsOpen] = useState(false);
   const context: ZodFormContext<typeof EditDocumentFormSchema> = useForm({
     resolver: standardSchemaResolver(EditDocumentFormSchema),

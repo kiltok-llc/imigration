@@ -146,7 +146,7 @@ function SurveyListEmpty() {
   );
 }
 
-function SurveyRow({ survey }: { readonly survey: SurveysInfinite[number] }) {
+function SurveyRow({ survey }: { survey: SurveysInfinite[number] }) {
   return (
     <TableRow>
       <TableCell>{survey.name}</TableCell>

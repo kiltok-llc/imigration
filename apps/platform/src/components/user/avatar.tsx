@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton, skeletonVariants } from '@/components/ui/skeleton';
-import { useCurrentUser } from '@/queries/current-user';
+import { useCurrentUser } from '@/queries/user';
 
 export function CurrentNamedAvatar() {
   const { avatarUrl, name } = useCurrentUser();
@@ -11,8 +11,8 @@ export function NamedAvatar({
   avatarUrl,
   name,
 }: {
-  readonly avatarUrl?: null | string;
-  readonly name: string;
+  avatarUrl?: null | string;
+  name: string;
 }) {
   return (
     <>

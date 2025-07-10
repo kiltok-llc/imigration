@@ -115,7 +115,7 @@ const pageVariants = {
 export default async function Page({
   params,
 }: {
-  readonly params: Promise<{ type: FormType }>;
+  params: Promise<{ type: FormType }>;
 }) {
   const { type } = await params;
   const { footer, form, title } = pageVariants[type];

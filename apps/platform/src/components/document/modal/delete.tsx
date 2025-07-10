@@ -21,12 +21,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase/client';
-import { CurrentDocument } from '@/queries/current-document';
+import { Document } from '@/queries/document';
 
 export function DeleteDocumentDialog({
   children,
   document,
-}: PropsWithChildren<{ readonly document: CurrentDocument }>) {
+}: PropsWithChildren<{ document: Document }>) {
   const router = useRouter();
   const context = useForm();
   const {

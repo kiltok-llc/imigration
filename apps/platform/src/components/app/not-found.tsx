@@ -24,8 +24,8 @@ export function EntityNotFoundPage({
   entity,
   href,
 }: {
-  readonly entity: string;
-  readonly href: string;
+  entity: string;
+  href: string;
 }) {
   return (
     <Section center viewport>

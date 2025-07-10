@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
 import { H3, Muted } from '@/components/ui/typography';
-import { useCurrentDocument } from '@/queries/current-document';
+import { useCurrentDocument } from '@/queries/document';
 
 export function DocumentShellHeader() {
   const document = useCurrentDocument();

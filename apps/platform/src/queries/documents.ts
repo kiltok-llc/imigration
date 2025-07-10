@@ -1,5 +1,3 @@
-import { Database } from '@repo/supabase/database.types';
-import { SupabaseClient } from '@supabase/supabase-js';
 import {
   infiniteQueryOptions,
   useSuspenseInfiniteQuery,
@@ -7,33 +5,41 @@ import {
 
 import {
   InferInfiniteDataType,
-  supabaseInfiniteQueryOptions,
+  isomorphicSupabase,
 } from '@/lib/supabase/utils';
 
 export const documentsInfiniteQueryOptions = () =>
   infiniteQueryOptions({
-    ...supabaseInfiniteQueryOptions({
-      getNextPageParam: (lastPage) => lastPage.at(-1)?.updatedAt,
-      initialPageParam: null,
-      query: (supabase: SupabaseClient<Database>) =>
-        supabase
-          .from('documents')
-          .select(
-            `
+    getNextPageParam: (lastPage: { updatedAt: string }[]) =>
+      lastPage.at(-1)?.updatedAt,
+    initialPageParam: null,
+    meta: {
+      errorToast: 'Failed to load documents',
+    },
+    async queryFn({ pageParam: updatedAt, signal }) {
+      const client = await isomorphicSupabase();
+      const query = client
+        .from('documents')
+        .select(
+          `
             id,
             name,
             description,
             updatedAt:updated_at
             `
-          )
-          .order('updated_at', { ascending: false })
-          .limit(15),
-      transformQuery: (query, datetime) =>
-        datetime && query.lt('updated_at', datetime),
-    }),
-    meta: {
-      errorToast: 'Failed to load documents',
+        )
+        .abortSignal(signal)
+        .order('updated_at', { ascending: false })
+        .limit(15);
+
+      if (updatedAt) {
+        query.lt('updated_at', updatedAt);
+      }
+
+      const { data } = await query.throwOnError();
+      return data;
     },
+    queryKey: ['supabase', 'public', 'documents', 'infinite'],
     select: (data) => data.pages.flat(),
   });
 

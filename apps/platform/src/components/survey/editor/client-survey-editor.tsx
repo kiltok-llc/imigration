@@ -10,13 +10,9 @@ import 'ace-builds/src-noconflict/ext-searchbox';
 import { SurveyCreator, SurveyCreatorComponent } from 'survey-creator-react';
 
 import { supabase } from '@/lib/supabase/client';
-import { CurrentSurvey } from '@/queries/current-survey';
+import { Survey } from '@/queries/survey';
 
-export default function ClientSurveyEditor({
-  survey,
-}: {
-  readonly survey: CurrentSurvey;
-}) {
+export default function ClientSurveyEditor({ survey }: { survey: Survey }) {
   const [creator] = useState<SurveyCreator>(() => {
     const creator = new SurveyCreator({
       autoSaveEnabled: true,

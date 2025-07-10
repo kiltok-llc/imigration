@@ -25,15 +25,11 @@ export const Muted = twc.span`text-muted-foreground text-sm`;
 
 export const InlineCode = twc.code`bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold`;
 
-export const MultilineCode = twc.div`bg-muted group relative rounded p-4`;
+export const MultilineCode = twc.div`bg-muted group relative flex rounded p-4`;
 
-export const MultilineCodeContent = twc.pre`overflow-auto font-mono text-sm font-semibold break-words whitespace-pre-wrap`;
+export const MultilineCodeContent = twc.pre`flex-1 overflow-scroll font-mono text-sm font-semibold break-words whitespace-pre-wrap`;
 
-export function MultilineCodeCopy({
-  value,
-}: {
-  readonly value: null | string;
-}) {
+export function MultilineCodeCopy({ value }: { value: null | string }) {
   const [_, copy] = useCopyValue(value);
   return (
     <Button

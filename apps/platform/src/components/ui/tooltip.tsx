@@ -22,7 +22,7 @@ export function CopyTooltip({
   copyValue,
   ...props
 }: ComponentProps<typeof Tooltip> & {
-  readonly copyValue?: string;
+  copyValue?: string;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const copyFn = useCallback(

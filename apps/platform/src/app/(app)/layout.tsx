@@ -11,7 +11,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { UserIdProvider } from '@/lib/app-context';
 import { getSessionOrRedirect } from '@/lib/auth';
 import { makeQueryClient } from '@/lib/query';
-import { currentUserQueryOptions } from '@/queries/current-user';
+import { userQueryOptions } from '@/queries/user';
 
 export default async function AppLayout({ children }: PropsWithChildren) {
   // shadcn sidebar state cookie
@@ -22,7 +22,7 @@ export default async function AppLayout({ children }: PropsWithChildren) {
 
   // prefetch queries
   const queryClient = makeQueryClient();
-  void queryClient.prefetchQuery(currentUserQueryOptions(session.user.id));
+  void queryClient.prefetchQuery(userQueryOptions(session.user.id));
 
   return (
     <QueryHydrationBoundary state={dehydrate(queryClient)}>

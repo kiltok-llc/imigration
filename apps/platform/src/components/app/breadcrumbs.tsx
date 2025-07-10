@@ -21,8 +21,8 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { dbId } from '@/lib/id';
 import { titleCase } from '@/lib/utils';
-import { currentDocumentQueryOptions } from '@/queries/current-document';
-import { currentSurveyQueryOptions } from '@/queries/current-survey';
+import { documentQueryOptions } from '@/queries/document';
+import { surveyQueryOptions } from '@/queries/survey';
 
 type BreadcrumbConfig = Record<string, ((val: string) => ReactNode) | null>;
 
@@ -30,8 +30,8 @@ function BreadcrumbItemQuery<Q, E, D, K extends QueryKey>({
   queryOptions,
   select,
 }: {
-  readonly queryOptions: UseSuspenseQueryOptions<Q, E, D, K>;
-  readonly select: (data: D) => ReactNode;
+  queryOptions: UseSuspenseQueryOptions<Q, E, D, K>;
+  select: (data: D) => ReactNode;
 }) {
   const { data } = useSuspenseQuery(queryOptions);
   return (
@@ -85,13 +85,13 @@ export function Breadcrumbs() {
     '': () => <HomeIcon />,
     '/documents/[documentId]': (documentId: string) => (
       <BreadcrumbItemQuery
-        queryOptions={currentDocumentQueryOptions(dbId(documentId))}
+        queryOptions={documentQueryOptions(dbId(documentId))}
         select={(document) => document.name}
       />
     ),
     '/surveys/[surveyId]': (surveyId: string) => (
       <BreadcrumbItemQuery
-        queryOptions={currentSurveyQueryOptions(dbId(surveyId))}
+        queryOptions={surveyQueryOptions(dbId(surveyId))}
         select={(survey) => survey.name}
       />
     ),

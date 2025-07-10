@@ -21,12 +21,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase/client';
-import { CurrentSurvey } from '@/queries/current-survey';
+import { Survey } from '@/queries/survey';
 
 export function DeleteSurveyDialog({
   children,
   survey,
-}: PropsWithChildren<{ readonly survey: CurrentSurvey }>) {
+}: PropsWithChildren<{ survey: Survey }>) {
   const router = useRouter();
   const context = useForm();
   const {

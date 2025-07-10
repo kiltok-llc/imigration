@@ -90,7 +90,7 @@ export const FormListItems = <
   }));
 
   return (
-    <div className={cn('grid gap-4', className)}>
+    <div className={cn('grid gap-6', className)}>
       {controlledFields.map((field, index) =>
         children(field, index, () => remove(index))
       )}
@@ -128,6 +128,6 @@ export function FormListMessage<
 
 export const FormListSubtitle = twc.p`text-muted-foreground mt-1 text-sm`;
 
-export const FormListTitle = twc.p`text-sm leading-none font-medium`;
+export const FormListTitle = twc.p`leading-none font-medium`;
 
 export const FormListHeader = twc.div``;

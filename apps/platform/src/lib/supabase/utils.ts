@@ -3,25 +3,8 @@ import {
   PG_INVALID_TEXT_REPRESENTATION,
   PGRST_SINGULAR_RESPONSE_ITEM_COUNT_MISMATCH,
 } from '@repo/supabase/error';
-import { GenericSchema } from '@repo/supabase/generic';
-import { isPostgrestTransformBuilder } from '@supabase-cache-helpers/postgrest-core';
-import { encode as encodePostgrest } from '@supabase-cache-helpers/postgrest-react-query';
-import { type StoragePrivacy } from '@supabase-cache-helpers/storage-core';
-import {
-  encode as encodeStorage,
-  StorageFileApi,
-} from '@supabase-cache-helpers/storage-react-query';
-import {
-  PostgrestBuilder,
-  PostgrestFilterBuilder,
-} from '@supabase/postgrest-js';
-import { TransformOptions } from '@supabase/storage-js';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import {
-  GetNextPageParamFunction,
-  GetPreviousPageParamFunction,
-  infiniteQueryOptions,
-  queryOptions,
   UseInfiniteQueryOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
@@ -29,7 +12,6 @@ import { notFound } from 'next/navigation';
 
 import { supabase } from '@/lib/supabase/client';
 import { createServerSupabase } from '@/lib/supabase/server';
-import { raiseStatus } from '@/lib/utils';
 
 export type InferDataType<T> =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -75,6 +57,13 @@ export const unwrap = <T>({
   return data;
 };
 
+export const unwrapValue = <T>(data: null | T): T => {
+  if (data === null) {
+    throw new Error('No data found');
+  }
+  return data;
+};
+
 export const unwrapSingle = <T>(data: null | T[]): T => {
   if (data === null || data.length === 0) {
     throw new Error('No data found');
@@ -87,175 +76,3 @@ export const unwrapSingle = <T>(data: null | T[]): T => {
 
 export const isomorphicSupabase = async () =>
   typeof window === 'undefined' ? await createServerSupabase() : supabase;
-
-export const supabaseInfiniteQueryOptions = <
-  TPageParam,
-  SupabaseQueryData,
-  TQueryFnData = SupabaseQueryData,
-  Schema extends GenericSchema = GenericSchema,
-  Row extends Record<string, unknown> = Record<string, unknown>,
->({
-  query: queryBuilder,
-  transform = (data) => data as unknown as TQueryFnData,
-  transformError = (err) => {
-    throw err;
-  },
-  transformQuery,
-  ...options
-}: {
-  getNextPageParam: GetNextPageParamFunction<TPageParam, TQueryFnData>;
-  getPreviousPageParam?: GetPreviousPageParamFunction<TPageParam, TQueryFnData>;
-  initialPageParam: TPageParam;
-  query: QueryBuilder<PostgrestFilterBuilder<Schema, Row, SupabaseQueryData>>;
-  transform?: (data: SupabaseQueryData, pageParam: TPageParam) => TQueryFnData;
-  transformError?: (err: unknown) => TQueryFnData;
-  transformQuery?: (
-    query: PostgrestFilterBuilder<Schema, Row, SupabaseQueryData>,
-    pageParam: TPageParam
-  ) => unknown;
-}) =>
-  infiniteQueryOptions({
-    queryFn: async ({ pageParam, signal }) => {
-      const client = await isomorphicSupabase();
-      const query = queryBuilder(client).abortSignal(signal);
-      if (transformQuery !== undefined) {
-        transformQuery(query, pageParam as TPageParam);
-      }
-
-      let result;
-      try {
-        result = await query.throwOnError();
-      } catch (error) {
-        return transformError(error);
-      }
-
-      return transform(result.data, pageParam as TPageParam);
-    },
-    queryKey: encodePostgrest(queryBuilder(supabase), true),
-    ...options,
-  });
-
-export const supabaseQueryOptions = <
-  SupabaseQueryData,
-  TData = SupabaseQueryData,
->({
-  query: queryBuilder,
-  transform,
-  transformError = (err) => {
-    throw err;
-  },
-}: {
-  query: QueryBuilder<PostgrestBuilder<SupabaseQueryData>>;
-  transform: (data: SupabaseQueryData) => TData; // it will not compile if this is optional
-  transformError?: (err: unknown) => TData;
-}) =>
-  queryOptions({
-    queryFn: async ({ signal }) => {
-      const client = await isomorphicSupabase();
-      const query = queryBuilder(client);
-
-      if (isPostgrestTransformBuilder(query)) {
-        query.abortSignal(signal);
-      }
-
-      let result;
-      try {
-        result = await query.throwOnError();
-      } catch (error) {
-        return transformError(error);
-      }
-      return transform(result.data);
-    },
-    queryKey: encodePostgrest(queryBuilder(supabase), false),
-  });
-
-export const supabaseFileDownloadQueryOptions = <
-  Check extends boolean = false,
->({
-  checkExists,
-  file: fileBuilder,
-  mode,
-  path,
-  transform,
-}: {
-  checkExists?: Check;
-  file: QueryBuilder<StorageFileApi>;
-  mode: StoragePrivacy;
-  path: string;
-  transform?: TransformOptions;
-}) =>
-  queryOptions({
-    queryFn: async (): Promise<Check extends true ? Blob | null : Blob> => {
-      const client = await isomorphicSupabase();
-      const file = fileBuilder(client);
-
-      if (checkExists) {
-        const exists = await file.exists(path).then(unwrap);
-
-        if (!exists) {
-          console.debug('File does not exist:', path);
-          return null as never;
-        }
-      }
-
-      switch (mode) {
-        case 'private': {
-          return file.download(path, { transform }).then(unwrap);
-        }
-        case 'public': {
-          const {
-            data: { publicUrl },
-          } = file.getPublicUrl(path, { transform });
-          return fetch(publicUrl)
-            .then(raiseStatus)
-            .then((res) => res.blob());
-        }
-      }
-    },
-    queryKey: [...encodeStorage([fileBuilder(supabase), path]), 'download'],
-  });
-
-export const supabaseFileUrlQueryOptions = <Check extends boolean = false>({
-  checkExists,
-  file: fileBuilder,
-  mode,
-  path,
-  transform,
-}: {
-  checkExists?: Check;
-  file: QueryBuilder<StorageFileApi>;
-  mode: StoragePrivacy;
-  path: string;
-  transform?: TransformOptions;
-}) =>
-  queryOptions({
-    queryFn: async (): Promise<Check extends true ? null | string : string> => {
-      const client = await isomorphicSupabase();
-      const file = fileBuilder(client);
-
-      if (checkExists) {
-        const exists = await file
-          .exists(path)
-          .then(unwrap)
-          .catch((_) => false);
-
-        if (!exists) {
-          return null as never;
-        }
-      }
-
-      if (mode === 'private') {
-        return await file
-          .createSignedUrl(path, 3600, { transform })
-          .then(unwrap)
-          .then(({ signedUrl }) => signedUrl);
-      }
-
-      const {
-        data: { publicUrl },
-      } = file.getPublicUrl(path, { transform });
-
-      return publicUrl;
-    },
-    queryKey: [...encodeStorage([fileBuilder(supabase), path]), 'url'],
-  });
