@@ -1,10 +1,18 @@
 'use client';
 
-import { PDFDocument, PDFField } from '@cantoo/pdf-lib';
+import { PDFDocument, PDFField, rgb } from '@cantoo/pdf-lib';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useMutation } from '@tanstack/react-query';
-import { ChevronsUpDown, SquareArrowOutUpRight, TrashIcon } from 'lucide-react';
+import {
+  ChevronsUpDown,
+  PlusIcon,
+  SquareArrowOutUpRight,
+  SquareArrowOutUpRightIcon,
+  TrashIcon,
+} from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import z from 'zod/v4';
 
 import { PDFProvider, usePDF } from '@/components/document/pdf-provider';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -24,6 +32,7 @@ import {
 } from '@/components/ui/dialog';
 import {
   FormList,
+  FormListAddButton,
   FormListHeader,
   FormListItems,
   FormListMessage,
@@ -48,17 +57,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { ZodFormContext } from '@/lib/form';
 import { useCurrentDocument } from '@/queries/current-document';
 
-type PreviewData = {
-  dataUri: string;
-  name: string;
-};
+const GenerationFormSchema = z.object({
+  fields: z.array(
+    z.object({
+      label: z.string().default(''),
+      name: z.string(),
+    })
+  ),
+});
 
 export function GenerationFormSection() {
   const document = useCurrentDocument();
 
-  const context = useForm();
+  const context: ZodFormContext<typeof GenerationFormSchema> = useForm({
+    defaultValues: {
+      fields: [] as { name: string }[], // TODO
+    },
+    resolver: standardSchemaResolver(GenerationFormSchema),
+  });
 
   return (
     <FormProvider {...context}>
@@ -76,33 +95,97 @@ export function GenerationFormSection() {
   );
 }
 
-function AddFieldComboBox() {
+const usePdfFields = (pdf: PDFDocument) =>
+  useMemo(() => {
+    const fields = new Map<string, [PDFField, number]>();
+    for (const field of pdf.getForm().getFields()) {
+      const page = pdf.findPageForAnnotationRef(field.ref);
+      if (!page) {
+        console.warn(`Field ${field.getName()} has no associated page.`);
+        continue;
+      }
+
+      const idx = pdf.getPages().findIndex((p) => p.ref.tag === page.ref.tag);
+      if (idx === -1) {
+        console.warn(
+          `Field ${field.getName()} has an invalid page index: ${idx}`
+        );
+        continue;
+      }
+
+      fields.set(field.getName(), [field, idx]);
+    }
+
+    return fields;
+  }, [pdf]);
+
+const usePdfPages = (pdf: PDFDocument) =>
+  useMemo(() => {
+    const pages = new Map<number, PDFField[]>();
+
+    // Gather all fields by page
+    for (const field of pdf.getForm().getFields()) {
+      const page = pdf.findPageForAnnotationRef(field.ref)!;
+      const idx = pdf.getPages().findIndex((p) => p.ref.tag === page.ref.tag);
+      if (!pages.has(idx)) {
+        pages.set(idx, []);
+      }
+      pages.get(idx)!.push(field);
+    }
+
+    return pages;
+  }, [pdf]);
+
+function GenerationFormContent() {
   const pdf = usePDF();
-  const fields = useMemo(() => pdf.getForm().getFields(), [pdf]);
+  const fields = usePdfFields(pdf);
+  const pages = usePdfPages(pdf);
+
   const [comboOpen, setComboOpen] = useState(false);
-  const [value, setValue] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
+  const { getValues } = useFormContext();
 
   const { data: preview, mutate: handlePreview } = useMutation({
     meta: {
       errorToast: 'Failed to open preview.',
       loadingToast: 'Loading preview...',
     },
-    mutationFn: async (field: PDFField) => {
-      const previewPdf = await PDFDocument.create();
-      const page = pdf.findPageForAnnotationRef(field.ref);
-      if (!page) {
-        throw new Error('Page not found for the field');
+    mutationFn: async (fieldName: string) => {
+      // Find the field by name
+      if (!fields.has(fieldName)) {
+        throw new Error(`Field ${fieldName} not found in PDF`);
       }
-      const pageIdx = pdf
-        .getPages()
-        .findIndex((p) => p.ref.tag === page.ref.tag);
-      const [copiedPage] = await previewPdf.copyPages(pdf, [pageIdx]);
+      const [field, page] = fields.get(fieldName)!;
+
+      // Create Preview PDF with just the page containing our field
+      const previewPdf = await PDFDocument.create();
+      const [copiedPage] = await previewPdf.copyPages(pdf, [page]);
+      if (!copiedPage) {
+        throw new Error(`Could not copy page ${page} from PDF`);
+      }
       previewPdf.addPage(copiedPage);
+      await previewPdf.save();
+
+      // Draw a box around the field
+      for (const widget of field.acroField.getWidgets()) {
+        const { height, width, x, y } = widget.getRectangle();
+        const padding = 4;
+        copiedPage.drawRectangle({
+          borderColor: rgb(1, 0, 0),
+          borderWidth: 2,
+          height: height + padding * 2,
+          width: width + padding * 2,
+          x: x - padding,
+          y: y - padding,
+        });
+      }
+
+      // Render the preview PDF
       const dataUri = await previewPdf.saveAsBase64({
         dataUri: true,
         updateFieldAppearances: true,
       });
+
       return {
         dataUri,
         name: field.getName(),
@@ -115,129 +198,143 @@ function AddFieldComboBox() {
 
   return (
     <>
-      <Dialog onOpenChange={setPreviewOpen} open={previewOpen}>
-        <PDFDialogContent preview={preview} />
-      </Dialog>
-      <Popover onOpenChange={setComboOpen} open={comboOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            aria-expanded={comboOpen}
-            className={buttonVariants({
-              rounded: 'lg',
-              size: 'xl',
-              variant: 'dashed',
-            })}
-            role='combobox'
-            variant='outline'
-          >
-            {value
-              ? fields.map((f) => f.getName()).find((name) => name === value)
-              : 'Add field...'}
-            <ChevronsUpDown className='opacity-50' />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-full p-0'>
-          <Command>
-            <CommandInput className='h-9' placeholder='Search fields...' />
-            <CommandList>
-              <CommandEmpty>Field not found.</CommandEmpty>
-              <CommandGroup>
-                {fields.map((field) => (
-                  <CommandItem
-                    key={field.getName()}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? '' : currentValue);
-                      setComboOpen(false);
-                    }}
-                    value={field.getName()}
-                  >
-                    {field.getName()}
-                    <Button
-                      className='ml-auto'
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePreview(field);
-                      }}
-                      size='icon'
-                      variant='outline'
-                    >
-                      <SquareArrowOutUpRight />
-                    </Button>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </>
-  );
-}
+      <FormList name='fields'>
+        <Dialog onOpenChange={setPreviewOpen} open={previewOpen}>
+          <DialogContent size='xl'>
+            <DialogHeader>
+              <DialogTitle>
+                Field Preview:{' '}
+                <span className='font-mono'>{preview?.name}</span>
+              </DialogTitle>
+            </DialogHeader>
+            <iframe className='flex-1' src={preview?.dataUri}>
+              Your browser does not support iframes.
+            </iframe>
+          </DialogContent>
+        </Dialog>
 
-function GenerationFormContent() {
-  return (
-    <FormList name=''>
-      <FormListHeader>
-        <FormListTitle>Fields</FormListTitle>
-        <FormListMessage />
-      </FormListHeader>
-      <FormListItems>
-        {(field, index, remove) => (
-          <div
-            className='grid grid-cols-[1fr_1fr_min-content] gap-2 *:not-last:row-span-3 *:not-last:grid-rows-subgrid'
-            key={field.id}
-          >
-            <FormField
-              name={`launch_config.config.initialBalances.${index}.currency`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name={`launch_config.config.initialBalances.${index}.amount`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              className='col-3 row-2'
-              onClick={remove}
-              type='button'
-              variant='destructive'
+        <FormListHeader>
+          <FormListTitle>Fields</FormListTitle>
+          <FormListMessage />
+        </FormListHeader>
+        <FormListItems>
+          {(field, index, remove) => (
+            <div
+              className='grid grid-cols-[1fr_min-content] gap-2'
+              key={field.id}
             >
-              <TrashIcon />
-            </Button>
-          </div>
-        )}
-      </FormListItems>
-      <AddFieldComboBox />
-    </FormList>
-  );
-}
+              <div className='grid gap-2'>
+                <FormField
+                  name={`fields.${index}.name`}
+                  render={({ field }) => (
+                    <FormItem className='col-span-2'>
+                      <FormLabel>Name</FormLabel>
+                      <pre className='font-mono text-sm'>{field.value}</pre>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name={`fields.${index}.label`}
+                  render={({ field }) => (
+                    <FormItem className='col-span-2'>
+                      <FormLabel>Label</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  className='col-span-2'
+                  onClick={() => {
+                    handlePreview(getValues(`fields.${index}.name` as const));
+                  }}
+                >
+                  <SquareArrowOutUpRightIcon />
+                  Show Preview
+                </Button>
+              </div>
+              <Button
+                className='self-center'
+                onClick={remove}
+                size='icon'
+                type='button'
+                variant='destructive'
+              >
+                <TrashIcon />
+              </Button>
+            </div>
+          )}
+        </FormListItems>
 
-function PDFDialogContent({ preview }: { preview: PreviewData | undefined }) {
-  return (
-    <DialogContent size='full'>
-      <DialogHeader>
-        <DialogTitle>
-          Field Preview: <span className='font-mono'>{preview?.name}</span>
-        </DialogTitle>
-        <iframe className='flex-1' src={preview?.dataUri}>
-          Your browser does not support iframes.
-        </iframe>
-      </DialogHeader>
-    </DialogContent>
+        <Popover
+          onOpenChange={previewOpen ? undefined : setComboOpen}
+          open={comboOpen}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              aria-expanded={comboOpen}
+              className={buttonVariants({
+                rounded: 'lg',
+                size: 'xl',
+                variant: 'dashed',
+              })}
+              role='combobox'
+              variant='outline'
+            >
+              Add field...
+              <ChevronsUpDown className='opacity-50' />
+            </Button>
+          </PopoverTrigger>
+
+          <PopoverContent className='w-full p-0'>
+            <Command>
+              <CommandInput className='h-9' placeholder='Search fields...' />
+              <CommandList>
+                <CommandEmpty>Field not found.</CommandEmpty>
+                <CommandGroup>
+                  {[...pages].map(([page, fields]) => (
+                    <CommandGroup heading={`Page ${page}`} key={page}>
+                      {fields.map((field) => (
+                        <CommandItem
+                          key={field.getName()}
+                          value={field.getName()}
+                        >
+                          {field.getName()}
+
+                          <Button
+                            className='ml-auto'
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handlePreview(field.getName());
+                            }}
+                            size='icon'
+                            variant='outline'
+                          >
+                            <SquareArrowOutUpRight />
+                          </Button>
+                          <FormListAddButton
+                            value={{
+                              label: field.getName(), // Default label is the name
+                              name: field.getName(),
+                            }}
+                          >
+                            <Button size='icon' variant='outline'>
+                              <PlusIcon />
+                            </Button>
+                          </FormListAddButton>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </FormList>
+    </>
   );
 }
