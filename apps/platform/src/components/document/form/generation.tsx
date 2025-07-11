@@ -14,6 +14,7 @@ import {
 } from '@cantoo/pdf-lib';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import jsonata from 'jsonata';
 import {
   ChevronsUpDown,
   EqualIcon,
@@ -22,8 +23,9 @@ import {
   SquareArrowOutUpRightIcon,
   TrashIcon,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { useLocalStorage } from 'usehooks-ts';
 import z from 'zod/v4';
 
 import { PDFProvider, usePDF } from '@/components/document/pdf-provider';
@@ -52,6 +54,7 @@ import {
 } from '@/components/ui/dynamic-form';
 import {
   FormControl,
+  FormError,
   FormField,
   FormItem,
   FormLabel,
@@ -64,19 +67,88 @@ import {
   FormSectionTitle,
 } from '@/components/ui/form-layout';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { ZodFormContext } from '@/lib/form';
-import { FieldType, GeneratedFieldsSchema } from '@/lib/schema/documents';
+import {
+  FieldType,
+  FieldTypeSchema,
+  GeneratedFieldsSchema,
+} from '@/lib/schema/documents';
 import { supabase } from '@/lib/supabase/client';
 import { titleCase } from '@/lib/utils';
 import { useCurrentDocument } from '@/queries/document';
 
+const SampleDataContext =
+  createRequiredContext<[string, (data: string) => void, boolean]>();
+
+function SampleDataFormContent() {
+  const [sampleData, setSampleData, isValidSampleData] =
+    useRequiredContext(SampleDataContext);
+  return (
+    <FormItem>
+      <Label>Sample Data</Label>
+      <Textarea
+        className='font-mono text-sm'
+        onChange={(e) => setSampleData(e.target.value)}
+        placeholder='JSON data to use as input for expressions'
+        value={sampleData}
+      />
+      {!isValidSampleData && <FormError>Invalid JSON</FormError>}
+    </FormItem>
+  );
+}
+
+function SampleDataProvider({ children }: PropsWithChildren) {
+  const [sampleData, setSampleData] = useLocalStorage('sample-data', '{}');
+  const isValidSampleData = useMemo(() => {
+    try {
+      JSON.parse(sampleData);
+      return true;
+    } catch {
+      return false;
+    }
+  }, [sampleData]);
+
+  return (
+    <SampleDataContext.Provider
+      value={[sampleData, setSampleData, isValidSampleData]}
+    >
+      {children}
+    </SampleDataContext.Provider>
+  );
+}
+
 const GenerationFormSchema = z.object({
-  fields: GeneratedFieldsSchema,
+  fields: z.array(
+    z.object({
+      expression: z.string().refine(
+        (val) => {
+          try {
+            jsonata(val);
+            return true;
+          } catch {
+            return false;
+          }
+        },
+        {
+          message: 'Invalid JSONata expression',
+        }
+      ),
+      label: z.string(),
+      name: z.string().nonempty(),
+      type: FieldTypeSchema,
+    })
+  ),
 });
 
 export function GenerationFormSection() {
@@ -86,6 +158,7 @@ export function GenerationFormSection() {
     defaultValues: {
       fields: document.generatedFields,
     },
+    mode: 'onBlur',
     resolver: standardSchemaResolver(GenerationFormSchema, undefined, {
       raw: true,
     }),
@@ -105,6 +178,9 @@ export function GenerationFormSection() {
       successToast: 'Saved!',
     },
     async mutationFn({ fields }: z.input<typeof GenerationFormSchema>) {
+      // Check that fields will match the schema before we update
+      GeneratedFieldsSchema.parse(fields);
+
       await supabase
         .from('documents')
         .update({
@@ -121,20 +197,24 @@ export function GenerationFormSection() {
   });
 
   return (
-    <FormProvider {...context}>
-      <form onSubmit={handleSubmit((data) => handleSave(data))}>
-        <FormSection>
-          <FormSectionHeader>
-            <FormSectionTitle>Generation Options</FormSectionTitle>
-          </FormSectionHeader>
-          <FormSectionContent>
-            <PDFProvider documentId={document.id}>
-              <GenerationFormContent />
-            </PDFProvider>
-          </FormSectionContent>
-        </FormSection>
-      </form>
-    </FormProvider>
+    <SampleDataProvider>
+      <FormProvider {...context}>
+        <form onSubmit={handleSubmit((data) => handleSave(data))}>
+          <FormSection>
+            <FormSectionHeader>
+              <FormSectionTitle>Generation Options</FormSectionTitle>
+            </FormSectionHeader>
+            <FormSectionContent>
+              <SampleDataFormContent />
+
+              <PDFProvider documentId={document.id}>
+                <GenerationFormContent />
+              </PDFProvider>
+            </FormSectionContent>
+          </FormSection>
+        </form>
+      </FormProvider>
+    </SampleDataProvider>
   );
 }
 
@@ -212,6 +292,7 @@ async function createPDFPreview(pdf: PDFDocument, fieldName: string) {
 }
 
 function GeneratedFieldItem({
+  field,
   index,
   onPreview,
   onRemove,
@@ -221,6 +302,32 @@ function GeneratedFieldItem({
   onPreview: () => void;
   onRemove: () => void;
 }) {
+  const [sampleData] = useRequiredContext(SampleDataContext);
+  const [result, setResult] = useState<string>('null');
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const newResult = await jsonata(field.expression).evaluate(
+          JSON.parse(sampleData)
+        );
+        if (!cancelled) {
+          setResult(newResult ?? 'null');
+        }
+      } catch (error) {
+        console.log('JSONata Evaluation error:', error);
+        if (!cancelled) {
+          setResult('ERROR');
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [field.expression, sampleData]);
+
   return (
     <div className='grid grid-cols-[1fr_min-content] gap-2'>
       <div className='grid gap-2'>
@@ -247,7 +354,7 @@ function GeneratedFieldItem({
               </FormItem>
             )}
           />
-          <Button onClick={onPreview} size='icon'>
+          <Button onClick={onPreview} size='icon' type='button'>
             <SquareArrowOutUpRightIcon />
           </Button>
         </div>
@@ -273,7 +380,7 @@ function GeneratedFieldItem({
                 <span className='inline-flex items-center gap-2 font-mono text-sm'>
                   <Input {...field} />
                   <EqualIcon />
-                  <pre className='min-w-16'>null</pre>
+                  <pre className='min-w-16'>{result}</pre>
                 </span>
               </FormControl>
               <FormMessage />
@@ -322,6 +429,7 @@ function GenerationFormComboBoxItem({
           onPreview();
         }}
         size='icon'
+        type='button'
         variant='outline'
       >
         <SquareArrowOutUpRight />
@@ -334,7 +442,7 @@ function GenerationFormComboBoxItem({
           type: getFieldType(field),
         }}
       >
-        <Button size='icon' variant='outline'>
+        <Button size='icon' type='button' variant='outline'>
           <PlusIcon />
         </Button>
       </FormListAddButton>
@@ -371,20 +479,6 @@ function GenerationFormContent() {
   return (
     <>
       <FormList name='fields'>
-        <Dialog onOpenChange={setPreviewOpen} open={previewOpen}>
-          <DialogContent size='xl'>
-            <DialogHeader>
-              <DialogTitle>
-                Field Preview:{' '}
-                <span className='font-mono'>{preview?.name}</span>
-              </DialogTitle>
-            </DialogHeader>
-            <iframe className='flex-1' src={preview?.dataUri}>
-              Your browser does not support iframes.
-            </iframe>
-          </DialogContent>
-        </Dialog>
-
         <FormListHeader>
           <FormListTitle>Generated Fields</FormListTitle>
           <FormListMessage />
@@ -415,6 +509,7 @@ function GenerationFormContent() {
                 variant: 'dashed',
               })}
               role='combobox'
+              type='button'
               variant='outline'
             >
               Add Generated Field
@@ -456,6 +551,20 @@ function GenerationFormContent() {
         <Button disabled={!isDirty} loading={isSubmitting} type='submit'>
           Save Generated Fields
         </Button>
+
+        <Dialog onOpenChange={setPreviewOpen} open={previewOpen}>
+          <DialogContent size='xl'>
+            <DialogHeader>
+              <DialogTitle>
+                Field Preview:{' '}
+                <span className='font-mono'>{preview?.name}</span>
+              </DialogTitle>
+            </DialogHeader>
+            <iframe className='flex-1' src={preview?.dataUri}>
+              Your browser does not support iframes.
+            </iframe>
+          </DialogContent>
+        </Dialog>
       </FormList>
     </>
   );
