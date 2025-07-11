@@ -4,9 +4,11 @@ import { Stack } from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
 
 import '@/polyfill';
+import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider, useTheme } from 'react-native-paper';
 import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
-import Toast from 'react-native-toast-message';
+import { Toaster } from 'sonner-native';
 import tw, { useDeviceContext } from 'twrnc';
 
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
@@ -61,9 +63,11 @@ function RootLayout() {
         <TRPCProvider>
           <LanguageProvider>
             <SplashScreenBarrier>
-              <StackWrapper />
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <StackWrapper />
+                <Toaster />
+              </GestureHandlerRootView>
             </SplashScreenBarrier>
-            <Toast />
           </LanguageProvider>
         </TRPCProvider>
       </QueryProvider>

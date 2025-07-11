@@ -1,20 +1,20 @@
 import { useIsFocused } from '@react-navigation/native';
 import {
   QueryKey,
-  useQuery,
   UseQueryOptions,
-  useSuspenseQuery,
+  useQuery as useReactQuery,
+  useSuspenseQuery as useReactSuspenseQuery,
   UseSuspenseQueryOptions,
 } from '@tanstack/react-query';
 
 import { useRefreshOnFocus } from '@/hooks/use-refresh-on-focus';
 
-export const useRNQuery = <Q, E, D, K extends QueryKey>(
+export const useQuery = <Q, E, D, K extends QueryKey>(
   opts: UseQueryOptions<Q, E, D, K>
 ) => {
   const isFocused = useIsFocused();
 
-  const result = useQuery({
+  const result = useReactQuery({
     ...opts,
     subscribed: opts.subscribed && isFocused,
   });
@@ -24,12 +24,12 @@ export const useRNQuery = <Q, E, D, K extends QueryKey>(
   return result;
 };
 
-export const useRNSuspenseQuery = <Q, E, D, K extends QueryKey>(
+export const useSuspenseQuery = <Q, E, D, K extends QueryKey>(
   opts: UseSuspenseQueryOptions<Q, E, D, K>
 ) => {
   const isFocused = useIsFocused();
 
-  const result = useSuspenseQuery({
+  const result = useReactSuspenseQuery({
     ...opts,
     subscribed: opts.subscribed && isFocused,
   });

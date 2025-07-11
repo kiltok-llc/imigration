@@ -12,7 +12,7 @@ import {
 import { addNetworkStateListener } from 'expo-network';
 import { PropsWithChildren, useEffect } from 'react';
 import { AppState, Platform } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from 'sonner-native';
 
 import { env } from '@/env';
 
@@ -28,11 +28,27 @@ const queryClient = new QueryClient({
       console.error('Mutation Error', error);
 
       if (mutation.meta?.errorToast) {
-        Toast.show({
-          text1: 'Application Error',
-          text2: mutation.meta.errorToast as string,
-          type: 'error',
+        toast.error(mutation.meta.errorToast as string, {
+          id: `mutation-${mutation.mutationId}`,
         });
+      } else {
+        toast.dismiss(`mutation-${mutation.mutationId}`);
+      }
+    },
+    onMutate(_variables, mutation) {
+      if (mutation.meta?.loadingToast) {
+        toast.loading(mutation.meta.loadingToast as string, {
+          id: `mutation-${mutation.mutationId}`,
+        });
+      }
+    },
+    onSuccess(_data, _variables, _context, mutation) {
+      if (mutation.meta?.successToast) {
+        toast.success(mutation.meta.successToast as string, {
+          id: `mutation-${mutation.mutationId}`,
+        });
+      } else {
+        toast.dismiss(`mutation-${mutation.mutationId}`);
       }
     },
   }),
@@ -41,11 +57,7 @@ const queryClient = new QueryClient({
       console.error('Query Error', error);
 
       if (query.meta?.errorToast) {
-        Toast.show({
-          text1: 'Application Error',
-          text2: query.meta.errorToast as string,
-          type: 'error',
-        });
+        toast.error(query.meta.errorToast as string);
       }
     },
   }),

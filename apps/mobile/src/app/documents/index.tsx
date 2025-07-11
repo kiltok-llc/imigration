@@ -1,5 +1,6 @@
-import * as Sentry from '@sentry/react-native';
-import { Stack } from 'expo-router';
+import { useMutation } from '@tanstack/react-query';
+import * as FileSystem from 'expo-file-system';
+import { Stack, useRouter } from 'expo-router';
 import { t } from 'i18next';
 import { Suspense } from 'react';
 import { View } from 'react-native';
@@ -8,8 +9,9 @@ import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
-import { useRNSuspenseQuery } from '@/hooks/use-rn-query';
-import { documentsQueryOptions } from '@/queries/documents';
+import { useSuspenseQuery } from '@/hooks/use-rn-query';
+import { supabase } from '@/lib/supabase/client';
+import { Documents, documentsQueryOptions } from '@/queries/documents';
 
 // interface StoredDocument {
 //   title: string;
@@ -37,13 +39,6 @@ export default function DocumentsScreen() {
             </View>
           }
         >
-          <Button
-            onPress={() => {
-              Sentry.captureException(new Error('First error'));
-            }}
-          >
-            Try!
-          </Button>
           <DocumentList />
         </Suspense>
       </View>
@@ -52,13 +47,43 @@ export default function DocumentsScreen() {
 }
 
 function DocumentList() {
-  const { data: documents } = useRNSuspenseQuery(documentsQueryOptions());
+  const { data: documents } = useSuspenseQuery(documentsQueryOptions());
+  const router = useRouter();
+
+  const { mutate: handleOpenDocument } = useMutation({
+    meta: {
+      errorToast: 'Failed to open document',
+      loadingToast: 'Opening...',
+    },
+    async mutationFn(document: Documents[number]) {
+      const path = `${document.id}.pdf`;
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('documents').getPublicUrl(path);
+      const { uri } = await FileSystem.downloadAsync(
+        publicUrl,
+        FileSystem.cacheDirectory + path
+      );
+      router.push({
+        params: {
+          source: uri,
+          title: document.name,
+        },
+        pathname: '/pdf-view',
+      });
+    },
+  });
 
   return (
     <Container style={tw`flex-1 gap-4`}>
       {documents && documents.length > 0 ? (
         documents.map((document) => (
-          <Button disabled key={document.id} mode='outlined' style={tw`w-full`}>
+          <Button
+            key={document.id}
+            mode='outlined'
+            onPress={() => handleOpenDocument(document)}
+            style={tw`w-full`}
+          >
             {document.name}
           </Button>
         ))

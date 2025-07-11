@@ -6,14 +6,16 @@ import tw from 'twrnc';
 
 export default function PDFViewScreen() {
   const theme = useTheme();
-  const { source } = useLocalSearchParams<{ source: string }>();
-  console.log('source', source);
+  const { source, title } = useLocalSearchParams<{
+    source: string;
+    title: string;
+  }>();
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: 'PDF Viewer',
+          title,
         }}
       />
       <SafeAreaView style={tw`flex-1`}>

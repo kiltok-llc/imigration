@@ -64,11 +64,7 @@ function PDFProviderInner({
       const exists = await file
         .exists(path)
         .then(unwrap)
-        .catch((error) => {
-          // TODO should this be throwing error on file missing?
-          console.debug('Error checking file existence:', error);
-          return false;
-        });
+        .catch((_) => false);
 
       if (!exists) {
         console.debug('File does not exist:', path);

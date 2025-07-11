@@ -1,30 +1,33 @@
 import { queryOptions } from '@tanstack/react-query';
 
 import { supabase } from '@/lib/supabase/client';
-import { InferDataType, supabaseQueryOptions } from '@/lib/supabase/utils';
+import { InferDataType } from '@/lib/supabase/utils';
 
 export const surveyQueryOptions = (id: string) =>
   queryOptions({
-    ...supabaseQueryOptions({
-      query: () =>
-        supabase
-          .from('surveys')
-          .select(
-            `
+    meta: {
+      errorToast: 'Failed to load survey',
+    },
+    async queryFn({ signal }) {
+      const { data } = await supabase
+        .from('surveys')
+        .select(
+          `
       id,
       name,
       description,
       updatedAt:updated_at,
       json
     `
-          )
-          .eq('id', id)
-          .single(),
-      transform: (data) => data,
-    }),
-    meta: {
-      errorToast: 'Failed to load survey',
+        )
+        .abortSignal(signal)
+        .eq('id', id)
+        .single()
+        .throwOnError();
+
+      return data;
     },
+    queryKey: ['supabase', 'public', 'survey', id],
   });
 
 export type Survey = InferDataType<ReturnType<typeof surveyQueryOptions>>;

@@ -25,18 +25,16 @@ export const documentPDFUrlQueryOptions = (documentId: string) =>
       const exists = await bucket
         .info(path)
         .then(unwrap)
-        .catch((error) => {
-          console.error('Error checking PDF existence:', error);
-          return false;
-        });
+        .catch((_) => false);
+
       if (!exists) {
-        return;
+        return null;
       }
 
-      const { signedUrl } = await bucket
-        .createSignedUrl(path, 3600)
-        .then(unwrap);
-      return signedUrl;
+      const {
+        data: { publicUrl },
+      } = bucket.getPublicUrl(path);
+      return publicUrl;
     },
     queryKey: ['supabase', 'storage', 'documents', documentId, 'pdf', 'url'],
   });

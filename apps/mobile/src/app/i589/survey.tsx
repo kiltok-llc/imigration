@@ -7,7 +7,7 @@ import { SurveyWrapper } from '@/components/survey';
 import { SurveyProvider } from '@/components/survey/context';
 import { SurveyLoader } from '@/components/survey/load';
 import { useSurveyTitle } from '@/components/survey/title';
-import { useRNSuspenseQuery } from '@/hooks/use-rn-query';
+import { useSuspenseQuery } from '@/hooks/use-rn-query';
 import { surveyQueryOptions } from '@/queries/survey';
 
 const I589_SURVEY_ID = '448ce721-8c3c-4b20-9d6e-267b266c1eab';
@@ -34,9 +34,7 @@ export default function I589SurveyScreen() {
 }
 
 function Survey() {
-  const { data: survey } = useRNSuspenseQuery(
-    surveyQueryOptions(I589_SURVEY_ID)
-  );
+  const { data: survey } = useSuspenseQuery(surveyQueryOptions(I589_SURVEY_ID));
   const router = useRouter();
 
   const handleComplete = useCallback(

@@ -57,7 +57,7 @@ export function PDFFormSection() {
                 <FilesIcon /> Preview Current PDF
               </Button>
             </DialogTrigger>
-            <PDFPreviewDialogContent src={pdfUrl}>
+            <PDFPreviewDialogContent src={pdfUrl ?? undefined}>
               PDF Preview: {document.name}
             </PDFPreviewDialogContent>
           </Dialog>

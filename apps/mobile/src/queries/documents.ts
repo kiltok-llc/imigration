@@ -1,26 +1,30 @@
 import { queryOptions } from '@tanstack/react-query';
 
 import { supabase } from '@/lib/supabase/client';
-import { InferDataType, supabaseQueryOptions } from '@/lib/supabase/utils';
+import { InferDataType } from '@/lib/supabase/utils';
 
 export const documentsQueryOptions = () =>
   queryOptions({
-    ...supabaseQueryOptions({
-      query: () =>
-        supabase.from('documents').select(
+    meta: {
+      errorToast: 'Failed to load documents',
+    },
+    async queryFn({ signal }) {
+      const { data } = await supabase
+        .from('documents')
+        .select(
           `
       id,
       name,
       description,
-      updatedAt:updated_at,
-      template
+      updatedAt:updated_at
     `
-        ),
-      transform: (data) => data,
-    }),
-    meta: {
-      errorToast: 'Failed to load documents',
+        )
+        .abortSignal(signal)
+        .throwOnError();
+
+      return data;
     },
+    queryKey: ['supabase', 'public', 'documents'],
   });
 
 export type Documents = InferDataType<ReturnType<typeof documentsQueryOptions>>;
