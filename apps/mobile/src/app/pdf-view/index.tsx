@@ -21,7 +21,6 @@ export default function PDFViewScreen() {
       <SafeAreaView style={tw`flex-1`}>
         <PdfRendererView
           distanceBetweenPages={16}
-          maxZoom={5}
           source={source}
           style={{ backgroundColor: theme.colors.background }}
         />

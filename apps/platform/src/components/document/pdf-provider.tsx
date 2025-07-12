@@ -18,6 +18,7 @@ import {
   useRequiredContext,
 } from '@/hooks/use-required-context';
 import { isomorphicSupabase, unwrap } from '@/lib/supabase/utils';
+import { raiseStatus } from '@/lib/utils';
 
 const DocumentPdfContext = createRequiredContext<PDFDocument>();
 
@@ -71,9 +72,16 @@ function PDFProviderInner({
         return null;
       }
 
-      const blob = await file.download(path).then(unwrap);
-      return await PDFDocument.load(await blob.arrayBuffer(), {
-        password: '',
+      const {
+        data: { publicUrl },
+      } = file.getPublicUrl(path);
+
+      const buffer = await fetch(publicUrl)
+        .then(raiseStatus)
+        .then((res) => res.blob())
+        .then((blob) => blob.arrayBuffer());
+
+      return await PDFDocument.load(buffer, {
         updateMetadata: true,
       });
     },

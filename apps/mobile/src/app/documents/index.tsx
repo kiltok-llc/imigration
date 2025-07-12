@@ -1,16 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import * as FileSystem from 'expo-file-system';
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+import { File, Paths } from 'expo-file-system/next';
 import { Stack, useRouter } from 'expo-router';
 import { t } from 'i18next';
 import { Suspense } from 'react';
 import { View } from 'react-native';
+import { useMMKVObject } from 'react-native-mmkv';
 import { ActivityIndicator, Button, Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { useSuspenseQuery } from '@/hooks/use-rn-query';
-import { supabase } from '@/lib/supabase/client';
+import { storage } from '@/lib/mmkv';
+import { useTRPC } from '@/lib/trpc';
 import { Documents, documentsQueryOptions } from '@/queries/documents';
 
 // interface StoredDocument {
@@ -48,7 +52,14 @@ export default function DocumentsScreen() {
 
 function DocumentList() {
   const { data: documents } = useSuspenseQuery(documentsQueryOptions());
+  const trpc = useTRPC();
   const router = useRouter();
+
+  const [userData] = useMMKVObject('userData', storage);
+
+  const { mutateAsync: generatePdf } = useMutation(
+    trpc.pdf.generate.mutationOptions()
+  );
 
   const { mutate: handleOpenDocument } = useMutation({
     meta: {
@@ -56,17 +67,19 @@ function DocumentList() {
       loadingToast: 'Opening...',
     },
     async mutationFn(document: Documents[number]) {
-      const path = `${document.id}.pdf`;
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('documents').getPublicUrl(path);
-      const { uri } = await FileSystem.downloadAsync(
-        publicUrl,
-        FileSystem.cacheDirectory + path
-      );
+      const data = await generatePdf({
+        documentId: document.id,
+        variables: userData,
+      });
+
+      const outFile = new File(Paths.cache, `${document.id}.pdf`);
+      await FileSystem.writeAsStringAsync(outFile.uri, data, {
+        encoding: 'base64',
+      });
+
       router.push({
         params: {
-          source: uri,
+          source: outFile.uri,
           title: document.name,
         },
         pathname: '/pdf-view',

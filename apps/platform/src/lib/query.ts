@@ -65,7 +65,7 @@ export function makeQueryClient() {
     }),
     queryCache: new QueryCache({
       onError: (error, query) => {
-        console.error('Query Error', JSON.stringify(error), typeof error);
+        console.error('Query Error', error, typeof error);
 
         if (typeof window !== 'undefined' && query.meta?.errorToast) {
           toast.error(query.meta.errorToast as string);

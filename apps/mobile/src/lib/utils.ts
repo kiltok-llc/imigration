@@ -1,8 +1,7 @@
-export async function raiseStatus(res: Response) {
+export async function raiseStatus<T extends Response>(res: T) {
   if (!res.ok) {
-    await res.text().then((text) => {
-      throw new Error(`HTTP error! status: ${res.status}, body: ${text}`);
-    });
+    const text = await res.text();
+    throw new Error(`HTTP error! status: ${res.status}, body: ${text}`);
   }
   return res;
 }
