@@ -1,14 +1,15 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
-import { SafeAreaView, useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { Confetti } from 'react-native-fast-confetti';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
-export default function I589CompleteScreen() {
+export default function Complete() {
   const theme = useTheme();
   const router = useRouter();
   const { height, width } = useWindowDimensions();
@@ -34,8 +35,7 @@ export default function I589CompleteScreen() {
         sizeVariation={0.3}
         verticalSpacing={60}
       />
-      <View style={tw`flex-1`}>
-        <SafeAreaView />
+      <SafeAreaView style={tw`flex-1`}>
         <Container style={tw`flex-1 items-center gap-8`}>
           <FontAwesome
             name='check-circle'
@@ -56,14 +56,14 @@ export default function I589CompleteScreen() {
             mode='contained'
             onPress={() => {
               router.dismissAll();
-              router.replace('/documents');
+              router.replace('/home');
             }}
             style={tw`mt-auto w-full`}
           >
             <Trans i18nKey='i589.complete.continue' />
           </Button>
         </Container>
-      </View>
+      </SafeAreaView>
     </>
   );
 }

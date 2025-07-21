@@ -2,8 +2,8 @@
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps } from 'expo-router';
-import { SafeAreaView, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
@@ -13,8 +13,7 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   const theme = useTheme();
 
   return (
-    <View style={tw`flex-1`}>
-      <SafeAreaView />
+    <SafeAreaView style={tw`flex-1`}>
       <Container style={tw`flex-1 items-center justify-center gap-8`}>
         <MaterialCommunityIcons
           color={theme.colors.error}
@@ -34,6 +33,6 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
           Try again?
         </Button>
       </Container>
-    </View>
+    </SafeAreaView>
   );
 }

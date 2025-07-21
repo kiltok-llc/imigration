@@ -19,7 +19,7 @@ export default function LearnMore() {
       <Stack.Screen
         options={{
           headerTransparent: true,
-          title: t('i589.learnMore.screenTitle'),
+          title: t('personalInfo.learnMore.screenTitle'),
         }}
       />
       <SafeAreaView style={tw`flex-1`}>
@@ -28,26 +28,26 @@ export default function LearnMore() {
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='displayMedium'
           >
-            <Trans i18nKey='i589.learnMore.title' />
+            <Trans i18nKey='personalInfo.learnMore.title' />
           </Text>
           <Text style={tw`text-center`} variant='bodyLarge'>
-            <Trans i18nKey='i589.learnMore.content' />
+            <Trans i18nKey='personalInfo.learnMore.content' />
           </Text>
           <View style={tw`flex-row items-center gap-2`}>
             <MaterialIcons color={theme.colors.primary} name='lock' size={32} />
             <Text style={tw`flex-1 text-center`} variant='bodyLarge'>
-              <Trans i18nKey='i589.learnMore.privacyContent' />
+              <Trans i18nKey='personalInfo.learnMore.privacyContent' />
             </Text>
           </View>
           <Button
             labelStyle={tw`text-2xl`}
             mode='contained'
             onPress={() => {
-              router.back();
+              router.replace('./form');
             }}
             style={tw`mt-auto w-full`}
           >
-            <Trans i18nKey='i589.learnMore.continue' />
+            <Trans i18nKey='personalInfo.learnMore.continue' />
           </Button>
         </Container>
       </SafeAreaView>

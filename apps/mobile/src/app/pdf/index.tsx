@@ -1,10 +1,10 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { SafeAreaView } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import PdfRendererView from 'react-native-pdf-renderer';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-export default function PDFViewScreen() {
+export default function PDFModal() {
   const theme = useTheme();
   const { source, title } = useLocalSearchParams<{
     source: string;
@@ -15,6 +15,7 @@ export default function PDFViewScreen() {
     <>
       <Stack.Screen
         options={{
+          presentation: 'modal',
           title,
         }}
       />

@@ -9,11 +9,12 @@ import mxFlag from '@/assets/flags/mx.png';
 import usFlag from '@/assets/flags/us.png';
 import personPassport from '@/assets/onboarding/person-passport.png';
 import banner from '@/assets/onboarding/usa-banner.png';
+import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { withImageIcon } from '@/lib/with-image-icon';
 
-export default function WelcomeScreen() {
-  const { i18n, t } = useTranslation();
+export default function Onboarding() {
+  const { i18n } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
 
@@ -39,13 +40,13 @@ export default function WelcomeScreen() {
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='displayMedium'
           >
-            {t('welcome.title')}
+            <Trans i18nKey='welcome.title' />
           </Text>
           <Text
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='headlineSmall'
           >
-            {t('welcome.chooseLanguage')}
+            <Trans i18nKey='welcome.chooseLanguage' />
           </Text>
           <Image
             alt='Person holding a passport'
@@ -62,7 +63,7 @@ export default function WelcomeScreen() {
               backgroundColor: theme.colors.surface,
             })}
           >
-            {t('welcome.selectEnglish')}
+            <Trans i18nKey='welcome.selectEnglish' />
           </Button>
           <Button
             contentStyle={tw`justify-start`}
@@ -74,17 +75,17 @@ export default function WelcomeScreen() {
               backgroundColor: theme.colors.surface,
             })}
           >
-            {t('welcome.selectSpanish')}
+            <Trans i18nKey='welcome.selectSpanish' />
           </Button>
           <Button
             labelStyle={tw`text-2xl`}
             mode='contained'
             onPress={() => {
-              router.push('/onboarding/choose-situation');
+              router.push('/home');
             }}
             style={tw`w-full`}
           >
-            {t('welcome.next')}
+            <Trans i18nKey='welcome.next' />
           </Button>
         </Container>
       </View>

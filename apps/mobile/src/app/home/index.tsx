@@ -11,28 +11,29 @@ import calendarIcon from '@/assets/icons/calendar.png';
 import familyIcon from '@/assets/icons/family.png';
 import passportIcon from '@/assets/icons/passport.png';
 import banner from '@/assets/onboarding/usa-banner-2.png';
+import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
 const situations = {
   border: {
-    href: '/i589/welcome',
+    href: '/i589/roadmap',
     iconSource: passportIcon,
   },
   family: {
-    href: '/i589/welcome',
+    href: '/i589/roadmap',
     iconSource: familyIcon,
   },
   renewStatus: {
-    href: '/i589/welcome',
+    href: '/i589/roadmap',
     iconSource: calendarIcon,
   },
   workStudy: {
-    href: '/i589/welcome',
+    href: '/i589/roadmap',
     iconSource: briefcaseIcon,
   },
 } as const;
 
-export default function SituationScreen() {
+export default function Home() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
@@ -60,7 +61,7 @@ export default function SituationScreen() {
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='displayMedium'
           >
-            {t('situation.whichDescribesYou')}
+            <Trans i18nKey='situation.whichDescribesYou' />
           </Text>
           {Object.entries(situations).map(([situation, { iconSource }]) => (
             <Button
@@ -95,7 +96,7 @@ export default function SituationScreen() {
                     selectedSituation === situation && 'font-medium'
                   )}
                 >
-                  {t(`situation.${situation}`)}
+                  <Trans i18nKey={`situation.${situation}`} />
                 </Text>
               </View>
             </Button>
@@ -111,7 +112,7 @@ export default function SituationScreen() {
             }}
             style={tw`mt-auto w-full`}
           >
-            {t('situation.next')}
+            <Trans i18nKey='situation.next' />
           </Button>
         </Container>
       </View>

@@ -1,13 +1,13 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Stack, useRouter } from 'expo-router';
-import { SafeAreaView, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
-export default function I589WelcomeScreen() {
+export default function Welcome() {
   const theme = useTheme();
   const router = useRouter();
 
@@ -19,8 +19,7 @@ export default function I589WelcomeScreen() {
           title: '',
         }}
       />
-      <View style={tw`flex-1`}>
-        <SafeAreaView />
+      <SafeAreaView style={tw`flex-1`}>
         <Container style={tw`flex-1 items-center gap-4`}>
           <MaterialCommunityIcons
             color={theme.colors.primary}
@@ -31,26 +30,26 @@ export default function I589WelcomeScreen() {
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='displayMedium'
           >
-            <Trans i18nKey='i589.welcome.title' />
+            <Trans i18nKey='personalInfo.welcome.title' />
           </Text>
           <Text
             style={tw.style('text-center', { color: theme.colors.primary })}
             variant='bodyLarge'
           >
-            <Trans i18nKey='i589.welcome.description' />
+            <Trans i18nKey='personalInfo.welcome.description' />
           </Text>
           <Text style={tw`text-center`} variant='bodyLarge'>
-            <Trans i18nKey='i589.welcome.privacyDescription' />
+            <Trans i18nKey='personalInfo.welcome.privacyDescription' />
           </Text>
           <Button
             labelStyle={tw`text-2xl`}
             mode='contained'
             onPress={() => {
-              router.push('./survey');
+              router.push('./form');
             }}
             style={tw`mt-auto w-full`}
           >
-            <Trans i18nKey='i589.welcome.continue' />
+            <Trans i18nKey='personalInfo.welcome.continue' />
           </Button>
           <Button
             labelStyle={tw`text-base text-gray-500`}
@@ -59,10 +58,10 @@ export default function I589WelcomeScreen() {
               router.push('./learn-more');
             }}
           >
-            <Trans i18nKey='i589.welcome.learnMore' />
+            <Trans i18nKey='personalInfo.welcome.learnMore' />
           </Button>
         </Container>
-      </View>
+      </SafeAreaView>
     </>
   );
 }

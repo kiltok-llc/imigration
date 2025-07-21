@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
+// eslint-disable-next-line no-restricted-imports
 import { Text } from 'react-native';
 
 export function Trans({

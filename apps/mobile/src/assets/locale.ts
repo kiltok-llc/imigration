@@ -27,6 +27,37 @@ export default {
           screenTitle: 'Why all the questions?',
           title: 'Why do we ask for this information?',
         },
+        roadmap: {
+          personalInfo: 'Personal Info',
+          title: 'Your Path to Asylum',
+        },
+      },
+      multistep: {
+        next: 'Next',
+        previous: 'Previous',
+        step: '{{activeStep}} of {{stepCount}}',
+        subtitle: 'Next: {{title}}',
+        title: '{{title}}',
+      },
+      personalInfo: {
+        form: {
+          dateOfBirth: {
+            title: 'Date of Birth',
+          },
+          name: {
+            title: 'Your Name',
+          },
+        },
+        learnMore: {
+          content:
+            'Before moving forward, we will ask you some simple questions so that we can give you the right support.\n\n' +
+            'Some questions may feel personal — that’s okay. You can skip any question and come back later.\n\n',
+          continue: "I'm ready",
+          privacyContent:
+            'Your answers are <strong>private and safe</strong>. We do <strong>not</strong> share your information unless you give us permission.',
+          screenTitle: 'Why all the questions?',
+          title: 'Why do we ask for this information?',
+        },
         welcome: {
           continue: 'Continue',
           description:
@@ -77,6 +108,37 @@ export default {
           message:
             'Gracias por compartir tu información.\n\nTus respuestas están guardadas de forma segura y privada.\n\nUsaremos esta información para apoyarte lo mejor posible.',
           title: '¡Todo Listo! 🎉',
+        },
+        learnMore: {
+          content:
+            'Queremos entender mejor tu situación para poder ayudarte de la mejor manera.\n\n' +
+            'Algunas preguntas pueden parecer personales — está bien. Puedes saltarte cualquier pregunta y volver más tarde.\n\n',
+          continue: 'Estoy listo',
+          privacyContent:
+            'Tus respuestas son <strong>privadas y seguras</strong>. <strong>No</strong> compartimos tu información sin tu permiso.',
+          screenTitle: '¿Por Qué Estas Preguntas?',
+          title: '¿Por Qué Preguntamos Esto?',
+        },
+        roadmap: {
+          personalInfo: 'Informacion Personal',
+          title: 'Tu Camino e Asilo',
+        },
+      },
+      multistep: {
+        next: 'Siguiente',
+        previous: 'Anterior',
+        step: '{{activeStep}} de {{stepCount}}',
+        subtitle: 'Siguiente: {{title}}',
+        title: '{{title}}',
+      },
+      personalInfo: {
+        form: {
+          dateOfBirth: {
+            title: 'Fecha de Nacimiento',
+          },
+          name: {
+            title: 'Tu Nombre',
+          },
         },
         learnMore: {
           content:

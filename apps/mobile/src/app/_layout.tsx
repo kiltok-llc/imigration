@@ -62,12 +62,12 @@ function RootLayout() {
       <QueryProvider>
         <TRPCProvider>
           <LanguageProvider>
-            <SplashScreenBarrier>
-              <GestureHandlerRootView style={{ flex: 1 }}>
+            <GestureHandlerRootView style={tw`flex-1`}>
+              <SplashScreenBarrier>
                 <StackWrapper />
                 <Toaster />
-              </GestureHandlerRootView>
-            </SplashScreenBarrier>
+              </SplashScreenBarrier>
+            </GestureHandlerRootView>
           </LanguageProvider>
         </TRPCProvider>
       </QueryProvider>
@@ -80,6 +80,7 @@ function RootLayout() {
  */
 function StackWrapper() {
   const theme = useTheme();
+
   return (
     <Stack
       screenOptions={{
