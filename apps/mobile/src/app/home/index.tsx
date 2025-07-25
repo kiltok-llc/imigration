@@ -46,7 +46,7 @@ export default function Home() {
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: theme.colors.primary },
-          headerTitleStyle: { color: theme.colors.onPrimary },
+          headerTintColor: theme.colors.onPrimary,
           title: t('situation.screenTitle'),
         }}
       />

@@ -2,6 +2,8 @@
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps } from 'expo-router';
+import { PropsWithChildren } from 'react';
+import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-boundary';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -9,7 +11,11 @@ import tw from 'twrnc';
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
-export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+export function ErrorFallback({
+  children,
+  error,
+  retry,
+}: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
 
   return (
@@ -30,8 +36,10 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
         </Text>
 
         <Button mode='text' onPress={retry}>
-          Try again?
+          <Trans i18nKey='error.retry' />
         </Button>
+
+        {children}
       </Container>
     </SafeAreaView>
   );

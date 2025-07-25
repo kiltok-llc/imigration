@@ -8,7 +8,13 @@ export default {
       error: {
         message:
           'There was an error loading this content:\n<pre>{{message}}</pre>',
+        retry: 'Try again',
         title: 'Something went wrong!',
+      },
+      form: {
+        datePlaceholder: 'Select a date',
+        required: 'This field is required.',
+        reset: 'Reset Form',
       },
       i589: {
         complete: {
@@ -34,17 +40,23 @@ export default {
       },
       multistep: {
         next: 'Next',
+        nextTitle: 'Next: {{nextTitle}}',
         previous: 'Previous',
         step: '{{activeStep}} of {{stepCount}}',
-        subtitle: 'Next: {{title}}',
         title: '{{title}}',
       },
       personalInfo: {
         form: {
           dateOfBirth: {
+            dateOfBirth: 'Date of Birth',
+            description: 'Please enter your date of birth.',
             title: 'Date of Birth',
           },
           name: {
+            description:
+              'Please enter your full name as it appears on your ID.',
+            firstName: 'First Name',
+            lastName: 'Last Name',
             title: 'Your Name',
           },
         },
@@ -100,7 +112,13 @@ export default {
       error: {
         message:
           'Hubo un error al cargar este contenido:\n<pre>{{message}}</pre>',
+        retry: 'Inténtalo de nuevo',
         title: '¡Algo salió mal!',
+      },
+      form: {
+        datePlaceholder: 'Selecciona una fecha',
+        required: 'Este campo es obligatorio.',
+        reset: 'Reiniciar Formulario',
       },
       i589: {
         complete: {
@@ -126,17 +144,23 @@ export default {
       },
       multistep: {
         next: 'Siguiente',
+        nextTitle: 'Siguiente: {{nextTitle}}',
         previous: 'Anterior',
         step: '{{activeStep}} de {{stepCount}}',
-        subtitle: 'Siguiente: {{title}}',
         title: '{{title}}',
       },
       personalInfo: {
         form: {
           dateOfBirth: {
+            dateOfBirth: 'Fecha de Nacimiento',
+            description: 'Por favor, ingresa tu fecha de nacimiento.',
             title: 'Fecha de Nacimiento',
           },
           name: {
+            description:
+              'Por favor, ingresa tu nombre completo tal como aparece en tu identificación.',
+            firstName: 'Nombre',
+            lastName: 'Apellido',
             title: 'Tu Nombre',
           },
         },

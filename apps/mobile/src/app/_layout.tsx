@@ -87,12 +87,16 @@ function StackWrapper() {
         contentStyle: {
           backgroundColor: theme.colors.background,
         },
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
+        },
+        headerTintColor: theme.colors.onSurface,
         title: '',
       }}
     />
   );
 }
 
-export { ErrorBoundary } from '@/components/ui/error';
+export { ErrorFallback as ErrorBoundary } from '@/components/ui/error';
 
 export default Sentry.wrap(RootLayout);

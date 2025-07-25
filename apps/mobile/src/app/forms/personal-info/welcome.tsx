@@ -13,12 +13,7 @@ export default function Welcome() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerTransparent: true,
-          title: '',
-        }}
-      />
+      <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={tw`flex-1`}>
         <Container style={tw`flex-1 items-center gap-4`}>
           <MaterialCommunityIcons
