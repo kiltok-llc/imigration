@@ -35,7 +35,6 @@ import {
   useRequiredContext,
 } from '@/hooks/use-required-context';
 import { storage } from '@/lib/mmkv';
-import { zustandStorage } from '@/lib/zustand';
 
 interface MultiStepState {
   activeStep: number;
@@ -208,7 +207,7 @@ export function MultiStepScreen({
             activeStep: state.activeStep,
             savedStepData: state.savedStepData,
           }),
-          storage: createJSONStorage(() => zustandStorage),
+          storage: createJSONStorage(() => localStorage),
         }
       )
     )

@@ -7,12 +7,12 @@ export default function Index() {
   const [isOnBoarded = false] = useMMKVBoolean('isOnBoarded', storage);
 
   if (__DEV__) {
-    return <Redirect href='/forms/personal-info/form' />;
+    return <Redirect href="/services/i589" />;
   }
 
   if (!isOnBoarded) {
-    return <Redirect href='/onboarding' />;
+    return <Redirect href="/onboarding" />;
   }
 
-  return <Redirect href='/home' />;
+  return <Redirect href="/home" />;
 }
