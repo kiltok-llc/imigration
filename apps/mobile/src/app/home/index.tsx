@@ -33,7 +33,7 @@ const situations = {
   },
 } as const;
 
-export default function Home() {
+export default function HomeScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();

@@ -3,11 +3,11 @@ import { useMMKVBoolean } from 'react-native-mmkv';
 
 import { storage } from '@/lib/mmkv';
 
-export default function Index() {
+export default function RootScreen() {
   const [isOnBoarded = false] = useMMKVBoolean('isOnBoarded', storage);
 
   if (__DEV__) {
-    return <Redirect href="/services/i589" />;
+    return <Redirect href="/services/i589/eligibility" />;
   }
 
   if (!isOnBoarded) {

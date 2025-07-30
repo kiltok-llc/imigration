@@ -61,8 +61,11 @@
     "expo-updates": "~0.28.17",
     "expo-web-browser": "~14.2.0",
     "i18next": "^25.2.1",
+    "jotai": "^2.12.5",
+    "jotai-optics": "^0.4.0",
     "jotai-ssr": "^0.2.0",
     "jsonata": "^2.0.6",
+    "optics-ts": "^2.4.1",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-error-boundary": "^6.0.0",
@@ -90,8 +93,7 @@
     "survey-react-ui": "^2.2.0",
     "twrnc": "^4.9.0",
     "usehooks-ts": "^3.1.1",
-    "zod": "catalog:",
-    "zustand": "^5.0.6"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
