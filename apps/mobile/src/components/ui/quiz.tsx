@@ -17,7 +17,7 @@ type CheckboxGroupContextValue<T = string> = {
 export function QuizAction({ style, ...props }: ComponentProps<typeof View>) {
   return (
     <View style={[tw`flex-1`, style]} {...props} />
-  )
+  );
 }
 
 export function QuizActions({ style, ...props }: ComponentProps<typeof View>) {
@@ -144,7 +144,7 @@ export function QuizPrimaryActionButton(
       icon="arrow-right"
       labelStyle={[tw`text-lg`, labelStyle]}
       mode="contained"
-      style={[tw`flex-1`, style]}
+      style={[tw`w-full`, style]}
       {...props}
     >
       {children}
@@ -177,8 +177,13 @@ export function QuizSecondaryActionButton(
 ) {
   return (
     // TODO make icon larger
-    <Button contentStyle={[tw`py-1`, contentStyle]} icon="arrow-left" labelStyle={[tw`text-lg`, labelStyle]}
-            mode="contained-tonal" style={[tw`flex-1`, style]} {...props}>
+    <Button
+      contentStyle={[tw`py-1`, contentStyle]}
+      icon="arrow-left"
+      labelStyle={[tw`text-lg`, labelStyle]}
+      mode="contained-tonal"
+      style={[tw`w-full`, style]} {...props}
+    >
       {children}
     </Button>
   );

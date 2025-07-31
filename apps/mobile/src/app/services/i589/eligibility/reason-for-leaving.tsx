@@ -10,6 +10,7 @@ import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import {
+  QuizAction,
   QuizActions, QuizCheckbox, QuizCheckboxGroup,
   QuizContents,
   QuizLayout,
@@ -87,12 +88,16 @@ export default function ReasonForLeaving() {
         </View>
       </PagerView>
       <QuizActions>
-        <QuizSecondaryActionButton onPress={() => router.back()}>
-          <Trans i18nKey='quiz.back' />
-        </QuizSecondaryActionButton>
-        <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
-          <Trans i18nKey="quiz.continue" />
-        </QuizPrimaryActionButton>
+        <QuizAction>
+          <QuizSecondaryActionButton onPress={() => router.back()}>
+            <Trans i18nKey='quiz.back' />
+          </QuizSecondaryActionButton>
+        </QuizAction>
+        <QuizAction>
+          <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
+            <Trans i18nKey="quiz.continue" />
+          </QuizPrimaryActionButton>
+        </QuizAction>
       </QuizActions>
     </QuizLayout>
   );
