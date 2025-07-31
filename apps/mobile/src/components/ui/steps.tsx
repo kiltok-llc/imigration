@@ -51,7 +51,7 @@ export function StepIcons({
               <Text numberOfLines={2} style={tw.style('text-center',
                 stepIdx < (chunkIdx * CHUNK_SIZE + index) ? 'opacity-70' : 'font-semibold'
               )}>
-                <Trans i18nKey={`services.${serviceId}.steps.${id}.title`}/>
+                <Trans i18nKey={`services.${serviceId}.${id}.stepTitle`}/>
               </Text>
             </View>
           ))}

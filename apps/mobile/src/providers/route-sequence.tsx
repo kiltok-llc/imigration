@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from 'react';
 import { useMMKVString } from 'react-native-mmkv';
 
-import { useFocusedRouteName } from '@/hooks/use-focused-route-name';
 import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
+import { useFocusedRouteName, useRouteName } from '@/hooks/use-route';
 import { storage } from '@/lib/mmkv';
 
 const RoutesContext = createRequiredContext<{
@@ -12,15 +12,22 @@ const RoutesContext = createRequiredContext<{
 
 export const useRoutes = () => useRequiredContext(RoutesContext).routes;
 
-export const useFocusedRouteIdx = () => useRoutes().indexOf(useFocusedRouteName() as string);
-
-export const useNextRouteIdx = () => useFocusedRouteIdx() + 1;
-
-export const useNextRouteName = () => useRoutes()[useNextRouteIdx()];
-
 const usePersistenceKey = () => useRequiredContext(RoutesContext).persistenceKey;
 
 export const useLastVisitedRouteName = () => useMMKVString(usePersistenceKey(), storage);
+
+// Must be called from the child route, NOT the layout.
+export const useNextRouteName = () => {
+  const routeName = useRouteName();
+  const routes = useRoutes();
+  const routeIdx = routes.indexOf(routeName);
+  if (routeIdx === -1) {
+    return;
+  }
+
+  return routes[routeIdx + 1];
+};
+
 
 export function RoutesProvider(
   {
@@ -37,7 +44,7 @@ export function RoutesProvider(
   const [_, setLastVisitedRouteName] = useMMKVString(persistenceKey, storage);
 
   useEffect(() => {
-    if (routes.includes(routeName as string)) {
+    if (routes.includes(routeName)) {
       setLastVisitedRouteName(routeName);
     }
   }, [routeName, routes, setLastVisitedRouteName]);

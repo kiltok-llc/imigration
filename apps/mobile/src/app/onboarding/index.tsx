@@ -13,7 +13,7 @@ import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { withImageIcon } from '@/lib/with-image-icon';
 
-export default function OnboardingScreen() {
+export default function Onboarding() {
   const { i18n } = useTranslation();
   const theme = useTheme();
   const router = useRouter();

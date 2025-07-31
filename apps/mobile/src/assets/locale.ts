@@ -7,7 +7,9 @@ export default {
         title: 'An error occurred',
       },
       next: 'Next',
+      no: 'No',
       quiz: {
+        continue: 'Continue',
         header: {
           nextTitle: 'Next: {{ nextTitle }}',
           progress: '{{ current }} of {{ total }}',
@@ -16,68 +18,67 @@ export default {
       },
       services: {
         i589: {
+          appeal: {
+            description: 'Submit an appeal to reopen or review your case if your application is denied.',
+            stepTitle: 'Appeal',
+          },
+          decision: {
+            description: 'Receive the official determination on your asylum application.',
+            stepTitle: 'Decision',
+          },
+          documents: {
+            description: 'Upload required identity documents (e.g., passport, birth certificate).',
+            stepTitle: 'Documents',
+          },
+          eligibility: {
+            'arrival-date': {
+              title: 'Arrival Date',
+            },
+            'country-of-origin': {
+              title: 'Country of Origin',
+            },
+            'criminal-history': {
+              title: 'Criminal Convictions',
+            },
+            description: 'Complete a short quiz to check if you qualify to apply for asylum.',
+            'physical-presence': {
+              'is-physically-present': 'Are you currently in the United States?',
+              title: 'Physical Presence in the US',
+            },
+            'previous-applications': {
+              title: 'Previous Applications',
+            },
+            'reason-for-leaving': {
+              // TODO make parentheses lower opacity/size/intensity etc
+              'harm-reasons': 'Was that harm based on one of these reasons?\n(Select all that apply)',
+              'left-because-of-harm': 'Did you leave your home country because you feared harm or persecution?',
+              title: 'Reason for Leaving',
+            },
+            screenTitle: 'Asylum Eligibility Assessment',
+            stepTitle: 'Eligibility',
+          },
+          interview: {
+            description: 'Attend your scheduled asylum interview with an officer or judge.',
+            stepTitle: 'Interview',
+          },
+          'personal-info': {
+            description: 'Enter your personal details such as name, date of birth, and nationality.',
+            stepTitle: 'Personal Info',
+          },
           progress: {
             screenTitle: 'Application Progress',
           },
-          steps: {
-            appeal: {
-              description: 'Submit an appeal to reopen or review your case if your application is denied.',
-              title: 'Appeal',
-            },
-            decision: {
-              description: 'Receive the official determination on your asylum application.',
-              title: 'Decision',
-            },
-            documents: {
-              description: 'Upload required identity documents (e.g., passport, birth certificate).',
-              title: 'Documents',
-            },
-            eligibility: {
-              description: 'Complete a short quiz to check if you qualify to apply for asylum.',
-              quiz: {
-                pages: {
-                  'applied-before': {
-                    title: 'Previous Applications',
-                  },
-                  'arrived-within-last-year': {
-                    title: 'Arrival Date',
-                  },
-                  'convicted-serious-crime': {
-                    title: 'Criminal Convictions',
-                  },
-                  'from-safe-country': {
-                    title: 'Country of Origin',
-                  },
-                  'left-because-of-harm': {
-                    title: 'Reason for Leaving',
-                  },
-                  'physically-in-us': {
-                    title: 'Physical Presence in the US',
-                  },
-                },
-                screenTitle: 'Asylum Eligibility Assessment',
-              },
-              title: 'Eligibility',
-            },
-            interview: {
-              description: 'Attend your scheduled asylum interview with an officer or judge.',
-              title: 'Interview',
-            },
-            personalInfo: {
-              description: 'Enter your personal details such as name, date of birth, and nationality.',
-              title: 'Personal Info',
-            },
-            review: {
-              description: 'Verify that all your answers and uploads are complete and accurate.',
-              title: 'Review',
-            },
-            waiting: {
-              description: 'Track the status of your application while it is under review.',
-              title: 'Wait',
-            },
+          review: {
+            description: 'Verify that all your answers and uploads are complete and accurate.',
+            stepTitle: 'Review',
+          },
+          waiting: {
+            description: 'Track the status of your application while it is under review.',
+            stepTitle: 'Wait',
           },
         },
       },
+      yes: 'Yes',
     },
   },
   es: {

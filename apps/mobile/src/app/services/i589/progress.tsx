@@ -11,7 +11,7 @@ import { Container } from '@/components/ui/container';
 import { StepIcons, Stepper } from '@/components/ui/steps';
 import { incrementStepAtom, stepIdAtom, stepsAtom } from '@/lib/services/i589/steps';
 
-export default function I589ProgressScreen() {
+export default function I589Progress() {
   const { t } = useTranslation();
   const router = useRouter();
   const stepId = useAtomValue(stepIdAtom);
@@ -29,10 +29,10 @@ export default function I589ProgressScreen() {
             <Stepper stepId={stepId} steps={steps} />
             <View style={tw`gap-2`}>
               <Text style={tw`font-bold text-center`} variant="headlineMedium">
-                <Trans i18nKey={`services.i589.steps.${stepId}.title`} />
+                <Trans i18nKey={`services.i589.${stepId}.stepTitle`} />
               </Text>
               <Text style={tw`text-center`} variant="titleSmall">
-                <Trans i18nKey={`services.i589.steps.${stepId}.description`} />
+                <Trans i18nKey={`services.i589.${stepId}.description`} />
               </Text>
             </View>
             <StepIcons serviceId='i589' stepId={stepId} steps={steps} style={tw`my-auto`} />

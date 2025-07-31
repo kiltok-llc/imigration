@@ -24,7 +24,7 @@ export const stepsAtom = atom<Step[]>([
   },
   {
     Icon: (props) => <Entypo name="info" {...props} />,
-    id: 'personalInfo',
+    id: 'personal-info',
   },
   {
     Icon: (props) => <Entypo name="attachment" {...props} />,

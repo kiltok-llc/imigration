@@ -3,7 +3,7 @@ import { useMMKVBoolean } from 'react-native-mmkv';
 
 import { storage } from '@/lib/mmkv';
 
-export default function RootScreen() {
+export default function Root() {
   const [isOnBoarded = false] = useMMKVBoolean('isOnBoarded', storage);
 
   if (__DEV__) {

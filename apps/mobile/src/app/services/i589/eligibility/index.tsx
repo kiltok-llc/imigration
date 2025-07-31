@@ -1,9 +1,11 @@
-import { Redirect } from "expo-router";
+import {Redirect} from "expo-router";
 
-import { useLastVisitedRouteName } from '@/providers/route-sequence';
+import {useLastVisitedRouteName} from '@/providers/route-sequence';
 
-export default function EligibilityScreen() {
-  const [lastVisitedRoute] = useLastVisitedRouteName();
+export default function Eligibility() {
+  const [lastVisitedRouteName] = useLastVisitedRouteName();
 
-  return <Redirect href={`./eligibility/${lastVisitedRoute}`} />;
+  console.log(`Redirecting to last visited route: ${lastVisitedRouteName}`);
+
+  return <Redirect href={`./eligibility/${lastVisitedRouteName}`}/>;
 }

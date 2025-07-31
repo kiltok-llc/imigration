@@ -1,8 +1,9 @@
 import { Slot } from 'expo-router';
 import { useState } from 'react';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import tw from 'twrnc';
 
-import { useFocusedRouteName } from '@/hooks/use-focused-route-name';
+import { useFocusedRouteName } from '@/hooks/use-route';
 
 
 export function FadeSlot() {
@@ -15,8 +16,9 @@ export function FadeSlot() {
       exiting={FadeOut}
       key={routeName}
       onLayout={() => setIsFirstRender(false)}
+      style={tw`flex-1`}
     >
-      <Slot/>
+      <Slot />
     </Animated.View>
-  )
+  );
 }
