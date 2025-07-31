@@ -10,7 +10,7 @@ import {
   QuizContents,
   QuizLayout,
   QuizPrimaryActionButton,
-  QuizPrimaryQuestionText, QuizYesNoInput,
+  QuizPrimaryQuestionText, QuizSecondaryActionButton, QuizYesNoInput,
 } from '@/components/ui/quiz';
 import { eligibilityQuizAnswersAtom } from '@/lib/services/i589/eligibility';
 import { toBoolean } from '@/lib/utils';
@@ -36,6 +36,9 @@ export default function PhysicalPresence() {
         <QuizYesNoInput onChange={setIsPhysicallyPresent} value={isPhysicallyPresent} />
       </QuizContents>
       <QuizActions>
+        <QuizSecondaryActionButton onPress={() => router.back()}>
+          <Trans i18nKey='quiz.back' />
+        </QuizSecondaryActionButton>
         <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
           <Trans i18nKey="quiz.continue" />
         </QuizPrimaryActionButton>

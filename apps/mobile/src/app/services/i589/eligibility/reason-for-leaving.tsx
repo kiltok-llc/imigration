@@ -10,14 +10,14 @@ import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import {
-  QuizActions, QuizCheckboxGroup,
+  QuizActions, QuizCheckbox, QuizCheckboxGroup,
   QuizContents,
   QuizLayout,
   QuizPrimaryActionButton,
-  QuizPrimaryQuestionText,
+  QuizPrimaryQuestionText, QuizSecondaryActionButton,
   QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { eligibilityQuizAnswersAtom } from '@/lib/services/i589/eligibility';
+import { eligibilityQuizAnswersAtom, HARM_REASONS } from '@/lib/services/i589/eligibility';
 import { useNextRouteName } from '@/providers/route-sequence';
 
 const leftBecauseOfHarmAtom = focusAtom(
@@ -42,6 +42,7 @@ const harmReasonOtherAtom = focusAtom(
 
 export default function ReasonForLeaving() {
   const router = useRouter();
+  const { t } = useTranslation();
   const nextRouteName = useNextRouteName();
   const [leftBecauseOfHarm, setLeftBecauseOfHarm] = useAtom(leftBecauseOfHarmAtom);
   const [harmCausedByGovernment, setHarmCausedByGovernment] = useAtom(harmCausedByGovernmentAtom);
@@ -78,12 +79,17 @@ export default function ReasonForLeaving() {
               <Trans i18nKey="services.i589.eligibility.reason-for-leaving.harm-reasons" />
             </QuizPrimaryQuestionText>
             <QuizCheckboxGroup onChange={setHarmReasons} value={harmReasons}>
-
+              {HARM_REASONS.map((reason) => (
+                <QuizCheckbox key={reason} label={t(`services.i589.eligibility.reason-for-leaving.${reason}`)} value={reason} />
+              ))}
             </QuizCheckboxGroup>
           </QuizContents>
         </View>
       </PagerView>
       <QuizActions>
+        <QuizSecondaryActionButton onPress={() => router.back()}>
+          <Trans i18nKey='quiz.back' />
+        </QuizSecondaryActionButton>
         <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
           <Trans i18nKey="quiz.continue" />
         </QuizPrimaryActionButton>

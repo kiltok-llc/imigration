@@ -2,37 +2,47 @@ import { t } from 'i18next';
 import { ComponentProps, createContext, PropsWithChildren, ReactNode, useContext } from 'react';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { Button, Checkbox, CheckboxProps RadioButton, Text, useTheme } from 'react-native-paper';
+import { Button, Checkbox, CheckboxProps, RadioButton, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { toBoolean } from '@/lib/utils';
 
-export function QuizActions({ children }: PropsWithChildren) {
+type CheckboxGroupContextValue<T = string> = {
+  onChange: (value: T[]) => void
+  value: T[],
+}
+
+export function QuizAction({ style, ...props }: ComponentProps<typeof View>) {
   return (
-    <View style={tw`mt-auto gap-4`}>
-      {children}
-    </View>
+    <View style={[tw`flex-1`, style]} {...props} />
+  )
+}
+
+export function QuizActions({ style, ...props }: ComponentProps<typeof View>) {
+  return (
+    <View style={[tw`mt-auto flex-row gap-4`, style]} {...props} />
   );
 }
 
-const CheckboxGroupContext = createContext<{
-  onChange: (value: T[]) => void
-  value: T[],
-}>({
+const CheckboxGroupContext = createContext<CheckboxGroupContextValue>({
   onChange: () => {},
   value: [],
 });
 
-export function QuizCheckbox({
-                               value,
-                               ...props
-                             }: Omit<ComponentProps<typeof Checkbox.Item>, 'status'> & {
-  value?: string;
+// TODO is there a better way to do this typing?
+const useCheckboxGroupContext = <T, >() =>
+  useContext(CheckboxGroupContext) as unknown as CheckboxGroupContextValue<T>;
+
+export function QuizCheckbox<T>({
+                                  value,
+                                  ...props
+                                }: Omit<ComponentProps<typeof Checkbox.Item>, 'status'> & {
   status?: CheckboxProps['status'];
+  value?: T;
 }) {
-  const { onChange, value: values } = useContext(CheckboxGroupContext);
+  const { onChange, value: values } = useCheckboxGroupContext<T>();
   const checked = !!value && values.includes(value);
 
   return (
@@ -55,7 +65,8 @@ export function QuizCheckboxGroup<T>(
   },
 ) {
   return (
-    <CheckboxGroupContext.Provider value={{ onChange, value }}>
+    // TODO more typing shenanigans to improve
+    <CheckboxGroupContext.Provider value={{ onChange, value } as unknown as CheckboxGroupContextValue}>
       <View {...props} />
     </CheckboxGroupContext.Provider>
   );
@@ -117,22 +128,33 @@ export function QuizLayout({ children }: PropsWithChildren) {
   );
 }
 
-export function QuizPrimaryActionButton({
-                                          children,
-                                          contentStyle,
-                                          labelStyle,
-                                          ...props
-                                        }: ComponentProps<typeof Button>) {
+export function QuizPrimaryActionButton(
+  {
+    children,
+    contentStyle,
+    labelStyle,
+    style,
+    ...props
+  }: ComponentProps<typeof Button>,
+) {
   return (
     // TODO make icon larger
-    <Button contentStyle={[tw`flex-row-reverse py-1`, contentStyle]} icon="arrow-right"
-            labelStyle={[tw`text-lg`, labelStyle]} mode="contained" {...props}>
+    <Button
+      contentStyle={[tw`flex-row-reverse py-1`, contentStyle]}
+      icon="arrow-right"
+      labelStyle={[tw`text-lg`, labelStyle]}
+      mode="contained"
+      style={[tw`flex-1`, style]}
+      {...props}
+    >
       {children}
     </Button>
   );
 }
 
-export function QuizPrimaryQuestionText({ children, style, ...props }: ComponentProps<typeof Text>) {
+export function QuizPrimaryQuestionText(
+  { children, style, ...props }: ComponentProps<typeof Text>,
+) {
   return (
     <Text
       style={[tw`font-bold text-center mb-8`, style]}
@@ -144,14 +166,34 @@ export function QuizPrimaryQuestionText({ children, style, ...props }: Component
   );
 }
 
-export function QuizYesNoInput({
-                                 onChange,
-                                 value,
-                                 ...props
-                               }: Omit<ComponentProps<typeof RadioButton.Group>, 'children' | 'onValueChange' | 'value'> & {
-  onChange: (value: boolean) => void;
-  value?: boolean;
-}) {
+export function QuizSecondaryActionButton(
+  {
+    children,
+    contentStyle,
+    labelStyle,
+    style,
+    ...props
+  }: ComponentProps<typeof Button>,
+) {
+  return (
+    // TODO make icon larger
+    <Button contentStyle={[tw`py-1`, contentStyle]} icon="arrow-left" labelStyle={[tw`text-lg`, labelStyle]}
+            mode="contained-tonal" style={[tw`flex-1`, style]} {...props}>
+      {children}
+    </Button>
+  );
+}
+
+export function QuizYesNoInput(
+  {
+    onChange,
+    value,
+    ...props
+  }: Omit<ComponentProps<typeof RadioButton.Group>, 'children' | 'onValueChange' | 'value'> & {
+    onChange: (value: boolean) => void;
+    value?: boolean;
+  },
+) {
   // TODO add circular radio buttons to radio buttons
   return (
     <RadioButton.Group

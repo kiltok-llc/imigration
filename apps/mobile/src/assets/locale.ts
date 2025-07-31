@@ -9,6 +9,7 @@ export default {
       next: 'Next',
       no: 'No',
       quiz: {
+        back: 'Back',
         continue: 'Continue',
         header: {
           nextTitle: 'Next: {{ nextTitle }}',
@@ -52,6 +53,12 @@ export default {
               // TODO make parentheses lower opacity/size/intensity etc
               'harm-reasons': 'Was that harm based on one of these reasons?\n(Select all that apply)',
               'left-because-of-harm': 'Did you leave your home country because you feared harm or persecution?',
+              nationality: 'Nationality',
+              other: 'Other',
+              'political-opinion': 'Political Opinion',
+              race: 'Race',
+              religion: 'Religion',
+              'social-group': 'Social Group',
               title: 'Reason for Leaving',
             },
             screenTitle: 'Asylum Eligibility Assessment',

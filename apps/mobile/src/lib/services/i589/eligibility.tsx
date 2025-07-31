@@ -14,7 +14,12 @@ type EligibilityQuizAnswers = {
   physicallyInUS?: boolean;
 }
 
-type HarmReason = 'nationality' | 'other' | 'politicalOpinion' | 'race' | 'religion' | 'socialGroup';
+export const HARM_REASONS = [
+  'nationality', 'other', 'political-opinion', 'race', 'religion', 'social-group'
+] as const;
+
+export type HarmReason = typeof HARM_REASONS[number];
+
 
 export const eligibilityQuizAnswersAtom = atomWithStorage<EligibilityQuizAnswers>(
   'services.i589.step.eligibility.questions',
