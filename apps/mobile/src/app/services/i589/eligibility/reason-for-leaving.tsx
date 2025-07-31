@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
 import { focusAtom } from 'jotai-optics';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import PagerView from 'react-native-pager-view';
@@ -51,21 +51,23 @@ export default function ReasonForLeaving() {
   const [harmReasonOther, setHarmReasonOther] = useAtom(harmReasonOtherAtom);
   const pagerViewRef = useRef<PagerView>(null);
 
-  const currentPage = useMemo(() => {
+  const handleBack = () => {}
+
+  const handleContinue = () => {
+    router.push(`./${nextRouteName}`)
+  }
+
+  const [initialPage] = useState(() => {
     if (leftBecauseOfHarm !== true) {
       return 0;
     }
 
     return 1;
-  }, [leftBecauseOfHarm])
-
-  useEffect(() => {
-    pagerViewRef.current?.setPage(currentPage);
-  }, [currentPage]);
+  })
 
   return (
     <QuizLayout>
-      <PagerView initialPage={currentPage} orientation="vertical" ref={pagerViewRef} scrollEnabled={false} style={tw`flex-1`}>
+      <PagerView initialPage={initialPage} orientation="vertical" ref={pagerViewRef} scrollEnabled={false} style={tw`flex-1`}>
         <View key='0'>
           <QuizContents>
             <QuizPrimaryQuestionText>
@@ -89,12 +91,12 @@ export default function ReasonForLeaving() {
       </PagerView>
       <QuizActions>
         <QuizAction>
-          <QuizSecondaryActionButton onPress={() => router.back()}>
+          <QuizSecondaryActionButton onPress={handleBack}>
             <Trans i18nKey='quiz.back' />
           </QuizSecondaryActionButton>
         </QuizAction>
         <QuizAction>
-          <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
+          <QuizPrimaryActionButton onPress={handleContinue}>
             <Trans i18nKey="quiz.continue" />
           </QuizPrimaryActionButton>
         </QuizAction>
