@@ -16,6 +16,7 @@ export default {
           progress: '{{ current }} of {{ total }}',
           title: '{{ title }}',
         },
+        missing: 'Please answer all questions before continuing.',
       },
       services: {
         i589: {
@@ -50,15 +51,20 @@ export default {
               title: 'Previous Applications',
             },
             'reason-for-leaving': {
+              'harm-caused-by-government': 'Was the harm caused by your government or by people your government could not control?',
               // TODO make parentheses lower opacity/size/intensity etc
               'harm-reasons': 'Was that harm based on one of these reasons?\n(Select all that apply)',
               'left-because-of-harm': 'Did you leave your home country because you feared harm or persecution?',
-              nationality: 'Nationality',
-              other: 'Other',
-              'political-opinion': 'Political Opinion',
-              race: 'Race',
-              religion: 'Religion',
-              'social-group': 'Social Group',
+              other: 'Please specify the other reason for leaving',
+              reasons: {
+                nationality: 'Nationality',
+                none: 'None of the above',
+                other: 'Other',
+                'political-opinion': 'Political Opinion',
+                race: 'Race',
+                religion: 'Religion',
+                'social-group': 'Social Group',
+              },
               title: 'Reason for Leaving',
             },
             screenTitle: 'Asylum Eligibility Assessment',

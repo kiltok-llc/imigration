@@ -1,5 +1,5 @@
-import { Slot } from 'expo-router';
-import { useState } from 'react';
+import { Slot, useNavigationContainerRef } from 'expo-router';
+import { useRef, useState } from 'react';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import tw from 'twrnc';
 

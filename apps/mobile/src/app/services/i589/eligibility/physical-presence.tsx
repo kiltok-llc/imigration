@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
 import { focusAtom } from 'jotai-optics';
 import { useTranslation } from 'react-i18next';
-import { RadioButton } from 'react-native-paper';
+import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
 import {
@@ -10,22 +10,31 @@ import {
   QuizContents,
   QuizLayout,
   QuizPrimaryActionButton,
-  QuizPrimaryQuestionText, QuizSecondaryActionButton, QuizYesNoInput,
+  QuizPrimaryQuestionText,
+  QuizSecondaryActionButton,
+  QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { eligibilityQuizAnswersAtom } from '@/lib/services/i589/eligibility';
-import { toBoolean } from '@/lib/utils';
-import { useNextRouteName } from '@/providers/route-sequence';
+import { quizAnswersAtom } from '@/lib/services/i589/eligibility';
+import { useRouteSequenceNavigation } from '@/providers/route-sequence';
 
-const isPhysicallyPresentAtom = focusAtom(
-  eligibilityQuizAnswersAtom,
-  (answers) => answers.prop('physicallyInUS'),
+const isInUsaAtom = focusAtom(
+  quizAnswersAtom,
+  (answers) => answers.prop('isPhysicallyInUS'),
 );
 
 export default function PhysicalPresence() {
   const { t } = useTranslation();
-  const router = useRouter();
-  const nextRouteName = useNextRouteName();
-  const [isPhysicallyPresent, setIsPhysicallyPresent] = useAtom(isPhysicallyPresentAtom);
+  const [nextRoute, prevRoute] = useRouteSequenceNavigation();
+  const [isInUsa, setIsInUsa] = useAtom(isInUsaAtom);
+
+  const handleContinue = () => {
+    if (isInUsa === undefined) {
+      toast.error(t('quiz.missing'));
+      return;
+    }
+
+    nextRoute();
+  };
 
   return (
     <QuizLayout>
@@ -33,13 +42,13 @@ export default function PhysicalPresence() {
         <QuizPrimaryQuestionText>
           <Trans i18nKey="services.i589.eligibility.physical-presence.is-physically-present" />
         </QuizPrimaryQuestionText>
-        <QuizYesNoInput onChange={setIsPhysicallyPresent} value={isPhysicallyPresent} />
+        <QuizYesNoInput onChange={setIsInUsa} value={isInUsa} />
       </QuizContents>
       <QuizActions>
-        <QuizSecondaryActionButton onPress={() => router.back()}>
-          <Trans i18nKey='quiz.back' />
+        <QuizSecondaryActionButton onPress={prevRoute}>
+          <Trans i18nKey="quiz.back" />
         </QuizSecondaryActionButton>
-        <QuizPrimaryActionButton onPress={() => router.push(`./${nextRouteName}`)}>
+        <QuizPrimaryActionButton onPress={handleContinue}>
           <Trans i18nKey="quiz.continue" />
         </QuizPrimaryActionButton>
       </QuizActions>

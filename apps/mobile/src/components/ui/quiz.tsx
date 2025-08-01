@@ -1,28 +1,37 @@
 import { t } from 'i18next';
-import { ComponentProps, createContext, PropsWithChildren, ReactNode, useContext } from 'react';
-import { View } from 'react-native';
+import {
+  Children,
+  ComponentProps,
+  createContext,
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
+import { ScrollView, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Button, Checkbox, CheckboxProps, RadioButton, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
-import { toBoolean } from '@/lib/utils';
+import { arraysEqual, toBoolean } from '@/lib/utils';
 
 type CheckboxGroupContextValue<T = string> = {
   onChange: (value: T[]) => void
   value: T[],
 }
 
-export function QuizAction({ style, ...props }: ComponentProps<typeof View>) {
+export function QuizActions({ children, style, ...props }: ComponentProps<typeof View>) {
   return (
-    <View style={[tw`flex-1`, style]} {...props} />
-  );
-}
-
-export function QuizActions({ style, ...props }: ComponentProps<typeof View>) {
-  return (
-    <View style={[tw`mt-auto flex-row gap-4`, style]} {...props} />
+    <View style={[tw`mt-auto mx-4 flex-row gap-4`, style]} {...props} >
+      {Children.map(children, (child) => (
+        <View style={tw`flex-1`}>
+          {child}
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -35,19 +44,38 @@ const CheckboxGroupContext = createContext<CheckboxGroupContextValue>({
 const useCheckboxGroupContext = <T, >() =>
   useContext(CheckboxGroupContext) as unknown as CheckboxGroupContextValue<T>;
 
-export function QuizCheckbox<T>({
-                                  value,
-                                  ...props
-                                }: Omit<ComponentProps<typeof Checkbox.Item>, 'status'> & {
-  status?: CheckboxProps['status'];
-  value?: T;
-}) {
+export function QuizCheckbox<T>(
+  {
+    exclusive = false,
+    value,
+    ...props
+  }: Omit<ComponentProps<typeof Checkbox.Item>, 'status'> & {
+    exclusive?: boolean;
+    status?: CheckboxProps['status'];
+    value: T;
+  },
+) {
   const { onChange, value: values } = useCheckboxGroupContext<T>();
-  const checked = !!value && values.includes(value);
+  const checked = values.includes(value);
+
+  const toggle = useCallback(() => {
+    if (checked) {
+      onChange(values.filter((v) => v !== value));
+    } else {
+      onChange(exclusive ? [value] : [...values, value]);
+    }
+  }, [checked, exclusive, onChange, value, values]);
+
+  // Need to uncheck ourselves if we are exclusive but another box is checked
+  useEffect(() => {
+    if (exclusive && checked && !arraysEqual(values, [value])) {
+      toggle();
+    }
+  }, [checked, exclusive, toggle, value, values]);
 
   return (
     <Checkbox.Item
-      onPress={() => !!value && onChange(checked ? values.filter((v) => v !== value) : [...values, value])}
+      onPress={toggle}
       status={checked ? 'checked' : 'unchecked'}
       {...props}
     />
@@ -72,9 +100,13 @@ export function QuizCheckboxGroup<T>(
   );
 }
 
-export function QuizContents({ style, ...props }: ComponentProps<typeof View>) {
+export function QuizContents({ contentContainerStyle, style, ...props }: ComponentProps<typeof ScrollView>) {
   return (
-    <View style={[tw`flex-1 gap-4 justify-center`, style]} {...props} />
+    <ScrollView
+      contentContainerStyle={[tw`py-4 grow-1 gap-4 justify-center`, contentContainerStyle]}
+      style={[tw`flex-1 mx-4`, style]}
+      {...props}
+    />
   );
 }
 
@@ -122,7 +154,7 @@ export function QuizHeader({ current, nextTitle, title, total }: {
 
 export function QuizLayout({ children }: PropsWithChildren) {
   return (
-    <SafeAreaView edges={['left', 'bottom', 'right']} style={tw`flex-1 pt-4 gap-4 px-4`}>
+    <SafeAreaView edges={['left', 'bottom', 'right']} style={tw`flex-1 gap-4`}>
       {children}
     </SafeAreaView>
   );

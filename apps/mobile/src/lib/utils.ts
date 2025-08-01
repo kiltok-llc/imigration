@@ -1,3 +1,15 @@
+export function arraysEqual<T>(a: T[], b: T[]) {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (const [i, element] of a.entries()) {
+    if (element !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function chunked<T>(array: T[], size: number): T[][] {
   const result: T[][] = [];
   for (let i = 0; i < array.length; i += size) {

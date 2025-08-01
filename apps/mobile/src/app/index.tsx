@@ -7,7 +7,7 @@ export default function Root() {
   const [isOnBoarded = false] = useMMKVBoolean('isOnBoarded', storage);
 
   if (__DEV__) {
-    return <Redirect href="/services/i589/eligibility" />;
+    return <Redirect href="/services/i589/progress" />;
   }
 
   if (!isOnBoarded) {

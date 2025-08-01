@@ -1,31 +1,32 @@
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { useAtom } from 'jotai';
 
-import { mmkvStorage } from '@/lib/mmkv';
+import { atomWithMmkvStorage } from '@/atom/atom-with-mmkv-storage';
+import { objectPropertyAtomFamily } from '@/atom/object-property-atom-family';
 
-type EligibilityQuizAnswers = {
-  appliedBefore?: boolean;
-  arrivedWithinLastYear?: boolean;
-  convictedSeriousCrime?: boolean;
-  fromSafeCountry?: boolean;
-  harmCausedByGovernment?: boolean;
-  harmReasonOther?: string;
+type QuizAnswers = {
+  customHarmReason?: string;
   harmReasons: HarmReason[];
-  leftBecauseOfHarm?: boolean;
-  physicallyInUS?: boolean;
+  isConvictedOfCrime?: boolean;
+  isEscapingHarm?: boolean;
+  isFirstApplication?: boolean;
+  isFromSafeCountry?: boolean;
+  isHarmedByGov?: boolean;
+  isPhysicallyInUS?: boolean;
+  isRecentArrival?: boolean;
 }
 
 export const HARM_REASONS = [
-  'nationality', 'other', 'political-opinion', 'race', 'religion', 'social-group'
+  'nationality', 'other', 'political-opinion', 'race', 'religion', 'social-group', 'none',
 ] as const;
 
 export type HarmReason = typeof HARM_REASONS[number];
 
 
-export const eligibilityQuizAnswersAtom = atomWithStorage<EligibilityQuizAnswers>(
-  'services.i589.step.eligibility.questions',
+export const quizAnswersAtom = atomWithMmkvStorage<QuizAnswers>(
+  'services.i589.eligibility.questions',
   {
     harmReasons: [],
   },
-  createJSONStorage(() => mmkvStorage),
-  { getOnInit: true },
 );
+
+export const quizAnswerFamily = objectPropertyAtomFamily(quizAnswersAtom);

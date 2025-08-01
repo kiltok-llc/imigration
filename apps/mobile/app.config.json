@@ -29,7 +29,6 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
       "tsconfigPaths": true
     },
     "orientation": "portrait",

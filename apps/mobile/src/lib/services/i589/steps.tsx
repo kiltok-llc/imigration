@@ -1,8 +1,7 @@
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { atom } from 'jotai';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 
-import { mmkvStorage } from '@/lib/mmkv';
+import { atomWithMmkvStorage } from '@/atom/atom-with-mmkv-storage';
 import { StepIcon } from '@/lib/services/types';
 
 type Step = {
@@ -10,11 +9,9 @@ type Step = {
   id: string;
 }
 
-export const stepIdAtom = atomWithStorage(
+export const stepIdAtom = atomWithMmkvStorage(
   'services.i589.step',
-  'eligibility',
-  createJSONStorage(() => mmkvStorage),
-  { getOnInit: true },
+  'eligibility'
 );
 
 export const stepsAtom = atom<Step[]>([

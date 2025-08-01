@@ -1,18 +1,48 @@
 import { useRouter } from 'expo-router';
-import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { useAtom } from 'jotai';
+import { focusAtom } from 'jotai-optics';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner-native';
 
-import { useNextRouteName } from '@/providers/route-sequence';
+import { Trans } from '@/components/trans';
+import {
+  QuizActions,
+  QuizContents,
+  QuizLayout,
+  QuizPrimaryActionButton,
+  QuizPrimaryQuestionText,
+  QuizSecondaryActionButton,
+  QuizYesNoInput,
+} from '@/components/ui/quiz';
+import { quizAnswersAtom } from '@/lib/services/i589/eligibility';
+import { useRouteSequenceNavigation } from '@/providers/route-sequence';
+
+const arrivedAtom = focusAtom(
+  quizAnswersAtom,
+  (answers) => answers.prop('arrivedWithinLastYear'),
+);
 
 export default function ArrivalDate() {
-  const nextRouteName = useNextRouteName();
-  const router = useRouter();
+  const [nextRoute, prevRoute] = useRouteSequenceNavigation();
+  const [arrived, setArrived] = useAtom(arrivedAtom);
 
   return (
-    <View>
-      <Text>Arrival Date</Text>
-      <Button onPress={() => router.push(`./${nextRouteName}`)}>Next</Button>
-    </View>
+    <QuizLayout>
+      <QuizContents>
+        <QuizPrimaryQuestionText>
+          <Trans i18nKey="services.i589.eligibility.physical-presence.is-physically-present" />
+        </QuizPrimaryQuestionText>
+        <QuizYesNoInput onChange={setArrived} value={arrived} />
+      </QuizContents>
+      <QuizActions>
+        <QuizSecondaryActionButton onPress={prevRoute}>
+          <Trans i18nKey="quiz.back" />
+        </QuizSecondaryActionButton>
+        <QuizPrimaryActionButton onPress={nextRoute}>
+          <Trans i18nKey="quiz.continue" />
+        </QuizPrimaryActionButton>
+      </QuizActions>
+    </QuizLayout>
   );
 }
 

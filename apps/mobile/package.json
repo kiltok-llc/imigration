@@ -65,6 +65,7 @@
     "jotai-optics": "^0.4.0",
     "jotai-ssr": "^0.2.0",
     "jsonata": "^2.0.6",
+    "nuqs": "^2.4.3",
     "optics-ts": "^2.4.1",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",

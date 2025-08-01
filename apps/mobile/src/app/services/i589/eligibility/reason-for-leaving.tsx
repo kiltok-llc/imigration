@@ -1,74 +1,148 @@
 import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
-import { focusAtom } from 'jotai-optics';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { parseAsInteger, useQueryState } from 'nuqs';
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import PagerView from 'react-native-pager-view';
-import { Text } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
+import { toast } from 'sonner-native';
 import tw from 'twrnc';
+import z from 'zod/v4';
 
+import { atomWithValidation } from '@/atom/atom-with-validation';
+import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { Trans } from '@/components/trans';
 import {
-  QuizAction,
-  QuizActions, QuizCheckbox, QuizCheckboxGroup,
+  QuizActions,
+  QuizCheckbox,
+  QuizCheckboxGroup,
   QuizContents,
   QuizLayout,
   QuizPrimaryActionButton,
-  QuizPrimaryQuestionText, QuizSecondaryActionButton,
+  QuizPrimaryQuestionText,
+  QuizSecondaryActionButton,
   QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { eligibilityQuizAnswersAtom, HARM_REASONS } from '@/lib/services/i589/eligibility';
-import { useNextRouteName } from '@/providers/route-sequence';
+import { QuizPage } from '@/lib/quiz';
+import { HARM_REASONS, quizAnswerFamily } from '@/lib/services/i589/eligibility';
+import { useRouteSequenceNavigation } from '@/providers/route-sequence';
 
-const leftBecauseOfHarmAtom = focusAtom(
-  eligibilityQuizAnswersAtom,
-  (answers) => answers.prop('leftBecauseOfHarm'),
+const customHarmReasonValidationAtom = atomWithValidation(
+  quizAnswerFamily('customHarmReason'),
+  z.string().min(2),
 );
 
-const harmCausedByGovernmentAtom = focusAtom(
-  eligibilityQuizAnswersAtom,
-  (answers) => answers.prop('harmCausedByGovernment'),
-);
+export type PageResult = 'INELIGIBLE' | 'MISSING' | 'NEXT' | 'PREVIOUS';
 
-const harmReasonsAtom = focusAtom(
-  eligibilityQuizAnswersAtom,
-  (answers) => answers.prop('harmReasons'),
-);
+export type QuizPage = () => PageResult;
 
-const harmReasonOtherAtom = focusAtom(
-  eligibilityQuizAnswersAtom,
-  (answers) => answers.prop('harmReasonOther'),
-);
-
-export default function ReasonForLeaving() {
-  const router = useRouter();
+const usePagedQuiz = (pages: QuizPage[]) => {
   const { t } = useTranslation();
-  const nextRouteName = useNextRouteName();
-  const [leftBecauseOfHarm, setLeftBecauseOfHarm] = useAtom(leftBecauseOfHarmAtom);
-  const [harmCausedByGovernment, setHarmCausedByGovernment] = useAtom(harmCausedByGovernmentAtom);
-  const [harmReasons, setHarmReasons] = useAtom(harmReasonsAtom);
-  const [harmReasonOther, setHarmReasonOther] = useAtom(harmReasonOtherAtom);
-  const pagerViewRef = useRef<PagerView>(null);
+  const router = useRouter();
+  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(0));
+  const [nextRoute, prevRoute] = useRouteSequenceNavigation();
 
-  const handleBack = () => {}
+  const handleNext = () => {
+    const result = pages[page]!();
 
-  const handleContinue = () => {
-    router.push(`./${nextRouteName}`)
-  }
-
-  const [initialPage] = useState(() => {
-    if (leftBecauseOfHarm !== true) {
-      return 0;
+    if (result === 'INELIGIBLE') {
+      router.replace('../ineligible');
+      return;
     }
 
-    return 1;
-  })
+    if (result === 'MISSING') {
+      toast.error(t('quiz.missing'));
+      return;
+    }
+
+    if (result === 'NEXT') {
+      if (page < pages.length - 1) {
+        void setPage(page + 1);
+      } else {
+        nextRoute();
+      }
+    }
+  };
+
+  const handlePrev = () => {
+    if (page > 0) {
+      void setPage(page - 1);
+    } else {
+      prevRoute();
+    }
+  };
+
+  return {
+    handleNext,
+    handlePrev,
+    page,
+    setPage,
+  }
+}
+
+export default function ReasonForLeaving() {
+  const { t } = useTranslation();
+  const [isEscapingHarm, setIsEscapingHarm] = useAtom(quizAnswerFamily('isEscapingHarm'));
+  const [isHarmedByGov, setIsHarmedByGov] = useAtom(quizAnswerFamily('isHarmedByGov'));
+  const [harmReasons, setHarmReasons] = useAtom(quizAnswerFamily('harmReasons'));
+  const [customHarmReason, setCustomHarmReason] = useAtom(quizAnswerFamily('customHarmReason'));
+  const {
+    error: customHarmReasonError,
+    isDirty: isCustomHarmReasonDirty,
+  } = useAtomValue(customHarmReasonValidationAtom);
+  const validateCustomHarmReason = useSetAtom(customHarmReasonValidationAtom);
+
+  const { handleNext, handlePrev, page } = usePagedQuiz([
+    () => {
+      switch (isEscapingHarm) {
+        case false: {
+          console.log('isEscapingHarm was false');
+          return 'INELIGIBLE';
+        }
+        case true: {
+          return 'NEXT';
+        }
+        case undefined: {
+          console.log('isEscapingHarm was unanswered');
+          return 'MISSING';
+        }
+      }
+    },
+    () => {
+      if (harmReasons.length === 0) {
+        console.log('harmReasons was unanswered');
+        return 'MISSING';
+      } else if (harmReasons.includes('none')) {
+        console.log('no harmReasons selected');
+        return 'INELIGIBLE';
+      } else if (harmReasons.includes('other') && !validateCustomHarmReason()) {
+        console.log('customHarmReason was invalid');
+        return 'MISSING';
+      }
+
+      return 'NEXT';
+    },
+    () => {
+      switch (isHarmedByGov) {
+        case false: {
+          console.log('isHarmedByGov was false');
+          return 'INELIGIBLE';
+        }
+        case true: {
+          return 'NEXT';
+        }
+        case undefined: {
+          console.log('isHarmedByGov was unanswered');
+          return 'MISSING';
+        }
+      }
+    },
+  ])
 
   return (
     <QuizLayout>
-      <PagerView initialPage={initialPage} orientation="vertical" ref={pagerViewRef} scrollEnabled={false} style={tw`flex-1`}>
-        <View key='0'>
+      <ReactivePagerView orientation="vertical" page={page} style={tw`flex-1`}>
+        <View key="0">
           <QuizContents>
             <QuizPrimaryQuestionText>
               <Trans i18nKey="services.i589.eligibility.reason-for-leaving.left-because-of-harm" />
@@ -76,30 +150,46 @@ export default function ReasonForLeaving() {
             <QuizYesNoInput onChange={setLeftBecauseOfHarm} value={leftBecauseOfHarm} />
           </QuizContents>
         </View>
-        <View key='1'>
+        <View key="1">
           <QuizContents>
             <QuizPrimaryQuestionText>
               <Trans i18nKey="services.i589.eligibility.reason-for-leaving.harm-reasons" />
             </QuizPrimaryQuestionText>
             <QuizCheckboxGroup onChange={setHarmReasons} value={harmReasons}>
               {HARM_REASONS.map((reason) => (
-                <QuizCheckbox key={reason} label={t(`services.i589.eligibility.reason-for-leaving.${reason}`)} value={reason} />
+                <QuizCheckbox
+                  exclusive={reason === 'none'}
+                  key={reason}
+                  label={t(`services.i589.eligibility.reason-for-leaving.reasons.${reason}`)}
+                  value={reason}
+                />
               ))}
             </QuizCheckboxGroup>
+            <TextInput
+              error={!!harmReasonOtherError && !harmReasonOtherDirty}
+              label={t('services.i589.eligibility.reason-for-leaving.other')}
+              multiline={true}
+              onChangeText={setHarmReasonOther}
+              value={harmReasonOther}
+            />
           </QuizContents>
         </View>
-      </PagerView>
+        <View key="2">
+          <QuizContents>
+            <QuizPrimaryQuestionText>
+              <Trans i18nKey="services.i589.eligibility.reason-for-leaving.harm-caused-by-government" />
+            </QuizPrimaryQuestionText>
+            <QuizYesNoInput onChange={setHarmCausedByGovernment} value={harmCausedByGovernment} />
+          </QuizContents>
+        </View>
+      </ReactivePagerView>
       <QuizActions>
-        <QuizAction>
-          <QuizSecondaryActionButton onPress={handleBack}>
-            <Trans i18nKey='quiz.back' />
-          </QuizSecondaryActionButton>
-        </QuizAction>
-        <QuizAction>
-          <QuizPrimaryActionButton onPress={handleContinue}>
-            <Trans i18nKey="quiz.continue" />
-          </QuizPrimaryActionButton>
-        </QuizAction>
+        <QuizSecondaryActionButton onPress={handlePrev}>
+          <Trans i18nKey="quiz.back" />
+        </QuizSecondaryActionButton>
+        <QuizPrimaryActionButton onPress={handleNext}>
+          <Trans i18nKey="quiz.continue" />
+        </QuizPrimaryActionButton>
       </QuizActions>
     </QuizLayout>
   );
