@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import tw from 'twrnc';
@@ -19,6 +19,7 @@ const ROUTES = [
 
 export default function EligibilityLayout() {
   const { t } = useTranslation();
+  console.log(useLocalSearchParams());
 
   return (
     <>

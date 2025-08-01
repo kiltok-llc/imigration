@@ -11,7 +11,7 @@ type QuizAnswers = {
   isFirstApplication?: boolean;
   isFromSafeCountry?: boolean;
   isHarmedByGov?: boolean;
-  isPhysicallyInUS?: boolean;
+  isInUsa?: boolean;
   isRecentArrival?: boolean;
 }
 

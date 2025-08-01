@@ -15,7 +15,6 @@ import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { theme } from '@/lib/paper-theme';
 import { LanguageProvider } from '@/providers/language';
-import { NuqsAdapter } from '@/providers/nuqs-adapter';
 import { QueryProvider } from '@/providers/query';
 import { TRPCProvider } from '@/providers/trpc';
 
@@ -65,10 +64,8 @@ function RootLayout() {
           <LanguageProvider>
             <GestureHandlerRootView style={tw`flex-1`}>
               <SplashScreenBarrier>
-                <NuqsAdapter>
-                  <StackWrapper />
-                  <Toaster />
-                </NuqsAdapter>
+                <StackWrapper />
+                <Toaster />
               </SplashScreenBarrier>
             </GestureHandlerRootView>
           </LanguageProvider>

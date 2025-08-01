@@ -1,4 +1,4 @@
-import { Redirect, usePathname } from 'expo-router';
+import { Redirect, useLocalSearchParams, usePathname } from 'expo-router';
 
 import { useRoutes } from '@/providers/route-sequence';
 

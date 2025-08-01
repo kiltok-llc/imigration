@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import {useLocalSearchParams, useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
 import { focusAtom } from 'jotai-optics';
 import { useTranslation } from 'react-i18next';
@@ -14,18 +14,14 @@ import {
   QuizSecondaryActionButton,
   QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { quizAnswersAtom } from '@/lib/services/i589/eligibility';
+import { quizAnswerFamily } from '@/lib/services/i589/eligibility';
 import { useRouteSequenceNavigation } from '@/providers/route-sequence';
 
-const isInUsaAtom = focusAtom(
-  quizAnswersAtom,
-  (answers) => answers.prop('isPhysicallyInUS'),
-);
 
 export default function PhysicalPresence() {
   const { t } = useTranslation();
   const [nextRoute, prevRoute] = useRouteSequenceNavigation();
-  const [isInUsa, setIsInUsa] = useAtom(isInUsaAtom);
+  const [isInUsa, setIsInUsa] = useAtom(quizAnswerFamily('isInUsa'));
 
   const handleContinue = () => {
     if (isInUsa === undefined) {
@@ -40,7 +36,7 @@ export default function PhysicalPresence() {
     <QuizLayout>
       <QuizContents>
         <QuizPrimaryQuestionText>
-          <Trans i18nKey="services.i589.eligibility.physical-presence.is-physically-present" />
+          <Trans i18nKey="services.i589.eligibility.physical-presence.is-in-usa" />
         </QuizPrimaryQuestionText>
         <QuizYesNoInput onChange={setIsInUsa} value={isInUsa} />
       </QuizContents>

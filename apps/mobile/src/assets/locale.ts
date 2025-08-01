@@ -44,17 +44,17 @@ export default {
             },
             description: 'Complete a short quiz to check if you qualify to apply for asylum.',
             'physical-presence': {
-              'is-physically-present': 'Are you currently in the United States?',
+              'is-in-usa': 'Are you currently in the United States?',
               title: 'Physical Presence in the US',
             },
             'previous-applications': {
               title: 'Previous Applications',
             },
             'reason-for-leaving': {
-              'harm-caused-by-government': 'Was the harm caused by your government or by people your government could not control?',
               // TODO make parentheses lower opacity/size/intensity etc
               'harm-reasons': 'Was that harm based on one of these reasons?\n(Select all that apply)',
-              'left-because-of-harm': 'Did you leave your home country because you feared harm or persecution?',
+              'is-escaping-harm': 'Did you leave your home country because you feared harm or persecution?',
+              'is-harmed-by-gov': 'Was the harm caused by your government or by people your government could not control?',
               other: 'Please specify the other reason for leaving',
               reasons: {
                 nationality: 'Nationality',

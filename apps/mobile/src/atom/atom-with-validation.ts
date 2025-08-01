@@ -14,7 +14,6 @@ export const atomWithValidation = <T>(
         isDirty: get(prevValue) !== get(baseAtom),
     }),
     (get, set) => {
-      console.log('validating...', get(baseAtom));
       const { error, success } = schema.safeParse(get(baseAtom));
       set(errorAtom, error);
       set(prevValue, get(baseAtom));

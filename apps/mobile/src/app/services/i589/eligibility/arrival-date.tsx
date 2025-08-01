@@ -1,8 +1,6 @@
-import { useRouter } from 'expo-router';
+import {useLocalSearchParams } from 'expo-router';
 import { useAtom } from 'jotai';
 import { focusAtom } from 'jotai-optics';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
 import {
@@ -14,23 +12,18 @@ import {
   QuizSecondaryActionButton,
   QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { quizAnswersAtom } from '@/lib/services/i589/eligibility';
+import { quizAnswerFamily } from '@/lib/services/i589/eligibility';
 import { useRouteSequenceNavigation } from '@/providers/route-sequence';
-
-const arrivedAtom = focusAtom(
-  quizAnswersAtom,
-  (answers) => answers.prop('arrivedWithinLastYear'),
-);
 
 export default function ArrivalDate() {
   const [nextRoute, prevRoute] = useRouteSequenceNavigation();
-  const [arrived, setArrived] = useAtom(arrivedAtom);
+  const [arrived, setArrived] = useAtom(quizAnswerFamily('isRecentArrival'));
 
   return (
     <QuizLayout>
       <QuizContents>
         <QuizPrimaryQuestionText>
-          <Trans i18nKey="services.i589.eligibility.physical-presence.is-physically-present" />
+          <Trans i18nKey="services.i589.eligibility.physical-presence.is-recent" />
         </QuizPrimaryQuestionText>
         <QuizYesNoInput onChange={setArrived} value={arrived} />
       </QuizContents>

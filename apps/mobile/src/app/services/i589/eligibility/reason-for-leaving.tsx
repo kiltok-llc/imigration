@@ -1,7 +1,7 @@
-import { useRouter } from 'expo-router';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { useLocalSearchParams, usePathname, useRouter } from 'expo-router';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
@@ -23,7 +23,6 @@ import {
   QuizSecondaryActionButton,
   QuizYesNoInput,
 } from '@/components/ui/quiz';
-import { QuizPage } from '@/lib/quiz';
 import { HARM_REASONS, quizAnswerFamily } from '@/lib/services/i589/eligibility';
 import { useRouteSequenceNavigation } from '@/providers/route-sequence';
 
@@ -39,7 +38,7 @@ export type QuizPage = () => PageResult;
 const usePagedQuiz = (pages: QuizPage[]) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(0));
+  const [page, setPage] = useState(0);
   const [nextRoute, prevRoute] = useRouteSequenceNavigation();
 
   const handleNext = () => {
@@ -92,6 +91,7 @@ export default function ReasonForLeaving() {
   } = useAtomValue(customHarmReasonValidationAtom);
   const validateCustomHarmReason = useSetAtom(customHarmReasonValidationAtom);
 
+  // TODO extract with pager too
   const { handleNext, handlePrev, page } = usePagedQuiz([
     () => {
       switch (isEscapingHarm) {
@@ -145,9 +145,9 @@ export default function ReasonForLeaving() {
         <View key="0">
           <QuizContents>
             <QuizPrimaryQuestionText>
-              <Trans i18nKey="services.i589.eligibility.reason-for-leaving.left-because-of-harm" />
+              <Trans i18nKey="services.i589.eligibility.reason-for-leaving.is-escaping-harm" />
             </QuizPrimaryQuestionText>
-            <QuizYesNoInput onChange={setLeftBecauseOfHarm} value={leftBecauseOfHarm} />
+            <QuizYesNoInput onChange={setIsEscapingHarm} value={isEscapingHarm} />
           </QuizContents>
         </View>
         <View key="1">
@@ -166,20 +166,20 @@ export default function ReasonForLeaving() {
               ))}
             </QuizCheckboxGroup>
             <TextInput
-              error={!!harmReasonOtherError && !harmReasonOtherDirty}
+              error={!!customHarmReasonError && !isCustomHarmReasonDirty}
               label={t('services.i589.eligibility.reason-for-leaving.other')}
               multiline={true}
-              onChangeText={setHarmReasonOther}
-              value={harmReasonOther}
+              onChangeText={setCustomHarmReason}
+              value={customHarmReason}
             />
           </QuizContents>
         </View>
         <View key="2">
           <QuizContents>
             <QuizPrimaryQuestionText>
-              <Trans i18nKey="services.i589.eligibility.reason-for-leaving.harm-caused-by-government" />
+              <Trans i18nKey="services.i589.eligibility.reason-for-leaving.is-harmed-by-gov" />
             </QuizPrimaryQuestionText>
-            <QuizYesNoInput onChange={setHarmCausedByGovernment} value={harmCausedByGovernment} />
+            <QuizYesNoInput onChange={setIsHarmedByGov} value={isHarmedByGov} />
           </QuizContents>
         </View>
       </ReactivePagerView>
