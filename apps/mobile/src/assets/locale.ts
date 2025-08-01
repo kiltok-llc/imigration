@@ -34,12 +34,15 @@ export default {
           },
           eligibility: {
             'arrival-date': {
+              'is-recent': 'Have you arrived in the U.S. within the last year?',
               title: 'Arrival Date',
             },
             'country-of-origin': {
-              title: 'Country of Origin',
+              'is-from-safe-country': 'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+              title: 'Country of Origin'
             },
             'criminal-history': {
+              'has-criminal-history': 'Have you ever been convicted of a serious crime?',
               title: 'Criminal Convictions',
             },
             description: 'Complete a short quiz to check if you qualify to apply for asylum.',
@@ -48,6 +51,7 @@ export default {
               title: 'Physical Presence in the US',
             },
             'previous-applications': {
+              'has-previous-app': 'Have you ever applied for asylum in the United States before?',
               title: 'Previous Applications',
             },
             'reason-for-leaving': {
@@ -69,6 +73,20 @@ export default {
             },
             screenTitle: 'Asylum Eligibility Assessment',
             stepTitle: 'Eligibility',
+          },
+          eligible: {
+            continueButton: 'Continue to Application',
+            description: 'Based on your answers, you appear to be eligible to apply for asylum in the United States.',
+            nextSteps: 'You can now proceed with your I-589 application for asylum. The following steps will guide you through the process.',
+            screenTitle: 'Eligibility Confirmed',
+            title: 'You May Be Eligible for Asylum',
+          },
+          ineligible: {
+            alternatives: 'You may want to consult with an immigration attorney to explore other immigration options that might be available to you.',
+            backButton: 'Return to Services',
+            description: 'Based on your answers, you may not be eligible to apply for asylum in the United States at this time.',
+            screenTitle: 'Eligibility Results',
+            title: 'You May Not Be Eligible for Asylum',
           },
           interview: {
             description: 'Attend your scheduled asylum interview with an officer or judge.',

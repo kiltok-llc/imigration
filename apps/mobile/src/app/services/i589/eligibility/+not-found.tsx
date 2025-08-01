@@ -1,9 +1,9 @@
-import { Redirect, useLocalSearchParams, usePathname } from 'expo-router';
+import { Redirect, usePathname } from 'expo-router';
 
-import { useRoutes } from '@/providers/route-sequence';
+import { useEligibilityQuizRoutes } from '@/components/ui/eligibility';
 
 export default function NotFound() {
-  const [firstRouteName] = useRoutes();
+  const [firstRouteName] = useEligibilityQuizRoutes();
   const pathname = usePathname();
 
   console.log(`Route ${pathname} not found, redirecting to first route: ${firstRouteName}`);

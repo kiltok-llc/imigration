@@ -1,17 +1,32 @@
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { atom } from 'jotai';
+import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atom/atom-with-mmkv-storage';
 import { StepIcon } from '@/lib/services/types';
 
+export const StepIdEnum = z.enum([
+  'eligibility',
+  'personal-info',
+  'documents',
+  'review',
+  'waiting',
+  'interview',
+  'decision',
+  'appeal',
+]);
+
+export type StepId = z.infer<typeof StepIdEnum>;
+
 type Step = {
   Icon: StepIcon;
-  id: string;
+  id: StepId;
 }
 
 export const stepIdAtom = atomWithMmkvStorage(
-  'services.i589.step',
-  'eligibility'
+  'services.i589.stepId',
+  'eligibility',
+  StepIdEnum,
 );
 
 export const stepsAtom = atom<Step[]>([

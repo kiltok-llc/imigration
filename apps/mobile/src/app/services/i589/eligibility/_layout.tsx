@@ -1,44 +1,48 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router';
+import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import tw from 'twrnc';
 
 import { FadeSlot } from '@/components/fade-slot';
+import { EligibilityQuizRoutesProvider, useEligibilityQuizRoutes } from '@/components/ui/eligibility';
 import { QuizHeader } from '@/components/ui/quiz';
 import { useFocusedRouteName } from '@/hooks/use-route';
-import { RoutesProvider, useRoutes } from '@/providers/route-sequence';
+import { savedQuizRouteAtom } from '@/lib/services/i589/eligibility';
 
-const ROUTES = [
-  'physical-presence',
-  'reason-for-leaving',
-  'arrival-date',
-  'previous-applications',
-  'criminal-history',
-  'country-of-origin',
-];
 
 export default function EligibilityLayout() {
   const { t } = useTranslation();
-  console.log(useLocalSearchParams());
+  const setSavedQuizRoute = useSetAtom(savedQuizRouteAtom);
 
   return (
     <>
       <Stack.Screen options={{
         title: t('services.i589.eligibility.screenTitle'),
       }} />
-      <RoutesProvider persistenceKey="services.i589.eligibility.route" routes={ROUTES}>
+      <EligibilityQuizRoutesProvider
+        onSaveFocusedRoute={setSavedQuizRoute}
+        routes={[
+          'physical-presence',
+          'reason-for-leaving',
+          'arrival-date',
+          'previous-applications',
+          'criminal-history',
+          'country-of-origin',
+        ]}
+      >
         <View style={tw`flex-1`}>
           <EligibilityQuizHeader />
           <FadeSlot />
         </View>
-      </RoutesProvider>
+      </EligibilityQuizRoutesProvider>
     </>
   );
 }
 
 function EligibilityQuizHeader() {
   const routeName = useFocusedRouteName();
-  const routes = useRoutes();
+  const routes = useEligibilityQuizRoutes();
   const routeIdx = routes.indexOf(routeName);
   const nextRouteName = routes[routeIdx + 1];
   const { t } = useTranslation();

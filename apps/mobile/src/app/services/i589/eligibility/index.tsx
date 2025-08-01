@@ -1,11 +1,12 @@
-import {Redirect} from "expo-router";
+import { Redirect } from 'expo-router';
+import { useAtomValue } from 'jotai';
 
-import {useLastVisitedRouteName} from '@/providers/route-sequence';
+import { savedQuizRouteAtom } from '@/lib/services/i589/eligibility';
 
 export default function Eligibility() {
-  const [lastVisitedRouteName] = useLastVisitedRouteName();
+  const savedQuizRoute = useAtomValue(savedQuizRouteAtom);
 
-  console.log(`Redirecting to last visited route: ${lastVisitedRouteName}`);
+  console.log(`Redirecting to saved route: ${savedQuizRoute}`);
 
-  return <Redirect href={`./eligibility/${lastVisitedRouteName}`}/>;
+  return <Redirect href={`./eligibility/${savedQuizRoute}`} />;
 }
