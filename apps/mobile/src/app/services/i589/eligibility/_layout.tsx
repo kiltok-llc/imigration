@@ -5,11 +5,13 @@ import { View } from 'react-native';
 import tw from 'twrnc';
 
 import { FadeSlot } from '@/components/fade-slot';
-import { EligibilityQuizRoutesProvider, useEligibilityQuizRoutes } from '@/components/ui/eligibility';
+import {
+  EligibilityQuizRoutesProvider,
+  useEligibilityQuizRoutes,
+} from '@/components/ui/eligibility';
 import { QuizHeader } from '@/components/ui/quiz';
 import { useFocusedRouteName } from '@/hooks/use-route';
 import { savedQuizRouteAtom } from '@/lib/services/i589/eligibility';
-
 
 export default function EligibilityLayout() {
   const { t } = useTranslation();
@@ -17,9 +19,11 @@ export default function EligibilityLayout() {
 
   return (
     <>
-      <Stack.Screen options={{
-        title: t('services.i589.eligibility.screenTitle'),
-      }} />
+      <Stack.Screen
+        options={{
+          title: t('services.i589.eligibility.screenTitle'),
+        }}
+      />
       <EligibilityQuizRoutesProvider
         onSaveFocusedRoute={setSavedQuizRoute}
         routes={[
@@ -50,7 +54,11 @@ function EligibilityQuizHeader() {
   return (
     <QuizHeader
       current={routeIdx + 1}
-      nextTitle={nextRouteName ? t(`services.i589.eligibility.${nextRouteName}.title`) : undefined}
+      nextTitle={
+        nextRouteName
+          ? t(`services.i589.eligibility.${nextRouteName}.title`)
+          : undefined
+      }
       title={t(`services.i589.eligibility.${routeName}.title`)}
       total={routes.length}
     />

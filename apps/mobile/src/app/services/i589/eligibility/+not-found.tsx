@@ -6,7 +6,9 @@ export default function NotFound() {
   const [firstRouteName] = useEligibilityQuizRoutes();
   const pathname = usePathname();
 
-  console.log(`Route ${pathname} not found, redirecting to first route: ${firstRouteName}`);
+  console.log(
+    `Route ${pathname} not found, redirecting to first route: ${firstRouteName}`
+  );
 
   return <Redirect href={`./${firstRouteName}`} />;
 }

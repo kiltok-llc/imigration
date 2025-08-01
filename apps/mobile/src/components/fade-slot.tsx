@@ -1,10 +1,9 @@
-import { Slot, useNavigationContainerRef } from 'expo-router';
-import { useRef, useState } from 'react';
+import { Slot } from 'expo-router';
+import { useState } from 'react';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import tw from 'twrnc';
 
 import { useFocusedRouteName } from '@/hooks/use-route';
-
 
 export function FadeSlot() {
   const [isFirstRender, setIsFirstRender] = useState(true);

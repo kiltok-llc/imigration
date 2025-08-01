@@ -8,22 +8,27 @@ export const useRouteNavigation = (routes: string[]) => {
   const routeName = useRouteName();
   const routeIdx = routes.indexOf(routeName);
 
-  const incrementRoute = useCallback((update: number) => {
-    if (routeIdx === -1) {
-      console.warn(`Current route ${routeName} is not in the defined routes list.`);
-      return;
-    }
+  const incrementRoute = useCallback(
+    (update: number) => {
+      if (routeIdx === -1) {
+        console.warn(
+          `Current route ${routeName} is not in the defined routes list.`
+        );
+        return;
+      }
 
-    const nextRouteIdx = routeIdx + update;
-    const nextRouteName = routes[nextRouteIdx];
-    if (!nextRouteName) {
-      console.warn(`Next route index out of bounds: ${nextRouteIdx}.`);
-      return;
-    }
+      const nextRouteIdx = routeIdx + update;
+      const nextRouteName = routes[nextRouteIdx];
+      if (!nextRouteName) {
+        console.warn(`Next route index out of bounds: ${nextRouteIdx}.`);
+        return;
+      }
 
-    console.log(`Navigating to ${nextRouteName} from ${routeName}`);
-    router.replace(`./${nextRouteName}`);
-  }, [routeIdx, routeName, routes, router]);
+      console.log(`Navigating to ${nextRouteName} from ${routeName}`);
+      router.replace(`./${nextRouteName}`);
+    },
+    [routeIdx, routeName, routes, router]
+  );
 
   const nextRoute = useCallback(() => incrementRoute(1), [incrementRoute]);
   const prevRoute = useCallback(() => incrementRoute(-1), [incrementRoute]);
@@ -35,4 +40,3 @@ export const useRouteNavigation = (routes: string[]) => {
     prevRoute,
   };
 };
-

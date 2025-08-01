@@ -1,3 +1,3 @@
-import {FunctionComponent} from "react";
+import { FunctionComponent } from 'react';
 
-export type StepIcon = FunctionComponent<{ color?: string; size?: number; }>
+export type StepIcon = FunctionComponent<{ color?: string; size?: number }>;

@@ -1,5 +1,5 @@
 import { SyncStringStorage } from 'jotai/vanilla/utils/atomWithStorage';
-import { MMKV, useMMKVListener } from 'react-native-mmkv';
+import { MMKV } from 'react-native-mmkv';
 
 export const storage = new MMKV();
 
@@ -24,7 +24,7 @@ export const mmkvStorage: SyncStringStorage = {
         // console.debug(`mmkvStateStorage.subscribe(${name})`, value);
         callback(value ?? null);
       }
-    })
+    });
     return () => listener.remove();
-  }
+  },
 };

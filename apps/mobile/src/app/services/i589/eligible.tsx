@@ -9,7 +9,10 @@ import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
-import { quizAnswersAtom, savedQuizRouteAtom } from '@/lib/services/i589/eligibility';
+import {
+  quizAnswersAtom,
+  savedQuizRouteAtom,
+} from '@/lib/services/i589/eligibility';
 import { stepIdAtom } from '@/lib/services/i589/steps';
 
 export default function I589Eligible() {
@@ -20,34 +23,38 @@ export default function I589Eligible() {
 
   return (
     <>
-      <Stack.Screen options={{
-        title: t('services.i589.eligible.screenTitle'),
-      }} />
+      <Stack.Screen
+        options={{
+          title: t('services.i589.eligible.screenTitle'),
+        }}
+      />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
         <Container>
-          <Surface style={tw`flex-1 p-8 pt-10 my-20 gap-10 w-full h-full`}>
-            <View style={tw`items-center mb-8`}>
-              <View style={tw`w-20 h-20 rounded-full bg-green-500 items-center justify-center mb-6`}>
-                <Text style={tw`text-white text-3xl font-bold`}>✓</Text>
+          <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
+            <View style={tw`mb-8 items-center`}>
+              <View
+                style={tw`mb-6 h-20 w-20 items-center justify-center rounded-full bg-green-500`}
+              >
+                <Text style={tw`text-3xl font-bold text-white`}>✓</Text>
               </View>
             </View>
             <View style={tw`gap-4`}>
-              <Text style={tw`font-bold text-center`} variant="headlineMedium">
-                <Trans i18nKey="services.i589.eligible.title" />
+              <Text style={tw`text-center font-bold`} variant='headlineMedium'>
+                <Trans i18nKey='services.i589.eligible.title' />
               </Text>
-              <Text style={tw`text-center`} variant="bodyLarge">
-                <Trans i18nKey="services.i589.eligible.description" />
+              <Text style={tw`text-center`} variant='bodyLarge'>
+                <Trans i18nKey='services.i589.eligible.description' />
               </Text>
-              <Text style={tw`text-center mt-4`} variant="bodyMedium">
-                <Trans i18nKey="services.i589.eligible.nextSteps" />
+              <Text style={tw`mt-4 text-center`} variant='bodyMedium'>
+                <Trans i18nKey='services.i589.eligible.nextSteps' />
               </Text>
             </View>
           </Surface>
           <Button
             contentStyle={tw`flex-row-reverse py-1`}
-            icon="arrow-right"
+            icon='arrow-right'
             labelStyle={tw`text-lg`}
-            mode="contained"
+            mode='contained'
             onPress={() => {
               resetEligibilityQuiz();
               resetSavedQuizRoute();
@@ -56,7 +63,7 @@ export default function I589Eligible() {
             }}
             style={tw`mt-auto`}
           >
-            <Trans i18nKey="services.i589.eligible.continueButton" />
+            <Trans i18nKey='services.i589.eligible.continueButton' />
           </Button>
         </Container>
       </SafeAreaView>

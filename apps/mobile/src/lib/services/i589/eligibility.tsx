@@ -32,7 +32,7 @@ export type QuizAnswers = z.infer<typeof QuizAnswersSchema>;
 export const quizAnswersAtom = atomWithMmkvStorage(
   'services.i589.eligibility.questions',
   { harmReasons: [] },
-  QuizAnswersSchema,
+  QuizAnswersSchema
 );
 
 export const quizAnswerFamily = objectPropertyAtomFamily(quizAnswersAtom);
@@ -40,5 +40,5 @@ export const quizAnswerFamily = objectPropertyAtomFamily(quizAnswersAtom);
 export const savedQuizRouteAtom = atomWithMmkvStorage(
   'services.i589.eligibility.savedQuizRoute',
   'physical-presence',
-  z.string(),
+  z.string()
 );

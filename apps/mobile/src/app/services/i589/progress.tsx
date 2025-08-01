@@ -12,32 +12,43 @@ import { StepIcons, Stepper } from '@/components/ui/steps';
 import { stepIdAtom, stepsAtom } from '@/lib/services/i589/steps';
 
 export default function I589Progress() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const stepId = useAtomValue(stepIdAtom);
   const steps = useAtomValue(stepsAtom);
 
   return (
     <>
-      <Stack.Screen options={{
-        title: t('services.i589.progress.screenTitle'),
-      }}/>
+      <Stack.Screen
+        options={{
+          title: t('services.i589.progress.screenTitle'),
+        }}
+      />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
         <Container>
-          <Surface style={tw`flex-1 p-8 pt-10 my-20 gap-10 w-full h-full`}>
-            <Stepper stepId={stepId} steps={steps}/>
+          <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
+            <Stepper stepId={stepId} steps={steps} />
             <View style={tw`gap-2`}>
-              <Text style={tw`font-bold text-center`} variant="headlineMedium">
-                <Trans i18nKey={`services.i589.${stepId}.stepTitle`}/>
+              <Text style={tw`text-center font-bold`} variant='headlineMedium'>
+                <Trans i18nKey={`services.i589.${stepId}.stepTitle`} />
               </Text>
-              <Text style={tw`text-center`} variant="titleSmall">
-                <Trans i18nKey={`services.i589.${stepId}.description`}/>
+              <Text style={tw`text-center`} variant='titleSmall'>
+                <Trans i18nKey={`services.i589.${stepId}.description`} />
               </Text>
             </View>
-            <StepIcons serviceId='i589' stepId={stepId} steps={steps} style={tw`my-auto`}/>
+            <StepIcons
+              serviceId='i589'
+              stepId={stepId}
+              steps={steps}
+              style={tw`my-auto`}
+            />
           </Surface>
-          <Button mode="contained" onPress={() => router.push('/services/i589/eligibility')} style={tw`mt-auto`}>
-            <Trans i18nKey="next"/>
+          <Button
+            mode='contained'
+            onPress={() => router.push('/services/i589/eligibility')}
+            style={tw`mt-auto`}
+          >
+            <Trans i18nKey='next' />
           </Button>
         </Container>
       </SafeAreaView>

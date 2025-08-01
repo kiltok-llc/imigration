@@ -21,45 +21,45 @@ export type StepId = z.infer<typeof StepIdEnum>;
 type Step = {
   Icon: StepIcon;
   id: StepId;
-}
+};
 
 export const stepIdAtom = atomWithMmkvStorage(
   'services.i589.stepId',
   'eligibility',
-  StepIdEnum,
+  StepIdEnum
 );
 
 export const stepsAtom = atom<Step[]>([
   {
-    Icon: (props) => <Entypo name="help" {...props} />,
+    Icon: (props) => <Entypo name='help' {...props} />,
     id: 'eligibility',
   },
   {
-    Icon: (props) => <Entypo name="info" {...props} />,
+    Icon: (props) => <Entypo name='info' {...props} />,
     id: 'personal-info',
   },
   {
-    Icon: (props) => <Entypo name="attachment" {...props} />,
+    Icon: (props) => <Entypo name='attachment' {...props} />,
     id: 'documents',
   },
   {
-    Icon: (props) => <Entypo name="eye" {...props} />,
+    Icon: (props) => <Entypo name='eye' {...props} />,
     id: 'review',
   },
   {
-    Icon: (props) => <Entypo name="clock" {...props} />,
+    Icon: (props) => <Entypo name='clock' {...props} />,
     id: 'waiting',
   },
   {
-    Icon: (props) => <Entypo name="users" {...props} />,
+    Icon: (props) => <Entypo name='users' {...props} />,
     id: 'interview',
   },
   {
-    Icon: (props) => <FontAwesome name="gavel" {...props} />,
+    Icon: (props) => <FontAwesome name='gavel' {...props} />,
     id: 'decision',
   },
   {
-    Icon: (props) => <Entypo name="documents" {...props} />,
+    Icon: (props) => <Entypo name='documents' {...props} />,
     id: 'appeal',
   },
 ]);

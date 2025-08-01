@@ -1,7 +1,10 @@
 import { ComponentProps, useEffect, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 
-export function ReactivePagerView({ page, ...props }: ComponentProps<typeof PagerView> & {
+export function ReactivePagerView({
+  page,
+  ...props
+}: ComponentProps<typeof PagerView> & {
   page: number;
 }) {
   const pagerViewRef = useRef<PagerView>(null);
@@ -11,6 +14,11 @@ export function ReactivePagerView({ page, ...props }: ComponentProps<typeof Page
   }, [page]);
 
   return (
-    <PagerView initialPage={page} ref={pagerViewRef} scrollEnabled={false} {...props} />
-  )
+    <PagerView
+      initialPage={page}
+      ref={pagerViewRef}
+      scrollEnabled={false}
+      {...props}
+    />
+  );
 }
