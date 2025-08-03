@@ -58,7 +58,7 @@ export default function Services() {
           title: t('services.screenTitle'),
         }}
       />
-      <SafeAreaView style={tw`flex-1`}>
+      <SafeAreaView edges={['top', 'right', 'left']} style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />
         <Text
           style={tw.style('pb-4 text-center font-bold', {
@@ -73,74 +73,76 @@ export default function Services() {
           contentContainerStyle={tw`grow-1 gap-8 pt-4`}
           style={tw`flex-1`}
         >
-          <Container style={tw`flex-1 gap-8`}>
-            <Searchbar
-              onChangeText={setSearchQuery}
-              placeholder={t('services.searchPlaceholder')}
-              value={searchQuery}
-            />
+          <SafeAreaView edges={['bottom']}>
+            <Container style={tw`flex-1 gap-8`}>
+              <Searchbar
+                onChangeText={setSearchQuery}
+                placeholder={t('services.searchPlaceholder')}
+                value={searchQuery}
+              />
 
-            <View style={tw`gap-2`}>
-              <Text
-                style={tw.style('font-bold', {
-                  color: theme.colors.primary,
-                })}
-                variant='headlineSmall'
-              >
-                <Trans i18nKey='services.popular' />
-              </Text>
               <View style={tw`gap-2`}>
-                {popularServices.map(({ href, Icon, id }) => (
-                  <Button
-                    contentStyle={tw`justify-start gap-2`}
-                    icon={(props) => (
-                      <View style={tw`w-9 items-center justify-center`}>
-                        <Icon {...props} size={36} />
+                <Text
+                  style={tw.style('font-bold', {
+                    color: theme.colors.primary,
+                  })}
+                  variant='headlineSmall'
+                >
+                  <Trans i18nKey='services.popular' />
+                </Text>
+                <View style={tw`gap-2`}>
+                  {popularServices.map(({ href, Icon, id }) => (
+                    <Button
+                      contentStyle={tw`justify-start gap-2`}
+                      icon={(props) => (
+                        <View style={tw`w-9 items-center justify-center`}>
+                          <Icon {...props} size={36} />
+                        </View>
+                      )}
+                      key={id}
+                      mode='outlined'
+                      onPress={() => router.push(href)}
+                      style={tw.style('w-full')}
+                    >
+                      <View style={tw``}>
+                        <Text style={tw.style('font-semibold', {})}>
+                          <Trans i18nKey={`services.${id}.title`} />
+                        </Text>
+                        <Text style={tw.style('')} variant='bodySmall'>
+                          <Trans i18nKey={`services.${id}.subtitle`} />
+                        </Text>
                       </View>
-                    )}
-                    key={id}
-                    mode='outlined'
-                    onPress={() => router.push(href)}
-                    style={tw.style('w-full')}
-                  >
-                    <View style={tw``}>
-                      <Text style={tw.style('font-semibold', {})}>
-                        <Trans i18nKey={`services.${id}.title`} />
-                      </Text>
-                      <Text style={tw.style('')} variant='bodySmall'>
-                        <Trans i18nKey={`services.${id}.subtitle`} />
-                      </Text>
-                    </View>
-                  </Button>
-                ))}
+                    </Button>
+                  ))}
+                </View>
               </View>
-            </View>
 
-            <View style={tw`gap-2`}>
-              <Text
-                style={tw.style('font-bold', {
-                  color: theme.colors.primary,
-                })}
-                variant='headlineSmall'
-              >
-                <Trans i18nKey='services.categories.title' />
-              </Text>
               <View style={tw`gap-2`}>
-                {categories.map(({ href, id }) => (
-                  <Button
-                    contentStyle={tw`flex-row-reverse justify-between`}
-                    icon='chevron-right'
-                    key={id}
-                    mode='outlined'
-                    onPress={() => router.push(href)}
-                    style={tw.style('w-full')}
-                  >
-                    <Trans i18nKey={`services.categories.${id}.title`} />
-                  </Button>
-                ))}
+                <Text
+                  style={tw.style('font-bold', {
+                    color: theme.colors.primary,
+                  })}
+                  variant='headlineSmall'
+                >
+                  <Trans i18nKey='services.categories.title' />
+                </Text>
+                <View style={tw`gap-2`}>
+                  {categories.map(({ href, id }) => (
+                    <Button
+                      contentStyle={tw`flex-row-reverse justify-between`}
+                      icon='chevron-right'
+                      key={id}
+                      mode='outlined'
+                      onPress={() => router.push(href)}
+                      style={tw.style('w-full')}
+                    >
+                      <Trans i18nKey={`services.categories.${id}.title`} />
+                    </Button>
+                  ))}
+                </View>
               </View>
-            </View>
-          </Container>
+            </Container>
+          </SafeAreaView>
         </ScrollView>
       </SafeAreaView>
     </>
