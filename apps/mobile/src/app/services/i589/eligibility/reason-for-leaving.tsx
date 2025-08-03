@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native-paper';
 import z from 'zod/v4';
 
-import { atomWithValidation } from '@/atom/atom-with-validation';
+import { atomWithValidation } from '@/atoms/atom-with-validation';
 import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
 import {

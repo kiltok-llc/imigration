@@ -8,7 +8,7 @@ import tw from 'twrnc';
 import { Trans } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
-export default function I589Ineligible() {
+export default function Ineligible() {
   const { t } = useTranslation();
   const router = useRouter();
 

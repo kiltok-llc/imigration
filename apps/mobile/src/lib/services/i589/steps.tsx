@@ -2,8 +2,8 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { atom } from 'jotai';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atom/atom-with-mmkv-storage';
-import { StepIcon } from '@/lib/services/types';
+import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { IconComponent } from '@/lib/icon-props';
 
 export const StepIdEnum = z.enum([
   'eligibility',
@@ -19,7 +19,7 @@ export const StepIdEnum = z.enum([
 export type StepId = z.infer<typeof StepIdEnum>;
 
 type Step = {
-  Icon: StepIcon;
+  Icon: IconComponent;
   id: StepId;
 };
 

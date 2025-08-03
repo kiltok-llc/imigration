@@ -1,6 +1,7 @@
 export default {
   en: {
     translation: {
+      back: 'Back',
       error: {
         message:
           'There was an error loading this content:\n<pre>{{message}}</pre>',
@@ -9,6 +10,12 @@ export default {
       },
       next: 'Next',
       no: 'No',
+      onboarding: {
+        english: 'Select English',
+        language: 'Choose your language to get started.',
+        spanish: 'Elige español',
+        title: 'Welcome to iMigration',
+      },
       quiz: {
         back: 'Back',
         continue: 'Continue',
@@ -20,6 +27,26 @@ export default {
         missing: 'Please answer all questions before continuing.',
       },
       services: {
+        asylum: 'Asylum',
+        b2: {
+          subtitle: 'B-2 Visitor Visa Application',
+          title: 'Visitor Visa',
+        },
+        categories: {
+          education: {
+            title: 'Education',
+          },
+          family: {
+            title: 'Family',
+          },
+          residency: {
+            title: 'Residency',
+          },
+          title: 'Categories',
+          work: {
+            title: 'Work',
+          },
+        },
         i589: {
           appeal: {
             description:
@@ -121,12 +148,22 @@ export default {
               'Verify that all your answers and uploads are complete and accurate.',
             stepTitle: 'Review',
           },
+          subtitle: 'I-589 Application for Asylum',
+          title: 'Asylum',
           waiting: {
             description:
               'Track the status of your application while it is under review.',
             stepTitle: 'Wait',
           },
         },
+        i765: {
+          subtitle: 'I-765 Application for Employment Authorization',
+          title: 'Work Permit',
+        },
+        popular: 'Popular Services',
+        screenTitle: 'Services',
+        searchPlaceholder: 'Search services...',
+        title: 'iMigration Services',
       },
       yes: 'Yes',
     },

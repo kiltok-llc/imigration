@@ -12,7 +12,6 @@ import {
 import { ScrollView, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import {
-  Button,
   Checkbox,
   CheckboxProps,
   RadioButton,
@@ -176,28 +175,6 @@ export function QuizLayout({ children }: PropsWithChildren) {
   );
 }
 
-export function QuizPrimaryActionButton({
-  children,
-  contentStyle,
-  labelStyle,
-  style,
-  ...props
-}: ComponentProps<typeof Button>) {
-  return (
-    // TODO make icon larger
-    <Button
-      contentStyle={[tw`flex-row-reverse py-1`, contentStyle]}
-      icon='arrow-right'
-      labelStyle={[tw`text-lg`, labelStyle]}
-      mode='contained'
-      style={[tw`w-full`, style]}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-}
-
 export function QuizPrimaryQuestionText({
   children,
   style,
@@ -211,28 +188,6 @@ export function QuizPrimaryQuestionText({
     >
       {children}
     </Text>
-  );
-}
-
-export function QuizSecondaryActionButton({
-  children,
-  contentStyle,
-  labelStyle,
-  style,
-  ...props
-}: ComponentProps<typeof Button>) {
-  return (
-    // TODO make icon larger
-    <Button
-      contentStyle={[tw`py-1`, contentStyle]}
-      icon='arrow-left'
-      labelStyle={[tw`text-lg`, labelStyle]}
-      mode='contained-tonal'
-      style={[tw`w-full`, style]}
-      {...props}
-    >
-      {children}
-    </Button>
   );
 }
 

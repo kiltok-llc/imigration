@@ -13,13 +13,8 @@ import tw from 'twrnc';
 
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { Trans } from '@/components/trans';
-import {
-  QuizActions,
-  QuizContents,
-  QuizLayout,
-  QuizPrimaryActionButton,
-  QuizSecondaryActionButton,
-} from '@/components/ui/quiz';
+import { Button } from '@/components/ui/button';
+import { QuizActions, QuizContents, QuizLayout } from '@/components/ui/quiz';
 import {
   createRequiredContext,
   useRequiredContext,
@@ -98,12 +93,17 @@ export function EligibilityQuiz({
         ))}
       </ReactivePagerView>
       <QuizActions>
-        <QuizSecondaryActionButton onPress={handlePrev}>
+        <Button icon='arrow-left' mode='contained-tonal' onPress={handlePrev}>
           <Trans i18nKey='quiz.back' />
-        </QuizSecondaryActionButton>
-        <QuizPrimaryActionButton onPress={handleNext}>
+        </Button>
+        <Button
+          contentStyle={tw`flex-row-reverse`}
+          icon='arrow-right'
+          mode='contained'
+          onPress={handleNext}
+        >
           <Trans i18nKey='quiz.continue' />
-        </QuizPrimaryActionButton>
+        </Button>
       </QuizActions>
     </QuizLayout>
   );

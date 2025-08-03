@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Button, Surface, Text } from 'react-native-paper';
@@ -11,10 +11,11 @@ import { Container } from '@/components/ui/container';
 import { StepIcons, Stepper } from '@/components/ui/steps';
 import { stepIdAtom, stepsAtom } from '@/lib/services/i589/steps';
 
-export default function I589Progress() {
+export default function I589() {
   const { t } = useTranslation();
   const router = useRouter();
   const stepId = useAtomValue(stepIdAtom);
+  const setStepId = useSetAtom(stepIdAtom);
   const steps = useAtomValue(stepsAtom);
 
   return (
@@ -45,7 +46,13 @@ export default function I589Progress() {
           </Surface>
           <Button
             mode='contained'
-            onPress={() => router.push('/services/i589/eligibility')}
+            onPress={() => {
+              if (stepId === 'eligibility') {
+                router.push('/services/i589/eligibility');
+              } else {
+                setStepId('eligibility');
+              }
+            }}
             style={tw`mt-auto`}
           >
             <Trans i18nKey='next' />

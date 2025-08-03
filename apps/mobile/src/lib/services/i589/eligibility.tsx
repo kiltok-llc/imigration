@@ -1,7 +1,7 @@
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atom/atom-with-mmkv-storage';
-import { objectPropertyAtomFamily } from '@/atom/object-property-atom-family';
+import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { objectPropertyAtomFamily } from '@/atoms/object-property-atom-family';
 
 export const HarmReasonEnum = z.enum([
   'nationality',

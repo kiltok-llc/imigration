@@ -15,7 +15,7 @@ import {
 } from '@/lib/services/i589/eligibility';
 import { stepIdAtom } from '@/lib/services/i589/steps';
 
-export default function I589Eligible() {
+export default function Eligible() {
   const { t } = useTranslation();
   const resetEligibilityQuiz = useResetAtom(quizAnswersAtom);
   const resetSavedQuizRoute = useResetAtom(savedQuizRouteAtom);

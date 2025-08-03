@@ -1,18 +1,18 @@
 import { Redirect } from 'expo-router';
-import { useMMKVBoolean } from 'react-native-mmkv';
+import { useAtomValue } from 'jotai';
 
-import { storage } from '@/lib/mmkv';
+import { isOnboardedAtom } from '@/atoms/onboarding';
 
 export default function Root() {
-  const [isOnBoarded = false] = useMMKVBoolean('isOnBoarded', storage);
+  const isOnboarded = useAtomValue(isOnboardedAtom);
 
   if (__DEV__) {
-    return <Redirect href='/services/i589/progress' />;
+    return <Redirect href='/services' />;
   }
 
-  if (!isOnBoarded) {
+  if (!isOnboarded) {
     return <Redirect href='/onboarding' />;
   }
 
-  return <Redirect href='/home' />;
+  return <Redirect href='/services' />;
 }
