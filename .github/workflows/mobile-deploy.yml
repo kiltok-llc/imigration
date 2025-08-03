@@ -78,5 +78,5 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
       - run: eas env:pull --non-interactive --environment ${{ inputs.environment }}
-      - run: turbo build:update -- --environment ${{ inputs.environment }}
+      - run: turbo build:update -- --environment ${{ inputs.environment }} --channel ${{ inputs.environment }}
       - run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
