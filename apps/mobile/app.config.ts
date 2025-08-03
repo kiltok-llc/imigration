@@ -4,8 +4,8 @@ function getAppNameSuffix(): string {
   switch (process.env.APP_VARIANT) {
     case 'development':
       return ' (Dev)';
-    case 'staging':
-      return ' (Staging)';
+    case 'preview':
+      return ' (Preview)';
     default:
       return '';
   }
@@ -15,8 +15,8 @@ function getAppIdentifierSuffix(): string {
   switch (process.env.APP_VARIANT) {
     case 'development':
       return '.dev';
-    case 'staging':
-      return '.staging';
+    case 'preview':
+      return '.preview';
     default:
       return '';
   }

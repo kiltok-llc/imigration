@@ -21,10 +21,6 @@ defaults:
   run:
     working-directory: 'apps/mobile'
 
-concurrency:
-  cancel-in-progress: true
-  group: ${{ inputs.environment }}-mobile-deploy
-
 jobs:
   build:
     strategy:
@@ -52,19 +48,14 @@ jobs:
       - id: build
         run: |
           turbo build:${{ matrix.platform }} -- --profile ${{ inputs.environment }}
-          echo "artifact-path=$(realpath build/*)" >> $GITHUB_OUTPUT
-      - id: diawi
-        if: inputs.environment == 'preview'
-        uses: rnkdsh/action-upload-diawi@v1.5.9
-        with:
-          token: ${{ secrets.DIAWI_TOKEN }}
-          file: ${{ steps.build.outputs.artifact-path }}
+          echo "path=$(realpath build/*)" >> $GITHUB_OUTPUT
+      - id: upload
+        run: echo "build-url=$(eas upload --non-interactive --json --platform ${{ matrix.platform }} --build-path ${{ steps.build.outputs.build-path }} | jq -r .url)" >> $GITHUB_OUTPUT
       - name: Job Summary
         if: inputs.environment == 'preview'
         run: |
           echo '## ${{ matrix.name }} App' >> $GITHUB_STEP_SUMMARY
-          echo '${{ steps.diawi.outputs.url }}' >> $GITHUB_STEP_SUMMARY
-          echo '![QR Code](${{ steps.diawi.outputs.qrcode }})' >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.upload.outputs.build-url }}' >> $GITHUB_STEP_SUMMARY
 
   push-update:
     name: Push Update
