@@ -1,6 +1,4 @@
-drop
-from
-  storage.buckets
+delete from storage.buckets
 where
   id = 'documents';
 

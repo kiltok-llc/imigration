@@ -2,7 +2,7 @@ set
   check_function_bodies = off;
 
 create table "public"."surveys" (
-  "id" uuid not null default gen_random_uuid (),
+  "id" uuid not null default gen_random_uuid(),
   "name" text not null default 'New Survey'::text,
   "description" text not null default 'A new survey'::text,
   "updated_at" timestamp with time zone not null default now(),

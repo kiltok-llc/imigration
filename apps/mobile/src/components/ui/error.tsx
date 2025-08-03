@@ -1,15 +1,13 @@
-'use client';
-
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps } from 'expo-router';
 import { PropsWithChildren } from 'react';
 import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-boundary';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { ScrollView } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { Trans } from '@/components/trans';
-import { Container } from '@/components/ui/container';
+import { TransButton, TransText } from '@/components/trans';
 
 export function ErrorFallback({
   children,
@@ -19,28 +17,38 @@ export function ErrorFallback({
   const theme = useTheme();
 
   return (
-    <SafeAreaView style={tw`flex-1`}>
-      <Container style={tw`flex-1 items-center justify-center gap-8`}>
+    <ScrollView
+      alwaysBounceVertical={false}
+      contentContainerStyle={tw`grow`}
+      style={tw`flex-1`}
+    >
+      <SafeAreaView
+        edges={{ bottom: 'maximum', top: 'maximum' }}
+        style={tw`flex-1 items-center justify-center gap-8 p-4`}
+      >
         <MaterialCommunityIcons
           color={theme.colors.error}
           name='alert-circle'
           size={72}
         />
 
-        <Text style={tw`text-center`} variant='headlineSmall'>
-          <Trans i18nKey='error.title' />
-        </Text>
+        <TransText
+          i18nKey='error.title'
+          style={tw`text-center`}
+          variant='headlineSmall'
+        />
 
-        <Text style={tw`text-center`} variant='bodyLarge'>
-          <Trans i18nKey='error.message' values={{ message: error.message }} />
-        </Text>
+        <TransText
+          i18nKey='error.message'
+          style={tw`text-center`}
+          values={{ message: error.message }}
+          variant='bodyLarge'
+        />
 
-        <Button mode='text' onPress={retry}>
-          <Trans i18nKey='error.retry' />
-        </Button>
+        <TransButton i18nKey='error.retry' mode='text' onPress={retry} />
 
         {children}
-      </Container>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 }

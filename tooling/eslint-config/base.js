@@ -33,6 +33,7 @@ export default defineConfig([
   {
     rules: {
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-redeclare': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -56,24 +57,6 @@ export default defineConfig([
       'import-x/no-named-as-default-member': 'off',
       'n/no-missing-import': 'off',
       'n/no-unsupported-features/node-builtins': 'off',
-      'no-restricted-imports': [
-        'error',
-        {
-          paths: [
-            {
-              importNames: ['SafeAreaView'],
-              message:
-                'Import SafeAreaView from react-native-safe-area-context instead',
-              name: 'react-native',
-            },
-            {
-              importNames: ['Text'],
-              message: 'import Text from react-native-paper instead',
-              name: 'react-native',
-            },
-          ],
-        },
-      ],
       // Must disable the base rule for @typescript-eslint/no-unused-vars to work properly
       'no-unused-vars': 'off',
       'object-shorthand': 'error',

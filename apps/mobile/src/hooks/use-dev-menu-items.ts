@@ -1,55 +1,46 @@
-import { isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
-import { useCallback, useEffect } from 'react';
-import { useMMKVObject } from 'react-native-mmkv';
+import { ExpoDevMenuItem, registerDevMenuItems } from 'expo-dev-client';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { PropsWithChildren, useEffect } from 'react';
 
-interface DevMenuItem {
-  callback?: () => void;
-  key: string;
-  title: string;
-}
+import { defaultStorage } from '@/lib/mmkv';
 
-const ITEMS: DevMenuItem[] = [] as const;
+const devMenuItemsAtom = atom<ExpoDevMenuItem[]>([
+  {
+    callback: () => {
+      defaultStorage.clearAll();
+    },
+    name: 'Clear Storage',
+  },
+]);
 
-const useDevMenuItems = () => {
-  return useMMKVObject<Record<string, boolean>>('dev-menu-items');
-};
-
-export const useRegisterDevMenuItems = () => {
-  const [value, setValue] = useDevMenuItems();
-
-  const register = useCallback(
-    () =>
-      registerDevMenuItems(
-        ITEMS.map((item) => {
-          return {
-            callback: () => {
-              setValue((prevValue) => {
-                return {
-                  ...prevValue,
-                  [item.key]: !prevValue?.[item.key],
-                };
-              });
-              item.callback?.();
-            },
-            name: `${item.title} (${value?.[item.key] ? 'enabled' : 'disabled'})`,
-            shouldCollapse: true,
-          };
-        })
-      ),
-    [value, setValue]
-  );
+export const useDevMenuItem = (itemCallback: () => ExpoDevMenuItem) => {
+  const setDevMenuItems = useSetAtom(devMenuItemsAtom);
 
   useEffect(() => {
-    if (!isDevelopmentBuild()) {
+    if (!__DEV__) {
       return;
     }
 
-    void register();
-  }, [register]);
+    const item = itemCallback();
+
+    setDevMenuItems((items) => [...items, item]);
+
+    return () => {
+      setDevMenuItems((items) => items.filter((i) => i !== item));
+    };
+  }, [itemCallback, setDevMenuItems]);
 };
 
-export const useDevMenuItem = (key: (typeof ITEMS)[number]['key']) => {
-  const [value] = useDevMenuItems();
+export function DevMenuProvider({ children }: PropsWithChildren) {
+  const items = useAtomValue(devMenuItemsAtom);
 
-  return value?.[key] ?? false;
-};
+  useEffect(() => {
+    if (!__DEV__) {
+      return;
+    }
+
+    void registerDevMenuItems(items);
+  }, [items]);
+
+  return children;
+}

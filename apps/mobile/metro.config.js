@@ -1,6 +1,9 @@
 const { FileStore } = require('metro-cache');
 const path = require('node:path');
 const { getSentryExpoConfig } = require('@sentry/react-native/metro');
+const {
+  wrapWithReanimatedMetroConfig,
+} = require('react-native-reanimated/metro-config');
 
 /**
  * Move the Metro cache to the `.cache/metro` folder.
@@ -17,5 +20,24 @@ function withTurborepoManagedCache(config) {
   return config;
 }
 
-const config = withTurborepoManagedCache(getSentryExpoConfig(__dirname));
-module.exports = config;
+function withReactNativeSvgTransformer(config) {
+  const { transformer, resolver } = config;
+
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
+  };
+  config.resolver = {
+    ...resolver,
+    assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
+    sourceExts: [...resolver.sourceExts, 'svg'],
+  };
+
+  return config;
+}
+
+module.exports = wrapWithReanimatedMetroConfig(
+  withReactNativeSvgTransformer(
+    withTurborepoManagedCache(getSentryExpoConfig(__dirname))
+  )
+);

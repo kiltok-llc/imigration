@@ -2,7 +2,7 @@
 drop table if exists surveys cascade;
 
 create table surveys (
-  id uuid not null primary key default gen_random_uuid (),
+  id uuid not null primary key default gen_random_uuid(),
   name text not null default 'New Survey' check (
     0 < length(name)
     and length(name) < 255

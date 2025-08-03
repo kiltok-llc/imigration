@@ -1,22 +1,29 @@
+import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
+import { ThemeProvider } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
+
+import '@/i18n';
+import '@/polyfill';
 import { isRunningInExpoGo } from 'expo';
 import { Stack } from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
-
-import '@/polyfill';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { PaperProvider, useTheme } from 'react-native-paper';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { PaperProvider } from 'react-native-paper';
 import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
-import tw, { useDeviceContext } from 'twrnc';
+import tw from 'twrnc';
 
+import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
-import { theme } from '@/lib/paper-theme';
-import { LanguageProvider } from '@/providers/language';
-import { QueryProvider } from '@/providers/query';
-import { TRPCProvider } from '@/providers/trpc';
+import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
+import { JotaiProvider } from '@/lib/jotai';
+import { defaultStorage } from '@/lib/mmkv';
+import { QueryProvider } from '@/lib/query';
+import { navigationTheme, theme } from '@/lib/theme';
+import { TRPCProvider } from '@/lib/trpc';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),
@@ -51,49 +58,38 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
-void SystemUI.setBackgroundColorAsync(theme.colors?.background ?? null);
+void SystemUI.setBackgroundColorAsync(theme.colors.background);
 
-function RootLayout() {
-  useDeviceContext(tw);
+export function RootLayout() {
+  useMMKVDevTools({ storage: defaultStorage });
 
   return (
-    <PaperProvider theme={theme}>
-      <ReducedMotionConfig mode={ReduceMotion.Never} />
+    <DevMenuProvider>
       <QueryProvider>
-        <TRPCProvider>
-          <LanguageProvider>
+        <JotaiProvider>
+          <ReducedMotionConfig mode={ReduceMotion.Never} />
+          <TRPCProvider>
             <GestureHandlerRootView style={tw`flex-1`}>
-              <SplashScreenBarrier>
-                <StackWrapper />
-                <Toaster />
-              </SplashScreenBarrier>
+              <KeyboardProvider>
+                <PaperProvider theme={theme}>
+                  <ThemeProvider value={navigationTheme}>
+                    <SplashScreenBarrier>
+                      <MigriPortal />
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                        }}
+                      />
+                      <Toaster />
+                    </SplashScreenBarrier>
+                  </ThemeProvider>
+                </PaperProvider>
+              </KeyboardProvider>
             </GestureHandlerRootView>
-          </LanguageProvider>
-        </TRPCProvider>
+          </TRPCProvider>
+        </JotaiProvider>
       </QueryProvider>
-    </PaperProvider>
-  );
-}
-
-/**
- * Wrap the Stack component so that we can use PaperProvider
- */
-function StackWrapper() {
-  const theme = useTheme();
-
-  return (
-    <Stack
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerTintColor: theme.colors.onSurface,
-        title: '',
-      }}
-    />
+    </DevMenuProvider>
   );
 }
 

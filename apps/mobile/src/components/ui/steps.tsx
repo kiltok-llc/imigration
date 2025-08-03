@@ -1,74 +1,84 @@
 import { Entypo } from '@expo/vector-icons';
 import { Fragment, FunctionComponent } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
+import { useService } from '@/hooks/use-service';
 import { chunked } from '@/lib/utils';
 
+export type Step = {
+  Icon: FunctionComponent<{
+    color?: string;
+    size?: number;
+  }>;
+  id: string;
+};
+
 export function StepIcons({
-  serviceId,
+  cols,
+  onPress,
   stepId,
   steps,
   style,
 }: {
-  serviceId: string;
+  cols: number;
+  onPress?: (stepId: string) => void;
   stepId: string;
-  steps: {
-    Icon: FunctionComponent<{ color?: string; size?: number }>;
-    id: string;
-  }[];
+  steps: Step[];
   style?: ViewStyle;
 }) {
+  const service = useService();
   const theme = useTheme();
-  const stepIdx = steps.findIndex((step) => step.id === stepId);
-  const CHUNK_SIZE = 4;
+  const currentStepIdx = steps.findIndex(({ id }) => id === stepId);
 
   return (
     <View style={[tw`gap-4`, style]}>
-      {chunked(steps, 4).map((chunk, chunkIdx) => (
-        <View key={chunkIdx} style={tw`flex flex-row items-stretch`}>
-          {chunk.map(({ Icon, id }, index) => (
-            <View key={id} style={tw.style('flex-1 items-center', {})}>
-              <View
-                style={tw.style(
-                  'size-16 items-center justify-center rounded-full',
-                  stepIdx < chunkIdx * CHUNK_SIZE + index && 'opacity-30',
-                  {
-                    backgroundColor:
-                      stepId === id
-                        ? theme.colors.secondary
-                        : stepIdx < chunkIdx * CHUNK_SIZE + index
-                          ? theme.colors.onSurfaceDisabled
-                          : theme.colors.primary,
-                  }
-                )}
-              >
-                <Icon
-                  color={
-                    stepId === id
-                      ? theme.colors.onSecondary
-                      : stepIdx < chunkIdx * CHUNK_SIZE + index
-                        ? theme.colors.primary
-                        : theme.colors.onPrimary
-                  }
-                  size={36}
-                />
+      {chunked(steps, cols).map((row, rowIdx) => (
+        <View key={rowIdx} style={tw`flex flex-row items-stretch`}>
+          {row
+            .map((step, colIdx) => [step, rowIdx * cols + colIdx] as const)
+            .map(([{ Icon, id }, stepIdx]) => (
+              <View key={id} style={tw`flex-1 items-center gap-1`}>
+                <Pressable onPress={onPress ? () => onPress(id) : onPress}>
+                  <View
+                    style={tw.style(
+                      'size-16 items-center justify-center rounded-full',
+                      currentStepIdx < stepIdx && 'opacity-30',
+                      {
+                        backgroundColor:
+                          stepId === id
+                            ? theme.colors.secondary
+                            : currentStepIdx < stepIdx
+                              ? theme.colors.onSurfaceDisabled
+                              : theme.colors.primary,
+                      }
+                    )}
+                  >
+                    <Icon
+                      color={
+                        stepId === id
+                          ? theme.colors.onSecondary
+                          : currentStepIdx < stepIdx
+                            ? theme.colors.primary
+                            : theme.colors.onPrimary
+                      }
+                      size={36}
+                    />
+                  </View>
+                </Pressable>
+                <Text
+                  numberOfLines={2}
+                  style={tw.style(
+                    'text-center',
+                    currentStepIdx < stepIdx ? 'opacity-70' : 'font-semibold'
+                  )}
+                >
+                  <Trans i18nKey={`services.${service}.${id}.label`} />
+                </Text>
               </View>
-              <Text
-                numberOfLines={2}
-                style={tw.style(
-                  'text-center',
-                  stepIdx < chunkIdx * CHUNK_SIZE + index
-                    ? 'opacity-70'
-                    : 'font-semibold'
-                )}
-              >
-                <Trans i18nKey={`services.${serviceId}.${id}.stepTitle`} />
-              </Text>
-            </View>
-          ))}
+            ))}
         </View>
       ))}
     </View>
@@ -81,10 +91,7 @@ export function Stepper({
   style,
 }: {
   stepId: string;
-  steps: {
-    Icon: FunctionComponent<{ color?: string; size?: number }>;
-    id: string;
-  }[];
+  steps: Step[];
   style?: ViewStyle;
 }) {
   const theme = useTheme();

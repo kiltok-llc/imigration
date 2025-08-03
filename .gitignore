@@ -53,6 +53,7 @@ next-env.d.ts
 *.mobileprovision
 *.orig.*
 web-build/
+build/
 expo-env.d.ts
 ios/
 android/
@@ -61,3 +62,5 @@ android/
 # supabase
 .branches/
 .temp/
+
+.venv/

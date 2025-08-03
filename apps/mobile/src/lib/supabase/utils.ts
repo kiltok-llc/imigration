@@ -7,6 +7,7 @@ import { isPostgrestTransformBuilder } from '@supabase-cache-helpers/postgrest-c
 import { encode } from '@supabase-cache-helpers/postgrest-react-query';
 import {
   PostgrestBuilder,
+  PostgrestClientOptions,
   PostgrestFilterBuilder,
 } from '@supabase/postgrest-js';
 import {
@@ -65,6 +66,7 @@ export const unwrapSignout = ({ error }: { error: Error | null }) => {
 };
 
 export const supabaseInfiniteQueryOptions = <
+  ClientOptions extends PostgrestClientOptions,
   TPageParam,
   SupabaseQueryData,
   TQueryFnData = SupabaseQueryData,
@@ -82,11 +84,18 @@ export const supabaseInfiniteQueryOptions = <
   getNextPageParam: GetNextPageParamFunction<TPageParam, TQueryFnData>;
   getPreviousPageParam?: GetPreviousPageParamFunction<TPageParam, TQueryFnData>;
   initialPageParam: TPageParam;
-  query: QueryBuilder<PostgrestFilterBuilder<Schema, Row, SupabaseQueryData>>;
+  query: QueryBuilder<
+    PostgrestFilterBuilder<ClientOptions, Schema, Row, SupabaseQueryData>
+  >;
   transform?: (data: SupabaseQueryData, pageParam: TPageParam) => TQueryFnData;
   transformError?: (err: unknown) => TQueryFnData;
   transformQuery?: (
-    query: PostgrestFilterBuilder<Schema, Row, SupabaseQueryData>,
+    query: PostgrestFilterBuilder<
+      ClientOptions,
+      Schema,
+      Row,
+      SupabaseQueryData
+    >,
     pageParam: TPageParam
   ) => unknown;
 }) =>
@@ -111,6 +120,7 @@ export const supabaseInfiniteQueryOptions = <
   });
 
 export const supabaseQueryOptions = <
+  ClientOptions extends PostgrestClientOptions,
   SupabaseQueryData,
   TData = SupabaseQueryData,
 >({
@@ -120,7 +130,7 @@ export const supabaseQueryOptions = <
     throw err;
   },
 }: {
-  query: QueryBuilder<PostgrestBuilder<SupabaseQueryData>>;
+  query: QueryBuilder<PostgrestBuilder<ClientOptions, SupabaseQueryData>>;
   transform: (data: SupabaseQueryData) => TData; // it will not compile if this is optional
   transformError?: (err: unknown) => TData;
 }) =>

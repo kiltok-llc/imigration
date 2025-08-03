@@ -1,5 +1,5 @@
 create table "public"."documents" (
-  "id" uuid not null default gen_random_uuid (),
+  "id" uuid not null default gen_random_uuid(),
   "name" text not null default 'New Document'::text,
   "description" text not null default 'A new document'::text,
   "updated_at" timestamp with time zone not null default now(),

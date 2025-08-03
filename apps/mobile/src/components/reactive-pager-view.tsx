@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useRef } from 'react';
+import { ComponentProps, useEffect, useRef, useState } from 'react';
 import PagerView from 'react-native-pager-view';
 
 export function ReactivePagerView({
@@ -13,11 +13,15 @@ export function ReactivePagerView({
     pagerViewRef.current?.setPage(page);
   }, [page]);
 
+  // workaround for https://github.com/callstack/react-native-pager-view/issues/971
+  const [scrollEnabled, setScrollEnabled] = useState(true);
+
   return (
     <PagerView
       initialPage={page}
+      onLayout={() => setScrollEnabled(false)}
       ref={pagerViewRef}
-      scrollEnabled={false}
+      scrollEnabled={scrollEnabled}
       {...props}
     />
   );

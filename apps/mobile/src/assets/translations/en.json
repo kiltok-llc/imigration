@@ -1,0 +1,1807 @@
+{
+  "permission": {
+    "camera": {
+      "denied": "To take photos, please allow camera access in your device settings."
+    },
+    "library": {
+      "denied": "To select photos, please allow photo library access in your device settings."
+    }
+  },
+  "error": {
+    "message": "There was an error loading this content:\n<pre>{{message}}</pre>",
+    "retry": "Retry",
+    "title": "An error occurred"
+  },
+  "or": "or",
+  "form": {
+    "documents": {
+      "cancelled": "Document selection was cancelled.",
+      "title": "Submit files, documents, or photos",
+      "description": "You can submit any number of files and images of any format.",
+      "document": {
+        "label": "Browse Documents"
+      },
+      "library": {
+        "label": "Browse Photos"
+      }
+    },
+    "fieldarray": {
+      "add": "Add item",
+      "remove": "Remove item"
+    },
+    "image": {
+      "camera": {
+        "cancelled": "Camera action was cancelled.",
+        "label": "Open camera"
+      },
+      "clear": {
+        "label": "Clear image"
+      },
+      "library": {
+        "cancelled": "Image selection was cancelled.",
+        "label": "Tap to submit photo"
+      }
+    },
+    "address": {
+      "city": "City",
+      "state": "State",
+      "street": "Street address",
+      "unit": "Apt, suite, unit, etc.",
+      "zip-code": "ZIP Code",
+      "country": "Country"
+    },
+    "short-address": {
+      "city": "City, State, or Province",
+      "country": "Country"
+    },
+    "boolean": {
+      "no": "No",
+      "yes": "Yes"
+    },
+    "name": {
+      "first": "First Name",
+      "last": "Last Name",
+      "middle": "Middle Name"
+    },
+    "optional": " (optional)",
+    "optional-comma": " (optional, comma separated)",
+    "comma": " (comma separated)",
+    "range": {
+      "end": "End Date",
+      "start": "Start Date"
+    },
+    "required": " *",
+    "sex": {
+      "female": "Female",
+      "male": "Male"
+    }
+  },
+  "keyboard": {
+    "done": "Done"
+  },
+  "language": {
+    "en": "🇺🇸 English",
+    "es": "🇪🇸 Español",
+    "fr": "🇫🇷 Français",
+    "pt": "🇵🇹 Português",
+    "zh": "🇨🇳 中文",
+    "hi": "🇮🇳 हिंदी",
+    "bn": "🇧🇩 বাংলা",
+    "ru": "🇷🇺 Русский",
+    "ja": "🇯🇵 日本語",
+    "pa": "🇵🇰 اردو",
+    "vi": "🇻🇳 Tiếng Việt",
+    "tr": "🇹🇷 Türkçe",
+    "ar": "🇸🇦 العربية",
+    "mr": "🇮🇳 मराठी",
+    "ko": "🇰🇷 한국어",
+    "de": "🇩🇪 Deutsch",
+    "it": "🇮🇹 Italiano",
+    "th": "🇹🇭 ไทย",
+    "id": "🇮🇩 Bahasa Indonesia",
+    "fil": "🇵🇭 Filipino",
+    "sw": "🇰🇪 Kiswahili",
+    "fa": "🇮🇷 فارسی",
+    "uk": "🇺🇦 Українська",
+    "he": "🇮🇱 עברית",
+    "el": "🇬🇷 Ελληνικά",
+    "no": "🇳🇴 Norsk",
+    "da": "🇩🇰 Dansk",
+    "fi": "🇫🇮 Suomi",
+    "pl": "🇵🇱 Polski",
+    "hu": "🇭🇺 Magyar",
+    "cs": "🇨🇿 Čeština",
+    "ro": "🇷🇴 Română",
+    "sk": "🇸🇰 Slovenčina",
+    "bg": "🇧🇬 Български",
+    "hr": "🇭🇷 Hrvatski",
+    "sl": "🇸🇮 Slovenščina",
+    "lt": "🇱🇹 Lietuvių",
+    "lv": "🇱🇻 Latviešu",
+    "et": "🇪🇪 Eesti",
+    "is": "🇮🇸 Íslenska",
+    "sr": "🇷🇸 Српски",
+    "mk": "🇲🇰 Македонски",
+    "sq": "🇦🇱 Shqip",
+    "bs": "🇧🇦 Bosanski",
+    "az": "🇦🇿 Azərbaycan",
+    "hy": "🇦🇲 Հայերեն",
+    "ka": "🇬🇪 ქართული",
+    "uz": "🇺🇿 O'zbek",
+    "kk": "🇰🇿 Қазақ",
+    "ky": "🇰🇬 Кыргыз",
+    "tg": "🇹🇯 Тоҷикӣ",
+    "ty": "🇵🇫 Tahitian",
+    "yo": "🇳🇬 Yorùbá",
+    "zu": "🇿🇦 isiZulu",
+    "xh": "🇿🇦 isiXhosa",
+    "af": "🇿🇦 Afrikaans",
+    "am": "🇪🇹 አማርኛ",
+    "ne": "🇳🇵 नेपाली",
+    "si": "🇱🇰 සිංහල",
+    "my": "🇲🇲 မြန်မာ",
+    "km": "🇰🇭 ខ្មែរ",
+    "lo": "🇱🇦 ລາວ",
+    "mn": "🇲🇳 Монгол",
+    "gu": "🇮🇳 ગુજરાતી",
+    "kn": "🇮🇳 ಕನ್ನಡ"
+  },
+  "next": "Next",
+  "onboarding": {
+    "language": {
+      "choose-language": "Touch your preferred language below to get started.",
+      "title": "Welcome to iMigration",
+      "start": "Continue in english"
+    },
+    "migri": {
+      "title": "Hello, I'm Migri!",
+      "description": "My name is Migri, your virtual assistant. I'm here to help you with using the iMigration app.",
+      "chat": "Chat with Migri",
+      "start": "Get Started!"
+    }
+  },
+  "previous": "Back",
+  "quiz": {
+    "menu": {
+      "save-exit": "Save and exit"
+    },
+    "toast": {
+      "saved": "Your answers have been saved.",
+      "error": "There was an error saving your answers. Please try again."
+    },
+    "header": {
+      "nextTitle": "Next: {{ nextTitle }}",
+      "progress": "{{ current }}/{{ total }}",
+      "title": "{{ title }}"
+    },
+    "missing": "Please answer all questions before continuing.",
+    "continue": "Continue",
+    "back": "Previous",
+    "error": {
+      "reset-route": "Reset saved route",
+      "reset-values": "Reset saved answers"
+    }
+  },
+  "migri": {
+    "modal": {
+      "next": "Tap to keep reading"
+    },
+    "fab": {
+      "label": "Chat with Migri"
+    },
+    "fallback": {
+      "talk": [
+        "Oh no! I don't know how to help with this yet.",
+        "Please let us know what you were looking for so we can improve Migri."
+      ],
+      "talk_dev": ["Missing translation!\n<pre><small>{{ id }}</small></pre>"]
+    },
+    "onboarding": {
+      "migri": {
+        "talk": [
+          "Welcome to the iMigration app!",
+          "My name is Migri, your virtual assistant.",
+          "I'm here to help you with using the iMigration app.",
+          "This app is designed to help you navigate the complex world of immigration services!",
+          "Whether you're looking to apply for a visa, understand your rights, or find resources, I'm here to assist you every step of the way.",
+          "Let's get started!"
+        ]
+      }
+    },
+    "services": {
+      "welcome": {
+        "talk": [
+          "This is the home screen where you can find all the services we offer.",
+          "You can browse through different categories such as visas, citizenship, and legal assistance.",
+          "Tap on any service to learn more about it and see if it fits your needs.",
+          "If you need help or have questions, just tap the 'Lightbulb' icon in the bottom right corner to chat with me!"
+        ]
+      },
+      "i589": {
+        "eligibility": {
+          "talk": [
+            "Welcome to the i589 application for asylum!",
+            "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
+            "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
+            "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
+            "Please take your time to read each question carefully and provide accurate and honest answers.",
+            "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+          ],
+          "arrival-date": {
+            "is-recent-arrival": {
+              "talk": [
+                "Here you need to indicate if you arrived in the U.S. in the last year.",
+                "This is important for your asylum application.",
+                "Just select \"Yes\" or \"No.\" Click Confirm when you're done."
+              ]
+            }
+          },
+          "country-of-origin": {
+            "is-from-safe-country": {
+              "talk": [
+                "Here you need to indicate if you are from a country considered \"safe\" by the U.S.",
+                "This is important to know if you could have sought protection there.",
+                "Select \"Yes\" or \"No\" as applicable.",
+                "Click Confirm when you're ready."
+              ]
+            }
+          },
+          "physical-presence": {
+            "is-in-usa": {
+              "talk": [
+                "Indicate if you are currently in the United States. This is important for your application. Use \"Yes\" or \"No.\" Once you're ready, click Confirm."
+              ]
+            }
+          },
+          "previous-applications": {
+            "has-previous-app": {
+              "talk": [
+                "Please indicate if you have applied for asylum in the United States before.",
+                "This information is important for your application.",
+                "Select \"Yes\" or \"No\" and click Confirm when you're ready."
+              ]
+            }
+          },
+          "reason-for-leaving": {
+            "is-escaping-harm": {
+              "talk": [
+                "Please indicate if you left your country because you feared harm or persecution.",
+                "This is important for your asylum application.",
+                "Select \"Yes\" or \"No\" based on your situation.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "harm-reasons": {
+              "talk": [
+                "Here you need to indicate if the harm you suffered was for any of these reasons.",
+                "Choose all that apply: nationality, political opinion, race, religion, or social group.",
+                "If your reason is not on the list, select \"Other\" and specify.",
+                "This is important for your asylum application."
+              ]
+            },
+            "is-harmed-by-gov": {
+              "talk": [
+                "Here you need to indicate if the harm you suffered was caused by your government or by people they could not control. This is important for your asylum application. Select \"Yes\" or \"No\" based on your situation. Click Confirm when you're done."
+              ]
+            }
+          }
+        },
+        "info": {
+          "talk": [
+            "Woohoo! You qualify to apply for asylum!",
+            "Now, let's get started with your application.",
+            "First, we will gather some personal information about you.",
+            "Remember, you can change and correct the information at any time.",
+            "Press the 'Start' button when you are ready to begin."
+          ],
+          "personal-information": {
+            "demographics-and-birth": {
+              "basic-demographics": {
+                "talk": [
+                  "Here, simply indicate your sex at birth as it appears on your birth certificate.",
+                  "You can scroll up and down on the calendar to change the month, day, and year. Click Confirm when you are ready."
+                ]
+              },
+              "birth-location": {
+                "talk": [
+                  "Enter the city where you were born. This is important for your asylum application.",
+                  "Then, write the country where you were born. Make sure the information is correct.",
+                  "Click Confirm when you have finished."
+                ]
+              },
+              "nationality": {
+                "talk": [
+                  "Here, you need to indicate your nationality at birth and your current nationality.",
+                  "The nationality at birth is what appears on your birth certificate.",
+                  "The current nationality is the citizenship you hold at this moment.",
+                  "Make sure to be accurate, as this information is important for your application."
+                ]
+              },
+              "additional-info": {
+                "talk": [
+                  "Here you need to provide additional information about your ethnicity and religion.",
+                  "Indicate your race, ethnicity, or tribal group as you identify.",
+                  "Also, state what your religion is.",
+                  "This information will help better understand your situation and experiences.",
+                  "Click Confirm when you have finished."
+                ]
+              },
+              "birth-certificate": {
+                "talk": [
+                  "First, you must indicate whether you have a birth certificate.",
+                  "If you have one, upload a copy here.",
+                  "This is important for your application.",
+                  "Click 'Confirm' when you are done."
+                ]
+              }
+            },
+            "name-and-aliases": {
+              "alias-information": {
+                "talk": [
+                  "If you have other names or aliases that you use or have used, indicate them here."
+                ]
+              },
+              "additional-names": {
+                "talk": [
+                  "If you have other names or aliases that you use regularly, like a maiden name, a middle name, or a name in another language, indicate them here."
+                ]
+              },
+              "basic-names": {
+                "talk": [
+                  "Here you need to put your first and last name as they appear on your passport or ID document."
+                ]
+              }
+            },
+            "language-proficiency": {
+              "native-language": {
+                "talk": [
+                  "Indicate your native language in the \"Native language\" field.",
+                  "If you speak a specific dialect, mention it as well.",
+                  "This helps us better understand your communication and needs.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "other-languages": {
+                "talk": [
+                  "Indicate which other languages you speak fluently. This is important for your application.",
+                  "Write the languages in the space provided. Make sure to be specific and clear.",
+                  "When you are finished, click Confirm."
+                ]
+              }
+            }
+          },
+          "intro": {
+            "intro": {
+              "talk": [
+                "We are ready to start your application. Remember that you can change and correct the information at any time."
+              ]
+            }
+          },
+          "immigration-status": {
+            "passport": {
+              "talk": [
+                "In this section, tell us if you have a passport. This is important for your asylum application.",
+                "If you have a passport, provide the number and the country that issued it.",
+                "If you don't have one, select \"No\" and continue.",
+                "Remember that this information helps verify your identity. Thank you!"
+              ]
+            },
+            "alien-number": {
+              "talk": [
+                "In this section, indicate if you have an Alien Registration Number (A-Number).",
+                "This number starts with the letter \"A\" followed by 8 or 9 digits (example: A123456789).",
+                "You can find it in documents from immigration offices.",
+                "If you have one, write it in the corresponding field.",
+                "Click Confirm when you are ready."
+              ]
+            },
+            "ssn": {
+              "talk": [
+                "To continue, let us know if you have a Social Security Number (SSN).",
+                "This is important for your application.",
+                "If you have one, make sure to write it correctly.",
+                "If you do not have an SSN, simply select \"No.\"",
+                "Click Confirm when you are ready."
+              ]
+            },
+            "uscis": {
+              "talk": [
+                "Now we need to know if you have a USCIS online account number.",
+                "This number is given to you when you create an account on the USCIS website.",
+                "You can also find it in the notifications you received from the immigration office.",
+                "Remember, this number is different from your Alien Number (A-number).",
+                "If you have it, please write it in the following field.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "court": {
+              "talk": [
+                "In this section, let us know if you have been or are currently in an immigration court process.",
+                "There are three options to choose from:",
+                "1. You are currently in a process.\n2. You were in a process before.\n3. You have never been in a process.",
+                "Make sure to select the option that best describes your situation. This is important for your application. Click Confirm when you are ready!"
+              ]
+            },
+            "is-in-usa": {
+              "talk": [
+                "Here you indicate if you are currently in the United States. This is important for your application. Click 'Yes' or 'No' as applicable. Take your time!"
+              ]
+            },
+            "first-entry": {
+              "talk": [
+                "Please provide information about your most recent entry to the United States.",
+                "Indicate the exact date of your entry in the corresponding field.",
+                "Then, write the place where you entered the country.",
+                "Finally, select your immigration status at the time of entry and its expiration date.",
+                "Make sure all data is accurate. Thank you!"
+              ]
+            },
+            "other-entries": {
+              "talk": [
+                "Here you should indicate if you have entered the United States on other occasions in the last five years.",
+                "If you only entered once, select 'No'. If you have entered more than once, select 'Yes' and provide the information for each entry.",
+                "Start with the most recent. For each entry, enter the date, the port of entry, and your immigration status.",
+                "Click 'Add entry' if you need to include more. Make sure all information is correct!"
+              ]
+            }
+          },
+          "employment-history": {
+            "jobs": {
+              "talk": [
+                "Please list all the jobs you have had in the last five years.",
+                "Start with the most recent.",
+                "Include positions in the U.S. and in other countries.",
+                "Gather information such as the employer's name and your occupation.",
+                "Click 'Add job' to add more positions."
+              ]
+            }
+          },
+          "school-information": {
+            "basic-school-info": {
+              "talk": [
+                "Please indicate the name of the last school or college you attended.",
+                "Also select the highest educational level you completed.",
+                "Make sure to be accurate, as this information is important for your application.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "school-location": {
+              "talk": [
+                "Here you need to indicate the location of your school.",
+                "Please enter:",
+                "- The city where the school is located.\n- The state where the school is.\n- The country of the school.",
+                "Make sure the information is correct. Click Confirm when you are ready."
+              ]
+            },
+            "attendance-period": {
+              "talk": [
+                "Here you should enter the period during which you attended school.",
+                "Indicate the start date and the end date.",
+                "It is important that these dates are accurate for your application.",
+                "Click Confirm when you are done."
+              ]
+            },
+            "other-schools": {
+              "talk": [
+                "Here you should list all the schools or colleges you have attended, starting with the most recent.",
+                "For each school, indicate its name in the corresponding field.",
+                "If you need to add more schools, simply click on 'Add school'.",
+                "Remember that this information is important for your asylum application. Keep going!"
+              ]
+            }
+          },
+          "residence": {
+            "previous-addresses": {
+              "previous-residence": {
+                "talk": [
+                  "Please indicate where you lived before arriving in the United States.",
+                  "This helps to understand your residency history.",
+                  "Then, select the period during which you lived there.",
+                  "Make sure all the information is correct before continuing."
+                ]
+              },
+              "past-residences": {
+                "talk": [
+                  "Please list all the places where you have lived in the last five years.",
+                  "Start with the most recent address and move backward.",
+                  "Click 'Add residence' to include more places if necessary.",
+                  "Remember that this information is important for your application."
+                ]
+              }
+            },
+            "current-address": {
+              "us-residence-status": {
+                "talk": [
+                  "Here indicate if you currently live in the United States. This information is important for your application. Click the option that best describes you and then confirm your selection."
+                ]
+              },
+              "address": {
+                "talk": [
+                  "Please enter your complete current address.",
+                  "This is important to keep you informed about your application.",
+                  "Make sure to include street, number, city, state, and ZIP code.",
+                  "Click Confirm when you are finished."
+                ]
+              },
+              "mailing-address": {
+                "talk": [
+                  "Hello, in this section, indicate if you receive mail at your current address.",
+                  "You will also need to write your mailing address or P.O. Box. It’s important to ensure you receive all correspondence related to your application.",
+                  "Then, click Confirm when you are done."
+                ]
+              }
+            }
+          },
+          "family-status": {
+            "marital-status": {
+              "marital-status": {
+                "talk": [
+                  "Indicate your current marital status. This is important for your application.",
+                  "Select an option: single, married, divorced, or widowed.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "marriage-certificate": {
+                "talk": [
+                  "Here you should indicate if you have your marriage certificate.",
+                  "If you have it, please upload a copy here.",
+                  "This document is important for your application."
+                ]
+              },
+              "marriage-info": {
+                "talk": [
+                  "Please indicate where you got married.",
+                  "Write the city or region and the country.",
+                  "You also need to provide the date of your marriage.",
+                  "If you are divorced, add the date of the divorce.",
+                  "Please double-check the information before confirming. Thank you!"
+                ]
+              },
+              "spouse-info": {
+                "talk": [
+                  "Please write your spouse's name as it appears on their documents.",
+                  "This is important for verifying your family situation.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "spouse-location": {
+                "talk": [
+                  "Here you need to indicate if your spouse is currently in the United States.",
+                  "If they are in the U.S., select \"Yes\". Otherwise, select \"No\".",
+                  "Then, provide your spouse's current location.",
+                  "This is important for your application. Click Confirm when you are done."
+                ]
+              }
+            },
+            "children-details": {
+              "children-information": {
+                "talk": [
+                  "Here you can indicate if you have children, regardless of their age or location.",
+                  "First, answer if you have children.",
+                  "Then, write how many children you have in total.",
+                  "This information is important for your application."
+                ]
+              },
+              "child": {
+                "talk": [
+                  "Hello! In this section, please provide your child's information.",
+                  "1. Indicate the child's name.",
+                  "2. Write their date of birth as it appears on their certificate.",
+                  "3. Select their sex at birth.",
+                  "4. Indicate their ethnicity.",
+                  "5. Answer if they currently live in the United States.",
+                  "6. Let us know if they have a birth certificate and upload a copy if necessary.",
+                  "This information is important for your asylum application. Thank you for your attention!"
+                ]
+              }
+            },
+            "parent-details": {
+              "parent": {
+                "talk": [
+                  "Here enter the information about your father or mother.",
+                  "Indicate if they are alive and their current place of residence.",
+                  "We also need their names and where they were born.",
+                  "This is important for your asylum application.",
+                  "Click Confirm when you have completed the information."
+                ]
+              }
+            },
+            "sibling-details": {
+              "sibling-information": {
+                "talk": [
+                  "Welcome to the section about your siblings' details!",
+                  "First, let us know if you have siblings.",
+                  "If the answer is yes, please write how many siblings you have.",
+                  "This information is important for your application.",
+                  "When you are done, click Confirm."
+                ]
+              },
+              "sibling": {
+                "talk": [
+                  "Hello! In this section, please fill in your sibling's information.",
+                  "Provide their name and then select their gender.",
+                  "Enter their date of birth as it appears on their certificate.",
+                  "Then, provide your sibling's place of birth.",
+                  "If they live in the United States, select \"Yes\" or \"No.\"",
+                  "If they live in the U.S., provide their current address.",
+                  "Remember that this information is important for your application. Thank you!"
+                ]
+              }
+            }
+          }
+        },
+        "statement": {
+          "talk": [
+            "Great work! You're all done with the personal information section.",
+            "Now we will work on your personal statement.",
+            "This is a very important part of your application.",
+            "You will need to provide detailed answers to specific questions about your situation and reasons for seeking asylum.",
+            "Take your time to think about your answers and be as detailed as possible.",
+            "Remember that you can change and correct anything before finishing.",
+            "If you don't have or don't remember something, continue and come back later.",
+            "It's important that everything you write or say, and the documents or other information you submit, must be true to the best of your knowledge and belief.",
+            "You can use the microphone button to record your answers, or type them out if you prefer.",
+            "When you're ready, press the 'Start' button to begin your statement."
+          ]
+        },
+        "review": {
+          "talk": [
+            "You're almost done! Now it's time to review your application.",
+            "Take your time to carefully read all the information you provided.",
+            "Make sure everything is accurate and complete.",
+            "If you find any mistakes or need to add something, you can go back and make changes.",
+            "Remember, this is your application, and it's important that it reflects your situation correctly.",
+            "Once you're satisfied with everything, you can proceed to submit your application.",
+            "Press the 'Start' button when you're ready to begin the review process."
+          ]
+        }
+      }
+    }
+  },
+  "services": {
+    "b2": {
+      "subtitle": "B-2 Visitor Visa Application",
+      "title": "Visitor Visa"
+    },
+    "categories": {
+      "education": {
+        "title": "Education"
+      },
+      "family": {
+        "title": "Family"
+      },
+      "residency": {
+        "title": "Residency"
+      },
+      "title": "Categories",
+      "work": {
+        "title": "Work"
+      }
+    },
+    "drawerLabel": "Services",
+    "i589": {
+      "menu": {
+        "revise": {
+          "info": "Revise Information",
+          "statement": "Revise Statement"
+        },
+        "migri": {
+          "eligibility": "Help with Asylum Application",
+          "info": "Help with Personal Info",
+          "statement": "Help with Personal Statement",
+          "review": "Help with Review"
+        }
+      },
+      "appeal": {
+        "description": "Submit an appeal to reopen or review your case if your application is denied.",
+        "title": "Appeal",
+        "label": "Appeal"
+      },
+      "decision": {
+        "description": "Receive the official determination on your asylum application.",
+        "title": "Decision",
+        "label": "Decision"
+      },
+      "statement": {
+        "screenTitle": "Personal Statement",
+        "description": "Provide a detailed personal statement describing your background, experiences, and reasons for seeking asylum. This statement will be an important part of your application.",
+        "title": "Personal Statement",
+        "label": "Statement",
+        "intro": {
+          "title": "Your Statement",
+          "intro": {
+            "title": "Personal Statement",
+            "description": "We are going to ask you some specific questions about your situation and your asylum request. You will need to provide detailed answers to these questions. Remember that you can correct and change anything you need before finishing. If you don't have or don't remember something, continue and come back later. It is important to remember that everything you write or say and the documents, photos, or any other information you include or send is your responsibility to be true to the best of your knowledge and belief.",
+            "agreed": {
+              "label": "I understand"
+            }
+          }
+        },
+        "fear": {
+          "title": "Fear of Return",
+          "has-fear": {
+            "has-fear": {
+              "title": "Are you afraid to return to your country? If you have to return, are you afraid that you or your family might suffer harm or mistreatment?"
+            }
+          },
+          "details": {
+            "title": "Fear of returning to your country",
+            "description": "Please explain in detail why you are afraid to return to your country. In your explanation, try to include the following information:\n\nWhat harm or mistreatment you fear may happen if you return.\n\nWho you believe might harm or mistreat you.\n\nWhether anything has changed since you left that might affect the risk of harm or mistreatment. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you could be harmed or mistreated if you return.\n\nAny additional information that may help explain your fear of returning.",
+            "details": {
+              "label": "Fear explanation"
+            }
+          },
+          "documents": {
+            "title": "Documents related to your fear of return",
+            "description": "Please submit any documents that may help confirm the information you have provided about your fear of returning. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
+          }
+        },
+        "criminal-history": {
+          "title": "Criminal History",
+          "has-criminal-history": {
+            "has-criminal-history": {
+              "description": "Have you or any family member included in this application ever committed a crime or been arrested, charged, convicted, or sentenced for any offense in the United States (including violations of immigration laws)?"
+            }
+          },
+          "details": {
+            "title": "Details of criminal history",
+            "description": "Provide detailed information for each instance:\n\nWhat happened and under what circumstances?\nWhen did it occur?\nWhat was the sentence received, and what were the place and length of detention or imprisonment?\nWhat were the reasons for the detention or conviction?\nWhat formal charges were brought against you or your family members included in this application, and what were the reasons for your/their release?",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Criminal history documents",
+            "description": "Please submit any documents related to your or your family's criminal history. This may include court records, police reports, or any other relevant documents."
+          }
+        },
+        "final-declaration": {
+          "title": "Final Declaration",
+          "final-declaration": {
+            "title": "Final Declaration",
+            "description": "I swear (affirm) that I know the contents of this application that I am signing, including all attached documents and supplements, and that they are all true to the best of my knowledge and belief. I also understand that if it is determined that I knowingly filed a frivolous asylum application, I will be permanently ineligible for any benefit under the Immigration and Nationality Act, and that I cannot avoid a finding of a frivolous application simply because someone advised me to provide false information in my asylum application.",
+            "agreed": {
+              "label": "I agree"
+            }
+          }
+        },
+        "fear-of-torture": {
+          "title": "Torture",
+          "has-fear-of-torture": {
+            "has-fear-of-torture": {
+              "title": "Are you afraid of being tortured in your country or in any other country to which you may be returned?",
+              "description": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
+            }
+          },
+          "details": {
+            "description": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning.",
+            "details": {
+              "label": "Explanation of fear of torture"
+            }
+          },
+          "documents": {
+            "title": "Documents related to your fear of torture",
+            "description": "Please submit any documents that may help confirm the information you have provided about your fear of torture. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
+          }
+        },
+        "harm-and-persecution": {
+          "title": "Harm and Persecution",
+          "has-been-harmed": {
+            "has-been-harmed": {
+              "title": "Have you, your family, close friends, or co-workers suffered any harm, mistreatment, or threats?"
+            }
+          },
+          "documents": {
+            "title": "Documents related to your harm and/or persecution",
+            "description": "Please submit any documents that may help confirm the information you have provided about your harm and/or persecution. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
+          },
+          "details": {
+            "title": "Details of your harm and/or persecution",
+            "description": "Please describe in detail any incidents when you or your family suffered harm, were threatened, or were mistreated.\n\nWhen describing your experience, please include as much detail as possible. In your explanation, try to address the following:\n\nWhat happened and how it happened.\n\nWhen it happened. Indicate whether it was a single incident or if it happened many times.\n\nWho was responsible. If you do not know their names, explain whether they belonged to a group, gang, cartel, political group, or were part of the government.\n\nWhy you believe you or your family were harmed, mistreated, or threatened.\n\nAny additional information. Include anything else you can share that may help us better understand what happened.",
+            "details": {
+              "label": "Details of harm"
+            }
+          }
+        },
+        "international-criminal-history": {
+          "title": "International Criminal History",
+          "has-international-criminal-history": {
+            "has-international-criminal-history": {
+              "title": "Have you ever been arrested, charged, or convicted for a crime in any country <strong>other</strong> than the United States?"
+            }
+          },
+          "details": {
+            "title": "International criminal history details",
+            "description": "Please provide details about your arrest, charge, or conviction. Include the following information:\n\nThe country where the incident occurred.\n\nThe date of the incident.\n\nThe nature of the crime.\n\nThe outcome (e.g., acquitted, convicted, case dismissed).\n\nAny additional relevant information.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "International criminal history documents",
+            "description": "Please submit any documents related to your arrest, charge, or conviction. This may include court records, police reports, or any other relevant documents."
+          }
+        },
+        "organizational-affiliations": {
+          "title": "Memberships & Groups",
+          "current-affiliations": {
+            "has-current-affiliations": {
+              "description": "Do you or your family continue participating in these groups or organizations?"
+            },
+            "title": "Current membership and group affiliation details",
+            "description": "Please describe in detail the current level of participation for each person who is involved:\n\nHow do they participate?\n\nWhat is your or your family member’s current level of participation?\n\nDo you or your family members currently hold leadership positions or important roles? If so, which position?\n\nHow long have you or your family member(s) participated in that organization or group?",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "past-affiliations": {
+            "has-past-affiliations": {
+              "description": "Have you or any member of your family ever belonged to or been associated with any organization or group in your country of origin, such as, but not limited to, a political party, a student group, a labor union, a religious organization, a military or paramilitary group, a civil patrol, a guerrilla organization, an ethnic group, a human rights group, or the press or media?"
+            },
+            "title": "Past membership and group affiliation details",
+            "description": "Please provide details about your involvement with the gang or group. Include the following information:\n\nThe name of the gang or group.\n\nThe nature of your involvement.\n\nThe time period of your involvement.\n\nAny criminal activities you were involved in.\n\nAny additional relevant information.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "current-affiliations-documents": {
+            "title": "Current membership and group affiliation documents",
+            "description": "Please submit any documents related to you or your family's <strong>current</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+          },
+          "past-affiliations-documents": {
+            "title": "Past membership and group affiliation documents",
+            "description": "Please submit any documents related to you or your family's <strong>past</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+          }
+        },
+        "previous-applications": {
+          "title": "Previous Applications",
+          "has-previous-applications": {
+            "has-previous-applications": {
+              "description": "Have you, your spouse, your child(ren), your father, your mother, or your siblings ever applied to the United States Government for refugee status, asylum, or withholding of removal?"
+            }
+          },
+          "details": {
+            "title": "Details of Prior Application",
+            "description": "What happened? Was there a decision, and if so, what was the decision?\n\nWhat happened to the status that you, your spouse, your child(ren), your father, your mother, or your sibling(s) received as a result of that decision?\n\nWere you included in the application of your father, mother, or spouse? If you were included, what was the A-Number of your father, mother, or spouse?\n\nIf an immigration judge or the Board of Immigration Appeals denied your asylum, please explain: what has changed in the conditions of your country or in your personal situation since your application was denied? Why is your case different now?",
+            "details": {
+              "label": "Details"
+            }
+          }
+        },
+        "return-to-country": {
+          "title": "Return to Country",
+          "has-returned-to-country": {
+            "has-returned-to-country": {
+              "description": "After you left your country to come to the United States (or the country where you suffered harm or fear harm), did you return to that country?"
+            }
+          },
+          "details": {
+            "title": "Explanation of travel to home country",
+            "description": "Explain in detail:\nWhy did you return?\nWhen did you return?\nHow long did you stay?",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to travel to home country",
+            "description": "Please submit any documents that may help confirm the information you have provided about your travel to your home country. This may include travel tickets, passport stamps, or any other relevant documents."
+          }
+        },
+        "harm-participation": {
+          "title": "Participation in Persecution",
+          "has-harm-participation": {
+            "has-harm-participation": {
+              "description": "Have you, your spouse, or your child(ren) ever ordered, incited, assisted, or otherwise participated in causing harm or suffering to any person because of their race, religion, nationality, membership in a particular social group, or belief in a particular political opinion?"
+            }
+          },
+          "details": {
+            "title": "Details of involvement",
+            "description": "Provide a detailed description of each incident, specifying your involvement and/or the involvement of your family members.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to involvement in harm or persecution",
+            "description": "Please submit any documents that may help confirm the information you have provided about your or your family's involvement. This may include court records, police reports, letters, or any other relevant documents."
+          }
+        },
+        "international-immigration-history": {
+          "title": "Legal Status in Other Countries",
+          "has-international-immigration-history": {
+            "has-international-immigration-history": {
+              "description": "Have you, your spouse, your child(ren), or other family members such as your father, mother, or siblings ever applied for or received any legal status in a country other than the one from which you are now requesting asylum?"
+            }
+          },
+          "details": {
+            "title": "Explanation of legal status in another country",
+            "description": "Provide a detailed explanation of what happened with that legal status, for you or any of your family members. Include the following:\n\nWhere — in which country did this occur?\nWhat was your status while you were in that country?\nWhat was the reason you left?\nDo you have the right to return with “legal residence”?\nDid you apply for refugee or asylum status while living in that country? Explain why or why not.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to legal status in another country",
+            "description": "Please submit any documents that may help confirm the information you have provided about your or your family's legal status in another country. This may include visas, residence permits, asylum or refugee status documents, or any other relevant documents."
+          }
+        },
+        "reasons-for-asylum": {
+          "title": "Reasons for Asylum",
+          "reasons": {
+            "reasons": {
+              "title": "Reasons for seeking asylum",
+              "description": "Based on your previous answers and explanations, indicate the reasons you are requesting asylum. You may select one or more reasons.",
+              "options": {
+                "politics": "Political Opinion",
+                "religion": "Religion",
+                "nationality": "Nationality",
+                "race": "Race",
+                "politics": "Political Opinion",
+                "social": "Membership in a Social Group",
+                "torture": "Fear of Torture"
+              }
+            }
+          }
+        },
+        "late-application": {
+          "title": "Late Application",
+          "details": {
+            "title": "Late Application Explanation",
+            "description": "It has already been more than a year since you entered the United States. The U.S. government requires that this application be submitted within one year. Please explain in great detail why you were not able to submit this application within one year of your entry into the United States.\n\nIt is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)",
+            "details": {
+              "label": "Explanation"
+            }
+          }
+        }
+      },
+      "eligibility": {
+        "arrival-date": {
+          "is-recent-arrival": {
+            "is-recent-arrival": {
+              "title": "Have you arrived in the U.S. within the last year?"
+            }
+          },
+          "title": "Arrival Date"
+        },
+        "country-of-origin": {
+          "is-from-safe-country": {
+            "is-from-safe-country": {
+              "title": "Do you come from a country that the U.S. considers “safe” where you could have applied for protection?"
+            }
+          },
+          "title": "Country of Origin"
+        },
+        "description": "Complete a short quiz to check if you qualify to apply for asylum.",
+        "physical-presence": {
+          "is-in-usa": {
+            "is-in-usa": {
+              "title": "Are you currently in the United States?"
+            }
+          },
+          "title": "Physical Presence in the US"
+        },
+        "previous-applications": {
+          "has-previous-app": {
+            "has-previous-app": {
+              "title": "Have you ever applied for asylum in the United States before?"
+            }
+          },
+          "title": "Previous Applications"
+        },
+        "reason-for-leaving": {
+          "harm-reasons": {
+            "custom-harm-reason": {
+              "label": "Please specify the other reason for leaving"
+            },
+            "harm-reasons": {
+              "options": {
+                "nationality": "Nationality",
+                "none": "None of the above",
+                "other": "Other",
+                "politics": "Political Opinion",
+                "race": "Race",
+                "religion": "Religion",
+                "social": "Social Group"
+              },
+              "title": "Was that harm based on one of these reasons?\n(Select all that apply)"
+            }
+          },
+          "is-escaping-harm": {
+            "is-escaping-harm": {
+              "title": "Did you leave your home country because you feared harm or persecution?"
+            }
+          },
+          "is-harmed-by-gov": {
+            "is-harmed-by-gov": {
+              "title": "Was the harm caused by your government or by people your government could not control?"
+            }
+          },
+          "title": "Reason for Leaving"
+        },
+        "screenTitle": "Asylum Eligibility Assessment",
+        "title": "Eligibility",
+        "label": "Eligibility"
+      },
+      "eligible": {
+        "continue": "Continue to Application",
+        "description": "Based on your answers, you appear to be eligible to apply for asylum in the United States.",
+        "nextSteps": "You can now proceed with your I-589 application for asylum. The following steps will guide you through the process.",
+        "screenTitle": "Eligibility Confirmed",
+        "title": "You May Be Eligible for Asylum"
+      },
+      "ineligible": {
+        "alternatives": "You may want to consult with an immigration attorney to explore other immigration options that might be available to you.",
+        "back": "Return to Services",
+        "description": "Based on your answers, you may not be eligible to apply for asylum in the United States at this time.",
+        "screenTitle": "Eligibility Results",
+        "title": "You May Not Be Eligible for Asylum"
+      },
+      "info": {
+        "description": "Enter your personal details such as name, date of birth, and nationality.",
+        "school-information": {
+          "attendance-period": {
+            "end": {
+              "label": "End Date"
+            },
+            "start": {
+              "label": "Start Date"
+            },
+            "title": "When did you attend this school?"
+          },
+          "basic-school-info": {
+            "level": {
+              "options": {
+                "primary": "Elementary or Primary",
+                "secondary": "Secondary",
+                "university": "University",
+                "vocational": "Vocational/Technical"
+              },
+              "title": "What is the highest level of education you completed?"
+            },
+            "name": {
+              "label": "Name of School/College",
+              "title": "What is the name of last school or college you attended?"
+            }
+          },
+          "other-schools": {
+            "title": "Starting with the most recent, please list all the other schools you have attended.",
+            "schools": {
+              "name": {
+                "label": "Name of School/College"
+              },
+              "title_ordinal_one": "{{count}}st School",
+              "title_ordinal_two": "{{count}}nd School",
+              "title_ordinal_few": "{{count}}rd School",
+              "title_ordinal_other": "{{count}}th School",
+              "add": "Add school"
+            }
+          },
+          "school-location": {
+            "school-city": {
+              "title": "City"
+            },
+            "school-country": {
+              "title": "Country"
+            },
+            "school-state": {
+              "title": "State"
+            },
+            "title": "School Location"
+          },
+          "title": "School Information"
+        },
+        "employment-history": {
+          "title": "Employment History",
+          "jobs": {
+            "title": "Starting with the most recent, please list all the jobs (in the USA and in other countries) you have had in the last five years.",
+            "jobs": {
+              "title_ordinal_one": "{{count}}st Job (most recent)",
+              "title_ordinal_two": "{{count}}nd Job",
+              "title_ordinal_few": "{{count}}rd Job",
+              "title_ordinal_other": "{{count}}th Job",
+              "add": "Add job",
+              "employer": {
+                "label": "Employer or Company Name"
+              },
+              "occupation": {
+                "label": "Occupation"
+              }
+            }
+          }
+        },
+        "family-status": {
+          "parent-details": {
+            "title": "Parent Information",
+            "parent": {
+              "title_male": "Please enter the following information about your father.",
+              "title_female": "Please enter the following information about your mother.",
+              "alive": {
+                "title_female": "Is your mother alive?",
+                "title_male": "Is your father alive?"
+              },
+              "current-location": {
+                "title_female": "Where does your mother currently live?",
+                "title_male": "Where does your father currently live?"
+              },
+              "name": {
+                "title_female": "What is your mother's name?",
+                "title_male": "What is your father's name?"
+              },
+              "birth-location": {
+                "title_female": "Where was your mother born?",
+                "title_male": "Where was your father born?"
+              }
+            }
+          },
+          "sibling-details": {
+            "sibling-information": {
+              "has-siblings": {
+                "title": "Do you have any siblings?"
+              },
+              "num-siblings": {
+                "label": "Number of siblings",
+                "title": "How many siblings do you have?"
+              },
+              "title": "Siblings Information"
+            },
+            "add-sibling": "Add sibling",
+            "additional-info-title": "Additional Information",
+            "basic-info-title": "Basic Information",
+            "birth-city": "City of Birth",
+            "birth-country": "Country of Birth",
+            "birth-info-title": "Birth Information",
+            "sibling": {
+              "dob": {
+                "label": "Date of Birth",
+                "title": "What is the sibling's date of birth?",
+                "title_named": "What is {{ name }}'s date of birth?"
+              },
+              "birth-location": {
+                "title": "Where was this sibling born?",
+                "title_named": "Where was {{ name }} born?"
+              },
+              "lives-in-usa": {
+                "title": "Does this sibling currently live in the United States?",
+                "title_named": "Does {{ name }} currently live in the United States?"
+              },
+              "current-location": {
+                "title": "Where does this sibling currently live?",
+                "title_named": "Where does {{ name }} currently live?"
+              },
+              "name": {
+                "title": "What is the sibling's name?"
+              },
+              "sex": {
+                "title": "What is the sibling's sex?",
+                "title_named": "What is {{ name }}'s sex?"
+              },
+              "title_one": "{{ count }}st sibling",
+              "title_two": "{{ count }}nd sibling",
+              "title_few": "{{ count }}rd sibling"
+            },
+            "sibling-number": "Sibling {{ current }} of {{ total }} details",
+            "dob": "Date of Birth",
+            "ethnicity": "Race, Ethnicity, or Tribal Group",
+            "lives-in-us": "Do they currently live in the United States?",
+            "nationality": "Nationality",
+            "sex": "Sex",
+            "sex-options": {
+              "female": "Female",
+              "male": "Male"
+            },
+            "title": "Siblings Details"
+          },
+          "children-details": {
+            "children-information": {
+              "has-children": {
+                "title": "Do you have children (regardless of age, location, or marital status)?"
+              },
+              "num-children": {
+                "label": "Number of children",
+                "title": "How many children do you have?"
+              },
+              "title": "Children Information"
+            },
+            "add-child": "Add child",
+            "additional-info-title": "Additional Information",
+            "basic-info-title": "Basic Information",
+            "birth-city": "City of Birth",
+            "birth-country": "Country of Birth",
+            "birth-info-title": "Birth Information",
+            "child": {
+              "dob": {
+                "label": "Date of Birth",
+                "title": "What is the child's date of birth?",
+                "title_named": "What is {{ name }}'s date of birth?"
+              },
+              "ethnicity": {
+                "label": "Ethnicity",
+                "title": "What is the child's ethnicity?",
+                "title_named": "What is {{ name }}'s ethnicity?"
+              },
+              "lives-in-usa": {
+                "title": "Does this child currently live in the United States?",
+                "title_named": "Does {{ name }} currently live in the United States?"
+              },
+              "has-birth-certificate": {
+                "title": "Does this child have a birth certificate?",
+                "title_named": "Does {{ name }} have a birth certificate?"
+              },
+              "birth-certificate": {
+                "title": "Please submit a copy of the child's birth certificate.",
+                "title_named": "Please submit a copy of {{ name }}'s birth certificate."
+              },
+              "name": {
+                "title": "What is the child's name?"
+              },
+              "sex": {
+                "title": "What is the child's sex?",
+                "title_named": "What is {{ name }}'s sex?"
+              },
+              "title_one": "{{ count }}st child",
+              "title_two": "{{ count }}nd child",
+              "title_few": "{{ count }}rd child"
+            },
+            "child-number": "Child {{ current }} of {{ total }} details",
+            "dob": "Date of Birth",
+            "ethnicity": "Race, Ethnicity, or Tribal Group",
+            "lives-in-us": "Do they currently live in the United States?",
+            "nationality": "Nationality",
+            "sex": "Sex",
+            "sex-options": {
+              "female": "Female",
+              "male": "Male"
+            },
+            "title": "Children Details"
+          },
+          "marital-status": {
+            "marriage-info": {
+              "location": {
+                "title": "Where did you get married?"
+              },
+              "city": {
+                "label": "City or Region"
+              },
+              "country": {
+                "label": "Country"
+              },
+              "date": {
+                "title": "When did you get married?",
+                "label": "Marriage Date"
+              },
+              "divorce-date": {
+                "label": "Divorce Date"
+              }
+            },
+            "spouse-info": {
+              "title": "What is your spouse's name?"
+            },
+            "spouse-location": {
+              "is-in-usa": {
+                "title": "Is your spouse currently in the United States?"
+              },
+              "location": {
+                "title": "Where is your spouse right now?",
+                "label": "Current Location"
+              }
+            },
+            "marriage-certificate": {
+              "has-certificate": {
+                "title": "Do you have your marriage certificate?"
+              },
+              "certificate": {
+                "title": "Please submit a copy of your marriage certificate."
+              }
+            },
+            "marital-status": {
+              "status": {
+                "options": {
+                  "divorced": "Divorced",
+                  "married": "Married",
+                  "single": "Single",
+                  "widowed": "Widowed"
+                },
+                "title": "What is your marital status?"
+              }
+            },
+            "title": "Family Status"
+          },
+          "spouse-information": {
+            "marriage-information": {
+              "city": {
+                "label": "City Where Married"
+              },
+              "country": {
+                "label": "Country Where Married"
+              },
+              "date": {
+                "label": "Marriage Date"
+              },
+              "title": "Please provide the following information about your current or most recent marriage."
+            },
+            "spouse-name": {
+              "title": "Please provide your spouse's name."
+            },
+            "title": "Spouse Information"
+          }
+        },
+        "immigration-status": {
+          "other-entries": {
+            "has-other-entries": {
+              "title_client": "Have you entered the United States any other times in the past five years?",
+              "description_client": "If you have only entered the United States once, you can select 'No'."
+            },
+            "other-entries": {
+              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States."
+            },
+            "entries": {
+              "title_ordinal_one": "{{ count }}st Entry",
+              "title_ordinal_two": "{{ count }}nd Entry",
+              "title_ordinal_few": "{{ count }}rd Entry",
+              "title_ordinal_other": "{{ count }}th Entry",
+              "add": "Add entry",
+              "date": {
+                "label": "Entry date"
+              },
+              "port": {
+                "label": "Port of entry"
+              },
+              "status": {
+                "label": "Immigration Status"
+              }
+            }
+          },
+          "is-in-usa": {
+            "is-in-usa": {
+              "title_child": "Is {{ name }} currently in the United States?"
+            }
+          },
+          "previous-entry": {
+            "has-previous-entry": {
+              "title_spouse": "Has {{ name }} ever entered the United States before the most recent time?"
+            },
+            "entry-date": {
+              "title_spouse": "Please provide the date of {{ name }}'s previous entry into the United States.",
+              "label": "Date of Previous Entry"
+            }
+          },
+          "first-entry": {
+            "title": "Please provide the following information about {{ name }}'s most recent entry into the United States.",
+            "title_client": "Please provide the following information about your most recent entry into the United States.",
+            "entry": {
+              "date": {
+                "title_client": "When did you enter the United States?",
+                "title": "When did {{ name }} enter the United States?",
+                "label": "Entry date"
+              },
+              "port": {
+                "title": "Where did {{ name }} enter the United States?",
+                "title_client": "Where did you enter the United States?",
+                "label": "Port of entry"
+              },
+              "status": {
+                "title": "What was {{ name }}'s immigration status at entry?",
+                "title_client": "What was your immigration status at entry?",
+                "label": "Immigration Status"
+              }
+            }
+          },
+          "ssn": {
+            "has-ssn": {
+              "title": "Do you have a Social Security Number?",
+              "title_spouse": "Does your spouse, {{ name }}, have a Social Security Number?",
+              "title_child": "Does your child, {{ name }}, have a Social Security Number?"
+            },
+            "number": {
+              "label": "Social Security Number",
+              "title_client": "What is your Social Security Number?",
+              "title": "What is {{ name }}'s Social Security Number?"
+            }
+          },
+          "court": {
+            "status": {
+              "title": "Has {{ name }} ever been, or is {{ name }} currently, in immigration court proceedings?",
+              "title_client": "Have you ever been, or are you currently, in immigration court proceedings?",
+              "options": {
+                "currently_client": "I am currently in proceedings",
+                "currently": "{{ name }} is currently in proceedings",
+                "previously_client": "I was previously in proceedings",
+                "previously": "{{ name }} was previously in proceedings",
+                "never_client": "I have never been in proceedings",
+                "never": "{{ name }} has never been in proceedings"
+              }
+            }
+          },
+          "uscis": {
+            "has-uscis": {
+              "title": "Do you have a USCIS online account number?",
+              "title_spouse": "Does your spouse, {{ name }}, have a USCIS online account number?",
+              "title_child": "Does your child, {{ name }}, have a USCIS online account number?",
+              "description": "The 'USCIS online account number' (Online Account Number or OAN) is a number that’s given to a person when they create an account on the U.S. Citizenship and Immigration Services (USCIS) website. You can also find it in notices you’ve received from the immigration office. This number is different from the Alien Number (A-number)."
+            },
+            "number": {
+              "label": "USCIS Online Account Number",
+              "title_client": "What is your USCIS online account number?",
+              "title": "What is {{ name }}'s USCIS online account number?"
+            }
+          },
+          "alien-number": {
+            "has-alien-number": {
+              "title": "Do you have an Alien Registration Number?",
+              "title_spouse": "Does your spouse, {{ name }} have an Alien Registration Number?",
+              "title_child": "Does your child, {{ name }} have an Alien Registration Number?",
+              "description": "The Alien Registration Number (A-Number) begins with the letter “A” followed by 8 or 9 digits (e.g., A123456789). This number is printed on the notes and/or documents that may have been given to you by immigration offices (Executive Office for Immigration Review – EOIR) or by the Department of Homeland Security (DHS), USCIS, U.S. Customs and Border Protection (CBP), and U.S. Immigration and Customs Enforcement (ICE)."
+            },
+            "number": {
+              "label": "Alien Registration Number",
+              "title_client": "What is your Alien Registration Number?",
+              "title": "What is {{ name }}'s Alien Registration Number?"
+            }
+          },
+          "title": "Your Immigration Status",
+          "title_spouse": "Spouse Immigration Status",
+          "title_child_ordinal_one": "{{ count }}st Child Immigration Status",
+          "title_child_ordinal_two": "{{ count }}nd Child Immigration Status",
+          "title_child_ordinal_few": "{{ count }}rd Child Immigration Status",
+          "passport": {
+            "has-passport": {
+              "title": "Do you have a passport (or other travel document)?",
+              "title_spouse": "Does your spouse, {{ name }} have a passport (or travel document)?",
+              "title_child": "Does your child, {{ name }} have a passport (or travel document)?"
+            },
+            "passport": {
+              "number": {
+                "label": "Passport Number",
+                "title_client": "What is your passport (or travel document) number?",
+                "title": "What is {{ name }}'s passport (or travel document) number?"
+              },
+              "country": {
+                "label": "Issuing Country",
+                "title": "Which country issued {{ name }}'s passport (or travel document)?",
+                "title_client": "Which country issued your passport (or travel document)?"
+              },
+              "expiration": {
+                "label": "Expiration Date",
+                "title_client": "What is the expiration date of your passport (or travel document)?"
+              },
+              "type": {
+                "title_client": "Is this a passport, or another kind of travel document?",
+                "options": {
+                  "passport": "Passport",
+                  "other": "Travel Document"
+                }
+              }
+            }
+          },
+          "immigration-status": {
+            "lastDepartureDate": {
+              "title": "Last departure from home country",
+              "label": "Date (MM/DD/YYYY)"
+            },
+            "lastUsEntryDate": {
+              "title": "Most recent entry to the United States",
+              "label": "Date (MM/DD/YYYY)"
+            },
+            "lastUsEntryPort": {
+              "title": "Port of entry to the United States",
+              "label": "Enter the city/port"
+            },
+            "entryStatus": {
+              "title": "Immigration status at entry",
+              "label": "What status were you admitted under?"
+            },
+            "statusExpirationDate": {
+              "title": "Expiration date of this status",
+              "label": "Date (MM/DD/YYYY)"
+            }
+          }
+        },
+        "personal-information": {
+          "demographics-and-birth": {
+            "birth-certificate": {
+              "has-birth-certificate": {
+                "title": "Do you have a birth certificate?"
+              },
+              "image": {
+                "title": "Please submit a copy of your birth certificate."
+              }
+            },
+            "additional-info": {
+              "ethnicity": {
+                "label": "Race, Ethnicity, or Tribal Group",
+                "title": "What is your ethnicity?"
+              },
+              "religion": {
+                "label": "Religion",
+                "title": "What is your religion?"
+              },
+              "title": "Additional Information"
+            },
+            "sex": {
+              "sex": {
+                "title": "What is your sex?"
+              }
+            },
+            "birth": {
+              "date": {
+                "label": "Date of Birth",
+                "title": "When were you born?"
+              },
+              "location": {
+                "title": "Where were you born?"
+              }
+            },
+            "nationality": {
+              "birth-nationality": {
+                "label": "Nationality at Birth",
+                "title": "What was your nationality at birth?"
+              },
+              "current-nationality": {
+                "label": "Current Nationality",
+                "title": "What is your current nationality? (Citizenship)"
+              }
+            },
+            "title": "Demographics and Birth"
+          },
+          "language-proficiency": {
+            "native-language": {
+              "language": {
+                "label": "Native Language",
+                "title": "What is your native language?"
+              },
+              "dialect": {
+                "label": "Dialect"
+              },
+              "english": {
+                "title": "Are you fluent in english?"
+              }
+            },
+            "other-languages": {
+              "languages": {
+                "label": "Other Languages",
+                "title": "Which other languages do you speak fluently?"
+              }
+            },
+            "title": "Language Proficiency"
+          },
+          "name-and-aliases": {
+            "additional-names": {
+              "maiden-name": {
+                "label": "Maiden Name"
+              },
+              "other-names": {
+                "label": "Other Names"
+              },
+              "title": "What other names or surnames have you used?"
+            },
+            "additional-names-title": "Additional Names",
+            "alias-information": {
+              "aliases": {
+                "label": "What aliases have you used?"
+              },
+              "has-alias": {
+                "title": "Have you used an alias?"
+              }
+            },
+            "basic-names": {
+              "title": "What is your full name?"
+            },
+            "title": "Names and Aliases"
+          }
+        },
+        "residence": {
+          "previous-addresses": {
+            "title": "Previous Addresses",
+            "previous-residence": {
+              "address": {
+                "title": "Before arriving in the United States, where did you live?"
+              },
+              "range": {
+                "title": "During which period did you live there?"
+              }
+            },
+            "past-residences": {
+              "title": "Starting with the most recent, please list all the other places you have lived in the last five years.",
+              "residences": {
+                "title_ordinal_one": "{{count}}st Residence",
+                "title_ordinal_two": "{{count}}nd Residence",
+                "title_ordinal_few": "{{count}}rd Residence",
+                "title_ordinal_other": "{{count}}th Residence",
+                "add": "Add residence"
+              }
+            }
+          },
+          "current-address": {
+            "address": {
+              "title": "Current Address"
+            },
+            "mailing-address": {
+              "receives-mail": {
+                "title": "Do you receive mail where you currently live?"
+              },
+              "mailing-address": {
+                "title": "What is your mailing address or P.O. Box?"
+              }
+            },
+            "title": "Current Address",
+            "us-residence-status": {
+              "resident": {
+                "title": "Do you currently live in the United States?"
+              }
+            }
+          }
+        },
+        "screenTitle": "Personal Information",
+        "title": "Personal Information",
+        "label": "Info",
+        "intro": {
+          "title": "Asylum Application",
+          "intro": {
+            "title": "Asylum Application",
+            "description": "Before you start, remember that you can correct and change anything you need before finishing. If you don't have or don't remember something, continue and come back later. It is important to remember that everything you write or say and the documents, photos, or any other information you include or send is your responsibility to be true to the best of your knowledge and belief.",
+            "agreed": {
+              "label": "I understand"
+            }
+          }
+        }
+      },
+      "interview": {
+        "description": "Attend your scheduled asylum interview with an officer or judge.",
+        "title": "Interview",
+        "label": "Interview"
+      },
+      "progress": {
+        "screenTitle": "Application Progress"
+      },
+      "review": {
+        "screenTitle": "Application Review",
+        "description": "Verify that all your answers and uploads are complete and accurate.",
+        "title": "Review",
+        "label": "Review"
+      },
+      "subtitle": "I-589 Application for Asylum",
+      "title": "Asylum",
+      "waiting": {
+        "description": "Track the status of your application while it is under review.",
+        "title": "Wait",
+        "label": "Wait"
+      }
+    },
+    "i765": {
+      "subtitle": "I-765 Application for Employment Authorization",
+      "title": "Work Permit"
+    },
+    "popular": "Popular Services",
+    "screenTitle": "iMigration Services",
+    "progress": {
+      "start": "Start",
+      "continue": "Continue"
+    }
+  },
+  "speech": {
+    "error": {
+      "no-speech": "No speech detected. Make sure the speech language is correct and your microphone is working.",
+      "unknown": "An unknown error occurred. Please try again.",
+      "audio-capture": "Audio capture failed. Please ensure your microphone is working.",
+      "bad-grammar": "There was a problem with the speech recognition grammar.",
+      "language-not-supported": "The selected language is not supported for speech recognition.",
+      "network": "A network error occurred during speech recognition. Please check your internet connection.",
+      "not-allowed": "Permission to use speech recognition was denied.",
+      "service-not-allowed": "The speech recognition service is not allowed.",
+      "busy": "The speech recognition service is currently busy. Please try again later.",
+      "client": "There was a client-side error with the speech recognition service.",
+      "speech-timeout": "No speech detected within the time limit. Please try again."
+    },
+    "locales": {
+      "en-US": "English (US)",
+      "es-US": "Spanish (US)"
+    }
+  },
+  "settings": {
+    "drawerLabel": "Settings",
+    "screenTitle": "Settings",
+    "speech": {
+      "screenTitle": "Speech Recognition",
+      "sections": {
+        "speech-language-override": {
+          "title": "Speech Recognition Language",
+          "options": {
+            "default": "Use app language"
+          }
+        }
+      }
+    },
+    "migri": {
+      "screenTitle": "Migri",
+      "sections": {
+        "migri-voice": {
+          "title": "Migri's Voice",
+          "options": {
+            "title": "{{ name }}",
+            "title_default": "System Default",
+            "title_en-GB": "{{ name }} (British English)",
+            "title_en-AU": "{{ name }} (Australian English)",
+            "title_en-ZA": "{{ name }} (South African English)"
+          },
+          "utterance": "Hello! I am Migri, your virtual assistant. I can help you navigate the iMigration app!"
+        }
+      }
+    },
+    "sections": {
+      "general": {
+        "title": "General",
+        "items": {
+          "migri": {
+            "title": "Migri",
+            "description": "Configure Migri, the virtual assistant that can help you navigate the app."
+          }
+        }
+      },
+      "advanced": {
+        "title": "Advanced",
+        "items": {
+          "data": {
+            "title": "Inspect App Data",
+            "description": "View and edit data stored in the app about you."
+          },
+          "reset": {
+            "title": "Reset Data",
+            "description": "Completely reset <strong>ALL</strong> app data, including your profile and all applications.",
+            "dialog": {
+              "title": "Reset Data",
+              "content": "Are you sure you want to reset all app data? This will restart the app. This action <strong>cannot</strong> be undone.",
+              "cancel": "Cancel",
+              "confirm": "Reset"
+            }
+          }
+        }
+      },
+      "support": {
+        "title": "Support",
+        "items": {
+          "onboarding": {
+            "title": "Show onboarding",
+            "description": "Walk through the app's features."
+          }
+        }
+      },
+      "language-and-accessibility": {
+        "items": {
+          "language": {
+            "description": "Select your preferred language for the app.",
+            "title": "Preferred language"
+          },
+          "speech": {
+            "title": "Speech recognition",
+            "description": "Configure in-app speech recognition."
+          }
+        },
+        "title": "Language & Accessibility"
+      }
+    },
+    "data": {
+      "editor": {
+        "close": "Close",
+        "title": "Edit Data"
+      },
+      "screenTitle": "Data",
+      "sections": {
+        "user": {
+          "title": "User Data",
+          "menu": {
+            "edit": "Edit",
+            "delete": "Delete"
+          }
+        }
+      }
+    },
+    "language": {
+      "screenTitle": "Language",
+      "sections": {
+        "languages": {
+          "title": "Preferred Language"
+        }
+      }
+    }
+  }
+}

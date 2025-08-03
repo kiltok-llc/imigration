@@ -20,7 +20,7 @@
       "distribution": "internal",
       "channel": "preview",
       "env": {
-        "APP_VARIANT": "staging"
+        "APP_VARIANT": "preview"
       }
     },
     "production": {

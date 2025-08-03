@@ -40,11 +40,11 @@
   },
   "prettier": "@repo/prettier-config",
   "dependencies": {
-    "@supabase-cache-helpers/postgrest-core": "^0.12.1",
-    "@supabase-cache-helpers/postgrest-react-query": "^1.13.4",
-    "@supabase/postgrest-js": "^1.19.4",
-    "@supabase/supabase-js": "^2.50.0",
-    "@tanstack/react-query": "catalog:"
+    "@supabase-cache-helpers/postgrest-core": "^0.12.3",
+    "@supabase-cache-helpers/postgrest-react-query": "^1.13.6",
+    "@supabase/postgrest-js": "^1.21.3",
+    "@supabase/supabase-js": "^2.56.1",
+    "@tanstack/react-query": "^5.87.4"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -52,7 +52,7 @@
     "@repo/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "supabase": "^2.24.3",
+    "supabase": "^2.39.2",
     "typescript": "catalog:"
   }
 }

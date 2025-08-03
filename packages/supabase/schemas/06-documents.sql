@@ -2,7 +2,7 @@
 drop table if exists documents cascade;
 
 create table documents (
-  id uuid not null primary key default gen_random_uuid (),
+  id uuid not null primary key default gen_random_uuid(),
   name text not null default 'New Document' check (
     0 < length(name)
     and length(name) < 255
