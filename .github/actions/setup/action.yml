@@ -15,7 +15,7 @@ runs:
       shell: bash
       run: |
         pnpm install
-        prettier --version
+        pnpm format:version
     - name: Setup Xcode
       if: runner.os == 'macOS'
       shell: bash
