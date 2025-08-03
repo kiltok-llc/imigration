@@ -13,9 +13,7 @@ runs:
       run: pnpm add --global turbo @dotenvx/dotenvx
     - name: Install NPM Dependencies
       shell: bash
-      run: |
-        pnpm install
-        pnpm format:version
+      run: pnpm install
     - name: Setup Xcode
       if: runner.os == 'macOS'
       shell: bash

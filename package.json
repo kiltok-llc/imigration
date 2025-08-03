@@ -4,12 +4,11 @@
   "scripts": {
     "build:check": "turbo run build:check",
     "clean": "turbo run clean clean:root",
-    "clean:root": "git clean -xdf node_modules",
+    "clean:root": "git clean -xdf node_modules .cache .turbo/cache",
     "format": "turbo run format format:root --continue -- .",
     "format:check": "turbo run format:check format:root:check -- .",
     "format:root": "prettier --write --cache --cache-location .cache/.prettiercache",
     "format:root:check": "prettier --check --cache --cache-location .cache/.prettiercache",
-    "format:version": "prettier --version",
     "postinstall": "sherif",
     "lint": "turbo run lint --continue",
     "lint:check": "turbo run lint:check"
