@@ -73,7 +73,7 @@ export default function Services() {
           contentContainerStyle={tw`grow-1 gap-8 pt-4`}
           style={tw`flex-1`}
         >
-          <SafeAreaView edges={['bottom']}>
+          <SafeAreaView edges={['bottom']} style={tw`flex-1`}>
             <Container style={tw`flex-1 gap-8`}>
               <Searchbar
                 onChangeText={setSearchQuery}
