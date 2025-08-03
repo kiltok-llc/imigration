@@ -11,14 +11,14 @@ jobs:
     name: Check
     uses: ./.github/workflows/mobile-check.yml
 
-  #  production-deploy:
-  #    name: Production Deploy
-  #    if: github.ref == 'refs/heads/main'
-  #    needs: [check]
-  #    uses: ./.github/workflows/mobile-deploy.yml
-  #    secrets: inherit
-  #    with:
-  #      environment: production
+  production-deploy:
+    name: Production Deploy
+    if: github.ref == 'refs/heads/main'
+    needs: [check]
+    uses: ./.github/workflows/mobile-deploy.yml
+    secrets: inherit
+    with:
+      environment: production
 
   staging-deploy:
     name: Staging Deploy
