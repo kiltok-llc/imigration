@@ -44,18 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
-      - run: eas env:pull ${{ inputs.environment }} --non-interactive
-      - id: build
-        run: |
-          turbo build:${{ matrix.platform }} -- --profile ${{ inputs.environment }}
-          echo "path=$(realpath build/*)" >> $GITHUB_OUTPUT
-      - id: upload
-        run: echo "build-url=$(eas upload --non-interactive --json --platform ${{ matrix.platform }} --build-path ${{ steps.build.outputs.build-path }} | jq -r .url)" >> $GITHUB_OUTPUT
-      - name: Job Summary
-        if: inputs.environment == 'preview'
-        run: |
-          echo '## ${{ matrix.name }} App' >> $GITHUB_STEP_SUMMARY
-          echo '${{ steps.upload.outputs.build-url }}' >> $GITHUB_STEP_SUMMARY
+      - run: eas build --non-interactive --platform ${{ matrix.platform }} --profile ${{ inputs.environment }}
 
   push-update:
     name: Push Update
