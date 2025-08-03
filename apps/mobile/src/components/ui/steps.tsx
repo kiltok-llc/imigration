@@ -39,9 +39,9 @@ export function StepIcons({
                     backgroundColor:
                       stepId === id
                         ? theme.colors.secondary
-                        : (stepIdx < chunkIdx * CHUNK_SIZE + index
+                        : stepIdx < chunkIdx * CHUNK_SIZE + index
                           ? theme.colors.onSurfaceDisabled
-                          : theme.colors.primary),
+                          : theme.colors.primary,
                   }
                 )}
               >
@@ -49,9 +49,9 @@ export function StepIcons({
                   color={
                     stepId === id
                       ? theme.colors.onSecondary
-                      : (stepIdx < chunkIdx * CHUNK_SIZE + index
+                      : stepIdx < chunkIdx * CHUNK_SIZE + index
                         ? theme.colors.primary
-                        : theme.colors.onPrimary)
+                        : theme.colors.onPrimary
                   }
                   size={36}
                 />
