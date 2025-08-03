@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm add --global eas-cli
-      - run: eas build --non-interactive --platform ${{ matrix.platform }} --profile ${{ inputs.environment }}
+      - run: eas build --non-interactive --auto-submit --platform ${{ matrix.platform }} --profile ${{ inputs.environment }}
 
   push-update:
     name: Push Update
