@@ -27,4 +27,5 @@ jobs:
     uses: ./.github/workflows/mobile-deploy.yml
     secrets: inherit
     with:
+      build: false
       environment: preview
