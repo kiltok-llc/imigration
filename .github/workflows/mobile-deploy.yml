@@ -81,7 +81,10 @@ jobs:
         run: eas update --non-interactive --platform ${{ matrix.platform }} --channel ${{ inputs.environment }} --environment ${{ inputs.environment }} --message ${{ github.sha }}
 
       - name: Upload Sentry Sourcemaps
-        run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
+        if: steps.fingerprint.outputs.build_needed == 'false'
+        run: |
+          eas env:pull --non-interactive --environment ${{ inputs.environment }}
+          dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
 
       - run: mv current-expo-fingerprint.txt previous-expo-fingerprint.txt
 
