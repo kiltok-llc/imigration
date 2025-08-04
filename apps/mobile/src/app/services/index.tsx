@@ -66,7 +66,6 @@ export default function Services() {
           })}
           variant='displaySmall'
         >
-          YEET
           <Trans i18nKey='services.title' />
         </Text>
 
