@@ -34,9 +34,9 @@ jobs:
           - platform: ios
             name: iOS
             os: macos-latest
-    #          - platform: android
-    #            name: Android
-    #            os: ubuntu-latest
+          - platform: android
+            name: Android
+            os: ubuntu-latest
 
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
