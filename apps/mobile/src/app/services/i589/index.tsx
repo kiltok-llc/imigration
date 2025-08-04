@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack, usePathname, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -15,6 +15,7 @@ import { STEPS } from '@/lib/services/i589/steps';
 
 export default function I589() {
   const { t } = useTranslation();
+  console.log(usePathname());
   const router = useRouter();
   const stepId = useAtomValue(useServiceStepAtom());
 

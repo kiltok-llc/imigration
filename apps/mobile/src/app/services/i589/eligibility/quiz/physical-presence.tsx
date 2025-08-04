@@ -7,12 +7,12 @@ import { Trans } from '@/components/trans';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
 import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
 import { BooleanRadioGroup } from '@/components/ui/radio';
-import { quizAnswerFamily } from '@/lib/services/i589/eligibility';
+import { answerFamily } from '@/lib/services/i589/eligibility';
 
 export default function PhysicalPresence() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [isInUsa, setIsInUsa] = useAtom(quizAnswerFamily('isInUsa'));
+  const [isInUsa, setIsInUsa] = useAtom(answerFamily('isInUsa'));
 
   return (
     <Quiz>

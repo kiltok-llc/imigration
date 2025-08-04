@@ -47,7 +47,7 @@ export default function Ineligible() {
             icon='arrow-left'
             labelStyle={tw`text-lg`}
             mode='contained'
-            onPress={() => router.replace('/services')}
+            onPress={() => router.dismissTo('/services')}
             style={tw`mt-auto`}
           >
             <Trans i18nKey='services.i589.ineligible.backButton' />

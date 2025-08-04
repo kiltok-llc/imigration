@@ -7,7 +7,12 @@ import { useStepId } from '@/hooks/use-step-id';
 
 export const quizRouteFamily = atomFamily(
   ({ quizId, serviceId }: { quizId: string; serviceId: string }) =>
-    atomWithMmkvStorage(`services.${serviceId}.${quizId}.route`, '', z.string())
+    atomWithMmkvStorage(
+      `services.${serviceId}.${quizId}.route`,
+      '',
+      z.string()
+    ),
+  (a, b) => a.quizId === b.quizId && a.serviceId === b.serviceId
 );
 
 export const useQuizRouteAtom = () => {

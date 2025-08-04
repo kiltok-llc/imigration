@@ -7,13 +7,13 @@ import { Trans } from '@/components/trans';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
 import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
 import { BooleanRadioGroup } from '@/components/ui/radio';
-import { quizAnswerFamily } from '@/lib/services/i589/eligibility';
+import { answerFamily } from '@/lib/services/i589/eligibility';
 
 export default function CountryOfOrigin() {
   const router = useRouter();
   const { t } = useTranslation();
   const [isFromSafeCountry, setIsFromSafeCountry] = useAtom(
-    quizAnswerFamily('isFromSafeCountry')
+    answerFamily('isFromSafeCountry')
   );
 
   return (

@@ -8,16 +8,15 @@ function getInitialStep(_serviceId: string) {
   return 'eligibility';
 }
 
-export const serviceStepFamily = atomFamily(
-  ({ serviceId }: { serviceId: string }) =>
-    atomWithMmkvStorage(
-      `services.${serviceId}.step`,
-      getInitialStep(serviceId),
-      z.string()
-    )
+export const serviceStepFamily = atomFamily((serviceId: string) =>
+  atomWithMmkvStorage(
+    `services.${serviceId}.step`,
+    getInitialStep(serviceId),
+    z.string()
+  )
 );
 
 export const useServiceStepAtom = () => {
   const serviceId = useServiceId();
-  return serviceStepFamily({ serviceId });
+  return serviceStepFamily(serviceId);
 };

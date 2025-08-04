@@ -13,13 +13,10 @@ import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
 import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
 import { BooleanRadioGroup } from '@/components/ui/radio';
-import {
-  HarmReasonEnum,
-  quizAnswerFamily,
-} from '@/lib/services/i589/eligibility';
+import { answerFamily, HarmReasonEnum } from '@/lib/services/i589/eligibility';
 
 const customHarmReasonValidationAtom = atomWithValidation(
-  quizAnswerFamily('customHarmReason'),
+  answerFamily('customHarmReason'),
   z.string().min(2)
 );
 
@@ -27,16 +24,14 @@ export default function ReasonForLeaving() {
   const router = useRouter();
   const { t } = useTranslation();
   const [isEscapingHarm, setIsEscapingHarm] = useAtom(
-    quizAnswerFamily('isEscapingHarm')
+    answerFamily('isEscapingHarm')
   );
   const [isHarmedByGov, setIsHarmedByGov] = useAtom(
-    quizAnswerFamily('isHarmedByGov')
+    answerFamily('isHarmedByGov')
   );
-  const [harmReasons, setHarmReasons] = useAtom(
-    quizAnswerFamily('harmReasons')
-  );
+  const [harmReasons, setHarmReasons] = useAtom(answerFamily('harmReasons'));
   const [customHarmReason, setCustomHarmReason] = useAtom(
-    quizAnswerFamily('customHarmReason')
+    answerFamily('customHarmReason')
   );
   const { error: customHarmReasonError, isDirty: isCustomHarmReasonDirty } =
     useAtomValue(customHarmReasonValidationAtom);

@@ -1,7 +1,7 @@
-import { useSegments } from 'expo-router';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 
 export const useStepId = () => {
-  const [services, _serviceId, stepId] = useSegments() as string[];
+  const [services, _serviceId, stepId] = useLocalSegments();
   if (services !== 'services') {
     throw new Error("The first segment must be 'services'.");
   }
