@@ -34,9 +34,9 @@ jobs:
           - platform: ios
             name: iOS
             os: macos-latest
-          - platform: android
-            name: Android
-            os: ubuntu-latest
+    #          - platform: android
+    #            name: Android
+    #            os: ubuntu-latest
 
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -51,46 +51,30 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          path: previous-expo-fingerprint.txt
-          key: fingerprint-${{ inputs.environment }}
-
-      - run: eas fingerprint --non-interactive --json --platform ${{ matrix.platform }} > current-expo-fingerprint.txt
+          path: eas-fingerprint.txt
+          key: eas-fingerprint-${{ matrix.platform }}-${{ inputs.environment }}
 
       - name: Compare fingerprints
         id: fingerprint
         run: |
-          if [ -f previous-expo-fingerprint.txt ]; then
-            if cmp -s current-expo-fingerprint.txt previous-expo-fingerprint.txt; then
-              echo "Fingerprint unchanged, no native build needed"
-              echo "build_needed=false" >> $GITHUB_OUTPUT
-            else
-              echo "Fingerprint changed, native build needed"
-              echo "build_needed=true" >> $GITHUB_OUTPUT
-            fi
-          else
+          if [ ! -f eas-fingerprint.txt ]; then
             echo "Previous fingerprint not found, native build needed"
-            echo "build_needed=true" >> $GITHUB_OUTPUT
+            echo "build-needed=true" >> $GITHUB_OUTPUT
+          elif eas fingerprint:compare $(cat eas-fingerprint.txt) --platform ${{ matrix.platform }} --environment ${{ inputs.environment }}; then
+            echo "Fingerprint unchanged, no native build needed"
+            echo "build-needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Fingerprint changed, native build needed"
+            echo "build-needed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Native Build
-        if: steps.fingerprint.outputs.build_needed == 'true'
-        run: eas build --non-interactive --platform ${{ matrix.platform }} --profile ${{ inputs.environment }} --message ${{ github.sha }}
+        if: steps.fingerprint.outputs.build-needed == 'true'
+        run: eas build --non-interactive --json --platform ${{ matrix.platform }} --profile ${{ inputs.environment }} | jq -r '.[0].runtimeVersion' > eas-fingerprint.txt
 
       - name: EAS Update
-        if: steps.fingerprint.outputs.build_needed == 'false'
-        run: eas update --non-interactive --platform ${{ matrix.platform }} --channel ${{ inputs.environment }} --environment ${{ inputs.environment }} --message ${{ github.sha }}
-
-      - name: Upload Sentry Sourcemaps
-        if: steps.fingerprint.outputs.build_needed == 'false'
+        if: steps.fingerprint.outputs.build-needed == 'false'
         run: |
+          eas update --non-interactive --json --platform ${{ matrix.platform }} --channel ${{ inputs.environment }} --environment ${{ inputs.environment }} --message ${{ github.sha }} | jq -r '.[0].runtimeVersion' > eas-fingerprint.txt
           eas env:pull --non-interactive --environment ${{ inputs.environment }}
           dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
-
-      - run: mv current-expo-fingerprint.txt previous-expo-fingerprint.txt
-
-      - uses: actions/cache@v4
-        with:
-          path: previous-expo-fingerprint.txt
-          key: fingerprint-${{ inputs.environment }}-${{ github.run_id }}
-          restore-keys: |
-            fingerprint-${{ inputs.environment }}
