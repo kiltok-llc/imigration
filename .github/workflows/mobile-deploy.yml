@@ -26,7 +26,7 @@ defaults:
     working-directory: 'apps/mobile'
 
 jobs:
-  build-update:
+  build:
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +38,7 @@ jobs:
     #            name: Android
     #            os: ubuntu-latest
 
-    name: Build/Update ${{ matrix.name }}
+    name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     environment: ${{ inputs.environment }}
     env:
@@ -61,24 +61,27 @@ jobs:
         run: |
           if [ -f previous-expo-fingerprint.txt ]; then
             if cmp -s current-expo-fingerprint.txt previous-expo-fingerprint.txt; then
-              echo "Fingerprint unchanged, no build needed"
+              echo "Fingerprint unchanged, no native build needed"
               echo "build_needed=false" >> $GITHUB_OUTPUT
             else
-              echo "Fingerprint changed, build needed"
+              echo "Fingerprint changed, native build needed"
               echo "build_needed=true" >> $GITHUB_OUTPUT
             fi
           else
-            echo "Previous fingerprint not found, build needed"
+            echo "Previous fingerprint not found, native build needed"
             echo "build_needed=true" >> $GITHUB_OUTPUT
           fi
 
-      - if: steps.fingerprint.outputs.build_needed == 'true'
+      - name: Native Build
+        if: steps.fingerprint.outputs.build_needed == 'true'
         run: eas build --non-interactive --platform ${{ matrix.platform }} --profile ${{ inputs.environment }} --message ${{ github.sha }}
 
-      - if: steps.fingerprint.outputs.build_needed == 'false'
+      - name: EAS Update
+        if: steps.fingerprint.outputs.build_needed == 'false'
         run: eas update --non-interactive --platform ${{ matrix.platform }} --channel ${{ inputs.environment }} --environment ${{ inputs.environment }} --message ${{ github.sha }}
 
-      - run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
+      - name: Upload Sentry Sourcemaps
+        run: dotenvx run -f .env.local -- pnpx sentry-expo-upload-sourcemaps dist
 
       - run: mv current-expo-fingerprint.txt previous-expo-fingerprint.txt
 
