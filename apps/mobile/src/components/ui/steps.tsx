@@ -1,9 +1,12 @@
 import { Entypo } from '@expo/vector-icons';
+import { useSetAtom } from 'jotai';
 import { Fragment, FunctionComponent } from 'react';
 import { View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
+import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { DebugPressable } from '@/components/debug-pressable';
 import { Trans } from '@/components/trans';
 import { useServiceId } from '@/hooks/use-service-id';
 import { Step } from '@/lib/services/types';
@@ -19,6 +22,7 @@ export function StepIcons({
   style?: ViewStyle;
 }) {
   const serviceId = useServiceId();
+  const setStepId = useSetAtom(useServiceStepAtom());
   const theme = useTheme();
   const stepIdx = steps.findIndex((step) => step.id === stepId);
   const CHUNK_SIZE = 4;
@@ -28,32 +32,34 @@ export function StepIcons({
       {chunked(steps, 4).map((chunk, chunkIdx) => (
         <View key={chunkIdx} style={tw`flex flex-row items-stretch`}>
           {chunk.map(({ Icon, id }, index) => (
-            <View key={id} style={tw.style('flex-1 items-center', {})}>
-              <View
-                style={tw.style(
-                  'size-16 items-center justify-center rounded-full',
-                  stepIdx < chunkIdx * CHUNK_SIZE + index && 'opacity-30',
-                  {
-                    backgroundColor:
+            <View key={id} style={tw`flex-1 items-center gap-1`}>
+              <DebugPressable onPress={() => setStepId(id)}>
+                <View
+                  style={tw.style(
+                    'size-16 items-center justify-center rounded-full',
+                    stepIdx < chunkIdx * CHUNK_SIZE + index && 'opacity-30',
+                    {
+                      backgroundColor:
+                        stepId === id
+                          ? theme.colors.secondary
+                          : stepIdx < chunkIdx * CHUNK_SIZE + index
+                            ? theme.colors.onSurfaceDisabled
+                            : theme.colors.primary,
+                    }
+                  )}
+                >
+                  <Icon
+                    color={
                       stepId === id
-                        ? theme.colors.secondary
+                        ? theme.colors.onSecondary
                         : stepIdx < chunkIdx * CHUNK_SIZE + index
-                          ? theme.colors.onSurfaceDisabled
-                          : theme.colors.primary,
-                  }
-                )}
-              >
-                <Icon
-                  color={
-                    stepId === id
-                      ? theme.colors.onSecondary
-                      : stepIdx < chunkIdx * CHUNK_SIZE + index
-                        ? theme.colors.primary
-                        : theme.colors.onPrimary
-                  }
-                  size={36}
-                />
-              </View>
+                          ? theme.colors.primary
+                          : theme.colors.onPrimary
+                    }
+                    size={36}
+                  />
+                </View>
+              </DebugPressable>
               <Text
                 numberOfLines={2}
                 style={tw.style(

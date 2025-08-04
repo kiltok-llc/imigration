@@ -43,10 +43,7 @@ export default function Ineligible() {
             </View>
           </Surface>
           <Button
-            contentStyle={tw`py-1`}
             icon='arrow-left'
-            labelStyle={tw`text-lg`}
-            mode='contained'
             onPress={() => router.dismissTo('/services')}
             style={tw`mt-auto`}
           >

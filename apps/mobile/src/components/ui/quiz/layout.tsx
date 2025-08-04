@@ -44,7 +44,6 @@ export function QuizLayout({
 }: PropsWithChildren<{
   finalRoute?: string;
   onComplete?: () => void;
-  onSaveFocusedRoute?: (route: string) => void;
   routes: string[];
 }>) {
   const { t } = useTranslation();

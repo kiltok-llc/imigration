@@ -134,6 +134,7 @@ export default function Services() {
                       key={id}
                       mode='outlined'
                       onPress={() => router.push(href)}
+                      size='sm'
                     >
                       <Trans i18nKey={`services.categories.${id}.title`} />
                     </Button>

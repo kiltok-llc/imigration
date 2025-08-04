@@ -7,13 +7,16 @@ export function Button({
   children,
   contentStyle,
   labelStyle,
+  size = 'md',
   style,
   ...props
-}: ComponentProps<typeof PaperButton>) {
+}: ComponentProps<typeof PaperButton> & {
+  size?: 'md' | 'sm';
+}) {
   return (
     <PaperButton
-      contentStyle={[tw`py-1`, contentStyle]}
-      labelStyle={[tw`text-lg`, labelStyle]}
+      contentStyle={[tw.style(size === 'md' && 'py-1'), contentStyle]}
+      labelStyle={[tw.style(size === 'md' && 'text-lg'), labelStyle]}
       mode='contained'
       style={[tw`w-full`, style]}
       {...props}
