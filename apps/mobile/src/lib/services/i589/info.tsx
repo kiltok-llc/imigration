@@ -26,7 +26,7 @@ export const AnswersSchema = z.object({
 });
 
 export const answersAtom = atomWithMmkvStorage(
-  'services.i589.eligibility.answers',
+  'services.i589.info.answers',
   { harmReasons: [] },
   AnswersSchema
 );

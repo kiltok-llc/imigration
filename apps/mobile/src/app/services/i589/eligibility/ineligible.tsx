@@ -1,11 +1,12 @@
 import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Button, Surface, Text } from 'react-native-paper';
+import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
+import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 
 export default function Ineligible() {
@@ -46,7 +47,7 @@ export default function Ineligible() {
             icon='arrow-left'
             labelStyle={tw`text-lg`}
             mode='contained'
-            onPress={() => router.push('/services')}
+            onPress={() => router.replace('/services')}
             style={tw`mt-auto`}
           >
             <Trans i18nKey='services.i589.ineligible.backButton' />

@@ -3,11 +3,12 @@ import { useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Button, Surface, Text } from 'react-native-paper';
+import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
+import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import {
   quizAnswersAtom,
@@ -51,14 +52,12 @@ export default function Eligible() {
             </View>
           </Surface>
           <Button
-            contentStyle={tw`flex-row-reverse py-1`}
+            contentStyle={tw`flex-row-reverse`}
             icon='arrow-right'
-            labelStyle={tw`text-lg`}
-            mode='contained'
             onPress={() => {
               resetEligibilityQuiz();
               resetSavedQuizRoute();
-              setStep('personal-info');
+              setStep('info');
               router.back();
             }}
             style={tw`mt-auto`}

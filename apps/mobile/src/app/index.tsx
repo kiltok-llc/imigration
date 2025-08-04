@@ -1,13 +1,16 @@
 import { Redirect } from 'expo-router';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import { isOnboardedAtom } from '@/atoms/onboarding';
+import { stepIdAtom } from '@/lib/services/i589/steps';
 
 export default function Root() {
   const isOnboarded = useAtomValue(isOnboardedAtom);
+  const setStepId = useSetAtom(stepIdAtom);
 
   if (__DEV__) {
-    return <Redirect href='/services' />;
+    setStepId('eligibility');
+    return <Redirect href='/services/i589' />;
   }
 
   if (!isOnboarded) {

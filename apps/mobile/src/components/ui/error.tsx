@@ -4,11 +4,12 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps } from 'expo-router';
 import { PropsWithChildren } from 'react';
 import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-boundary';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
+import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 
 export function ErrorFallback({

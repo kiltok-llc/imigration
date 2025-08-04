@@ -5,22 +5,20 @@ import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
+import { useServiceId } from '@/hooks/use-service-id';
+import { Step } from '@/lib/services/types';
 import { chunked } from '@/lib/utils';
 
 export function StepIcons({
-  serviceId,
   stepId,
   steps,
   style,
 }: {
-  serviceId: string;
   stepId: string;
-  steps: {
-    Icon: FunctionComponent<{ color?: string; size?: number }>;
-    id: string;
-  }[];
+  steps: Step[];
   style?: ViewStyle;
 }) {
+  const serviceId = useServiceId();
   const theme = useTheme();
   const stepIdx = steps.findIndex((step) => step.id === stepId);
   const CHUNK_SIZE = 4;
@@ -65,7 +63,7 @@ export function StepIcons({
                     : 'font-semibold'
                 )}
               >
-                <Trans i18nKey={`services.${serviceId}.${id}.stepTitle`} />
+                <Trans i18nKey={`services.${serviceId}.${id}.title`} />
               </Text>
             </View>
           ))}

@@ -5,12 +5,13 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { Button, Searchbar, Text, useTheme } from 'react-native-paper';
+import { Searchbar, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import banner from '@/assets/onboarding/usa-banner-2.png';
 import { Trans } from '@/components/trans';
+import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { IconProps } from '@/lib/icon-props';
 
@@ -102,7 +103,6 @@ export default function Services() {
                       key={id}
                       mode='outlined'
                       onPress={() => router.push(href)}
-                      style={tw.style('w-full')}
                     >
                       <View style={tw``}>
                         <Text style={tw.style('font-semibold', {})}>
@@ -134,7 +134,6 @@ export default function Services() {
                       key={id}
                       mode='outlined'
                       onPress={() => router.push(href)}
-                      style={tw.style('w-full')}
                     >
                       <Trans i18nKey={`services.categories.${id}.title`} />
                     </Button>

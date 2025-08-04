@@ -1,4 +1,5 @@
 import { ComponentProps } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Button as PaperButton } from 'react-native-paper';
 import tw from 'twrnc';
 

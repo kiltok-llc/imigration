@@ -71,6 +71,11 @@ export default defineConfig([
               message: 'import Text from react-native-paper instead',
               name: 'react-native',
             },
+            {
+              importNames: ['Button'],
+              message: 'import Button from @/components/ui/button instead',
+              name: 'react-native-paper',
+            },
           ],
         },
       ],

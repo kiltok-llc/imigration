@@ -51,17 +51,17 @@ export default {
           appeal: {
             description:
               'Submit an appeal to reopen or review your case if your application is denied.',
-            stepTitle: 'Appeal',
+            title: 'Appeal',
           },
           decision: {
             description:
               'Receive the official determination on your asylum application.',
-            stepTitle: 'Decision',
+            title: 'Decision',
           },
           documents: {
             description:
               'Upload required identity documents (e.g., passport, birth certificate).',
-            stepTitle: 'Documents',
+            title: 'Documents',
           },
           eligibility: {
             'arrival-date': {
@@ -72,11 +72,6 @@ export default {
               'is-from-safe-country':
                 'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
               title: 'Country of Origin',
-            },
-            'criminal-history': {
-              'has-criminal-history':
-                'Have you ever been convicted of a serious crime?',
-              title: 'Criminal Convictions',
             },
             description:
               'Complete a short quiz to check if you qualify to apply for asylum.',
@@ -110,7 +105,7 @@ export default {
               title: 'Reason for Leaving',
             },
             screenTitle: 'Asylum Eligibility Assessment',
-            stepTitle: 'Eligibility',
+            title: 'Eligibility',
           },
           eligible: {
             continueButton: 'Continue to Application',
@@ -130,15 +125,15 @@ export default {
             screenTitle: 'Eligibility Results',
             title: 'You May Not Be Eligible for Asylum',
           },
+          info: {
+            description:
+              'Enter your personal details such as name, date of birth, and nationality.',
+            title: 'Personal Info',
+          },
           interview: {
             description:
               'Attend your scheduled asylum interview with an officer or judge.',
-            stepTitle: 'Interview',
-          },
-          'personal-info': {
-            description:
-              'Enter your personal details such as name, date of birth, and nationality.',
-            stepTitle: 'Personal Info',
+            title: 'Interview',
           },
           progress: {
             screenTitle: 'Application Progress',
@@ -146,14 +141,14 @@ export default {
           review: {
             description:
               'Verify that all your answers and uploads are complete and accurate.',
-            stepTitle: 'Review',
+            title: 'Review',
           },
           subtitle: 'I-589 Application for Asylum',
           title: 'Asylum',
           waiting: {
             description:
               'Track the status of your application while it is under review.',
-            stepTitle: 'Wait',
+            title: 'Wait',
           },
         },
         i765: {
