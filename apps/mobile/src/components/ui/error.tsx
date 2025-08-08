@@ -1,5 +1,3 @@
-'use client';
-
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps } from 'expo-router';
 import { PropsWithChildren } from 'react';

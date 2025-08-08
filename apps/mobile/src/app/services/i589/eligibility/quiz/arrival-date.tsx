@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
+import { FormLabel } from '@/components/ui/form/label';
+import { FormBooleanInput } from '@/components/ui/form/radio';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
-import { BooleanRadioGroup } from '@/components/ui/radio';
 import { answerFamily } from '@/lib/services/i589/eligibility';
 
 export default function ArrivalDate() {
@@ -31,10 +31,10 @@ export default function ArrivalDate() {
           return true;
         }}
       >
-        <QuizPrimaryQuestionText>
+        <FormLabel>
           <Trans i18nKey='services.i589.eligibility.arrival-date.is-recent' />
-        </QuizPrimaryQuestionText>
-        <BooleanRadioGroup onChange={setArrived} value={arrived} />
+        </FormLabel>
+        <FormBooleanInput onChange={setArrived} value={arrived} />
       </QuizPage>
     </Quiz>
   );

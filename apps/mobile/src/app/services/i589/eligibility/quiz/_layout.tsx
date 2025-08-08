@@ -29,3 +29,5 @@ export default function EligibilityLayout() {
     </>
   );
 }
+
+export { QuizErrorFallback as ErrorBoundary } from '@/components/ui/quiz/layout';

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
+import { FormLabel } from '@/components/ui/form/label';
+import { FormBooleanInput } from '@/components/ui/form/radio';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
-import { BooleanRadioGroup } from '@/components/ui/radio';
 import { answerFamily } from '@/lib/services/i589/eligibility';
 
 export default function CountryOfOrigin() {
@@ -33,10 +33,10 @@ export default function CountryOfOrigin() {
           return true;
         }}
       >
-        <QuizPrimaryQuestionText>
+        <FormLabel>
           <Trans i18nKey='services.i589.eligibility.country-of-origin.is-from-safe-country' />
-        </QuizPrimaryQuestionText>
-        <BooleanRadioGroup
+        </FormLabel>
+        <FormBooleanInput
           onChange={setIsFromSafeCountry}
           value={isFromSafeCountry}
         />

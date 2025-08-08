@@ -1,51 +1,27 @@
 import { useRouter } from 'expo-router';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native-paper';
 import { toast } from 'sonner-native';
 import z from 'zod/v4';
 
-import { atomWithValidation } from '@/atoms/atom-with-validation';
 import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
-import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox';
+import { Checkbox, FormCheckboxGroup } from '@/components/ui/form/checkbox';
+import { FormField } from '@/components/ui/form/field';
+import { FormLabel } from '@/components/ui/form/label';
+import { FormBooleanInput } from '@/components/ui/form/radio';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { QuizPrimaryQuestionText } from '@/components/ui/quiz/ui';
-import { BooleanRadioGroup } from '@/components/ui/radio';
-import { answerFamily, HarmReasonEnum } from '@/lib/services/i589/eligibility';
-
-const customHarmReasonValidationAtom = atomWithValidation(
-  answerFamily('customHarmReason'),
-  z.string().min(2)
-);
+import { HarmReasonEnum } from '@/lib/services/i589/eligibility';
 
 export default function ReasonForLeaving() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [isEscapingHarm, setIsEscapingHarm] = useAtom(
-    answerFamily('isEscapingHarm')
-  );
-  const [isHarmedByGov, setIsHarmedByGov] = useAtom(
-    answerFamily('isHarmedByGov')
-  );
-  const [harmReasons, setHarmReasons] = useAtom(answerFamily('harmReasons'));
-  const [customHarmReason, setCustomHarmReason] = useAtom(
-    answerFamily('customHarmReason')
-  );
-  const { error: customHarmReasonError, isDirty: isCustomHarmReasonDirty } =
-    useAtomValue(customHarmReasonValidationAtom);
-  const validateCustomHarmReason = useSetAtom(customHarmReasonValidationAtom);
 
   return (
     <Quiz>
       <QuizPage
-        onSubmit={() => {
-          if (isEscapingHarm === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
+        onSubmit={({ isEscapingHarm }) => {
           if (!isEscapingHarm) {
             router.replace('../ineligible');
             return false;
@@ -53,81 +29,94 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
+        pageId='is-escaping-harm'
+        schema={z.object({
+          isEscapingHarm: z.boolean(),
+        })}
       >
-        <QuizPrimaryQuestionText>
-          <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-escaping-harm' />
-        </QuizPrimaryQuestionText>
-        <BooleanRadioGroup
-          onChange={setIsEscapingHarm}
-          value={isEscapingHarm}
-        />
+        {({ control }) => (
+          <FormField control={control} name='isEscapingHarm'>
+            <FormLabel>
+              <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-escaping-harm' />
+            </FormLabel>
+            <FormBooleanInput />
+          </FormField>
+        )}
       </QuizPage>
 
       <QuizPage
-        onSubmit={() => {
-          if (harmReasons.length === 0) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
+        onSubmit={({ harmReasons }) => {
           if (harmReasons.includes('none')) {
             router.replace('../ineligible');
             return false;
           }
 
-          if (harmReasons.includes('other') && !validateCustomHarmReason()) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
           return true;
         }}
+        pageId='harm-reasons'
+        schema={z.object({
+          customHarmReason: z.string().optional(),
+          harmReasons: z.array(HarmReasonEnum).min(1),
+        })}
       >
-        <QuizPrimaryQuestionText>
-          <Trans i18nKey='services.i589.eligibility.reason-for-leaving.harm-reasons' />
-        </QuizPrimaryQuestionText>
-        <CheckboxGroup onChange={setHarmReasons} value={harmReasons}>
-          {HarmReasonEnum.options.map((reason) => (
-            <Checkbox
-              exclusive={reason === 'none'}
-              key={reason}
-              label={t(
-                `services.i589.eligibility.reason-for-leaving.reasons.${reason}`
-              )}
-              value={reason}
-            />
-          ))}
-        </CheckboxGroup>
-        <FadeView visible={harmReasons.includes('other')}>
-          <TextInput
-            error={!!customHarmReasonError && !isCustomHarmReasonDirty}
-            label={t('services.i589.eligibility.reason-for-leaving.other')}
-            multiline={true}
-            onChangeText={setCustomHarmReason}
-            value={customHarmReason}
-          />
-        </FadeView>
+        {({ control, watch }) => (
+          <>
+            <FormField control={control} name='harmReasons'>
+              <FormLabel>
+                <Trans i18nKey='services.i589.eligibility.reason-for-leaving.harm-reasons' />
+              </FormLabel>
+              <FormCheckboxGroup>
+                {HarmReasonEnum.options.map((reason) => (
+                  <Checkbox
+                    exclusive={reason === 'none'}
+                    key={reason}
+                    label={t(
+                      `services.i589.eligibility.reason-for-leaving.reasons.${reason}`
+                    )}
+                    value={reason}
+                  />
+                ))}
+              </FormCheckboxGroup>
+            </FormField>
+
+            <FadeView visible={watch('harmReasons').includes('other')}>
+              <FormField control={control} name='customHarmReason'>
+                <TextInput
+                  label={t(
+                    'services.i589.eligibility.reason-for-leaving.other'
+                  )}
+                  value='hi'
+                />
+              </FormField>
+            </FadeView>
+          </>
+        )}
       </QuizPage>
 
       <QuizPage
-        onSubmit={() => {
-          if (isHarmedByGov === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
+        onSubmit={({ isHarmedByGov }) => {
           if (!isHarmedByGov) {
-            router.replace('../ineligible');
+            toast.error(
+              t('services.i589.eligibility.reason-for-leaving.gov-not-harm')
+            );
             return false;
           }
 
           return true;
         }}
+        pageId='is-harmed-by-gov'
+        schema={z.object({
+          isHarmedByGov: z.boolean(),
+        })}
       >
-        <QuizPrimaryQuestionText>
-          <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-harmed-by-gov' />
-        </QuizPrimaryQuestionText>
-        <BooleanRadioGroup onChange={setIsHarmedByGov} value={isHarmedByGov} />
+        {({ control }) => (
+          <FormField control={control} name='isHarmedByGov'>
+            <FormLabel>
+              <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-harmed-by-gov' />
+            </FormLabel>
+            <FormBooleanInput />
+          </FormField>
+        )}
       </QuizPage>
     </Quiz>
   );

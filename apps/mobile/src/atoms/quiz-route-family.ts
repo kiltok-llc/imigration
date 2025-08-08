@@ -9,8 +9,8 @@ export const quizRouteFamily = atomFamily(
   ({ quizId, serviceId }: { quizId: string; serviceId: string }) =>
     atomWithMmkvStorage(
       `services.${serviceId}.${quizId}.route`,
-      '',
-      z.string()
+      null,
+      z.string().nullable()
     ),
   (a, b) => a.quizId === b.quizId && a.serviceId === b.serviceId
 );

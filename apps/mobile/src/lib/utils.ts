@@ -29,16 +29,3 @@ export async function raiseStatus<T extends Response>(res: T) {
 export async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
-
-export function toBoolean(value: string): boolean {
-  switch (value) {
-    case 'false': {
-      return false;
-    }
-    case 'true': {
-      return true;
-    }
-  }
-
-  throw new Error(`Invalid boolean value: ${value}. Must be 'true' or 'false'`);
-}

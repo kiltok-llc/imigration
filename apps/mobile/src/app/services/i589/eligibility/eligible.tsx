@@ -7,20 +7,18 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
+import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
+import { useResetQuizValues } from '@/atoms/quiz-values-family';
+import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { Trans } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import {
-  quizAnswersAtom,
-  savedQuizRouteAtom,
-} from '@/lib/services/i589/eligibility';
-import { stepIdAtom } from '@/lib/services/i589/steps';
 
 export default function Eligible() {
   const { t } = useTranslation();
-  const resetEligibilityQuiz = useResetAtom(quizAnswersAtom);
-  const resetSavedQuizRoute = useResetAtom(savedQuizRouteAtom);
-  const setStep = useSetAtom(stepIdAtom);
+  const resetQuizValues = useResetQuizValues();
+  const resetQuizRoute = useResetAtom(useQuizRouteAtom());
+  const setStep = useSetAtom(useServiceStepAtom());
 
   return (
     <>
@@ -55,8 +53,8 @@ export default function Eligible() {
             contentStyle={tw`flex-row-reverse`}
             icon='arrow-right'
             onPress={() => {
-              resetEligibilityQuiz();
-              resetSavedQuizRoute();
+              resetQuizValues();
+              resetQuizRoute();
               setStep('info');
               router.back();
             }}
