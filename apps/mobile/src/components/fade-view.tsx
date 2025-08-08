@@ -8,7 +8,7 @@ export function FadeView({
 }: ComponentProps<typeof Animated.View> & {
   visible: boolean;
 }) {
-  const opacity = useSharedValue(1);
+  const opacity = useSharedValue(visible ? 1 : 0);
 
   useEffect(() => {
     opacity.value = withTiming(visible ? 1 : 0, { duration: 300 });

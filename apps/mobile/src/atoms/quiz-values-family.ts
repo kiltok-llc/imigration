@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
+import { FieldValues } from 'react-hook-form';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useServiceId } from '@/hooks/use-service-id';
@@ -8,30 +9,29 @@ import { storage } from '@/lib/mmkv';
 
 export const quizValuesFamily = atomFamily(
   ({
-    pageId,
-    quizId,
-    serviceId,
-  }: {
-    pageId?: string;
+     pageId,
+     quizId,
+     serviceId,
+   }: {
+    pageId: null | string;
     quizId: string;
     serviceId: string;
   }) =>
-    pageId
-      ? atomWithMmkvStorage<any>(
-          `services.${serviceId}.${quizId}.persisted-values.${pageId}`,
-          null
-        )
-      : atom(null),
+    pageId === null ? atom<FieldValues>({})
+      : atomWithMmkvStorage<FieldValues>(
+        `services.${serviceId}.${quizId}.persisted-values.${pageId}`,
+        {},
+      ),
   (a, b) =>
     a.quizId === b.quizId &&
     a.serviceId === b.serviceId &&
-    a.pageId === b.pageId
+    a.pageId === b.pageId,
 );
 
 export function resetQuizValues({
-  quizId,
-  serviceId,
-}: {
+                                  quizId,
+                                  serviceId,
+                                }: {
   quizId: string;
   serviceId: string;
 }) {

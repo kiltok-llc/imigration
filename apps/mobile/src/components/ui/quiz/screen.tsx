@@ -15,14 +15,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {
-  DefaultValues,
-  FieldValues,
-  FormProvider,
-  useForm,
-  UseFormProps,
-  UseFormReturn,
-} from 'react-hook-form';
+import { DefaultValues, FieldValues, FormProvider, useForm, UseFormProps, UseFormReturn } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -44,36 +37,38 @@ type QuizPageHandle = {
   submit: () => Promise<boolean>;
 };
 
-export function QuizPage<Input extends FieldValues, Output>({
-  children,
-  contentContainerStyle,
-  formOptions = {},
-  initialValues,
-  onSubmit,
-  pageId,
-  ref = null,
-  schema,
-  style,
-  ...props
-}: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
-  children:
-    | ((context: UseFormReturn<Input, any, Output>) => ReactNode)
-    | ReactNode;
-  formOptions?: UseFormProps<Input, any, Output>;
-  initialValues?: DefaultValues<Input>;
-  onSubmit: (data: Output) => boolean;
-  pageId?: string;
-  ref?: Ref<QuizPageHandle>;
-  schema?: z.ZodType<Output, Input>;
-}) {
+export function QuizPage<Input extends FieldValues, Output>(
+  {
+    children,
+    contentContainerStyle,
+    formOptions = {},
+    initialValues,
+    onSubmit,
+    pageId,
+    ref = null,
+    schema,
+    style,
+    ...props
+  }: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
+    children:
+      | ((context: UseFormReturn<Input, any, Output>) => ReactNode)
+      | ReactNode;
+    formOptions?: UseFormProps<Input, any, Output>;
+    initialValues: Input;
+    onSubmit: (data: Output) => boolean;
+    pageId: null | string;
+    ref?: Ref<QuizPageHandle>;
+    schema?: z.ZodType<Output, Input>;
+  },
+) {
   const serviceId = useServiceId();
   const quizId = useStepId();
-  const [defaultValues, setDefaultValues] = useAtom(
+  const [persistedValues, setPersistedValues] = useAtom(
     quizValuesFamily({
       pageId,
       quizId,
       serviceId,
-    })
+    }),
   );
 
   const resolver = schema
@@ -81,7 +76,10 @@ export function QuizPage<Input extends FieldValues, Output>({
     : undefined;
 
   const context = useForm<Input, any, Output>({
-    defaultValues: defaultValues ?? initialValues,
+    defaultValues: {
+      ...initialValues,
+      ...persistedValues,
+    } as DefaultValues<Input>,
     resolver,
     ...formOptions,
   });
@@ -93,16 +91,17 @@ export function QuizPage<Input extends FieldValues, Output>({
       await handleSubmit(
         (data) => {
           console.debug(
-            `[${serviceId}.${quizId}.${pageId}] Passed validation!`
+            `[${serviceId}.${quizId}.${pageId}] Passed validation!`,
           );
           result = onSubmit(data);
         },
-        () => {
+        (errors) => {
           console.debug(
-            `[${serviceId}.${quizId}.${pageId}] Failed validation!`
+            `[${serviceId}.${quizId}.${pageId}] Failed validation!`,
+            errors,
           );
           result = false;
-        }
+        },
       )();
       return result;
     },
@@ -112,13 +111,13 @@ export function QuizPage<Input extends FieldValues, Output>({
     () =>
       subscribe({
         callback({ values }) {
-          setDefaultValues(values);
+          setPersistedValues(values);
         },
         formState: {
           values: true,
         },
       }),
-    [subscribe, setDefaultValues]
+    [subscribe, setPersistedValues],
   );
 
   return (
@@ -143,8 +142,8 @@ const QuizContext = createRequiredContext<{
 }>();
 
 export function Quiz({
-  children,
-}: {
+                       children,
+                     }: {
   children: QuizPageElement | QuizPageElement[];
 }) {
   const router = useRouter();
@@ -157,9 +156,9 @@ export function Quiz({
     () =>
       Array.from(
         { length: Children.count(children) },
-        createRef<QuizPageHandle>
+        createRef<QuizPageHandle>,
       ),
-    [children]
+    [children],
   );
 
   const handleNext = useCallback(() => {
@@ -202,7 +201,7 @@ export function Quiz({
         style={tw`flex-1 gap-4`}
       >
         <ReactivePagerView
-          orientation='vertical'
+          orientation="vertical"
           page={page}
           style={tw`flex-1`}
         >
@@ -217,21 +216,21 @@ export function Quiz({
         <View style={tw`mx-4 mt-auto flex-row gap-4`}>
           <View style={tw`flex-1`}>
             <Button
-              icon='arrow-left'
-              mode='contained-tonal'
+              icon="arrow-left"
+              mode="contained-tonal"
               onPress={handlePrev}
             >
-              <Trans i18nKey='quiz.back' />
+              <Trans i18nKey="quiz.back" />
             </Button>
           </View>
           <View style={tw`flex-1`}>
             <Button
               contentStyle={tw`flex-row-reverse`}
-              icon='arrow-right'
-              mode='contained'
+              icon="arrow-right"
+              mode="contained"
               onPress={handleSubmit}
             >
-              <Trans i18nKey='quiz.continue' />
+              <Trans i18nKey="quiz.continue" />
             </Button>
           </View>
         </View>

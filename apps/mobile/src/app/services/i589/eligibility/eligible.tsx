@@ -56,7 +56,7 @@ export default function Eligible() {
               resetQuizValues();
               resetQuizRoute();
               setStep('info');
-              router.back();
+              router.dismissTo('/services/i589');
             }}
             style={tw`mt-auto`}
           >

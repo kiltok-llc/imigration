@@ -1,3 +1,5 @@
+import z from 'zod/v4';
+
 export function arraysEqual<T>(a: T[], b: T[]) {
   if (a.length !== b.length) {
     return false;
@@ -29,3 +31,23 @@ export async function raiseStatus<T extends Response>(res: T) {
 export async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
+
+export const nullableInput = <T extends z.ZodTypeAny>(
+  schema: T,
+) =>
+  schema
+    .nullable()
+    .transform((val, ctx) => {
+      if (val === null) {
+        ctx.addIssue({
+          code: 'invalid_type',
+          expected: schema.def.type,
+          fatal: true,
+          input: val,
+        });
+
+        return z.NEVER;
+      }
+
+      return val;
+    });

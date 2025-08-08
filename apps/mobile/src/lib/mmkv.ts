@@ -20,7 +20,7 @@ export const createMMKVStorage = <Value>(): SyncStorage<Value> => ({
   },
   setItem: (name, value) => {
     const str = superjson.stringify(value);
-    console.debug(`mmkvStorage.setItem(${name}, ${str})`);
+    // console.debug(`mmkvStorage.setItem(${name}, ${str})`);
     storage.set(name, str);
   },
   subscribe(name, callback) {

@@ -11,7 +11,7 @@ export default function Root() {
   if (__DEV__) {
     setStepId('eligibility');
     return (
-      <Redirect href='/services/i589/eligibility/quiz/physical-presence' />
+      <Redirect href='/services/i589/eligibility' />
     );
   }
 

@@ -9,7 +9,11 @@ import {
 import { useFormField } from '@/components/ui/form/field';
 import { arraysEqual } from '@/lib/utils';
 
-export function Checkbox<T>({
+export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {
+  return <View {...props} />;
+}
+
+export function FormCheckboxItem<T>({
   exclusive = false,
   value,
   ...props
@@ -20,7 +24,7 @@ export function Checkbox<T>({
 }) {
   const theme = useTheme();
   const {
-    field: { onChange, value: values = [] },
+    field: { onChange, value: values },
     fieldState: { invalid },
   } = useFormField();
 
@@ -54,8 +58,4 @@ export function Checkbox<T>({
       {...props}
     />
   );
-}
-
-export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {
-  return <View {...props} />;
 }
