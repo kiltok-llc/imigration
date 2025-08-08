@@ -24,7 +24,7 @@ export function FormCheckboxItem<T>({
 }) {
   const theme = useTheme();
   const {
-    field: { onChange, value: values },
+    field: { disabled, onChange, value: values },
     fieldState: { invalid },
   } = useFormField();
 
@@ -48,6 +48,7 @@ export function FormCheckboxItem<T>({
   return (
     <PaperCheckbox.Item
       color={invalid ? theme.colors.error : undefined}
+      disabled={disabled}
       labelStyle={{
         color: invalid ? theme.colors.error : undefined,
       }}

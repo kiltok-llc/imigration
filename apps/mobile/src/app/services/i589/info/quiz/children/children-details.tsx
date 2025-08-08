@@ -198,24 +198,24 @@ export default function ChildrenDetails() {
           {renderChildNavigation()}
 
           <FormLabel>
-            <Trans i18nKey='services.i589.info.children.children-details.basic_info_title' />
+            <Trans i18nKey='services.i589.info.children.children-details.basic-info-title' />
           </FormLabel>
 
           <TextInput
-            label={t('services.i589.info.children.children-details.last_name')}
+            label={t('services.i589.info.children.children-details.last-name')}
             onChangeText={(value) => updateChildField('lastName', value)}
             value={currentChild.lastName}
           />
 
           <TextInput
-            label={t('services.i589.info.children.children-details.first_name')}
+            label={t('services.i589.info.children.children-details.first-name')}
             onChangeText={(value) => updateChildField('firstName', value)}
             value={currentChild.firstName}
           />
 
           <TextInput
             label={t(
-              'services.i589.info.children.children-details.middle_name'
+              'services.i589.info.children.children-details.middle-name'
             )}
             onChangeText={(value) => updateChildField('middleName', value)}
             value={currentChild.middleName}

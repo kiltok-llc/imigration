@@ -2,13 +2,13 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
 import z from 'zod/v4';
 
-import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
-import { FormCheckboxGroup, FormCheckboxItem } from '@/components/ui/form/checkbox';
+import {
+  FormCheckboxGroup,
+  FormCheckboxItem,
+} from '@/components/ui/form/checkbox';
 import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
@@ -52,7 +52,8 @@ export default function ReasonForLeaving() {
 
       <QuizPage
         initialValues={{
-          harmReasons: []
+          customHarmReason: '',
+          harmReasons: [],
         }}
         onSubmit={({ harmReasons }) => {
           if (harmReasons.includes('none')) {
@@ -62,10 +63,10 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId='harm-reasons'
+        pageId={null}
         schema={z.object({
           customHarmReason: z.string().nonempty().optional(),
-          harmReasons: z.array(HarmReasonEnum).nonempty()
+          harmReasons: z.array(HarmReasonEnum).nonempty(),
         })}
       >
         {({ control, watch }) => (
@@ -86,20 +87,19 @@ export default function ReasonForLeaving() {
                       value={reason}
                     />
                   ))}
-                  <FormField control={control} name='customHarmReason'>
-
-                  </FormField>
                 </FormCheckboxGroup>
               </FormField>
             </View>
 
-            <FadeView visible={watch('harmReasons').includes('other')}>
-              <FormField control={control} disabled={!watch('harmReasons').includes('other')} name='customHarmReason'>
-                <FormTextInput
-                  label={t('services.i589.eligibility.reason-for-leaving.other')}
-                />
-              </FormField>
-            </FadeView>
+            <FormField
+              control={control}
+              name='customHarmReason'
+              visible={watch('harmReasons').includes('other')}
+            >
+              <FormTextInput
+                label={t('services.i589.eligibility.reason-for-leaving.other')}
+              />
+            </FormField>
           </>
         )}
       </QuizPage>

@@ -9,44 +9,49 @@ export function FormBooleanInput() {
   const theme = useTheme();
 
   const {
-    field: { onChange, value },
+    field: { disabled, onChange, value },
     fieldState: { invalid },
   } = useFormField();
 
   return (
     <RadioButton.Group
       onValueChange={(value) => {
-        onChange(JSON.parse(value))
+        onChange(JSON.parse(value));
       }}
       value={String(value)}
     >
       <RadioButton.Item
+        disabled={disabled}
         label={t('yes')}
         labelStyle={tw.style('text-lg', {
           color: invalid && theme.colors.error,
         })}
-        mode="android"
+        mode='android'
         uncheckedColor={invalid ? theme.colors.error : undefined}
-        value="true"
+        value='true'
       />
       <RadioButton.Item
+        disabled={disabled}
         label={t('no')}
         labelStyle={tw.style('text-lg', {
           color: invalid && theme.colors.error,
         })}
-        mode="android"
+        mode='android'
         uncheckedColor={invalid ? theme.colors.error : undefined}
-        value="false"
+        value='false'
       />
-      {__DEV__ && <RadioButton.Item
-        label='(Dev only) Null'
-        labelStyle={tw.style('text-lg', {
-          color: invalid && theme.colors.error,
-        })}
-        mode="android"
-        uncheckedColor={invalid ? theme.colors.error : undefined}
-        value="null"
-      />}
+      {__DEV__ && (
+        <RadioButton.Item
+          disabled={disabled}
+          label='(Dev only) Null'
+          labelStyle={tw.style('text-lg', {
+            color: invalid && theme.colors.error,
+          })}
+          mode='android'
+          uncheckedColor={invalid ? theme.colors.error : undefined}
+          value='null'
+        />
+      )}
     </RadioButton.Group>
   );
 }

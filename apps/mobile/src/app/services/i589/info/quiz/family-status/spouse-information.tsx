@@ -96,12 +96,12 @@ export default function SpouseInformation() {
         }}
       >
         <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.spouse-information.spouse_name_title' />
+          <Trans i18nKey='services.i589.info.family-status.spouse-information.spouse-name-title' />
         </FormLabel>
 
         <TextInput
           label={t(
-            'services.i589.info.family-status.spouse-information.spouse_last_name'
+            'services.i589.info.family-status.spouse-information.spouse-last-name'
           )}
           onChangeText={setSpouseLastName}
           value={spouseLastName}
@@ -109,7 +109,7 @@ export default function SpouseInformation() {
 
         <TextInput
           label={t(
-            'services.i589.info.family-status.spouse-information.spouse_first_name'
+            'services.i589.info.family-status.spouse-information.spouse-first-name'
           )}
           onChangeText={setSpouseFirstName}
           value={spouseFirstName}
@@ -117,7 +117,7 @@ export default function SpouseInformation() {
 
         <TextInput
           label={t(
-            'services.i589.info.family-status.spouse-information.spouse_middle_name'
+            'services.i589.info.family-status.spouse-information.spouse-middle-name'
           )}
           onChangeText={setSpouseMiddleName}
           value={spouseMiddleName}

@@ -1,121 +1,138 @@
-import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
+import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
+import { FormTextInput } from '@/components/ui/form/text';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { answerFamily } from '@/lib/services/i589/info';
+import { nullableInput } from '@/lib/utils';
 
 export default function NameAndAliases() {
   const { t } = useTranslation();
-  const [lastName, setLastName] = useAtom(answerFamily('lastName'));
-  const [firstName, setFirstName] = useAtom(answerFamily('firstName'));
-  const [middleName, setMiddleName] = useAtom(answerFamily('middleName'));
-  const [maidenName, setMaidenName] = useAtom(answerFamily('maidenName'));
-  const [otherNames, setOtherNames] = useAtom(answerFamily('otherNames'));
-  const [hasAlias, setHasAlias] = useAtom(answerFamily('hasAlias'));
-  const [aliasName, setAliasName] = useAtom(answerFamily('aliasName'));
 
   return (
     <Quiz>
-      {/* Page 1: Basic Name Information */}
       <QuizPage
-        onSubmit={() => {
-          if (!lastName || !firstName) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        initialValues={{
+          firstName: '',
+          lastName: '',
+          middleName: '',
         }}
+        onSubmit={() => true}
+        pageId='basic-names'
+        schema={z.object({
+          firstName: z.string().nonempty(),
+          lastName: z.string().nonempty(),
+          middleName: z.string().nonempty(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.title' />
+            </FormLabel>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.name-and-aliases.last_name'
-          )}
-          onChangeText={setLastName}
-          value={lastName}
-        />
+            <FormField control={control} name='lastName'>
+              <FormTextInput
+                label={t(
+                  'services.i589.info.personal-information.name-and-aliases.last-name'
+                )}
+              />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.name-and-aliases.first_name'
-          )}
-          onChangeText={setFirstName}
-          value={firstName}
-        />
+            <FormField control={control} name='firstName'>
+              <FormTextInput
+                label={t(
+                  'services.i589.info.personal-information.name-and-aliases.first-name'
+                )}
+              />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.name-and-aliases.middle_name'
-          )}
-          onChangeText={setMiddleName}
-          value={middleName}
-        />
+            <FormField control={control} name='middleName'>
+              <FormTextInput
+                label={t(
+                  'services.i589.info.personal-information.name-and-aliases.middle-name'
+                )}
+              />
+            </FormField>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: Additional Name Information */}
       <QuizPage
-        onSubmit={() => {
-          return true; // These fields are optional
+        initialValues={{
+          maidenName: '',
+          otherNames: '',
         }}
-      >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.additional_names_title' />
-        </FormLabel>
-
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.name-and-aliases.maiden_name'
-          )}
-          onChangeText={setMaidenName}
-          value={maidenName}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.name-and-aliases.other_names'
-          )}
-          onChangeText={setOtherNames}
-          value={otherNames}
-        />
-      </QuizPage>
-
-      {/* Page 3: Alias Information */}
-      <QuizPage
         onSubmit={() => {
-          if (hasAlias === true && !aliasName) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
           return true;
         }}
+        pageId='additional-names'
+        schema={z.object({
+          maidenName: z.string(),
+          otherNames: z.string(),
+        })}
       >
         <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.alias_title' />
+          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.additional-names-title' />
         </FormLabel>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.used_alias' />
-        </FormLabel>
-        <FormBooleanInput onChange={setHasAlias} value={hasAlias} />
-
-        <FadeView visible={hasAlias === true}>
-          <TextInput
+        <FormField name='maidenName'>
+          <FormTextInput
             label={t(
-              'services.i589.info.personal-information.name-and-aliases.alias_name'
+              'services.i589.info.personal-information.name-and-aliases.maiden-name'
             )}
-            onChangeText={setAliasName}
-            value={aliasName}
           />
-        </FadeView>
+        </FormField>
+
+        <FormField name='otherNames'>
+          <FormTextInput
+            label={t(
+              'services.i589.info.personal-information.name-and-aliases.other-names'
+            )}
+          />
+        </FormField>
+      </QuizPage>
+
+      <QuizPage
+        initialValues={{
+          hasAlias: null,
+        }}
+        onSubmit={() => true}
+        pageId='alias-information'
+        schema={z.object({
+          aliasName: z.string().nonempty().optional(),
+          hasAlias: nullableInput(z.boolean()),
+        })}
+      >
+        {({ control, watch }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.alias-title' />
+            </FormLabel>
+
+            <FormField control={control} name='hasAlias'>
+              <FormLabel variant='titleMedium'>
+                <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.has-alias' />
+              </FormLabel>
+              <FormBooleanInput />
+            </FormField>
+
+            <FormField
+              control={control}
+              name='aliasName'
+              visible={!!watch('hasAlias')}
+            >
+              <FormTextInput
+                label={t(
+                  'services.i589.info.personal-information.name-and-aliases.alias-name'
+                )}
+              />
+            </FormField>
+          </>
+        )}
       </QuizPage>
     </Quiz>
   );

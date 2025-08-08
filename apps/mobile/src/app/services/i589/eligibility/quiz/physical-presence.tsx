@@ -15,7 +15,7 @@ export default function PhysicalPresence() {
     <Quiz>
       <QuizPage
         initialValues={{
-          isInUsa: null
+          isInUsa: null,
         }}
         onSubmit={({ isInUsa }) => {
           if (!isInUsa) {
@@ -27,7 +27,7 @@ export default function PhysicalPresence() {
         }}
         pageId='is-in-usa'
         schema={z.object({
-          isInUsa: nullableInput(z.boolean())
+          isInUsa: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (

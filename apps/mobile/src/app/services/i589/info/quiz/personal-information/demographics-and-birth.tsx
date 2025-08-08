@@ -1,152 +1,147 @@
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
 import { Trans } from '@/components/trans';
+import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
+import { FormTextInput } from '@/components/ui/form/text';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { answerFamily } from '@/lib/services/i589/info';
+import { nullableInput } from '@/lib/utils';
 
 export default function DemographicsAndBirth() {
-  const { t } = useTranslation();
-  const [sex, setSex] = useAtom(answerFamily('sex'));
-  const [dob, setDob] = useAtom(answerFamily('dob'));
-  const [birthCity, setBirthCity] = useAtom(answerFamily('birthCity'));
-  const [birthCountry, setBirthCountry] = useAtom(answerFamily('birthCountry'));
-  const [currentNationality, setCurrentNationality] = useAtom(
-    answerFamily('currentNationality')
-  );
-  const [birthNationality, setBirthNationality] = useAtom(
-    answerFamily('birthNationality')
-  );
-  const [ethnicity, setEthnicity] = useAtom(answerFamily('ethnicity'));
-  const [religion, setReligion] = useAtom(answerFamily('religion'));
-
-  // Helper function to set sex
-  const handleSexChange = (value: boolean) => {
-    setSex(value ? 'male' : 'female');
-  };
-
   return (
     <Quiz>
       {/* Page 1: Basic Demographics */}
       <QuizPage
+        initialValues={{
+          dob: '',
+          sex: null,
+        }}
         onSubmit={() => {
-          if (sex === undefined || !dob) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
           return true;
         }}
+        pageId='basic-demographics'
+        schema={z.object({
+          dob: z.string().min(1, 'Date of birth is required'),
+          sex: nullableInput(z.boolean()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.title' />
+            </FormLabel>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.sex' />
-        </FormLabel>
-        <FormBooleanInput onChange={handleSexChange} value={sex === 'male'} />
+            <FormField control={control} name='sex'>
+              <FormLabel>
+                <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.sex' />
+              </FormLabel>
+              <FormBooleanInput />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.dob'
-          )}
-          onChangeText={setDob}
-          placeholder='MM/DD/YYYY'
-          value={dob}
-        />
+            <FormField control={control} name='dob'>
+              <FormTextInput label='Date of Birth' placeholder='MM/DD/YYYY' />
+            </FormField>
+          </>
+        )}
       </QuizPage>
 
       {/* Page 2: Birth Location */}
       <QuizPage
+        initialValues={{
+          birthCity: '',
+          birthCountry: '',
+        }}
         onSubmit={() => {
-          if (!birthCity || !birthCountry) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
           return true;
         }}
+        pageId='birth-location'
+        schema={z.object({
+          birthCity: z.string().min(1, 'City of birth is required'),
+          birthCountry: z.string().min(1, 'Country of birth is required'),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.birth_location_title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.birth-location-title' />
+            </FormLabel>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.birth_city'
-          )}
-          onChangeText={setBirthCity}
-          value={birthCity}
-        />
+            <FormField control={control} name='birthCity'>
+              <FormTextInput label='City of Birth' />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.birth_country'
-          )}
-          onChangeText={setBirthCountry}
-          value={birthCountry}
-        />
+            <FormField control={control} name='birthCountry'>
+              <FormTextInput label='Country of Birth' />
+            </FormField>
+          </>
+        )}
       </QuizPage>
 
       {/* Page 3: Nationality */}
       <QuizPage
+        initialValues={{
+          birthNationality: '',
+          currentNationality: '',
+        }}
         onSubmit={() => {
-          if (!currentNationality || !birthNationality) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
           return true;
         }}
+        pageId='nationality'
+        schema={z.object({
+          birthNationality: z.string().min(1, 'Birth nationality is required'),
+          currentNationality: z
+            .string()
+            .min(1, 'Current nationality is required'),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.nationality_title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.nationality-title' />
+            </FormLabel>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.current_nationality'
-          )}
-          onChangeText={setCurrentNationality}
-          value={currentNationality}
-        />
+            <FormField control={control} name='currentNationality'>
+              <FormTextInput label='Current Nationality (Citizenship)' />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.birth_nationality'
-          )}
-          onChangeText={setBirthNationality}
-          value={birthNationality}
-        />
+            <FormField control={control} name='birthNationality'>
+              <FormTextInput label='Nationality at Birth' />
+            </FormField>
+          </>
+        )}
       </QuizPage>
 
       {/* Page 4: Additional Information (Optional) */}
       <QuizPage
+        initialValues={{
+          ethnicity: '',
+          religion: '',
+        }}
         onSubmit={() => {
           return true; // These fields are optional
         }}
+        pageId='additional-info'
+        schema={z.object({
+          ethnicity: z.string().optional(),
+          religion: z.string().optional(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.additional_info_title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormLabel>
+              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.additional-info-title' />
+            </FormLabel>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.ethnicity'
-          )}
-          onChangeText={setEthnicity}
-          value={ethnicity}
-        />
+            <FormField control={control} name='ethnicity'>
+              <FormTextInput label='Race, Ethnicity, or Tribal Group' />
+            </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.demographics-and-birth.religion'
-          )}
-          onChangeText={setReligion}
-          value={religion}
-        />
+            <FormField control={control} name='religion'>
+              <FormTextInput label='Religion' />
+            </FormField>
+          </>
+        )}
       </QuizPage>
     </Quiz>
   );

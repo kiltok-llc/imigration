@@ -1,8 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner-native';
 import z from 'zod/v4';
 
 import { Trans } from '@/components/trans';
@@ -10,7 +7,6 @@ import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
-import { answerFamily } from '@/lib/services/i589/eligibility';
 import { nullableInput } from '@/lib/utils';
 
 export default function PreviousApplications() {
@@ -32,7 +28,7 @@ export default function PreviousApplications() {
         }}
         pageId='has-previous-app'
         schema={z.object({
-          hasPreviousApp: nullableInput(z.boolean())
+          hasPreviousApp: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (
