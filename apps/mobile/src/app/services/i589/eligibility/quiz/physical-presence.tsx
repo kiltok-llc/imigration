@@ -14,7 +14,7 @@ export default function PhysicalPresence() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           isInUsa: null,
         }}
         onSubmit={({ isInUsa }) => {

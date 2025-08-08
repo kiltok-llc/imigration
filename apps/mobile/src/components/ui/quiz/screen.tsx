@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import {
   Children,
   cloneElement,
@@ -28,15 +28,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
-import { quizValuesFamily } from '@/atoms/quiz-values-family';
+import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { Trans } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { useQuizRoutes } from '@/components/ui/quiz/layout';
 import { createRequiredContext } from '@/hooks/use-required-context';
 import { useRouteNavigation } from '@/hooks/use-route-navigation';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
 
 type QuizPageElement = ReactElement<{ ref: Ref<QuizPageHandle> }>;
 
@@ -47,8 +46,8 @@ type QuizPageHandle = {
 export function QuizPage<Input extends FieldValues, Output>({
   children,
   contentContainerStyle,
+  defaultValues,
   formOptions = {},
-  initialValues,
   onSubmit,
   pageId,
   ref = null,
@@ -59,53 +58,49 @@ export function QuizPage<Input extends FieldValues, Output>({
   children:
     | ((context: UseFormReturn<Input, any, Output>) => ReactNode)
     | ReactNode;
+  defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
-  initialValues: Input;
   onSubmit: (data: Output) => boolean;
   pageId: null | string;
   ref?: Ref<QuizPageHandle>;
-  schema?: z.ZodType<Output, Input>;
+  schema: z.ZodType<Output, Input>;
 }) {
-  const serviceId = useServiceId();
-  const quizId = useStepId();
-  const [persistedValues, setPersistedValues] = useAtom(
-    quizValuesFamily({
-      pageId,
-      quizId,
-      serviceId,
-    })
-  );
-
-  const resolver = schema
-    ? standardSchemaResolver<Input, any, Output>(schema)
-    : undefined;
+  const quizValuesAtom = useQuizValuesAtom<Input>(pageId);
+  const setPersistedValues = useSetAtom(quizValuesAtom);
 
   const context = useForm<Input, any, Output>({
-    defaultValues: {
-      ...initialValues,
-      ...persistedValues,
-    } as DefaultValues<Input>,
-    resolver,
+    defaultValues: defaultValues as DefaultValues<Input>,
+    resolver: standardSchemaResolver<Input, any, Output>(schema),
     ...formOptions,
   });
-  const { handleSubmit, subscribe } = context;
+  const { handleSubmit, reset, subscribe } = context;
+
+  const loadQuizValues = useStableAtomCallback(
+    (get) => {
+      const persistedValues = get(quizValuesAtom);
+      if (persistedValues) {
+        reset(persistedValues, {
+          keepDirtyValues: true,
+        });
+      }
+    },
+    [quizValuesAtom, reset]
+  );
+
+  useEffect(() => {
+    loadQuizValues();
+  }, [loadQuizValues]);
 
   useImperativeHandle(ref, () => ({
     async submit() {
       let result = false;
       await handleSubmit(
         (data) => {
-          console.debug(
-            `[${serviceId}.${quizId}.${pageId}] Passed validation!`,
-            data
-          );
+          console.debug('Passed validation!', data);
           result = onSubmit(data);
         },
         (errors) => {
-          console.debug(
-            `[${serviceId}.${quizId}.${pageId}] Failed validation!`,
-            errors
-          );
+          console.debug('Failed validation!', errors);
           result = false;
         }
       )();

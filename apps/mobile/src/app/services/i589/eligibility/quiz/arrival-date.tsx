@@ -14,7 +14,7 @@ export default function ArrivalDate() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           isRecentArrival: null,
         }}
         onSubmit={({ isRecentArrival }) => {
@@ -25,15 +25,15 @@ export default function ArrivalDate() {
 
           return true;
         }}
-        pageId="is-recent-arrival"
+        pageId='is-recent-arrival'
         schema={z.object({
           isRecentArrival: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (
-          <FormField control={control} name="isRecentArrival">
+          <FormField control={control} name='isRecentArrival'>
             <FormLabel>
-              <Trans i18nKey="services.i589.eligibility.arrival-date.is-recent" />
+              <Trans i18nKey='services.i589.eligibility.arrival-date.is-recent' />
             </FormLabel>
             <FormBooleanInput />
           </FormField>

@@ -14,7 +14,7 @@ export default function CountryOfOrigin() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           isFromSafeCountry: null,
         }}
         onSubmit={({ isFromSafeCountry }) => {

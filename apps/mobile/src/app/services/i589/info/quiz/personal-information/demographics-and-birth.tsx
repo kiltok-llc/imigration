@@ -13,7 +13,7 @@ export default function DemographicsAndBirth() {
     <Quiz>
       {/* Page 1: Basic Demographics */}
       <QuizPage
-        initialValues={{
+        defaultValues={{
           dob: '',
           sex: null,
         }}
@@ -48,7 +48,7 @@ export default function DemographicsAndBirth() {
 
       {/* Page 2: Birth Location */}
       <QuizPage
-        initialValues={{
+        defaultValues={{
           birthCity: '',
           birthCountry: '',
         }}
@@ -80,7 +80,7 @@ export default function DemographicsAndBirth() {
 
       {/* Page 3: Nationality */}
       <QuizPage
-        initialValues={{
+        defaultValues={{
           birthNationality: '',
           currentNationality: '',
         }}
@@ -114,7 +114,7 @@ export default function DemographicsAndBirth() {
 
       {/* Page 4: Additional Information (Optional) */}
       <QuizPage
-        initialValues={{
+        defaultValues={{
           ethnicity: '',
           religion: '',
         }}

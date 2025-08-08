@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { PropsWithChildren, useEffect, useMemo, useRef } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import {
-  Controller,
-  ControllerFieldState,
   type ControllerProps,
-  ControllerRenderProps,
   type FieldPath,
   type FieldValues,
-  get,
-  UseFormStateReturn,
+  useController,
+  UseControllerProps,
+  UseControllerReturn,
+  useFormContext,
 } from 'react-hook-form';
 
 import { FadeView } from '@/components/fade-view';
@@ -17,69 +16,64 @@ import {
   useRequiredContext,
 } from '@/hooks/use-required-context';
 
-const FormFieldContext = createRequiredContext<{
-  field: ControllerRenderProps;
-  fieldState: ControllerFieldState;
-  formState: UseFormStateReturn<FieldValues>;
-}>();
+const FormFieldContext = createRequiredContext<UseControllerReturn>();
+
+export const ConditionalFormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  active,
+  activeValue,
+  children,
+  name,
+  ...props
+}: PropsWithChildren<UseControllerProps<TFieldValues, TName>> & {
+  active: boolean;
+  activeValue: NonNullable<
+    UseControllerProps<TFieldValues, TName>['defaultValue']
+  >;
+}) => {
+  const controller = useController({
+    disabled: !active,
+    name,
+    ...props,
+  });
+
+  const {
+    field: { disabled, onChange },
+  } = controller;
+
+  const { resetField, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (disabled) {
+      resetField(name);
+    } else {
+      setValue(name, activeValue);
+    }
+  }, [activeValue, disabled, name, onChange, resetField, setValue]);
+
+  return (
+    <FormFieldContext.Provider value={controller as UseControllerReturn}>
+      <FadeView visible={active}>{children}</FadeView>
+    </FormFieldContext.Provider>
+  );
+};
 
 export const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   children,
-  name,
-  visible,
   ...props
-}: PropsWithChildren<Omit<ControllerProps<TFieldValues, TName>, 'render'>> & {
-  visible?: boolean;
-}) => {
+}: PropsWithChildren<Omit<ControllerProps<TFieldValues, TName>, 'render'>>) => {
+  const controller = useController(props);
+
   return (
-    <Controller
-      disabled={visible === false}
-      name={name}
-      render={({ field, fieldState, formState }) => (
-        <FormFieldContext.Provider
-          value={{
-            field: field as ControllerRenderProps,
-            fieldState,
-            formState,
-          }}
-        >
-          <FormFieldInner>
-            <FadeView visible={visible}>{children}</FadeView>
-          </FormFieldInner>
-        </FormFieldContext.Provider>
-      )}
-      {...props}
-    />
+    <FormFieldContext.Provider value={controller as UseControllerReturn}>
+      {children}
+    </FormFieldContext.Provider>
   );
 };
-
-function FormFieldInner({ children }: PropsWithChildren) {
-  const {
-    field: { disabled, name, onChange },
-    formState: { defaultValues },
-  } = useFormField();
-  const defaultValue = useMemo(
-    () => get(defaultValues, name),
-    [defaultValues, name]
-  );
-  const defaultValueRef = useRef(defaultValue);
-
-  useEffect(() => {
-    defaultValueRef.current = defaultValue;
-  }, [defaultValue]);
-
-  useEffect(() => {
-    if (disabled) {
-      onChange();
-    } else {
-      onChange(defaultValueRef.current);
-    }
-  }, [disabled, onChange]);
-
-  return children;
-}
 
 export const useFormField = () => useRequiredContext(FormFieldContext);

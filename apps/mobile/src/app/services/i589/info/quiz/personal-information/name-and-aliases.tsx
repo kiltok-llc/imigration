@@ -15,7 +15,7 @@ export default function NameAndAliases() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           firstName: '',
           lastName: '',
           middleName: '',
@@ -62,7 +62,7 @@ export default function NameAndAliases() {
       </QuizPage>
 
       <QuizPage
-        initialValues={{
+        defaultValues={{
           maidenName: '',
           otherNames: '',
         }}
@@ -97,7 +97,7 @@ export default function NameAndAliases() {
       </QuizPage>
 
       <QuizPage
-        initialValues={{
+        defaultValues={{
           hasAlias: null,
         }}
         onSubmit={() => true}

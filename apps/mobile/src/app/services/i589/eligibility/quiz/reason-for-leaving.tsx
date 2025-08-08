@@ -9,7 +9,7 @@ import {
   FormCheckboxGroup,
   FormCheckboxItem,
 } from '@/components/ui/form/checkbox';
-import { FormField } from '@/components/ui/form/field';
+import { ConditionalFormField, FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { FormTextInput } from '@/components/ui/form/text';
@@ -24,7 +24,7 @@ export default function ReasonForLeaving() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           isEscapingHarm: null,
         }}
         onSubmit={({ isEscapingHarm }) => {
@@ -51,8 +51,8 @@ export default function ReasonForLeaving() {
       </QuizPage>
 
       <QuizPage
-        initialValues={{
-          customHarmReason: '',
+        defaultValues={{
+          customHarmReason: null,
           harmReasons: [],
         }}
         onSubmit={({ harmReasons }) => {
@@ -63,9 +63,9 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId={null}
+        pageId='harm-reasons'
         schema={z.object({
-          customHarmReason: z.string().nonempty().optional(),
+          customHarmReason: z.string().nonempty().nullable(),
           harmReasons: z.array(HarmReasonEnum).nonempty(),
         })}
       >
@@ -91,21 +91,22 @@ export default function ReasonForLeaving() {
               </FormField>
             </View>
 
-            <FormField
+            <ConditionalFormField
+              active={watch('harmReasons').includes('other')}
+              activeValue=''
               control={control}
               name='customHarmReason'
-              visible={watch('harmReasons').includes('other')}
             >
               <FormTextInput
                 label={t('services.i589.eligibility.reason-for-leaving.other')}
               />
-            </FormField>
+            </ConditionalFormField>
           </>
         )}
       </QuizPage>
 
       <QuizPage
-        initialValues={{
+        defaultValues={{
           isHarmedByGov: null,
         }}
         onSubmit={({ isHarmedByGov }) => {

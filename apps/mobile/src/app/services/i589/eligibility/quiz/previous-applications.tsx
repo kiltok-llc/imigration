@@ -15,7 +15,7 @@ export default function PreviousApplications() {
   return (
     <Quiz>
       <QuizPage
-        initialValues={{
+        defaultValues={{
           hasPreviousApp: null,
         }}
         onSubmit={({ hasPreviousApp }) => {
