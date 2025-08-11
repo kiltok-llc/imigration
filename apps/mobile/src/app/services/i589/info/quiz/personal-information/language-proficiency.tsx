@@ -7,7 +7,7 @@ import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 export default function LanguageProficiency() {
@@ -32,7 +32,7 @@ export default function LanguageProficiency() {
   );
 
   return (
-    <Quiz>
+    <QuizScreen>
       {/* Page 1: Native Language */}
       <QuizPage
         onSubmit={() => {
@@ -123,6 +123,6 @@ export default function LanguageProficiency() {
           value={otherLanguages}
         />
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

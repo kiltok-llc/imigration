@@ -5,7 +5,7 @@ import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 export default function EmploymentHistory() {
@@ -26,7 +26,7 @@ export default function EmploymentHistory() {
   const [workTo, setWorkTo] = useAtom(answerFamily('workTo'));
 
   return (
-    <Quiz>
+    <QuizScreen>
       {/* Page 1: Basic Employment Information */}
       <QuizPage
         onSubmit={() => {
@@ -135,6 +135,6 @@ export default function EmploymentHistory() {
           value={workTo}
         />
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

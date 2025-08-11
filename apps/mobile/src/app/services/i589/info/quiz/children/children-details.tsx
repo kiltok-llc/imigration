@@ -16,7 +16,7 @@ import { Trans } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 // Define the child type
@@ -179,7 +179,7 @@ export default function ChildrenDetails() {
   };
 
   return (
-    <Quiz>
+    <QuizScreen>
       {/* Page 1: Basic Information */}
       <QuizPage
         onSubmit={() => {
@@ -348,6 +348,6 @@ export default function ChildrenDetails() {
             )}
         </View>
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

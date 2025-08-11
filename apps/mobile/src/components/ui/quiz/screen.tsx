@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'expo-router';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import {
   Children,
   cloneElement,
@@ -13,7 +13,6 @@ import {
   useEffect,
   useImperativeHandle,
   useMemo,
-  useState,
 } from 'react';
 import {
   DefaultValues,
@@ -28,6 +27,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
+import { useQuizPageAtom } from '@/atoms/quiz-page-family';
 import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { Trans } from '@/components/trans';
@@ -80,6 +80,7 @@ export function QuizPage<Input extends FieldValues, Output>({
       const persistedValues = get(quizValuesAtom);
       if (persistedValues) {
         reset(persistedValues, {
+          keepDefaultValues: true,
           keepDirtyValues: true,
         });
       }
@@ -142,13 +143,13 @@ const QuizContext = createRequiredContext<{
   handlePrev: () => void;
 }>();
 
-export function Quiz({
+export function QuizScreen({
   children,
 }: {
   children: QuizPageElement | QuizPageElement[];
 }) {
   const router = useRouter();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useAtom(useQuizPageAtom());
   const { finalRoute, routes } = useQuizRoutes();
   const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
     useRouteNavigation(routes);
@@ -170,7 +171,15 @@ export function Quiz({
     } else {
       nextRoute();
     }
-  }, [childRefs.length, finalRoute, isLastRoute, nextRoute, page, router]);
+  }, [
+    childRefs.length,
+    finalRoute,
+    isLastRoute,
+    nextRoute,
+    page,
+    router,
+    setPage,
+  ]);
 
   const handleSubmit = useCallback(async () => {
     const activeChild = childRefs[page]?.current;
@@ -193,7 +202,7 @@ export function Quiz({
     } else {
       prevRoute();
     }
-  }, [page, isFirstRoute, prevRoute, router]);
+  }, [page, isFirstRoute, setPage, router, prevRoute]);
 
   return (
     <QuizContext.Provider value={{ handleNext, handlePrev }}>

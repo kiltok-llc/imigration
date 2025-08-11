@@ -10,7 +10,9 @@ export default function Root() {
 
   if (__DEV__) {
     setStepId('eligibility');
-    return <Redirect href='/services/i589/eligibility' />;
+    return (
+      <Redirect href='/services/i589/eligibility/quiz/country-of-origin' />
+    );
   }
 
   if (!isOnboarded) {

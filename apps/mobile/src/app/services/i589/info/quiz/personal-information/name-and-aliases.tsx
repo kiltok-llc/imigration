@@ -6,14 +6,14 @@ import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { FormTextInput } from '@/components/ui/form/text';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { nullableInput } from '@/lib/utils';
 
 export default function NameAndAliases() {
   const { t } = useTranslation();
 
   return (
-    <Quiz>
+    <QuizScreen>
       <QuizPage
         defaultValues={{
           firstName: '',
@@ -134,6 +134,6 @@ export default function NameAndAliases() {
           </>
         )}
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

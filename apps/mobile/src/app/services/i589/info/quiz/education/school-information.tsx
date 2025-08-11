@@ -5,7 +5,7 @@ import { toast } from 'sonner-native';
 
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 export default function SchoolInformation() {
@@ -28,7 +28,7 @@ export default function SchoolInformation() {
   ];
 
   return (
-    <Quiz>
+    <QuizScreen>
       {/* Page 1: Basic School Information */}
       <QuizPage
         onSubmit={() => {
@@ -139,6 +139,6 @@ export default function SchoolInformation() {
           value={schoolTo}
         />
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

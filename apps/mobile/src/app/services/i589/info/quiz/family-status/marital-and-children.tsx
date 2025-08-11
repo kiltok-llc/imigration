@@ -7,7 +7,7 @@ import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 export default function MaritalAndChildren() {
@@ -23,7 +23,7 @@ export default function MaritalAndChildren() {
   const maritalStatusOptions = ['Single', 'Married', 'Divorced', 'Widowed'];
 
   return (
-    <Quiz>
+    <QuizScreen>
       {/* Page 1: Marital Status */}
       <QuizPage
         onSubmit={() => {
@@ -93,6 +93,6 @@ export default function MaritalAndChildren() {
           />
         </FadeView>
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

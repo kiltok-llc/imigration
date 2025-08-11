@@ -47,8 +47,12 @@ export const ConditionalFormField = <
 
   useEffect(() => {
     if (disabled) {
+      console.debug(
+        `Resetting field "${name}" to default value because it is disabled.`
+      );
       resetField(name);
     } else {
+      console.debug(`Setting field "${name}" to active value:`, activeValue);
       setValue(name, activeValue);
     }
   }, [activeValue, disabled, name, onChange, resetField, setValue]);

@@ -8,7 +8,7 @@ import { FadeView } from '@/components/fade-view';
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { Quiz, QuizPage } from '@/components/ui/quiz/screen';
+import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { answerFamily } from '@/lib/services/i589/info';
 
 export default function USResidenceStatus() {
@@ -17,7 +17,7 @@ export default function USResidenceStatus() {
   const [livesInUS, setLivesInUS] = useAtom(answerFamily('livesInUS'));
 
   return (
-    <Quiz>
+    <QuizScreen>
       <QuizPage
         onSubmit={() => {
           if (livesInUS === undefined) {
@@ -49,6 +49,6 @@ export default function USResidenceStatus() {
           </Text>
         </FadeView>
       </QuizPage>
-    </Quiz>
+    </QuizScreen>
   );
 }

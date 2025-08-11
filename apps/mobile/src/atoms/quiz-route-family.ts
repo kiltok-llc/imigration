@@ -1,3 +1,4 @@
+import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
@@ -12,7 +13,7 @@ export const quizRouteFamily = atomFamily(
       null,
       z.string().nullable()
     ),
-  (a, b) => a.quizId === b.quizId && a.serviceId === b.serviceId
+  isEqual
 );
 
 export const useQuizRouteAtom = () => {
