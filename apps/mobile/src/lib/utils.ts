@@ -20,6 +20,23 @@ export function chunked<T>(array: T[], size: number): T[][] {
   return result;
 }
 
+export function nullableInput<T extends z.ZodTypeAny>(schema: T) {
+  return schema.nullable().transform((val, ctx) => {
+    if (val === null) {
+      ctx.addIssue({
+        code: 'invalid_type',
+        expected: schema.def.type,
+        fatal: true,
+        input: val,
+      });
+
+      return z.NEVER;
+    }
+
+    return val;
+  });
+}
+
 export async function raiseStatus<T extends Response>(res: T) {
   if (!res.ok) {
     const text = await res.text();
@@ -32,22 +49,10 @@ export async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-export const nullableInput = <T extends z.ZodTypeAny>(
-  schema: T,
-) =>
-  schema
-    .nullable()
-    .transform((val, ctx) => {
-      if (val === null) {
-        ctx.addIssue({
-          code: 'invalid_type',
-          expected: schema.def.type,
-          fatal: true,
-          input: val,
-        });
+export function toI18nKey(name: string) {
+  return name.replaceAll(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
 
-        return z.NEVER;
-      }
-
-      return val;
-    });
+export function toRouteId(routeName: string) {
+  return routeName.replaceAll('/', '.');
+}

@@ -1,5 +1,5 @@
 import { isEqual } from '@ver0/deep-equal';
-import { atom, PrimitiveAtom } from 'jotai';
+import { PrimitiveAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { FieldValues } from 'react-hook-form';
 
@@ -16,7 +16,7 @@ export const quizValuesFamily = atomFamily(
     screenId,
     serviceId,
   }: {
-    pageId: null | string;
+    pageId: string;
     quizId: string;
     screenId: string;
     serviceId: string;
@@ -28,13 +28,10 @@ export const quizValuesFamily = atomFamily(
   isEqual
 );
 
-export const useQuizValuesAtom = <T>(pageId: null | string) => {
+export const useQuizValuesAtom = <T>(pageId: string) => {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
-  if (pageId === null) {
-    return atom({} as T);
-  }
 
   return quizValuesFamily({
     pageId,
@@ -54,16 +51,24 @@ export function resetQuizValues({
   console.debug(`Clearing quiz values for ${serviceId}.${quizId}`);
 
   const exp = new RegExp(
-    `^services\\.${serviceId}\\.${quizId}\\.([^.]+)\\.([^.]+)\\.values$`
+    `^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.values$`
   );
   const matches = storage
     .getAllKeys()
     .map((key) => key.match(exp))
     .filter((m) => !!m);
 
+  console.log(storage.getAllKeys());
+
   for (const [key, screenId, pageId] of matches) {
+    if (!screenId || !pageId) {
+      console.warn(`Invalid quiz value match for key: ${key}`);
+      continue;
+    }
+
     console.debug(`Reset values: ${screenId}.${pageId}`);
     storage.delete(key);
+    quizValuesFamily.remove({ pageId, quizId, screenId, serviceId });
   }
 
   console.debug(

@@ -1,4 +1,3 @@
-import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native-paper';
 import { toast } from 'sonner-native';
@@ -8,28 +7,9 @@ import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { answerFamily } from '@/lib/services/i589/info';
 
 export default function LanguageProficiency() {
   const { t } = useTranslation();
-  const [nativeLanguage, setNativeLanguage] = useAtom(
-    answerFamily('nativeLanguage')
-  );
-  const [speakEnglish, setSpeakEnglish] = useAtom(
-    answerFamily('speaksEnglish')
-  );
-  const [readWriteEnglish, setReadWriteEnglish] = useAtom(
-    answerFamily('canReadWriteEnglish')
-  );
-  const [speakSpanish, setSpeakSpanish] = useAtom(
-    answerFamily('speaksSpanish')
-  );
-  const [readWriteSpanish, setReadWriteSpanish] = useAtom(
-    answerFamily('canReadWriteSpanish')
-  );
-  const [otherLanguages, setOtherLanguages] = useAtom(
-    answerFamily('otherLanguages')
-  );
 
   return (
     <QuizScreen>

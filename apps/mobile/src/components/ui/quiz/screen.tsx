@@ -33,7 +33,10 @@ import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { Trans } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { useQuizRoutes } from '@/components/ui/quiz/layout';
-import { createRequiredContext } from '@/hooks/use-required-context';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { useRouteNavigation } from '@/hooks/use-route-navigation';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
 
@@ -42,6 +45,14 @@ type QuizPageElement = ReactElement<{ ref: Ref<QuizPageHandle> }>;
 type QuizPageHandle = {
   submit: () => Promise<boolean>;
 };
+
+const QuizPageContext = createRequiredContext<{
+  pageId: string;
+}>();
+
+const useQuizPage = () => useRequiredContext(QuizPageContext);
+
+export const useQuizPageId = () => useQuizPage().pageId;
 
 export function QuizPage<Input extends FieldValues, Output>({
   children,
@@ -61,7 +72,7 @@ export function QuizPage<Input extends FieldValues, Output>({
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
   onSubmit: (data: Output) => boolean;
-  pageId: null | string;
+  pageId: string;
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
@@ -78,6 +89,7 @@ export function QuizPage<Input extends FieldValues, Output>({
   const loadQuizValues = useStableAtomCallback(
     (get) => {
       const persistedValues = get(quizValuesAtom);
+      console.debug(`Loaded quiz values for ${pageId}:`, persistedValues);
       if (persistedValues) {
         reset(persistedValues, {
           keepDefaultValues: true,
@@ -85,7 +97,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [quizValuesAtom, reset]
+    [pageId, quizValuesAtom, reset]
   );
 
   useEffect(() => {
@@ -131,9 +143,11 @@ export function QuizPage<Input extends FieldValues, Output>({
       style={[tw`mx-4 flex-1`, style]}
       {...props}
     >
-      <FormProvider {...context}>
-        {typeof children === 'function' ? children(context) : children}
-      </FormProvider>
+      <QuizPageContext.Provider value={{ pageId }}>
+        <FormProvider {...context}>
+          {typeof children === 'function' ? children(context) : children}
+        </FormProvider>
+      </QuizPageContext.Provider>
     </ScrollView>
   );
 }

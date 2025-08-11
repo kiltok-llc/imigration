@@ -65,34 +65,50 @@ export default {
           },
           eligibility: {
             'arrival-date': {
-              'is-recent': 'Have you arrived in the U.S. within the last year?',
+              'is-recent-arrival': {
+                'is-recent-arrival':
+                  'Have you arrived in the U.S. within the last year?',
+              },
               title: 'Arrival Date',
             },
             'country-of-origin': {
-              'is-from-safe-country':
-                'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+              'is-from-safe-country': {
+                'is-from-safe-country':
+                  'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+              },
               title: 'Country of Origin',
             },
             description:
               'Complete a short quiz to check if you qualify to apply for asylum.',
             'physical-presence': {
-              'is-in-usa': 'Are you currently in the United States?',
+              'is-in-usa': {
+                'is-in-usa': 'Are you currently in the United States?',
+              },
               title: 'Physical Presence in the US',
             },
             'previous-applications': {
-              'has-previous-app':
-                'Have you ever applied for asylum in the United States before?',
+              'has-previous-app': {
+                'has-previous-app':
+                  'Have you ever applied for asylum in the United States before?',
+              },
               title: 'Previous Applications',
             },
             'reason-for-leaving': {
-              // TODO make parentheses lower opacity/size/intensity etc
-              'harm-reasons':
-                'Was that harm based on one of these reasons?\n(Select all that apply)',
-              'is-escaping-harm':
-                'Did you leave your home country because you feared harm or persecution?',
-              'is-harmed-by-gov':
-                'Was the harm caused by your government or by people your government could not control?',
-              other: 'Please specify the other reason for leaving',
+              'harm-reasons': {
+                'custom-harm-reason':
+                  'Please specify the other reason for leaving',
+                // TODO make parentheses lower opacity/size/intensity etc
+                'harm-reasons':
+                  'Was that harm based on one of these reasons?\n(Select all that apply)',
+              },
+              'is-escaping-harm': {
+                'is-escaping-harm':
+                  'Did you leave your home country because you feared harm or persecution?',
+              },
+              'is-harmed-by-gov': {
+                'is-harmed-by-gov':
+                  'Was the harm caused by your government or by people your government could not control?',
+              },
               reasons: {
                 nationality: 'Nationality',
                 none: 'None of the above',
@@ -243,16 +259,23 @@ export default {
                 title: 'Language Proficiency',
               },
               'name-and-aliases': {
+                'additional-names': {
+                  'maiden-name': 'Maiden Name',
+                  'other-names': 'What other names or surnames have you used?',
+                  title: 'What other names or surnames have you used?',
+                },
                 'additional-names-title': 'Additional Names',
-                'alias-name': 'What is or was your alias?',
-                'alias-title': 'Alias Information',
-                'first-name': 'First Name',
-                'last-name': 'Full Last Name',
-                'maiden-name': 'Maiden Name',
-                'middle-name': 'Middle Name',
-                'other-names': 'What other names or surnames have you used?',
-                title: 'Name and Aliases',
-                'used-alias': 'Have you used an alias?',
+                'alias-information': {
+                  'alias-name': 'What is or was your alias?',
+                  'has-alias': 'Have you used an alias?',
+                },
+                'basic-names': {
+                  'first-name': 'First Name',
+                  'last-name': 'Full Last Name',
+                  'middle-name': 'Middle Name',
+                  title: 'What is your full name?',
+                },
+                title: 'Names and Aliases',
               },
             },
             residence: {
@@ -273,6 +296,7 @@ export default {
                   'You must be living in the United States to submit this form.',
               },
             },
+            screenTitle: 'Personal Information',
             title: 'Personal Info',
           },
           interview: {

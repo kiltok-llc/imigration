@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PropsWithChildren, useEffect } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
   type ControllerProps,
   type FieldPath,
@@ -11,12 +11,40 @@ import {
 } from 'react-hook-form';
 
 import { FadeView } from '@/components/fade-view';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
 
-const FormFieldContext = createRequiredContext<UseControllerReturn>();
+const FormFieldContext = createContext<UseControllerReturn>({
+  field: {
+    disabled: false,
+    name: '',
+    onBlur: () => {},
+    onChange: () => {},
+    ref: () => {},
+    value: undefined,
+  },
+  fieldState: {
+    error: undefined,
+    invalid: false,
+    isDirty: false,
+    isTouched: false,
+    isValidating: false,
+  },
+  formState: {
+    dirtyFields: {},
+    disabled: false,
+    errors: {},
+    isDirty: false,
+    isLoading: false,
+    isReady: false,
+    isSubmitSuccessful: false,
+    isSubmitted: false,
+    isSubmitting: false,
+    isValid: true,
+    isValidating: false,
+    submitCount: 0,
+    touchedFields: {},
+    validatingFields: {},
+  },
+});
 
 export const ConditionalFormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -80,4 +108,4 @@ export const FormField = <
   );
 };
 
-export const useFormField = () => useRequiredContext(FormFieldContext);
+export const useFormField = () => useContext(FormFieldContext);

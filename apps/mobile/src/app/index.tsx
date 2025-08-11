@@ -9,10 +9,8 @@ export default function Root() {
   const setStepId = useSetAtom(serviceStepFamily('i589'));
 
   if (__DEV__) {
-    setStepId('eligibility');
-    return (
-      <Redirect href='/services/i589/eligibility/quiz/country-of-origin' />
-    );
+    setStepId('info');
+    return <Redirect href='/services/i589/info/quiz' />;
   }
 
   if (!isOnboarded) {

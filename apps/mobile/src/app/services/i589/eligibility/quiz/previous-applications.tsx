@@ -2,10 +2,9 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
 import { FormField } from '@/components/ui/form/field';
-import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
+import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { nullableInput } from '@/lib/utils';
 
@@ -33,9 +32,7 @@ export default function PreviousApplications() {
       >
         {({ control }) => (
           <FormField control={control} name='hasPreviousApp'>
-            <FormLabel>
-              <Trans i18nKey='services.i589.eligibility.previous-applications.has-previous-app' />
-            </FormLabel>
+            <QuizLabel />
             <FormBooleanInput />
           </FormField>
         )}

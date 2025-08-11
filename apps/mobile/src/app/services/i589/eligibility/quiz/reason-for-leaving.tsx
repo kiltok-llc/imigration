@@ -4,16 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
 import {
   FormCheckboxGroup,
   FormCheckboxItem,
 } from '@/components/ui/form/checkbox';
 import { ConditionalFormField, FormField } from '@/components/ui/form/field';
-import { FormLabel } from '@/components/ui/form/label';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { FormTextInput } from '@/components/ui/form/text';
+import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
 import { HarmReasonEnum } from '@/lib/services/i589/eligibility';
 import { nullableInput } from '@/lib/utils';
 
@@ -42,9 +41,7 @@ export default function ReasonForLeaving() {
       >
         {({ control }) => (
           <FormField control={control} name='isEscapingHarm'>
-            <FormLabel>
-              <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-escaping-harm' />
-            </FormLabel>
+            <QuizLabel />
             <FormBooleanInput />
           </FormField>
         )}
@@ -73,9 +70,7 @@ export default function ReasonForLeaving() {
           <>
             <View>
               <FormField control={control} name='harmReasons'>
-                <FormLabel>
-                  <Trans i18nKey='services.i589.eligibility.reason-for-leaving.harm-reasons' />
-                </FormLabel>
+                <QuizLabel />
                 <FormCheckboxGroup>
                   {HarmReasonEnum.options.map((reason) => (
                     <FormCheckboxItem
@@ -97,9 +92,7 @@ export default function ReasonForLeaving() {
               control={control}
               name='customHarmReason'
             >
-              <FormTextInput
-                label={t('services.i589.eligibility.reason-for-leaving.other')}
-              />
+              <QuizTextInput />
             </ConditionalFormField>
           </>
         )}
@@ -124,9 +117,7 @@ export default function ReasonForLeaving() {
       >
         {({ control }) => (
           <FormField control={control} name='isHarmedByGov'>
-            <FormLabel>
-              <Trans i18nKey='services.i589.eligibility.reason-for-leaving.is-harmed-by-gov' />
-            </FormLabel>
+            <QuizLabel />
             <FormBooleanInput />
           </FormField>
         )}

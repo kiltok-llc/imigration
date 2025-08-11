@@ -26,6 +26,7 @@ import {
 } from '@/hooks/use-route';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
+import { toRouteId } from '@/lib/utils';
 
 const QuizRoutesContext = createRequiredContext<{
   finalRoute: string;
@@ -123,10 +124,14 @@ export function QuizLayout({
           current={routeIdx + 1}
           nextTitle={
             nextRouteName
-              ? t(`services.${serviceId}.${quizId}.${nextRouteName}.title`)
+              ? t(
+                  `services.${serviceId}.${quizId}.${toRouteId(nextRouteName)}.title`
+                )
               : undefined
           }
-          title={t(`services.${serviceId}.${quizId}.${routeName}.title`)}
+          title={t(
+            `services.${serviceId}.${quizId}.${toRouteId(routeName)}.title`
+          )}
           total={routes.length}
         />
         {children}

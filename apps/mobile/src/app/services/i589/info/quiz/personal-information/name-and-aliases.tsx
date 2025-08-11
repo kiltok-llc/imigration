@@ -1,17 +1,13 @@
-import { useTranslation } from 'react-i18next';
 import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
-import { FormField } from '@/components/ui/form/field';
-import { FormLabel } from '@/components/ui/form/label';
+import { ConditionalFormField, FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { FormTextInput } from '@/components/ui/form/text';
+import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
 import { nullableInput } from '@/lib/utils';
 
 export default function NameAndAliases() {
-  const { t } = useTranslation();
-
   return (
     <QuizScreen>
       <QuizPage
@@ -30,32 +26,18 @@ export default function NameAndAliases() {
       >
         {({ control }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.title' />
-            </FormLabel>
+            <QuizLabel />
 
             <FormField control={control} name='lastName'>
-              <FormTextInput
-                label={t(
-                  'services.i589.info.personal-information.name-and-aliases.last-name'
-                )}
-              />
+              <QuizTextInput />
             </FormField>
 
             <FormField control={control} name='firstName'>
-              <FormTextInput
-                label={t(
-                  'services.i589.info.personal-information.name-and-aliases.first-name'
-                )}
-              />
+              <QuizTextInput />
             </FormField>
 
             <FormField control={control} name='middleName'>
-              <FormTextInput
-                label={t(
-                  'services.i589.info.personal-information.name-and-aliases.middle-name'
-                )}
-              />
+              <QuizTextInput />
             </FormField>
           </>
         )}
@@ -75,62 +57,44 @@ export default function NameAndAliases() {
           otherNames: z.string(),
         })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.additional-names-title' />
-        </FormLabel>
+        <QuizLabel />
 
         <FormField name='maidenName'>
-          <FormTextInput
-            label={t(
-              'services.i589.info.personal-information.name-and-aliases.maiden-name'
-            )}
-          />
+          <QuizTextInput />
         </FormField>
 
         <FormField name='otherNames'>
-          <FormTextInput
-            label={t(
-              'services.i589.info.personal-information.name-and-aliases.other-names'
-            )}
-          />
+          <QuizTextInput />
         </FormField>
       </QuizPage>
 
       <QuizPage
         defaultValues={{
+          aliasName: null,
           hasAlias: null,
         }}
         onSubmit={() => true}
         pageId='alias-information'
         schema={z.object({
-          aliasName: z.string().nonempty().optional(),
+          aliasName: z.string().nonempty().nullable(),
           hasAlias: nullableInput(z.boolean()),
         })}
       >
         {({ control, watch }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.alias-title' />
-            </FormLabel>
-
             <FormField control={control} name='hasAlias'>
-              <FormLabel variant='titleMedium'>
-                <Trans i18nKey='services.i589.info.personal-information.name-and-aliases.has-alias' />
-              </FormLabel>
+              <QuizLabel />
               <FormBooleanInput />
             </FormField>
 
-            <FormField
+            <ConditionalFormField
+              active={!!watch('hasAlias')}
+              activeValue=''
               control={control}
               name='aliasName'
-              visible={!!watch('hasAlias')}
             >
-              <FormTextInput
-                label={t(
-                  'services.i589.info.personal-information.name-and-aliases.alias-name'
-                )}
-              />
-            </FormField>
+              <QuizTextInput />
+            </ConditionalFormField>
           </>
         )}
       </QuizPage>

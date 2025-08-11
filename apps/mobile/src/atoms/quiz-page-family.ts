@@ -42,17 +42,21 @@ export function resetQuizPages({
 }) {
   console.debug(`Clearing quiz pages for ${serviceId}.${quizId}`);
 
-  const exp = new RegExp(
-    `^services\\.${serviceId}\\.${quizId}\\.([^.]+)\\.page$`
-  );
+  const exp = new RegExp(`^services\\.${serviceId}\\.${quizId}\\.(.+)\\.page$`);
   const matches = storage
     .getAllKeys()
     .map((key) => key.match(exp))
     .filter((m) => !!m);
 
   for (const [key, screenId] of matches) {
+    if (!screenId) {
+      console.warn(`Invalid quiz page match for key: ${key}`);
+      continue;
+    }
+
     console.debug(`Resetting quiz page for: ${screenId}`);
     storage.delete(key);
+    quizPageFamily.remove({ quizId, screenId, serviceId });
   }
 
   console.debug(

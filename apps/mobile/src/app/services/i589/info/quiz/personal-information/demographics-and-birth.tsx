@@ -11,7 +11,6 @@ import { nullableInput } from '@/lib/utils';
 export default function DemographicsAndBirth() {
   return (
     <QuizScreen>
-      {/* Page 1: Basic Demographics */}
       <QuizPage
         defaultValues={{
           dob: '',
@@ -28,10 +27,6 @@ export default function DemographicsAndBirth() {
       >
         {({ control }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.title' />
-            </FormLabel>
-
             <FormField control={control} name='sex'>
               <FormLabel>
                 <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.sex' />
@@ -40,13 +35,15 @@ export default function DemographicsAndBirth() {
             </FormField>
 
             <FormField control={control} name='dob'>
+              <FormLabel>
+                <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.dob' />
+              </FormLabel>
               <FormTextInput label='Date of Birth' placeholder='MM/DD/YYYY' />
             </FormField>
           </>
         )}
       </QuizPage>
 
-      {/* Page 2: Birth Location */}
       <QuizPage
         defaultValues={{
           birthCity: '',
@@ -78,7 +75,6 @@ export default function DemographicsAndBirth() {
         )}
       </QuizPage>
 
-      {/* Page 3: Nationality */}
       <QuizPage
         defaultValues={{
           birthNationality: '',
@@ -112,14 +108,13 @@ export default function DemographicsAndBirth() {
         )}
       </QuizPage>
 
-      {/* Page 4: Additional Information (Optional) */}
       <QuizPage
         defaultValues={{
           ethnicity: '',
           religion: '',
         }}
         onSubmit={() => {
-          return true; // These fields are optional
+          return true;
         }}
         pageId='additional-info'
         schema={z.object({

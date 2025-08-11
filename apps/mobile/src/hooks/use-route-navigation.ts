@@ -25,7 +25,10 @@ export const useRouteNavigation = (routes: string[]) => {
       }
 
       console.log(`Navigating to ${nextRouteName} from ${routeName}`);
-      router.replace(`./${nextRouteName}`);
+
+      const level = routeName.split('/').length - 1;
+      const nesting = '../'.repeat(level);
+      router.replace(`./${nesting}${nextRouteName}`);
     },
     [routeIdx, routeName, routes, router]
   );
