@@ -6,7 +6,6 @@ import { toast } from 'sonner-native';
 import { Trans } from '@/components/trans';
 import { FormLabel } from '@/components/ui/form/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { answerFamily } from '@/lib/schema/services/i589/info';
 
 export default function SchoolInformation() {
   const { t } = useTranslation();

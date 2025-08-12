@@ -250,22 +250,41 @@ export default {
             },
             'personal-information': {
               'demographics-and-birth': {
-                'additional-info-title': 'Additional Information (Optional)',
+                'additional-info': {
+                  title: 'Additional Information',
+                },
                 'basic-demographics': {
                   dob: {
-                    title: 'Date of Birth',
+                    label: 'Date of Birth',
+                    title: 'When were you born?',
                   },
                   sex: {
-                    title: 'Sex',
+                    title: 'What is your sex?',
                   }
                 },
-                'birth-city': 'City of Birth',
-                'birth-country': 'Country of Birth',
+                'birth-location': {
+                  'birth-city': {
+                    label: 'City of Birth',
+                    title: 'In which city were you born?'
+                  },
+                  'birth-country': {
+                    label: 'Country of Birth',
+                    title: 'In which country were you born?'
+                  },
+                },
                 'birth-location-title': 'Birth Location',
-                'birth-nationality': 'Nationality at Birth',
-                'current-nationality': 'Current Nationality (Citizenship)',
                 dob: 'Date of Birth',
                 ethnicity: 'Race, Ethnicity, or Tribal Group',
+                nationality: {
+                  'birth-nationality': {
+                    label: 'Nationality at Birth',
+                    title: 'What was your nationality at birth?'
+                  },
+                  'current-nationality': {
+                    label: 'Current Nationality',
+                    title: 'What is your current nationality? (Citizenship)'
+                  },
+                },
                 'nationality-title': 'Nationality',
                 religion: 'Religion',
                 title: 'Demographics and Birth',

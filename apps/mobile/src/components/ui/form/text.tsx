@@ -4,6 +4,7 @@ import { Text as RNText } from 'react-native';
 import { HelperText, TextInput, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
+import { Trans } from '@/components/trans';
 import { useFormField } from '@/components/ui/form/field';
 
 export function FormTextInput(
@@ -11,7 +12,6 @@ export function FormTextInput(
     label,
     optional,
     required,
-    style,
     ...props
   }: ComponentProps<typeof TextInput> & {
     optional?: boolean;
@@ -33,17 +33,22 @@ export function FormTextInput(
           <>
             {label}
             {required && (
-              <RNText style={{ color: theme.colors.error }}> *</RNText>
+              <RNText style={{ color: theme.colors.error }}>
+                <Trans i18nKey='form.required' />
+              </RNText>
             )}
             {optional && (
-              <RNText style={tw.style('normal-case font-normal', { color: theme.colors.onSurfaceDisabled })}> (optional)</RNText>
+              <RNText style={tw.style('normal-case font-normal', {
+                color: theme.colors.onSurfaceDisabled
+              })}>
+                <Trans i18nKey='form.optional' />
+              </RNText>
             )}
           </>
         )}
         onBlur={onBlur}
         onChangeText={onChange}
         ref={ref}
-        style={[tw`uppercase text-red-500 font-medium`, style]}
         value={value}
         {...props}
       />

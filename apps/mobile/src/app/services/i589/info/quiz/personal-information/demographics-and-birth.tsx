@@ -6,7 +6,9 @@ import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
 import { FormSexInput } from '@/components/ui/form/radio';
 import { FormTextInput } from '@/components/ui/form/text';
+import { QuizDateInput } from '@/components/ui/quiz/date';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
 import { SexEnum } from '@/lib/schema/common';
 import { nullableInput } from '@/lib/utils';
@@ -16,7 +18,7 @@ export default function DemographicsAndBirth() {
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          dob: '',
+          dob: null,
           sex: null,
         }}
         onSubmit={() => {
@@ -24,7 +26,7 @@ export default function DemographicsAndBirth() {
         }}
         pageId="basic-demographics"
         schema={z.object({
-          dob: z.string().nonempty(),
+          dob: nullableInput(z.date()),
           sex: nullableInput(SexEnum),
         })}
       >
@@ -40,7 +42,7 @@ export default function DemographicsAndBirth() {
             <FormBlock>
               <FormField control={control} name="dob">
                 <QuizFieldTitle />
-                <FormTextInput label="Date of Birth" placeholder="MM/DD/YYYY" />
+                <QuizDateInput />
               </FormField>
             </FormBlock>
           </>
@@ -57,23 +59,25 @@ export default function DemographicsAndBirth() {
         }}
         pageId="birth-location"
         schema={z.object({
-          birthCity: z.string().min(1, 'City of birth is required'),
-          birthCountry: z.string().min(1, 'Country of birth is required'),
+          birthCity: z.string().nonempty(),
+          birthCountry: z.string().nonempty(),
         })}
       >
         {({ control }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.birth-location-title" />
-            </FormLabel>
+            <FormBlock>
+              <FormField control={control} name="birthCountry">
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
 
-            <FormField control={control} name="birthCity">
-              <FormTextInput label="City of Birth" />
-            </FormField>
-
-            <FormField control={control} name="birthCountry">
-              <FormTextInput label="Country of Birth" />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="birthCity">
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>
@@ -88,25 +92,25 @@ export default function DemographicsAndBirth() {
         }}
         pageId="nationality"
         schema={z.object({
-          birthNationality: z.string().min(1, 'Birth nationality is required'),
-          currentNationality: z
-            .string()
-            .min(1, 'Current nationality is required'),
+          birthNationality: z.string().nonempty(),
+          currentNationality: z.string().nonempty(),
         })}
       >
         {({ control }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.nationality-title" />
-            </FormLabel>
+            <FormBlock>
+              <FormField control={control} name="birthNationality">
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
 
-            <FormField control={control} name="currentNationality">
-              <FormTextInput label="Current Nationality (Citizenship)" />
-            </FormField>
-
-            <FormField control={control} name="birthNationality">
-              <FormTextInput label="Nationality at Birth" />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="currentNationality">
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>
@@ -121,23 +125,25 @@ export default function DemographicsAndBirth() {
         }}
         pageId="additional-info"
         schema={z.object({
-          ethnicity: z.string().optional(),
-          religion: z.string().optional(),
+          ethnicity: z.string(),
+          religion: z.string(),
         })}
       >
         {({ control }) => (
           <>
-            <FormLabel>
-              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.additional-info-title" />
-            </FormLabel>
+            <FormBlock>
+              <FormField control={control} name="ethnicity">
+                <QuizFieldTitle />
+                <QuizTextInput optional />
+              </FormField>
+            </FormBlock>
 
-            <FormField control={control} name="ethnicity">
-              <FormTextInput label="Race, Ethnicity, or Tribal Group" />
-            </FormField>
-
-            <FormField control={control} name="religion">
-              <FormTextInput label="Religion" />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="religion">
+                <QuizFieldTitle />
+                <QuizTextInput optional />
+              </FormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>

@@ -11,7 +11,7 @@ import { useResetQuizPage } from '@/atoms/quiz-page-family';
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
 import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { useServiceStepAtom } from '@/atoms/service-step-family';
-import { Trans } from '@/components/trans';
+import { Trans, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 
@@ -40,9 +40,7 @@ export default function Eligible() {
               </View>
             </View>
             <View style={tw`gap-4`}>
-              <Text style={tw`text-center font-bold`} variant='headlineMedium'>
-                <Trans i18nKey='services.i589.eligible.title' />
-              </Text>
+              <TransText i18nKey='services.i589.eligible.title' style={tw`text-center font-bold`} variant='headlineMedium' />
               <Text style={tw`text-center`} variant='bodyLarge'>
                 <Trans i18nKey='services.i589.eligible.description' />
               </Text>
