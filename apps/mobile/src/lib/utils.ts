@@ -1,5 +1,7 @@
 import z from 'zod/v4';
 
+import { defaultStorage } from '@/lib/mmkv';
+
 export function arraysEqual<T>(a: T[], b: T[]) {
   if (a.length !== b.length) {
     return false;
@@ -18,6 +20,24 @@ export function chunked<T>(array: T[], size: number): T[][] {
     result.push(array.slice(i, i + size));
   }
   return result;
+}
+
+// Clears all MMKV keys that match the provided regular expression.
+// @yields An array of groups captured by the regular expression for each cleared key.
+export function* clearMMKVKeys<T extends string[]>(exp: RegExp) {
+  const matches = defaultStorage
+    .getAllKeys()
+    .map((key) => key.match(exp))
+    .filter((m) => !!m);
+
+  for (const match of matches) {
+    const [key, ...groups] = match;
+    yield groups as T
+    console.debug(`Clearing storage key: ${key}`);
+    defaultStorage.delete(key);
+  }
+
+  console.debug(`${matches.length} storage keys cleared`);
 }
 
 export function nullableInput<T extends z.ZodTypeAny>(schema: T) {

@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
-// eslint-disable-next-line no-restricted-imports
-import { Text } from 'react-native';
+import { Text as RNText } from 'react-native';
+import tw from 'twrnc';
 
 export function Trans({
   ...props
@@ -10,11 +10,11 @@ export function Trans({
   return (
     <I18NTrans
       components={{
-        italic: <Text style={{ fontStyle: 'italic' }} />,
-        pre: <Text style={{ fontFamily: 'monospace' }} />,
-        strong: <Text style={{ fontWeight: 'bold' }} />,
+        italic: <RNText style={tw`italic`} />,
+        pre: <RNText style={tw`font-mono`} />,
+        strong: <RNText style={tw`font-bold`} />,
       }}
-      parent={Text}
+      parent={RNText}
       {...props}
     />
   );

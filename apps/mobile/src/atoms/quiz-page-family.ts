@@ -6,24 +6,26 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
-import { storage } from '@/lib/mmkv';
+import { clearMMKVKeys } from '@/lib/utils';
 
-export const quizPageFamily = atomFamily(
-  ({
+type QuizPageParam = {
+  quizId: string;
+  screenId: string;
+  serviceId: string;
+}
+
+const quizPageKey = (
+  {
     quizId,
     screenId,
     serviceId,
-  }: {
-    quizId: string;
-    screenId: string;
-    serviceId: string;
-  }) =>
-    atomWithMmkvStorage(
-      `services.${serviceId}.${quizId}.${screenId}.page`,
-      0,
-      z.number()
-    ),
-  isEqual
+  }: QuizPageParam,
+) => `services.${serviceId}.${quizId}.${screenId}.page`;
+
+export const quizPageFamily = atomFamily(
+  (param: QuizPageParam) =>
+    atomWithMmkvStorage(quizPageKey(param), 0, z.number()),
+  isEqual,
 );
 
 export const useQuizPageAtom = () => {
@@ -33,39 +35,34 @@ export const useQuizPageAtom = () => {
   return quizPageFamily({ quizId, screenId, serviceId });
 };
 
-export function resetQuizPages({
-  quizId,
-  serviceId,
-}: {
-  quizId: string;
-  serviceId: string;
-}) {
+export function resetAllQuizPages() {
+  console.debug('Clearing ALL quiz pages');
+
+  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.page$/;
+  for (const [serviceId, quizId, screenId] of clearMMKVKeys<[string, string, string]>(exp)) {
+    quizPageFamily.remove({ quizId, screenId, serviceId });
+  }
+}
+
+export function resetQuizPage(
+  {
+    quizId,
+    serviceId,
+  }: {
+    quizId: string;
+    serviceId: string;
+  },
+) {
   console.debug(`Clearing quiz pages for ${serviceId}.${quizId}`);
 
   const exp = new RegExp(`^services\\.${serviceId}\\.${quizId}\\.(.+)\\.page$`);
-  const matches = storage
-    .getAllKeys()
-    .map((key) => key.match(exp))
-    .filter((m) => !!m);
-
-  for (const [key, screenId] of matches) {
-    if (!screenId) {
-      console.warn(`Invalid quiz page match for key: ${key}`);
-      continue;
-    }
-
-    console.debug(`Resetting quiz page for: ${screenId}`);
-    storage.delete(key);
+  for (const [screenId] of clearMMKVKeys<[string]>(exp)) {
     quizPageFamily.remove({ quizId, screenId, serviceId });
   }
-
-  console.debug(
-    `${matches.length} quiz pages cleared for ${serviceId}.${quizId}`
-  );
 }
 
-export const useResetQuizPages = () => {
+export const useResetQuizPage = () => {
   const serviceId = useServiceId();
   const quizId = useStepId();
-  return () => resetQuizPages({ quizId, serviceId });
+  return () => resetQuizPage({ quizId, serviceId });
 };

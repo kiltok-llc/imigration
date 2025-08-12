@@ -16,14 +16,8 @@ import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { Trans } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
-import {
-  useFocusedRouteListener,
-  useFocusedRouteName,
-} from '@/hooks/use-route';
+import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
+import { useFocusedRouteListener, useFocusedRouteName } from '@/hooks/use-route';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
 import { toRouteId } from '@/lib/utils';
@@ -49,10 +43,10 @@ export function SavedQuizRouteRedirect() {
 export const useQuizRoutes = () => useRequiredContext(QuizRoutesContext);
 
 export function QuizErrorFallback({
-  children,
-  error,
-  retry,
-}: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
+                                    children,
+                                    error,
+                                    retry,
+                                  }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
   const resetQuizRoute = useResetAtom(useQuizRouteAtom());
   const resetQuizValues = useResetQuizValues();
@@ -62,28 +56,28 @@ export function QuizErrorFallback({
       <Container style={tw`flex-1 items-center justify-center gap-8`}>
         <MaterialCommunityIcons
           color={theme.colors.error}
-          name='alert-circle'
+          name="alert-circle"
           size={72}
         />
 
-        <Text style={tw`text-center`} variant='headlineSmall'>
-          <Trans i18nKey='error.title' />
+        <Text style={tw`text-center`} variant="headlineSmall">
+          <Trans i18nKey="error.title" />
         </Text>
 
-        <Text style={tw`text-center`} variant='bodyLarge'>
-          <Trans i18nKey='error.message' values={{ message: error.message }} />
+        <Text style={tw`text-center`} variant="bodyLarge">
+          <Trans i18nKey="error.message" values={{ message: error.message }} />
         </Text>
 
-        <Button mode='text' onPress={retry}>
-          <Trans i18nKey='error.retry' />
+        <Button mode="text" onPress={retry}>
+          <Trans i18nKey="error.retry" />
         </Button>
 
-        <Button mode='text' onPress={resetQuizRoute}>
-          <Trans i18nKey='quiz.error.reset-route' />
+        <Button mode="text" onPress={resetQuizRoute}>
+          <Trans i18nKey="quiz.error.reset-route" />
         </Button>
 
-        <Button mode='text' onPress={resetQuizValues}>
-          <Trans i18nKey='quiz.error.reset-values' />
+        <Button mode="text" onPress={resetQuizValues}>
+          <Trans i18nKey="quiz.error.reset-values" />
         </Button>
 
         {children}
@@ -93,10 +87,10 @@ export function QuizErrorFallback({
 }
 
 export function QuizLayout({
-  children,
-  finalRoute = '../',
-  routes,
-}: PropsWithChildren<{
+                             children,
+                             finalRoute = '../',
+                             routes,
+                           }: PropsWithChildren<{
   finalRoute?: string;
   onComplete?: () => void;
   routes: string[];
@@ -125,12 +119,12 @@ export function QuizLayout({
           nextTitle={
             nextRouteName
               ? t(
-                  `services.${serviceId}.${quizId}.${toRouteId(nextRouteName)}.title`
-                )
+                `services.${serviceId}.${quizId}.${toRouteId(nextRouteName)}.title`,
+              )
               : undefined
           }
           title={t(
-            `services.${serviceId}.${quizId}.${toRouteId(routeName)}.title`
+            `services.${serviceId}.${quizId}.${toRouteId(routeName)}.title`,
           )}
           total={routes.length}
         />
@@ -141,11 +135,11 @@ export function QuizLayout({
 }
 
 function QuizHeader({
-  current,
-  nextTitle,
-  title,
-  total,
-}: {
+                      current,
+                      nextTitle,
+                      title,
+                      total,
+                    }: {
   current: number;
   nextTitle?: ReactNode;
   title: ReactNode;
@@ -164,19 +158,19 @@ function QuizHeader({
         width={6}
       >
         {() => (
-          <Text variant='bodyMedium'>
-            <Trans i18nKey='quiz.header.progress' values={{ current, total }} />
+          <Text variant="bodyMedium">
+            <Trans i18nKey="quiz.header.progress" values={{ current, total }} />
           </Text>
         )}
       </AnimatedCircularProgress>
 
       <View style={tw`flex-1 items-end justify-start gap-2`}>
-        <Text style={tw`font-bold`} variant='headlineSmall'>
-          <Trans i18nKey='quiz.header.title' values={{ title }} />
+        <Text style={tw`font-bold`} variant="headlineSmall">
+          <Trans i18nKey="quiz.header.title" values={{ title }} />
         </Text>
         {nextTitle && (
-          <Text variant='titleSmall'>
-            <Trans i18nKey='quiz.header.nextTitle' values={{ nextTitle }} />
+          <Text variant="titleSmall">
+            <Trans i18nKey="quiz.header.nextTitle" values={{ nextTitle }} />
           </Text>
         )}
       </View>

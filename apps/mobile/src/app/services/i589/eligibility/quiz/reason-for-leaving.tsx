@@ -1,24 +1,21 @@
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import z from 'zod/v4';
 
-import {
-  FormCheckboxGroup,
-  FormCheckboxItem,
-} from '@/components/ui/form/checkbox';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormCheckboxGroup } from '@/components/ui/form/checkbox';
 import { ConditionalFormField, FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizLabel } from '@/components/ui/quiz/label';
+import { QuizCheckboxItem } from '@/components/ui/quiz/checkbox';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
-import { HarmReasonEnum } from '@/lib/services/i589/eligibility';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
 import { nullableInput } from '@/lib/utils';
 
 export default function ReasonForLeaving() {
   const router = useRouter();
-  const { t } = useTranslation();
 
   return (
     <QuizScreen>
@@ -34,16 +31,18 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId='is-escaping-harm'
+        pageId="is-escaping-harm"
         schema={z.object({
           isEscapingHarm: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (
-          <FormField control={control} name='isEscapingHarm'>
-            <QuizLabel />
-            <FormBooleanInput />
-          </FormField>
+          <View>
+            <FormField control={control} name="isEscapingHarm">
+              <QuizFieldTitle />
+              <FormBooleanInput />
+            </FormField>
+          </View>
         )}
       </QuizPage>
 
@@ -60,7 +59,7 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId='harm-reasons'
+        pageId="harm-reasons"
         schema={z.object({
           customHarmReason: z.string().nonempty().nullable(),
           harmReasons: z.array(HarmReasonEnum).nonempty(),
@@ -68,32 +67,31 @@ export default function ReasonForLeaving() {
       >
         {({ control, watch }) => (
           <>
-            <View>
-              <FormField control={control} name='harmReasons'>
-                <QuizLabel />
+            <FormBlock>
+              <FormField control={control} name="harmReasons">
+                <QuizFieldTitle />
                 <FormCheckboxGroup>
                   {HarmReasonEnum.options.map((reason) => (
-                    <FormCheckboxItem
+                    <QuizCheckboxItem
                       exclusive={reason === 'none'}
                       key={reason}
-                      label={t(
-                        `services.i589.eligibility.reason-for-leaving.reasons.${reason}`
-                      )}
                       value={reason}
                     />
                   ))}
                 </FormCheckboxGroup>
               </FormField>
-            </View>
+            </FormBlock>
 
-            <ConditionalFormField
-              active={watch('harmReasons').includes('other')}
-              activeValue=''
-              control={control}
-              name='customHarmReason'
-            >
-              <QuizTextInput />
-            </ConditionalFormField>
+            <FormBlock>
+              <ConditionalFormField
+                active={watch('harmReasons').includes('other')}
+                activeValue=""
+                control={control}
+                name="customHarmReason"
+              >
+                <QuizTextInput />
+              </ConditionalFormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>
@@ -110,16 +108,18 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId='is-harmed-by-gov'
+        pageId="is-harmed-by-gov"
         schema={z.object({
           isHarmedByGov: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (
-          <FormField control={control} name='isHarmedByGov'>
-            <QuizLabel />
-            <FormBooleanInput />
-          </FormField>
+          <FormBlock>
+            <FormField control={control} name="isHarmedByGov">
+              <QuizFieldTitle />
+              <FormBooleanInput />
+            </FormField>
+          </FormBlock>
         )}
       </QuizPage>
     </QuizScreen>

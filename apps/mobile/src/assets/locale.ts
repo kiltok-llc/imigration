@@ -1,30 +1,39 @@
 export default {
   en: {
     translation: {
-      back: 'Back',
       error: {
         message:
           'There was an error loading this content:\n<pre>{{message}}</pre>',
         retry: 'Retry',
         title: 'An error occurred',
       },
+      form: {
+        boolean: {
+          no: 'No',
+          yes: 'Yes',
+        },
+        sex: {
+          female: 'Female',
+          male: 'Male',
+        },
+      },
       next: 'Next',
-      no: 'No',
       onboarding: {
         english: 'Select English',
         language: 'Choose your language to get started.',
         spanish: 'Elige español',
         title: 'Welcome to iMigration',
       },
+      previous: 'Back',
       quiz: {
-        back: 'Back',
-        continue: 'Continue',
         header: {
           nextTitle: 'Next: {{ nextTitle }}',
           progress: '{{ current }} of {{ total }}',
           title: '{{ title }}',
         },
         missing: 'Please answer all questions before continuing.',
+        next: 'Continue',
+        previous: 'Back',
       },
       services: {
         asylum: 'Asylum',
@@ -66,15 +75,17 @@ export default {
           eligibility: {
             'arrival-date': {
               'is-recent-arrival': {
-                'is-recent-arrival':
-                  'Have you arrived in the U.S. within the last year?',
+                'is-recent-arrival': {
+                  title: 'Have you arrived in the U.S. within the last year?',
+                }
               },
               title: 'Arrival Date',
             },
             'country-of-origin': {
               'is-from-safe-country': {
-                'is-from-safe-country':
-                  'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+                'is-from-safe-country': {
+                  title: 'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+                }
               },
               title: 'Country of Origin',
             },
@@ -82,41 +93,48 @@ export default {
               'Complete a short quiz to check if you qualify to apply for asylum.',
             'physical-presence': {
               'is-in-usa': {
-                'is-in-usa': 'Are you currently in the United States?',
+                'is-in-usa': {
+                  title: 'Are you currently in the United States?'
+                },
               },
               title: 'Physical Presence in the US',
             },
             'previous-applications': {
               'has-previous-app': {
-                'has-previous-app':
-                  'Have you ever applied for asylum in the United States before?',
+                'has-previous-app': {
+                  title: 'Have you ever applied for asylum in the United States before?'
+                },
               },
               title: 'Previous Applications',
             },
             'reason-for-leaving': {
               'harm-reasons': {
-                'custom-harm-reason':
-                  'Please specify the other reason for leaving',
-                // TODO make parentheses lower opacity/size/intensity etc
-                'harm-reasons':
-                  'Was that harm based on one of these reasons?\n(Select all that apply)',
+                'custom-harm-reason': {
+                  label: 'Please specify the other reason for leaving',
+                },
+                'harm-reasons': {
+                  options: {
+                    nationality: 'Nationality',
+                    none: 'None of the above',
+                    other: 'Other',
+                    'political-opinion': 'Political Opinion',
+                    race: 'Race',
+                    religion: 'Religion',
+                    'social-group': 'Social Group',
+                  },
+                  // TODO make parentheses lower opacity/size/intensity etc
+                  title: 'Was that harm based on one of these reasons?\n(Select all that apply)'
+                },
               },
               'is-escaping-harm': {
-                'is-escaping-harm':
-                  'Did you leave your home country because you feared harm or persecution?',
+                'is-escaping-harm': {
+                  title: 'Did you leave your home country because you feared harm or persecution?'
+                },
               },
               'is-harmed-by-gov': {
-                'is-harmed-by-gov':
-                  'Was the harm caused by your government or by people your government could not control?',
-              },
-              reasons: {
-                nationality: 'Nationality',
-                none: 'None of the above',
-                other: 'Other',
-                'political-opinion': 'Political Opinion',
-                race: 'Race',
-                religion: 'Religion',
-                'social-group': 'Social Group',
+                'is-harmed-by-gov': {
+                  title: 'Was the harm caused by your government or by people your government could not control?'
+                },
               },
               title: 'Reason for Leaving',
             },
@@ -154,7 +172,7 @@ export default {
                 dob: 'Date of Birth',
                 ethnicity: 'Race, Ethnicity, or Tribal Group',
                 'first-name': 'First Name',
-                'last-name': 'Full Last Name',
+                'last-name': 'Last Name',
                 'lives-in-us': 'Do they currently live in the United States?',
                 'middle-name': 'Middle Name',
                 nationality: 'Nationality',
@@ -233,6 +251,14 @@ export default {
             'personal-information': {
               'demographics-and-birth': {
                 'additional-info-title': 'Additional Information (Optional)',
+                'basic-demographics': {
+                  dob: {
+                    title: 'Date of Birth',
+                  },
+                  sex: {
+                    title: 'Sex',
+                  }
+                },
                 'birth-city': 'City of Birth',
                 'birth-country': 'Country of Birth',
                 'birth-location-title': 'Birth Location',
@@ -242,7 +268,6 @@ export default {
                 ethnicity: 'Race, Ethnicity, or Tribal Group',
                 'nationality-title': 'Nationality',
                 religion: 'Religion',
-                sex: 'Sex',
                 title: 'Demographics and Birth',
               },
               'language-proficiency': {
@@ -260,19 +285,33 @@ export default {
               },
               'name-and-aliases': {
                 'additional-names': {
-                  'maiden-name': 'Maiden Name',
-                  'other-names': 'What other names or surnames have you used?',
+                  'maiden-name': {
+                    label: 'Maiden Name'
+                  },
+                  'other-names': {
+                    label: 'Other Names',
+                  },
                   title: 'What other names or surnames have you used?',
                 },
                 'additional-names-title': 'Additional Names',
                 'alias-information': {
-                  'alias-name': 'What is or was your alias?',
-                  'has-alias': 'Have you used an alias?',
+                  'alias-name': {
+                    label: 'What is or was your alias?'
+                  },
+                  'has-alias': {
+                    title: 'Have you used an alias?'
+                  },
                 },
                 'basic-names': {
-                  'first-name': 'First Name',
-                  'last-name': 'Full Last Name',
-                  'middle-name': 'Middle Name',
+                  'first-name': {
+                    label: 'First Name'
+                  },
+                  'last-name': {
+                    label: 'Last Name'
+                  },
+                  'middle-name': {
+                    label: 'Middle Name'
+                  },
                   title: 'What is your full name?',
                 },
                 title: 'Names and Aliases',
@@ -329,7 +368,6 @@ export default {
         searchPlaceholder: 'Search services...',
         title: 'iMigration Services',
       },
-      yes: 'Yes',
     },
   },
   es: {

@@ -7,7 +7,7 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { useResetQuizPages } from '@/atoms/quiz-page-family';
+import { useResetQuizPage } from '@/atoms/quiz-page-family';
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
 import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { useServiceStepAtom } from '@/atoms/service-step-family';
@@ -18,7 +18,7 @@ import { Container } from '@/components/ui/container';
 export default function Eligible() {
   const { t } = useTranslation();
   const resetQuizValues = useResetQuizValues();
-  const resetQuizPages = useResetQuizPages();
+  const resetQuizPage = useResetQuizPage();
   const resetQuizRoute = useResetAtom(useQuizRouteAtom());
   const setStep = useSetAtom(useServiceStepAtom());
 
@@ -56,7 +56,7 @@ export default function Eligible() {
             icon='arrow-right'
             onPress={() => {
               resetQuizValues();
-              resetQuizPages();
+              resetQuizPage();
               resetQuizRoute();
               setStep('info');
               router.dismissTo('/services/i589');

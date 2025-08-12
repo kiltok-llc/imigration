@@ -7,25 +7,28 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
-import { storage } from '@/lib/mmkv';
+import { clearMMKVKeys } from '@/lib/utils';
 
-export const quizValuesFamily = atomFamily(
-  ({
+type QuizValuesParam = {
+  pageId: string;
+  quizId: string;
+  screenId: string;
+  serviceId: string;
+}
+
+const quizValuesKey = (
+  {
     pageId,
     quizId,
     screenId,
     serviceId,
-  }: {
-    pageId: string;
-    quizId: string;
-    screenId: string;
-    serviceId: string;
-  }) =>
-    atomWithMmkvStorage<FieldValues>(
-      `services.${serviceId}.${quizId}.${screenId}.${pageId}.values`,
-      {}
-    ),
-  isEqual
+  }: QuizValuesParam,
+) => `services.${serviceId}.${quizId}.${screenId}.${pageId}.values`;
+
+export const quizValuesFamily = atomFamily(
+  (param: QuizValuesParam) =>
+    atomWithMmkvStorage<FieldValues>(quizValuesKey(param), {}),
+  isEqual,
 );
 
 export const useQuizValuesAtom = <T>(pageId: string) => {
@@ -41,39 +44,29 @@ export const useQuizValuesAtom = <T>(pageId: string) => {
   }) as PrimitiveAtom<T>;
 };
 
-export function resetQuizValues({
-  quizId,
-  serviceId,
-}: {
-  quizId: string;
-  serviceId: string;
-}) {
-  console.debug(`Clearing quiz values for ${serviceId}.${quizId}`);
-
-  const exp = new RegExp(
-    `^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.values$`
-  );
-  const matches = storage
-    .getAllKeys()
-    .map((key) => key.match(exp))
-    .filter((m) => !!m);
-
-  console.log(storage.getAllKeys());
-
-  for (const [key, screenId, pageId] of matches) {
-    if (!screenId || !pageId) {
-      console.warn(`Invalid quiz value match for key: ${key}`);
-      continue;
-    }
-
-    console.debug(`Reset values: ${screenId}.${pageId}`);
-    storage.delete(key);
+export function resetAllQuizValues() {
+  console.debug('Clearing ALL quiz values');
+  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.([^.]+)\.values$/;
+  for (const [serviceId, quizId, screenId, pageId] of clearMMKVKeys<[string, string, string, string]>(exp)) {
     quizValuesFamily.remove({ pageId, quizId, screenId, serviceId });
   }
+}
 
-  console.debug(
-    `${matches.length} quiz values cleared for ${serviceId}.${quizId}`
-  );
+export function resetQuizValues(
+  {
+    quizId,
+    serviceId,
+  }: {
+    quizId: string;
+    serviceId: string;
+  },
+) {
+  console.debug(`Clearing quiz values for ${serviceId}.${quizId}`);
+
+  const exp = new RegExp(`^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.values$`);
+  for (const [screenId, pageId] of clearMMKVKeys<[string, string]>(exp)) {
+    quizValuesFamily.remove({ pageId, quizId, screenId, serviceId });
+  }
 }
 
 export const useResetQuizValues = () => {

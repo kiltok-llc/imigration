@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
-  type ControllerProps,
   type FieldPath,
   type FieldValues,
   useController,
@@ -50,12 +49,12 @@ export const ConditionalFormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  active,
-  activeValue,
-  children,
-  name,
-  ...props
-}: PropsWithChildren<UseControllerProps<TFieldValues, TName>> & {
+    active,
+    activeValue,
+    children,
+    name,
+    ...props
+  }: PropsWithChildren<WithRequired<UseControllerProps<TFieldValues, TName>, 'control'>> & {
   active: boolean;
   activeValue: NonNullable<
     UseControllerProps<TFieldValues, TName>['defaultValue']
@@ -76,11 +75,11 @@ export const ConditionalFormField = <
   useEffect(() => {
     if (disabled) {
       console.debug(
-        `Resetting field "${name}" to default value because it is disabled.`
+        `Resetting field "${name}" to default value because it is disabled.`,
       );
       resetField(name);
     } else {
-      console.debug(`Setting field "${name}" to active value:`, activeValue);
+      console.debug(`Setting field "${name}" to active value: '${activeValue}'`);
       setValue(name, activeValue);
     }
   }, [activeValue, disabled, name, onChange, resetField, setValue]);
@@ -92,13 +91,17 @@ export const ConditionalFormField = <
   );
 };
 
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+
 export const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  children,
-  ...props
-}: PropsWithChildren<Omit<ControllerProps<TFieldValues, TName>, 'render'>>) => {
+>(
+  {
+    children,
+    ...props
+  }: PropsWithChildren<WithRequired<UseControllerProps<TFieldValues, TName>, 'control'>>,
+) => {
   const controller = useController(props);
 
   return (

@@ -6,14 +6,22 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
 
+type QuizRouteParam = {
+  quizId: string;
+  serviceId: string;
+}
+
+const quizRouteKey = (
+  {
+    quizId,
+    serviceId,
+  }: QuizRouteParam,
+) => `services.${serviceId}.${quizId}.route`;
+
 export const quizRouteFamily = atomFamily(
-  ({ quizId, serviceId }: { quizId: string; serviceId: string }) =>
-    atomWithMmkvStorage(
-      `services.${serviceId}.${quizId}.route`,
-      null,
-      z.string().nullable()
-    ),
-  isEqual
+  (param: QuizRouteParam) =>
+    atomWithMmkvStorage(quizRouteKey(param), null, z.string().nullable()),
+  isEqual,
 );
 
 export const useQuizRouteAtom = () => {

@@ -1,42 +1,65 @@
 import { isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
+import { atom, Getter, Setter, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useEffect } from 'react';
-import { useMMKVObject } from 'react-native-mmkv';
 
-interface DevMenuItem {
-  callback?: () => void;
-  key: string;
-  title: string;
-}
+import { resetAllQuizPages } from '@/atoms/quiz-page-family';
+import { resetAllQuizValues } from '@/atoms/quiz-values-family';
+import { defaultStorage } from '@/lib/mmkv';
 
-const ITEMS: DevMenuItem[] = [] as const;
+const devMenuItemAtom = (
+  id: string,
+  name: string,
+  callback: (get: Getter, set: Setter) => void,
+  { shouldCollapse = true }: { shouldCollapse?: boolean } = {},
+) => atom({ callback, id, name, shouldCollapse });
 
-const useDevMenuItems = () => {
-  return useMMKVObject<Record<string, boolean>>('dev-menu-items');
-};
+const clearQuizStorageAtom = devMenuItemAtom(
+  'clear-quiz-storage',
+  'Clear Quiz Storage',
+  () => {
+    resetAllQuizValues();
+    resetAllQuizPages();
+  },
+);
+
+const clearStorageAtom = devMenuItemAtom(
+  'clear-storage',
+  'Clear Storage',
+  () => {
+    defaultStorage.clearAll();
+  },
+);
+
+const devMenuItemsAtom = atom(
+  (get) => ([
+    clearQuizStorageAtom,
+    clearStorageAtom,
+  ].map((atom) => get(atom))),
+);
+
+const invokeDevMenuItemAtom = atom(
+  null,
+  (get, set, id: string) => {
+    const { callback } = get(devMenuItemsAtom)
+      .find((item) => item.id === id)!;
+
+    callback(get, set);
+  },
+);
+
 
 export const useRegisterDevMenuItems = () => {
-  const [value, setValue] = useDevMenuItems();
+  const devMenuItems = useAtomValue(devMenuItemsAtom);
+  const invokeDevMenuItem = useSetAtom(invokeDevMenuItemAtom);
 
-  const register = useCallback(
-    () =>
-      registerDevMenuItems(
-        ITEMS.map((item) => {
-          return {
-            callback: () => {
-              setValue((prevValue) => {
-                return {
-                  ...prevValue,
-                  [item.key]: !prevValue?.[item.key],
-                };
-              });
-              item.callback?.();
-            },
-            name: `${item.title} (${value?.[item.key] ? 'enabled' : 'disabled'})`,
-            shouldCollapse: true,
-          };
-        })
-      ),
-    [value, setValue]
+  const register = useCallback(() =>
+    registerDevMenuItems(
+      devMenuItems.map(({ id, name, shouldCollapse }) => ({
+        callback: () => invokeDevMenuItem(id),
+        name,
+        shouldCollapse,
+      })),
+    ), [devMenuItems, invokeDevMenuItem],
   );
 
   useEffect(() => {
@@ -46,10 +69,4 @@ export const useRegisterDevMenuItems = () => {
 
     void register();
   }, [register]);
-};
-
-export const useDevMenuItem = (key: (typeof ITEMS)[number]['key']) => {
-  const [value] = useDevMenuItems();
-
-  return value?.[key] ?? false;
 };

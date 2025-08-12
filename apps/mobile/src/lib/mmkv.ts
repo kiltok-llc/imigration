@@ -2,12 +2,14 @@ import { SyncStorage } from 'jotai/vanilla/utils/atomWithStorage';
 import { MMKV } from 'react-native-mmkv';
 import superjson from 'superjson';
 
-export const storage = new MMKV();
+export const defaultStorage = new MMKV({ id: 'mmkv.default' });
 
-export const createMMKVStorage = <Value>(): SyncStorage<Value> => ({
+export const devStorage = new MMKV({ id: 'mmkv.dev' });
+
+export const createMMKVStorage = <Value>(storage: MMKV): SyncStorage<Value> => ({
   getItem: (key, initialValue) => {
     const str = storage.getString(key);
-    // console.debug(`mmkvStorage.getItem(${name}) = ${str}`);
+    // console.debug(`storage.getItem(${key}) = ${str}`);
     try {
       return superjson.parse<Value>(str ?? '');
     } catch {
@@ -15,24 +17,24 @@ export const createMMKVStorage = <Value>(): SyncStorage<Value> => ({
     }
   },
   removeItem: (key) => {
-    // console.debug(`mmkvStorage.removeItem(${name})`);
+    // console.debug(`storage.removeItem(${key})`);
     storage.delete(key);
   },
-  setItem: (name, value) => {
+  setItem: (key, value) => {
     const str = superjson.stringify(value);
-    // console.debug(`mmkvStorage.setItem(${name}, ${str})`);
-    storage.set(name, str);
+    // console.debug(`storage.setItem(${key}, ${str})`);
+    storage.set(key, str);
   },
-  subscribe(name, callback) {
-    const listener = storage.addOnValueChangedListener((key) => {
-      if (key === name) {
-        const str = storage.getString(name);
-        // console.debug(`mmkvStorage.subscribe(${name}) = ${str}`);
+  subscribe(key, callback) {
+    const listener = storage.addOnValueChangedListener((changedKey) => {
+      if (changedKey === key) {
+        const str = storage.getString(key);
+        // console.debug(`storage.subscribe(${key}) = ${str}`);
         try {
           const value = superjson.parse<Value>(str ?? '');
           callback(value);
         } catch (error) {
-          console.error(`Error parsing mmkv value with key: ${name}`, error);
+          console.error(`Error parsing mmkv value with key: ${key}`, error);
         }
       }
     });

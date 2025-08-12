@@ -1,10 +1,11 @@
 import { useRouter } from 'expo-router';
 import z from 'zod/v4';
 
+import { FormBlock } from '@/components/ui/form/block';
 import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
 import { nullableInput } from '@/lib/utils';
 
 export default function PhysicalPresence() {
@@ -24,16 +25,18 @@ export default function PhysicalPresence() {
 
           return true;
         }}
-        pageId='is-in-usa'
+        pageId="is-in-usa"
         schema={z.object({
           isInUsa: nullableInput(z.boolean()),
         })}
       >
         {({ control }) => (
-          <FormField control={control} name='isInUsa'>
-            <QuizLabel />
-            <FormBooleanInput />
-          </FormField>
+          <FormBlock>
+            <FormField control={control} name="isInUsa">
+              <QuizFieldTitle />
+              <FormBooleanInput />
+            </FormField>
+          </FormBlock>
         )}
       </QuizPage>
     </QuizScreen>

@@ -17,7 +17,7 @@ export function FormLabel({
   return (
     <Text
       style={[
-        tw.style('mb-8 text-center font-bold', {
+        tw.style('text-center font-bold', {
           color: invalid ? theme.colors.error : undefined,
         }),
         style,

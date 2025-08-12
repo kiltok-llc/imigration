@@ -2,10 +2,11 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import z from 'zod/v4';
 
+import { FormBlock } from '@/components/ui/form/block';
 import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
 
 export default function CountryOfOrigin() {
   const router = useRouter();
@@ -30,10 +31,12 @@ export default function CountryOfOrigin() {
         })}
       >
         {({ control }) => (
-          <FormField control={control} name='isFromSafeCountry'>
-            <QuizLabel />
-            <FormBooleanInput />
-          </FormField>
+          <FormBlock>
+            <FormField control={control} name='isFromSafeCountry'>
+              <QuizFieldTitle />
+              <FormBooleanInput />
+            </FormField>
+          </FormBlock>
         )}
       </QuizPage>
     </QuizScreen>

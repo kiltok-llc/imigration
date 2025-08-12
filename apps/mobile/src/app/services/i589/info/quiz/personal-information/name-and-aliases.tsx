@@ -1,10 +1,11 @@
 import z from 'zod/v4';
 
+import { FormBlock } from '@/components/ui/form/block';
 import { ConditionalFormField, FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizLabel } from '@/components/ui/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/ui/quiz/title';
 import { nullableInput } from '@/lib/utils';
 
 export default function NameAndAliases() {
@@ -17,28 +18,32 @@ export default function NameAndAliases() {
           middleName: '',
         }}
         onSubmit={() => true}
-        pageId='basic-names'
+        pageId="basic-names"
         schema={z.object({
           firstName: z.string().nonempty(),
           lastName: z.string().nonempty(),
-          middleName: z.string().nonempty(),
+          middleName: z.string(),
         })}
       >
         {({ control }) => (
           <>
-            <QuizLabel />
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-            <FormField control={control} name='lastName'>
-              <QuizTextInput />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="firstName">
+                <QuizTextInput />
+              </FormField>
 
-            <FormField control={control} name='firstName'>
-              <QuizTextInput />
-            </FormField>
+              <FormField control={control} name="middleName">
+                <QuizTextInput optional />
+              </FormField>
 
-            <FormField control={control} name='middleName'>
-              <QuizTextInput />
-            </FormField>
+              <FormField control={control} name="lastName">
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>
@@ -51,21 +56,29 @@ export default function NameAndAliases() {
         onSubmit={() => {
           return true;
         }}
-        pageId='additional-names'
+        pageId="additional-names"
         schema={z.object({
           maidenName: z.string(),
           otherNames: z.string(),
         })}
       >
-        <QuizLabel />
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <FormField name='maidenName'>
-          <QuizTextInput />
-        </FormField>
+            <FormBlock>
+              <FormField control={control} name="maidenName">
+                <QuizTextInput optional />
+              </FormField>
 
-        <FormField name='otherNames'>
-          <QuizTextInput />
-        </FormField>
+              <FormField control={control} name="otherNames">
+                <QuizTextInput optional />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
       <QuizPage
@@ -74,7 +87,7 @@ export default function NameAndAliases() {
           hasAlias: null,
         }}
         onSubmit={() => true}
-        pageId='alias-information'
+        pageId="alias-information"
         schema={z.object({
           aliasName: z.string().nonempty().nullable(),
           hasAlias: nullableInput(z.boolean()),
@@ -82,19 +95,21 @@ export default function NameAndAliases() {
       >
         {({ control, watch }) => (
           <>
-            <FormField control={control} name='hasAlias'>
-              <QuizLabel />
-              <FormBooleanInput />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="hasAlias">
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
 
-            <ConditionalFormField
-              active={!!watch('hasAlias')}
-              activeValue=''
-              control={control}
-              name='aliasName'
-            >
-              <QuizTextInput />
-            </ConditionalFormField>
+              <ConditionalFormField
+                active={!!watch('hasAlias')}
+                activeValue=""
+                control={control}
+                name="aliasName"
+              >
+                <QuizTextInput />
+              </ConditionalFormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>

@@ -13,6 +13,7 @@ import tw, { useDeviceContext } from 'twrnc';
 
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
+import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
 import { theme } from '@/lib/paper-theme';
 import { LanguageProvider } from '@/providers/language';
 import { QueryProvider } from '@/providers/query';
@@ -55,6 +56,7 @@ void SystemUI.setBackgroundColorAsync(theme.colors?.background ?? null);
 
 function RootLayout() {
   useDeviceContext(tw);
+  useRegisterDevMenuItems()
 
   return (
     <PaperProvider theme={theme}>

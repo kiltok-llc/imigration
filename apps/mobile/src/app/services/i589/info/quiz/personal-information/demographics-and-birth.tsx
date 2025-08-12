@@ -1,11 +1,14 @@
 import z from 'zod/v4';
 
 import { Trans } from '@/components/trans';
+import { FormBlock } from '@/components/ui/form/block';
 import { FormField } from '@/components/ui/form/field';
 import { FormLabel } from '@/components/ui/form/label';
-import { FormBooleanInput } from '@/components/ui/form/radio';
+import { FormSexInput } from '@/components/ui/form/radio';
 import { FormTextInput } from '@/components/ui/form/text';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { SexEnum } from '@/lib/schema/common';
 import { nullableInput } from '@/lib/utils';
 
 export default function DemographicsAndBirth() {
@@ -19,27 +22,27 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId='basic-demographics'
+        pageId="basic-demographics"
         schema={z.object({
-          dob: z.string().min(1, 'Date of birth is required'),
-          sex: nullableInput(z.boolean()),
+          dob: z.string().nonempty(),
+          sex: nullableInput(SexEnum),
         })}
       >
         {({ control }) => (
           <>
-            <FormField control={control} name='sex'>
-              <FormLabel>
-                <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.sex' />
-              </FormLabel>
-              <FormBooleanInput />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="sex">
+                <QuizFieldTitle />
+                <FormSexInput />
+              </FormField>
+            </FormBlock>
 
-            <FormField control={control} name='dob'>
-              <FormLabel>
-                <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.dob' />
-              </FormLabel>
-              <FormTextInput label='Date of Birth' placeholder='MM/DD/YYYY' />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name="dob">
+                <QuizFieldTitle />
+                <FormTextInput label="Date of Birth" placeholder="MM/DD/YYYY" />
+              </FormField>
+            </FormBlock>
           </>
         )}
       </QuizPage>
@@ -52,7 +55,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId='birth-location'
+        pageId="birth-location"
         schema={z.object({
           birthCity: z.string().min(1, 'City of birth is required'),
           birthCountry: z.string().min(1, 'Country of birth is required'),
@@ -61,15 +64,15 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.birth-location-title' />
+              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.birth-location-title" />
             </FormLabel>
 
-            <FormField control={control} name='birthCity'>
-              <FormTextInput label='City of Birth' />
+            <FormField control={control} name="birthCity">
+              <FormTextInput label="City of Birth" />
             </FormField>
 
-            <FormField control={control} name='birthCountry'>
-              <FormTextInput label='Country of Birth' />
+            <FormField control={control} name="birthCountry">
+              <FormTextInput label="Country of Birth" />
             </FormField>
           </>
         )}
@@ -83,7 +86,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId='nationality'
+        pageId="nationality"
         schema={z.object({
           birthNationality: z.string().min(1, 'Birth nationality is required'),
           currentNationality: z
@@ -94,15 +97,15 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.nationality-title' />
+              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.nationality-title" />
             </FormLabel>
 
-            <FormField control={control} name='currentNationality'>
-              <FormTextInput label='Current Nationality (Citizenship)' />
+            <FormField control={control} name="currentNationality">
+              <FormTextInput label="Current Nationality (Citizenship)" />
             </FormField>
 
-            <FormField control={control} name='birthNationality'>
-              <FormTextInput label='Nationality at Birth' />
+            <FormField control={control} name="birthNationality">
+              <FormTextInput label="Nationality at Birth" />
             </FormField>
           </>
         )}
@@ -116,7 +119,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId='additional-info'
+        pageId="additional-info"
         schema={z.object({
           ethnicity: z.string().optional(),
           religion: z.string().optional(),
@@ -125,15 +128,15 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormLabel>
-              <Trans i18nKey='services.i589.info.personal-information.demographics-and-birth.additional-info-title' />
+              <Trans i18nKey="services.i589.info.personal-information.demographics-and-birth.additional-info-title" />
             </FormLabel>
 
-            <FormField control={control} name='ethnicity'>
-              <FormTextInput label='Race, Ethnicity, or Tribal Group' />
+            <FormField control={control} name="ethnicity">
+              <FormTextInput label="Race, Ethnicity, or Tribal Group" />
             </FormField>
 
-            <FormField control={control} name='religion'>
-              <FormTextInput label='Religion' />
+            <FormField control={control} name="religion">
+              <FormTextInput label="Religion" />
             </FormField>
           </>
         )}
