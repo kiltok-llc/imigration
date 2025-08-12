@@ -13,46 +13,34 @@ export function FormBooleanInput() {
 
   return (
     <FormRadioGroup>
-      <FormRadioItem
-        label={t('form.boolean.yes')}
-        value={true}
-      />
-      <FormRadioItem
-        label={t('form.boolean.no')}
-        value={false}
-      />
+      <FormRadioItem label={t('form.boolean.yes')} value={true} />
+      <FormRadioItem label={t('form.boolean.no')} value={false} />
     </FormRadioGroup>
   );
 }
 
-export function FormRadioGroup({ children, ...props }: ComponentProps<typeof View>) {
+export function FormRadioGroup({
+  children,
+  ...props
+}: ComponentProps<typeof View>) {
   return (
-    <View
-      {...props}
-    >
+    <View {...props}>
       {children}
-      {__DEV__ && (
-        <FormRadioItem
-          label="Null (Dev Only)"
-          value={null}
-        />
-      )}
+      {__DEV__ && <FormRadioItem label='Null (Dev Only)' value={null} />}
     </View>
   );
 }
 
-export function FormRadioItem<T>(
-  {
-    color,
-    labelStyle,
-    uncheckedColor,
-    value,
-    ...props
-  }: Omit<ComponentProps<typeof RadioButton.Item>, 'label' | 'value'> & {
-    label?: string;
-    value: T;
-  },
-) {
+export function FormRadioItem<T>({
+  color,
+  labelStyle,
+  uncheckedColor,
+  value,
+  ...props
+}: Omit<ComponentProps<typeof RadioButton.Item>, 'label' | 'value'> & {
+  label?: string;
+  value: T;
+}) {
   const theme = useTheme();
   const { t } = useTranslation();
   const {
@@ -65,10 +53,15 @@ export function FormRadioItem<T>(
       color={invalid ? theme.colors.error : color}
       disabled={disabled}
       label={t(`form.${value}`)}
-      labelStyle={[labelStyle, tw.style(invalid && {
-        color: theme.colors.error,
-      })]}
-      mode="android"
+      labelStyle={[
+        labelStyle,
+        tw.style(
+          invalid && {
+            color: theme.colors.error,
+          }
+        ),
+      ]}
+      mode='android'
       onPress={() => onChange(value)}
       status={selectedValue === value ? 'checked' : 'unchecked'}
       uncheckedColor={invalid ? theme.colors.error : uncheckedColor}

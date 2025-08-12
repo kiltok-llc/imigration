@@ -14,7 +14,14 @@ import {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm, UseFormProps, UseFormReturn } from 'react-hook-form';
+import {
+  DefaultValues,
+  FieldValues,
+  FormProvider,
+  useForm,
+  UseFormProps,
+  UseFormReturn,
+} from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -23,10 +30,12 @@ import z from 'zod/v4';
 import { useQuizPageAtom } from '@/atoms/quiz-page-family';
 import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
-import { Trans } from '@/components/trans';
-import { Button } from '@/components/ui/button';
+import { TransButton } from '@/components/trans';
 import { useQuizRoutes } from '@/components/ui/quiz/layout';
-import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { useRouteNavigation } from '@/hooks/use-route-navigation';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
 
@@ -45,18 +54,18 @@ const useQuizPage = () => useRequiredContext(QuizPageContext);
 export const useQuizPageId = () => useQuizPage().pageId;
 
 export function QuizPage<Input extends FieldValues, Output>({
-                                                              children,
-                                                              contentContainerStyle,
-                                                              defaultValues,
-                                                              formOptions = {},
-                                                              onSubmit,
-                                                              pageId,
-                                                              ref = null,
-                                                              schema,
-                                                              style,
-                                                              ...props
-                                                            }: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
-  children: (context: UseFormReturn<Input, any, Output>) => ReactNode
+  children,
+  contentContainerStyle,
+  defaultValues,
+  formOptions = {},
+  onSubmit,
+  pageId,
+  ref = null,
+  schema,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
+  children: (context: UseFormReturn<Input, any, Output>) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
   onSubmit: (data: Output) => boolean;
@@ -85,7 +94,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [pageId, quizValuesAtom, reset],
+    [pageId, quizValuesAtom, reset]
   );
 
   useEffect(() => {
@@ -103,7 +112,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         (errors) => {
           console.debug('Failed validation!', errors);
           result = false;
-        },
+        }
       )();
       return result;
     },
@@ -119,7 +128,7 @@ export function QuizPage<Input extends FieldValues, Output>({
           values: true,
         },
       }),
-    [subscribe, setPersistedValues],
+    [subscribe, setPersistedValues]
   );
 
   return (
@@ -132,9 +141,7 @@ export function QuizPage<Input extends FieldValues, Output>({
       {...props}
     >
       <QuizPageContext.Provider value={{ pageId }}>
-        <FormProvider {...context}>
-          {children(context)}
-        </FormProvider>
+        <FormProvider {...context}>{children(context)}</FormProvider>
       </QuizPageContext.Provider>
     </ScrollView>
   );
@@ -146,8 +153,8 @@ const QuizContext = createRequiredContext<{
 }>();
 
 export function QuizScreen({
-                             children,
-                           }: {
+  children,
+}: {
   children: QuizPageElement | QuizPageElement[];
 }) {
   const router = useRouter();
@@ -160,9 +167,9 @@ export function QuizScreen({
     () =>
       Array.from(
         { length: Children.count(children) },
-        createRef<QuizPageHandle>,
+        createRef<QuizPageHandle>
       ),
-    [children],
+    [children]
   );
 
   const handleNext = useCallback(() => {
@@ -213,7 +220,7 @@ export function QuizScreen({
         style={tw`flex-1 gap-4`}
       >
         <ReactivePagerView
-          orientation="vertical"
+          orientation='vertical'
           page={page}
           style={tw`flex-1`}
         >
@@ -227,23 +234,21 @@ export function QuizScreen({
         </ReactivePagerView>
         <View style={tw`mx-4 mt-auto flex-row gap-4`}>
           <View style={tw`flex-1`}>
-            <Button
-              icon="arrow-left"
-              mode="contained-tonal"
+            <TransButton
+              i18nKey='quiz.previous'
+              icon='arrow-left'
+              mode='contained-tonal'
               onPress={handlePrev}
-            >
-              <Trans i18nKey="quiz.previous" />
-            </Button>
+            />
           </View>
           <View style={tw`flex-1`}>
-            <Button
+            <TransButton
               contentStyle={tw`flex-row-reverse`}
-              icon="arrow-right"
-              mode="contained"
+              i18nKey='quiz.next'
+              icon='arrow-right'
+              mode='contained'
               onPress={handleSubmit}
-            >
-              <Trans i18nKey="quiz.next" />
-            </Button>
+            />
           </View>
         </View>
       </SafeAreaView>

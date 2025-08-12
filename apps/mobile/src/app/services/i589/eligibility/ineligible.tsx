@@ -5,8 +5,7 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { Trans } from '@/components/trans';
-import { Button } from '@/components/ui/button';
+import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
 export default function Ineligible() {
@@ -27,28 +26,34 @@ export default function Ineligible() {
               <View
                 style={tw`mb-6 h-20 w-20 items-center justify-center rounded-full bg-red-500`}
               >
+                {/*TODO replace with icon*/}
                 <Text style={tw`text-3xl font-bold text-white`}>✗</Text>
               </View>
             </View>
             <View style={tw`gap-4`}>
-              <Text style={tw`text-center font-bold`} variant='headlineMedium'>
-                <Trans i18nKey='services.i589.ineligible.title' />
-              </Text>
-              <Text style={tw`text-center`} variant='bodyLarge'>
-                <Trans i18nKey='services.i589.ineligible.description' />
-              </Text>
-              <Text style={tw`mt-4 text-center`} variant='bodyMedium'>
-                <Trans i18nKey='services.i589.ineligible.alternatives' />
-              </Text>
+              <TransText
+                i18nKey='services.i589.ineligible.title'
+                style={tw`text-center font-bold`}
+                variant='headlineMedium'
+              />
+              <TransText
+                i18nKey='services.i589.ineligible.description'
+                style={tw`text-center`}
+                variant='bodyLarge'
+              />
+              <TransText
+                i18nKey='services.i589.ineligible.alternatives'
+                style={tw`mt-4 text-center`}
+                variant='bodyMedium'
+              />
             </View>
           </Surface>
-          <Button
+          <TransButton
+            i18nKey='services.i589.ineligible.backButton'
             icon='arrow-left'
             onPress={() => router.dismissTo('/services')}
             style={tw`mt-auto`}
-          >
-            <Trans i18nKey='services.i589.ineligible.backButton' />
-          </Button>
+          />
         </Container>
       </SafeAreaView>
     </>

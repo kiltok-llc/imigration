@@ -10,8 +10,8 @@ import { useStepId } from '@/hooks/use-step-id';
 import { toI18nKey } from '@/lib/utils';
 
 export function QuizDateInput({
-                                ...props
-                              }: Omit<ComponentProps<typeof FormDateInput>, 'label'>) {
+  ...props
+}: Omit<ComponentProps<typeof FormDateInput>, 'label'>) {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
@@ -22,9 +22,11 @@ export function QuizDateInput({
 
   return (
     <FormDateInput
-      label={(
-        <Trans i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.label`} />
-      )}
+      label={
+        <Trans
+          i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.label`}
+        />
+      }
       {...props}
     />
   );

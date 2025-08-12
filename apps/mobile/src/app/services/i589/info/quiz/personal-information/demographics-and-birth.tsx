@@ -1,11 +1,8 @@
 import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
 import { FormBlock } from '@/components/ui/form/block';
 import { FormField } from '@/components/ui/form/field';
-import { FormLabel } from '@/components/ui/form/label';
 import { FormSexInput } from '@/components/ui/form/radio';
-import { FormTextInput } from '@/components/ui/form/text';
 import { QuizDateInput } from '@/components/ui/quiz/date';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
@@ -24,7 +21,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId="basic-demographics"
+        pageId='basic-demographics'
         schema={z.object({
           dob: nullableInput(z.date()),
           sex: nullableInput(SexEnum),
@@ -33,14 +30,14 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="sex">
+              <FormField control={control} name='sex'>
                 <QuizFieldTitle />
                 <FormSexInput />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="dob">
+              <FormField control={control} name='dob'>
                 <QuizFieldTitle />
                 <QuizDateInput />
               </FormField>
@@ -57,7 +54,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId="birth-location"
+        pageId='birth-location'
         schema={z.object({
           birthCity: z.string().nonempty(),
           birthCountry: z.string().nonempty(),
@@ -66,14 +63,14 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="birthCountry">
+              <FormField control={control} name='birthCountry'>
                 <QuizFieldTitle />
                 <QuizTextInput />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="birthCity">
+              <FormField control={control} name='birthCity'>
                 <QuizFieldTitle />
                 <QuizTextInput />
               </FormField>
@@ -90,7 +87,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId="nationality"
+        pageId='nationality'
         schema={z.object({
           birthNationality: z.string().nonempty(),
           currentNationality: z.string().nonempty(),
@@ -99,14 +96,14 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="birthNationality">
+              <FormField control={control} name='birthNationality'>
                 <QuizFieldTitle />
                 <QuizTextInput />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="currentNationality">
+              <FormField control={control} name='currentNationality'>
                 <QuizFieldTitle />
                 <QuizTextInput />
               </FormField>
@@ -123,7 +120,7 @@ export default function DemographicsAndBirth() {
         onSubmit={() => {
           return true;
         }}
-        pageId="additional-info"
+        pageId='additional-info'
         schema={z.object({
           ethnicity: z.string(),
           religion: z.string(),
@@ -132,14 +129,14 @@ export default function DemographicsAndBirth() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="ethnicity">
+              <FormField control={control} name='ethnicity'>
                 <QuizFieldTitle />
                 <QuizTextInput optional />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="religion">
+              <FormField control={control} name='religion'>
                 <QuizFieldTitle />
                 <QuizTextInput optional />
               </FormField>

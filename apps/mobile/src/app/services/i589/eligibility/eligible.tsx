@@ -11,8 +11,7 @@ import { useResetQuizPage } from '@/atoms/quiz-page-family';
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
 import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { useServiceStepAtom } from '@/atoms/service-step-family';
-import { Trans, TransText } from '@/components/trans';
-import { Button } from '@/components/ui/button';
+import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
 export default function Eligible() {
@@ -36,21 +35,32 @@ export default function Eligible() {
               <View
                 style={tw`mb-6 h-20 w-20 items-center justify-center rounded-full bg-green-500`}
               >
+                {/*TODO replace with icon*/}
                 <Text style={tw`text-3xl font-bold text-white`}>✓</Text>
               </View>
             </View>
+
             <View style={tw`gap-4`}>
-              <TransText i18nKey='services.i589.eligible.title' style={tw`text-center font-bold`} variant='headlineMedium' />
-              <Text style={tw`text-center`} variant='bodyLarge'>
-                <Trans i18nKey='services.i589.eligible.description' />
-              </Text>
-              <Text style={tw`mt-4 text-center`} variant='bodyMedium'>
-                <Trans i18nKey='services.i589.eligible.nextSteps' />
-              </Text>
+              <TransText
+                i18nKey='services.i589.eligible.title'
+                style={tw`text-center font-bold`}
+                variant='headlineMedium'
+              />
+              <TransText
+                i18nKey='services.i589.eligible.description'
+                style={tw`text-center`}
+                variant='bodyLarge'
+              />
+              <TransText
+                i18nKey='services.i589.eligible.nextSteps'
+                style={tw`mt-4 text-center`}
+                variant='bodyMedium'
+              />
             </View>
           </Surface>
-          <Button
+          <TransButton
             contentStyle={tw`flex-row-reverse`}
+            i18nKey='services.i589.eligible.continueButton'
             icon='arrow-right'
             onPress={() => {
               resetQuizValues();
@@ -60,9 +70,7 @@ export default function Eligible() {
               router.dismissTo('/services/i589');
             }}
             style={tw`mt-auto`}
-          >
-            <Trans i18nKey='services.i589.eligible.continueButton' />
-          </Button>
+          />
         </Container>
       </SafeAreaView>
     </>

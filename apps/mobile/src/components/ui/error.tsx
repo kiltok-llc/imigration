@@ -6,15 +6,14 @@ import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { Trans, TransButton, TransText } from '@/components/trans';
-import { Button } from '@/components/ui/button';
+import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 
 export function ErrorFallback({
-                                children,
-                                error,
-                                retry,
-                              }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
+  children,
+  error,
+  retry,
+}: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
 
   return (
@@ -22,24 +21,24 @@ export function ErrorFallback({
       <Container style={tw`flex-1 items-center justify-center gap-8`}>
         <MaterialCommunityIcons
           color={theme.colors.error}
-          name="alert-circle"
+          name='alert-circle'
           size={72}
         />
 
         <TransText
-          i18nKey="error.title"
+          i18nKey='error.title'
           style={tw`text-center`}
-          variant="headlineSmall"
+          variant='headlineSmall'
         />
 
         <TransText
-          i18nKey="error.message"
+          i18nKey='error.message'
           style={tw`text-center`}
           values={{ message: error.message }}
-          variant="bodyLarge"
+          variant='bodyLarge'
         />
 
-        <TransButton i18nKey="error.retry" mode="text" onPress={retry} />
+        <TransButton i18nKey='error.retry' mode='text' onPress={retry} />
 
         {children}
       </Container>

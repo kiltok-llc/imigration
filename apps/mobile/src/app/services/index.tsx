@@ -5,12 +5,12 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { Searchbar, Text, useTheme } from 'react-native-paper';
+import { Searchbar, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import banner from '@/assets/onboarding/usa-banner-2.png';
-import { Trans } from '@/components/trans';
+import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { IconProps } from '@/lib/icon-props';
@@ -61,14 +61,13 @@ export default function Services() {
       />
       <SafeAreaView edges={['top', 'right', 'left']} style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />
-        <Text
+        <TransText
+          i18nKey='services.title'
           style={tw.style('pb-4 text-center font-bold', {
             color: theme.colors.primary,
           })}
           variant='displaySmall'
-        >
-          <Trans i18nKey='services.title' />
-        </Text>
+        />
 
         <ScrollView
           contentContainerStyle={tw`grow-1 gap-8 pt-4`}
@@ -83,14 +82,13 @@ export default function Services() {
               />
 
               <View style={tw`gap-2`}>
-                <Text
+                <TransText
+                  i18nKey='services.popular'
                   style={tw.style('font-bold', {
                     color: theme.colors.primary,
                   })}
                   variant='headlineSmall'
-                >
-                  <Trans i18nKey='services.popular' />
-                </Text>
+                />
                 <View style={tw`gap-2`}>
                   {popularServices.map(({ href, Icon, id }) => (
                     <Button
@@ -104,13 +102,15 @@ export default function Services() {
                       mode='outlined'
                       onPress={() => router.push(href)}
                     >
-                      <View style={tw``}>
-                        <Text style={tw.style('font-semibold', {})}>
-                          <Trans i18nKey={`services.${id}.title`} />
-                        </Text>
-                        <Text style={tw.style('')} variant='bodySmall'>
-                          <Trans i18nKey={`services.${id}.subtitle`} />
-                        </Text>
+                      <View>
+                        <TransText
+                          i18nKey={`services.${id}.title`}
+                          style={tw`font-semibold`}
+                        />
+                        <TransText
+                          i18nKey={`services.${id}.subtitle`}
+                          variant='bodySmall'
+                        />
                       </View>
                     </Button>
                   ))}
@@ -118,26 +118,24 @@ export default function Services() {
               </View>
 
               <View style={tw`gap-2`}>
-                <Text
+                <TransText
+                  i18nKey='services.categories.title'
                   style={tw.style('font-bold', {
                     color: theme.colors.primary,
                   })}
                   variant='headlineSmall'
-                >
-                  <Trans i18nKey='services.categories.title' />
-                </Text>
+                />
                 <View style={tw`gap-2`}>
                   {categories.map(({ href, id }) => (
-                    <Button
+                    <TransButton
                       contentStyle={tw`flex-row-reverse justify-between`}
+                      i18nKey={`services.categories.${id}.title`}
                       icon='chevron-right'
                       key={id}
                       mode='outlined'
                       onPress={() => router.push(href)}
                       size='sm'
-                    >
-                      <Trans i18nKey={`services.categories.${id}.title`} />
-                    </Button>
+                    />
                   ))}
                 </View>
               </View>

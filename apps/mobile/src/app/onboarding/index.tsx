@@ -12,8 +12,7 @@ import usFlag from '@/assets/flags/us.png';
 import personPassport from '@/assets/onboarding/person-passport.png';
 import banner from '@/assets/onboarding/usa-banner.png';
 import { isOnboardedAtom } from '@/atoms/onboarding';
-import { Trans, TransText } from '@/components/trans';
-import { Button } from '@/components/ui/button';
+import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { withImageIcon } from '@/lib/with-image-icon';
 
@@ -31,53 +30,50 @@ export default function Onboarding() {
         <SafeAreaView edges={['left', 'bottom', 'right']} style={tw`flex-1`}>
           <Container style={tw`flex-1 items-center gap-4`}>
             <TransText
-              i18nKey="onboarding.title"
+              i18nKey='onboarding.title'
               style={tw.style('text-center', { color: theme.colors.primary })}
-              variant="displayMedium"
+              variant='displayMedium'
             />
             <TransText
-              i18nKey="onboarding.language"
+              i18nKey='onboarding.language'
               style={tw.style('text-center', { color: theme.colors.primary })}
-              variant="headlineSmall"
+              variant='headlineSmall'
             />
             <Image
               source={personPassport}
               style={tw.style('mt-auto h-56', { aspectRatio: 1 })}
             />
-            <Button
+            <TransButton
               contentStyle={tw`justify-start`}
+              i18nKey='onboarding.english'
               icon={withImageIcon(usFlag)}
               labelStyle={tw`text-2xl`}
-              mode="outlined"
+              mode='outlined'
               onPress={() => i18n.changeLanguage('en')}
               style={{
                 backgroundColor: theme.colors.surface,
               }}
-            >
-              <Trans i18nKey="onboarding.english" />
-            </Button>
-            <Button
+            />
+            <TransButton
               contentStyle={tw`justify-start`}
+              i18nKey='onboarding.spanish'
               icon={withImageIcon(mxFlag)}
               labelStyle={tw`text-2xl`}
-              mode="outlined"
+              mode='outlined'
               onPress={() => i18n.changeLanguage('es')}
               style={{
                 backgroundColor: theme.colors.surface,
               }}
-            >
-              <Trans i18nKey="onboarding.spanish" />
-            </Button>
-            <Button
+            />
+            <TransButton
+              i18nKey='next'
               labelStyle={tw`text-2xl`}
-              mode="contained"
+              mode='contained'
               onPress={() => {
                 setIsOnboarded(true);
                 router.replace('/services');
               }}
-            >
-              <Trans i18nKey="next" />
-            </Button>
+            />
           </Container>
         </SafeAreaView>
       </View>

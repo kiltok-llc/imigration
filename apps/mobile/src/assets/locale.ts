@@ -12,6 +12,8 @@ export default {
           no: 'No',
           yes: 'Yes',
         },
+        optional: ' (optional)',
+        required: ' *',
         sex: {
           female: 'Female',
           male: 'Male',
@@ -77,15 +79,16 @@ export default {
               'is-recent-arrival': {
                 'is-recent-arrival': {
                   title: 'Have you arrived in the U.S. within the last year?',
-                }
+                },
               },
               title: 'Arrival Date',
             },
             'country-of-origin': {
               'is-from-safe-country': {
                 'is-from-safe-country': {
-                  title: 'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
-                }
+                  title:
+                    'Do you come from a country that the U.S. considers “safe” where you could have applied for protection?',
+                },
               },
               title: 'Country of Origin',
             },
@@ -94,7 +97,7 @@ export default {
             'physical-presence': {
               'is-in-usa': {
                 'is-in-usa': {
-                  title: 'Are you currently in the United States?'
+                  title: 'Are you currently in the United States?',
                 },
               },
               title: 'Physical Presence in the US',
@@ -102,7 +105,8 @@ export default {
             'previous-applications': {
               'has-previous-app': {
                 'has-previous-app': {
-                  title: 'Have you ever applied for asylum in the United States before?'
+                  title:
+                    'Have you ever applied for asylum in the United States before?',
                 },
               },
               title: 'Previous Applications',
@@ -123,17 +127,20 @@ export default {
                     'social-group': 'Social Group',
                   },
                   // TODO make parentheses lower opacity/size/intensity etc
-                  title: 'Was that harm based on one of these reasons?\n(Select all that apply)'
+                  title:
+                    'Was that harm based on one of these reasons?\n(Select all that apply)',
                 },
               },
               'is-escaping-harm': {
                 'is-escaping-harm': {
-                  title: 'Did you leave your home country because you feared harm or persecution?'
+                  title:
+                    'Did you leave your home country because you feared harm or persecution?',
                 },
               },
               'is-harmed-by-gov': {
                 'is-harmed-by-gov': {
-                  title: 'Was the harm caused by your government or by people your government could not control?'
+                  title:
+                    'Was the harm caused by your government or by people your government could not control?',
                 },
               },
               title: 'Reason for Leaving',
@@ -251,6 +258,14 @@ export default {
             'personal-information': {
               'demographics-and-birth': {
                 'additional-info': {
+                  ethnicity: {
+                    label: 'Race, Ethnicity, or Tribal Group',
+                    title: 'What is your ethnicity?',
+                  },
+                  religion: {
+                    label: 'Religion',
+                    title: 'What is your religion?',
+                  },
                   title: 'Additional Information',
                 },
                 'basic-demographics': {
@@ -260,33 +275,28 @@ export default {
                   },
                   sex: {
                     title: 'What is your sex?',
-                  }
+                  },
                 },
                 'birth-location': {
                   'birth-city': {
                     label: 'City of Birth',
-                    title: 'In which city were you born?'
+                    title: 'In which city were you born?',
                   },
                   'birth-country': {
                     label: 'Country of Birth',
-                    title: 'In which country were you born?'
+                    title: 'In which country were you born?',
                   },
                 },
-                'birth-location-title': 'Birth Location',
-                dob: 'Date of Birth',
-                ethnicity: 'Race, Ethnicity, or Tribal Group',
                 nationality: {
                   'birth-nationality': {
                     label: 'Nationality at Birth',
-                    title: 'What was your nationality at birth?'
+                    title: 'What was your nationality at birth?',
                   },
                   'current-nationality': {
                     label: 'Current Nationality',
-                    title: 'What is your current nationality? (Citizenship)'
+                    title: 'What is your current nationality? (Citizenship)',
                   },
                 },
-                'nationality-title': 'Nationality',
-                religion: 'Religion',
                 title: 'Demographics and Birth',
               },
               'language-proficiency': {
@@ -305,7 +315,7 @@ export default {
               'name-and-aliases': {
                 'additional-names': {
                   'maiden-name': {
-                    label: 'Maiden Name'
+                    label: 'Maiden Name',
                   },
                   'other-names': {
                     label: 'Other Names',
@@ -315,21 +325,21 @@ export default {
                 'additional-names-title': 'Additional Names',
                 'alias-information': {
                   'alias-name': {
-                    label: 'What is or was your alias?'
+                    label: 'What is or was your alias?',
                   },
                   'has-alias': {
-                    title: 'Have you used an alias?'
+                    title: 'Have you used an alias?',
                   },
                 },
                 'basic-names': {
                   'first-name': {
-                    label: 'First Name'
+                    label: 'First Name',
                   },
                   'last-name': {
-                    label: 'Last Name'
+                    label: 'Last Name',
                   },
                   'middle-name': {
-                    label: 'Middle Name'
+                    label: 'Middle Name',
                   },
                   title: 'What is your full name?',
                 },

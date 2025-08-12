@@ -1,4 +1,4 @@
-import { ComponentProps, createContext } from 'react';
+import { ComponentProps } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
 import { Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -6,11 +6,9 @@ import tw from 'twrnc';
 
 import { Button } from '@/components/ui/button';
 
-export function Trans(
-  {
-    ...props
-  }: Omit<ComponentProps<typeof I18NTrans>, 'components'>,
-) {
+export function Trans({
+  ...props
+}: Omit<ComponentProps<typeof I18NTrans>, 'components'>) {
   // TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
   return (
     <I18NTrans
@@ -25,44 +23,50 @@ export function Trans(
   );
 }
 
-export function TransButton<TContext extends string | undefined = undefined, >(
-  {
-    context,
-    count,
-    i18nKey,
-    values,
-    ...buttonProps
-  }: Omit<ComponentProps<typeof Button>, 'children'> & {
-    context?: TContext;
-    count?: number;
-    i18nKey: string
-    values?: any;
-  },
-) {
+export function TransButton<TContext extends string | undefined = undefined>({
+  context,
+  count,
+  i18nKey,
+  values,
+  ...buttonProps
+}: Omit<ComponentProps<typeof Button>, 'children'> & {
+  context?: TContext;
+  count?: number;
+  i18nKey: string;
+  values?: any;
+}) {
   return (
-    <Button {...buttonProps} >
-      <Trans context={context} count={count} i18nKey={i18nKey} values={values} />
+    <Button {...buttonProps}>
+      <Trans
+        context={context}
+        count={count}
+        i18nKey={i18nKey}
+        values={values}
+      />
     </Button>
   );
 }
 
-export function TransText<TContext extends string | undefined = undefined, >(
-  {
-    context,
-    count,
-    i18nKey,
-    values,
-    ...textProps
-  }: Omit<ComponentProps<typeof Text>, 'children'> & {
-    context?: TContext;
-    count?: number;
-    i18nKey: string
-    values?: any;
-  },
-) {
+export function TransText<TContext extends string | undefined = undefined>({
+  context,
+  count,
+  i18nKey,
+  values,
+  ...textProps
+}: Omit<ComponentProps<typeof Text>, 'children'> & {
+  context?: TContext;
+  count?: number;
+  i18nKey: string;
+  values?: any;
+}) {
   return (
-    <Text {...textProps} >
-      <Trans context={context} count={count} i18nKey={i18nKey} values={values} />
+    <Text {...textProps}>
+      <Trans
+        context={context}
+        count={count}
+        i18nKey={i18nKey}
+        values={values}
+      />
     </Text>
   );
 }

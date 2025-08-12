@@ -1,23 +1,23 @@
-import {ComponentProps} from 'react';
+import { ComponentProps } from 'react';
 
-import {Trans} from '@/components/trans';
-import {useFormField} from '@/components/ui/form/field';
-import {FormLabel} from '@/components/ui/form/label';
-import {useQuizPageId} from '@/components/ui/quiz/screen';
-import {useQuizScreenId} from '@/hooks/use-quiz-screen-id';
-import {useServiceId} from '@/hooks/use-service-id';
-import {useStepId} from '@/hooks/use-step-id';
-import {toI18nKey} from '@/lib/utils';
+import { Trans } from '@/components/trans';
+import { useFormField } from '@/components/ui/form/field';
+import { FormLabel } from '@/components/ui/form/label';
+import { useQuizPageId } from '@/components/ui/quiz/screen';
+import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
+import { useServiceId } from '@/hooks/use-service-id';
+import { useStepId } from '@/hooks/use-step-id';
+import { toI18nKey } from '@/lib/utils';
 
 export function QuizFieldTitle({
-                                 ...props
-                               }: Omit<ComponentProps<typeof FormLabel>, 'children'>) {
+  ...props
+}: Omit<ComponentProps<typeof FormLabel>, 'children'>) {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
   const pageId = useQuizPageId();
   const {
-    field: {name},
+    field: { name },
   } = useFormField();
 
   return (
@@ -29,7 +29,9 @@ export function QuizFieldTitle({
   );
 }
 
-export function QuizPageTitle({...props}: Omit<ComponentProps<typeof FormLabel>, 'children'>) {
+export function QuizPageTitle({
+  ...props
+}: Omit<ComponentProps<typeof FormLabel>, 'children'>) {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
