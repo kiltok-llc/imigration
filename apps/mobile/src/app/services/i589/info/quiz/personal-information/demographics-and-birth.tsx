@@ -8,7 +8,7 @@ import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
 import { SexEnum } from '@/lib/schema/common';
-import { nullableInput } from '@/lib/utils';
+import { required } from '@/lib/utils';
 
 export default function DemographicsAndBirth() {
   return (
@@ -18,13 +18,11 @@ export default function DemographicsAndBirth() {
           dob: null,
           sex: null,
         }}
-        onSubmit={() => {
-          return true;
-        }}
+        onSubmit={() => true}
         pageId='basic-demographics'
         schema={z.object({
-          dob: nullableInput(z.date()),
-          sex: nullableInput(SexEnum),
+          dob: required(z.date().nullable()),
+          sex: required(SexEnum.nullable()),
         })}
       >
         {({ control }) => (
@@ -51,9 +49,7 @@ export default function DemographicsAndBirth() {
           birthCity: '',
           birthCountry: '',
         }}
-        onSubmit={() => {
-          return true;
-        }}
+        onSubmit={() => true}
         pageId='birth-location'
         schema={z.object({
           birthCity: z.string().nonempty(),
@@ -84,9 +80,7 @@ export default function DemographicsAndBirth() {
           birthNationality: '',
           currentNationality: '',
         }}
-        onSubmit={() => {
-          return true;
-        }}
+        onSubmit={() => true}
         pageId='nationality'
         schema={z.object({
           birthNationality: z.string().nonempty(),
@@ -117,9 +111,7 @@ export default function DemographicsAndBirth() {
           ethnicity: '',
           religion: '',
         }}
-        onSubmit={() => {
-          return true;
-        }}
+        onSubmit={() => true}
         pageId='additional-info'
         schema={z.object({
           ethnicity: z.string(),

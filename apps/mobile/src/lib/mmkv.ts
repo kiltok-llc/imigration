@@ -6,7 +6,9 @@ export const defaultStorage = new MMKV({ id: 'mmkv.default' });
 
 export const devStorage = new MMKV({ id: 'mmkv.dev' });
 
-export const createMMKVStorage = <Value>(storage: MMKV): SyncStorage<Value> => ({
+export const createMMKVStorage = <Value>(
+  storage: MMKV
+): SyncStorage<Value> => ({
   getItem: (key, initialValue) => {
     const str = storage.getString(key);
     // console.debug(`storage.getItem(${key}) = ${str}`);
@@ -27,15 +29,21 @@ export const createMMKVStorage = <Value>(storage: MMKV): SyncStorage<Value> => (
   },
   subscribe(key, callback) {
     const listener = storage.addOnValueChangedListener((changedKey) => {
-      if (changedKey === key) {
-        const str = storage.getString(key);
-        // console.debug(`storage.subscribe(${key}) = ${str}`);
-        try {
-          const value = superjson.parse<Value>(str ?? '');
-          callback(value);
-        } catch (error) {
-          console.error(`Error parsing mmkv value with key: ${key}`, error);
-        }
+      if (changedKey !== key) {
+        return;
+      }
+
+      const str = storage.getString(key);
+      // console.debug(`storage.subscribe(${key}) = ${str}`);
+      try {
+        const value = superjson.parse<Value>(str ?? '');
+        callback(value);
+      } catch (error) {
+        console.warn(
+          `Error parsing mmkv value in subscription with key: ${key}`,
+          error,
+          str
+        );
       }
     });
     return () => listener.remove();

@@ -1,96 +1,92 @@
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { RadioButton, TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import { useSetAtom } from 'jotai';
+import z from 'zod/v4';
 
-import { FadeView } from '@/components/fade-view';
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
-import { FormBooleanInput } from '@/components/ui/form/radio';
+import { FormBlock } from '@/components/ui/form/block';
+import { ConditionalFormBlock, FormField } from '@/components/ui/form/field';
+import { FormBooleanInput, FormRadioGroup } from '@/components/ui/form/radio';
+import { QuizRadioItem } from '@/components/ui/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { userDataFamily } from '@/lib/data/user';
+import { MaritalStatusEnum } from '@/lib/schema/common';
+import { required } from '@/lib/utils';
 
 export default function MaritalAndChildren() {
-  const { t } = useTranslation();
-  const [maritalStatus, setMaritalStatus] = useAtom(
-    answerFamily('maritalStatus')
-  );
-  const [hasChildren, setHasChildren] = useAtom(answerFamily('hasChildren'));
-  const [numberOfChildren, setNumberOfChildren] = useAtom(
-    answerFamily('numberOfChildren')
-  );
-
-  const maritalStatusOptions = ['Single', 'Married', 'Divorced', 'Widowed'];
+  const setMaritalStatus = useSetAtom(userDataFamily('maritalStatus'));
+  const setNumberOfChildren = useSetAtom(userDataFamily('numberOfChildren'));
 
   return (
     <QuizScreen>
-      {/* Page 1: Marital Status */}
       <QuizPage
-        onSubmit={() => {
-          if (maritalStatus === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
+        defaultValues={{
+          maritalStatus: null,
+        }}
+        onSubmit={({ maritalStatus }) => {
+          setMaritalStatus(maritalStatus);
+
           return true;
         }}
+        pageId='marital-status'
+        schema={z.object({
+          maritalStatus: required(MaritalStatusEnum.nullable()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.marital-and-children.title' />
-        </FormLabel>
-
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.marital-and-children.marital_status' />
-        </FormLabel>
-        <RadioButton.Group
-          onValueChange={(value) => setMaritalStatus(value as any)}
-          value={maritalStatus || ''}
-        >
-          {maritalStatusOptions.map((option) => (
-            <RadioButton.Item
-              key={option}
-              label={t(
-                `services.i589.info.family-status.marital-and-children.marital_status_options.${option.toLowerCase()}`
-              )}
-              value={option}
-            />
-          ))}
-        </RadioButton.Group>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='maritalStatus'>
+                <QuizFieldTitle />
+                <FormRadioGroup>
+                  {MaritalStatusEnum.options.map((status) => (
+                    <QuizRadioItem key={status} value={status} />
+                  ))}
+                </FormRadioGroup>
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: Children Information */}
       <QuizPage
-        onSubmit={() => {
-          if (hasChildren === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
-          if (hasChildren && !numberOfChildren) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
+        defaultValues={{
+          hasChildren: null,
+        }}
+        onSubmit={({ numberOfChildren }) => {
+          setNumberOfChildren(numberOfChildren ?? 0);
 
           return true;
         }}
+        pageId='children-information'
+        schema={z.object({
+          hasChildren: required(z.boolean().nullable()),
+          numberOfChildren: z
+            .string()
+            .regex(/^\d+$/)
+            .transform(Number)
+            .optional(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.marital-and-children.children_title' />
-        </FormLabel>
+        {({ control, watch }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='hasChildren'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.marital-and-children.has_children' />
-        </FormLabel>
-        <FormBooleanInput onChange={setHasChildren} value={hasChildren} />
-
-        <FadeView visible={hasChildren === true}>
-          <TextInput
-            keyboardType='numeric'
-            label={t(
-              'services.i589.info.family-status.marital-and-children.number_of_children'
-            )}
-            onChangeText={setNumberOfChildren}
-            value={numberOfChildren}
-          />
-        </FadeView>
+              <ConditionalFormBlock
+                active={!!watch('hasChildren')}
+                activeValue={'0'}
+                control={control}
+                name='numberOfChildren'
+              >
+                <QuizFieldTitle />
+                <QuizTextInput inputMode='numeric' />
+              </ConditionalFormBlock>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

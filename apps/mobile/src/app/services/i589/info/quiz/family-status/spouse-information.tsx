@@ -1,126 +1,88 @@
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormField } from '@/components/ui/form/field';
+import { QuizDateInput } from '@/components/ui/quiz/date';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizPageTitle } from '@/components/ui/quiz/title';
+import { required } from '@/lib/utils';
 
 export default function SpouseInformation() {
-  const { t } = useTranslation();
-  const [maritalStatus] = useAtom(answerFamily('maritalStatus'));
-  const [spouseMarriageDate, setSpouseMarriageDate] = useAtom(
-    answerFamily('spouseMarriageDate')
-  );
-  const [spouseCityMarriage, setSpouseCityMarriage] = useAtom(
-    answerFamily('spouseCityMarriage')
-  );
-  const [spouseCountryMarriage, setSpouseCountryMarriage] = useAtom(
-    answerFamily('spouseCountryMarriage')
-  );
-  const [spouseLastName, setSpouseLastName] = useAtom(
-    answerFamily('spouseLastName')
-  );
-  const [spouseFirstName, setSpouseFirstName] = useAtom(
-    answerFamily('spouseFirstName')
-  );
-  const [spouseMiddleName, setSpouseMiddleName] = useAtom(
-    answerFamily('spouseMiddleName')
-  );
-
-  // Skip this page if not married
-  if (maritalStatus !== 'Married') {
-    return null;
-  }
-
   return (
     <QuizScreen>
-      {/* Page 1: Marriage Information */}
       <QuizPage
-        onSubmit={() => {
-          if (
-            !spouseMarriageDate ||
-            !spouseCityMarriage ||
-            !spouseCountryMarriage
-          ) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          city: '',
+          country: '',
+          date: null,
         }}
+        onSubmit={() => true}
+        pageId='marriage-information'
+        schema={z.object({
+          city: z.string().nonempty(),
+          country: z.string().nonempty(),
+          date: required(z.date().nullable()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.spouse-information.title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.spouse-information.marriage_info_title' />
-        </FormLabel>
+            <FormBlock>
+              <FormField control={control} name='date'>
+                <QuizDateInput />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse_marriage_date'
-          )}
-          onChangeText={setSpouseMarriageDate}
-          placeholder='MM/DD/YYYY'
-          value={spouseMarriageDate}
-        />
+              <FormField control={control} name='city'>
+                <QuizTextInput />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse_city_marriage'
-          )}
-          onChangeText={setSpouseCityMarriage}
-          value={spouseCityMarriage}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse_country_marriage'
-          )}
-          onChangeText={setSpouseCountryMarriage}
-          value={spouseCountryMarriage}
-        />
+              <FormField control={control} name='country'>
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: Spouse Name */}
       <QuizPage
-        onSubmit={() => {
-          if (!spouseLastName || !spouseFirstName) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          firstName: '',
+          lastName: '',
+          middleName: '',
         }}
+        onSubmit={() => true}
+        pageId='spouse-name'
+        schema={z.object({
+          firstName: z.string().nonempty(),
+          lastName: z.string().nonempty(),
+          middleName: z.string(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.family-status.spouse-information.spouse-name-title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse-last-name'
-          )}
-          onChangeText={setSpouseLastName}
-          value={spouseLastName}
-        />
+            <FormBlock>
+              <FormField control={control} name='firstName'>
+                <QuizTextInput />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse-first-name'
-          )}
-          onChangeText={setSpouseFirstName}
-          value={spouseFirstName}
-        />
+              <FormField control={control} name='middleName'>
+                <QuizTextInput optional />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.family-status.spouse-information.spouse-middle-name'
-          )}
-          onChangeText={setSpouseMiddleName}
-          value={spouseMiddleName}
-        />
+              <FormField control={control} name='lastName'>
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

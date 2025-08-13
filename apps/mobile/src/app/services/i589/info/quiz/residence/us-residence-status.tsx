@@ -1,52 +1,35 @@
-import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { FadeView } from '@/components/fade-view';
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { required } from '@/lib/utils';
 
 export default function USResidenceStatus() {
-  const router = useRouter();
-  const { t } = useTranslation();
-  const [livesInUS, setLivesInUS] = useAtom(answerFamily('livesInUS'));
-
   return (
     <QuizScreen>
       <QuizPage
-        onSubmit={() => {
-          if (livesInUS === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-
-          if (!livesInUS) {
-            // If the user doesn't live in the US, they can't continue
-            router.replace('../ineligible');
-            return false;
-          }
-
-          return true;
+        defaultValues={{
+          livesInUS: null,
         }}
+        onSubmit={() => true}
+        pageId='us-residence-status'
+        schema={z.object({
+          livesInUS: required(z.boolean().nullable()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.residence.us-residence-status.title' />
-        </FormLabel>
-
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.residence.us-residence-status.lives_in_us' />
-        </FormLabel>
-        <FormBooleanInput onChange={setLivesInUS} value={livesInUS} />
-
-        <FadeView visible={livesInUS === false}>
-          <Text>
-            <Trans i18nKey='services.i589.info.residence.us-residence-status.us_residence_requirement' />
-          </Text>
-        </FadeView>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='livesInUS'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

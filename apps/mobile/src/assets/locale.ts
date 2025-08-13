@@ -8,11 +8,22 @@ export default {
         title: 'An error occurred',
       },
       form: {
+        address: {
+          city: 'City',
+          state: 'State',
+          street: 'Street address',
+          unit: 'Apt, suite, unit, etc.',
+          'zip-code': 'ZIP Code',
+        },
         boolean: {
           no: 'No',
           yes: 'Yes',
         },
         optional: ' (optional)',
+        range: {
+          end: 'End Date',
+          start: 'Start Date',
+        },
         required: ' *',
         sex: {
           female: 'Female',
@@ -195,63 +206,133 @@ export default {
               'Enter your personal details such as name, date of birth, and nationality.',
             education: {
               'school-information': {
-                'attendance-period-title': 'Attendance Period',
-                'location-title': 'School Location',
-                'school-city': 'City',
-                'school-country': 'Country',
-                'school-from': 'From when you attended (mm/yyyy)',
-                'school-level': 'Type (Level) of School',
-                'school-level-options': {
-                  'elementary-or-primary': 'Elementary or Primary',
-                  secondary: 'Secondary',
-                  university: 'University',
-                  'vocational-technical': 'Vocational/Technical',
+                'attendance-period': {
+                  end: {
+                    label: 'End Date',
+                  },
+                  start: {
+                    label: 'Start Date',
+                  },
+                  title: 'When did you attend this school?',
                 },
-                'school-name': 'Name of School/College',
-                'school-state': 'State',
-                'school-to': 'To when you attended (mm/yyyy)',
+                'basic-school-info': {
+                  'school-level': {
+                    options: {
+                      primary: 'Elementary or Primary',
+                      secondary: 'Secondary',
+                      university: 'University',
+                      vocational: 'Vocational/Technical',
+                    },
+                    title:
+                      'What is the highest level of education you completed?',
+                  },
+                  'school-name': {
+                    label: 'Name of School/College',
+                    title:
+                      'What is the name of last school or college you attended?',
+                  },
+                },
+                'school-location': {
+                  'school-city': {
+                    title: 'City',
+                  },
+                  'school-country': {
+                    title: 'Country',
+                  },
+                  'school-state': {
+                    title: 'State',
+                  },
+                  title: 'School Location',
+                },
                 title: 'School Information',
               },
             },
             employment: {
               'employment-history': {
-                'employer-address': 'Workplace Street Address',
-                'employer-city': 'City',
-                'employer-country': 'Country',
-                'employer-location-title': 'Employer Location',
-                'employer-name': 'Employer / Company Name',
-                'employer-state': 'State',
-                'employment-period-title': 'Employment Period',
-                occupation: 'What was/is your occupation?',
+                'basic-employment-info': {
+                  'employer-name': {
+                    label: 'Employer or Company Name',
+                    title:
+                      'What is the name of your current or most recent employer?',
+                  },
+                  occupation: {
+                    label: 'Occupation',
+                    title: 'What was/is your occupation?',
+                  },
+                },
+                'employer-location': {
+                  'employer-address': {
+                    title: 'Workplace Street Address',
+                  },
+                  'employer-city': {
+                    title: 'City',
+                  },
+                  'employer-country': {
+                    title: 'Country',
+                  },
+                  'employer-state': {
+                    title: 'State',
+                  },
+                  title: 'Employer Location',
+                },
+                'employment-period': {
+                  title: 'During what period did you work at your employer?',
+                },
                 title: 'Employment History',
-                'work-from': 'From when you worked there (mm/yyyy)',
-                'work-to': 'To when you worked there (mm/yyyy)',
               },
             },
             'family-status': {
               'marital-and-children': {
-                'children-title': 'Children Information',
-                'has-children':
-                  'Do you have children (regardless of age, location, or marital status)?',
-                'marital-status': 'What is your marital status?',
-                'marital-status-options': {
-                  divorced: 'Divorced',
-                  married: 'Married',
-                  single: 'Single',
-                  widowed: 'Widowed',
+                'children-information': {
+                  'has-children': {
+                    title:
+                      'Do you have children (regardless of age, location, or marital status)?',
+                  },
+                  'number-of-children': {
+                    label: 'Number of Children',
+                    title: 'How many children do you have?',
+                  },
+                  title: 'Children Information',
                 },
-                'number-of-children': 'How many children do you have?',
-                title: 'Marital Status and Children',
+                'marital-status': {
+                  'marital-status': {
+                    options: {
+                      divorced: 'Divorced',
+                      married: 'Married',
+                      single: 'Single',
+                      widowed: 'Widowed',
+                    },
+                    title: 'What is your marital status?',
+                  },
+                },
+                title: 'Family Status',
               },
               'spouse-information': {
-                'marriage-info-title': 'Marriage Information',
-                'spouse-city-marriage': 'City Where Married',
-                'spouse-country-marriage': 'Country Where Married',
-                'spouse-first-name': "Spouse's First Name",
-                'spouse-last-name': "Spouse's Full Last Name",
-                'spouse-marriage-date': 'Marriage Date',
-                'spouse-middle-name': "Spouse's Middle Name",
-                'spouse-name-title': 'Spouse Name',
+                'marriage-information': {
+                  city: {
+                    label: 'City Where Married',
+                  },
+                  country: {
+                    label: 'Country Where Married',
+                  },
+                  date: {
+                    label: 'Marriage Date',
+                  },
+                  title:
+                    'Please provide the following information about your current or most recent marriage.',
+                },
+                'spouse-name': {
+                  'first-name': {
+                    label: 'First Name',
+                  },
+                  'last-name': {
+                    label: 'Last Name',
+                  },
+                  'middle-name': {
+                    label: 'Middle Name',
+                  },
+                  title: "Please provide your spouse's name.",
+                },
                 title: 'Spouse Information',
               },
             },
@@ -300,16 +381,34 @@ export default {
                 title: 'Demographics and Birth',
               },
               'language-proficiency': {
-                'english-proficiency-title': 'English Proficiency',
-                'native-language':
-                  'Native Language (include dialect if applicable)',
-                'other-languages':
-                  'What other languages do you speak fluently?',
-                'read-write-english': 'Do you read and write English fluently?',
-                'read-write-spanish': 'Do you read and write Spanish fluently?',
-                'spanish-other-languages-title': 'Spanish and Other Languages',
-                'speak-english': 'Do you speak English fluently?',
-                'speak-spanish': 'Do you speak Spanish fluently?',
+                'english-proficiency': {
+                  'read-write-english': {
+                    title: 'Do you read and write English?',
+                  },
+                  'speak-english': {
+                    title: 'Do you speak English fluently?',
+                  },
+                },
+                'native-language': {
+                  'native-language': {
+                    label: 'Native Language',
+                    title: 'What is your native language?',
+                  },
+                },
+                'other-languages': {
+                  'other-languages': {
+                    label: 'Other Languages',
+                    title: 'Which other languages do you speak fluently?',
+                  },
+                },
+                'spanish-proficiency': {
+                  'read-write-spanish': {
+                    title: 'Do you read and write Spanish?',
+                  },
+                  'speak-spanish': {
+                    title: 'Do you speak Spanish fluently?',
+                  },
+                },
                 title: 'Language Proficiency',
               },
               'name-and-aliases': {
@@ -348,20 +447,20 @@ export default {
             },
             residence: {
               'current-address': {
-                'apartment-number': 'Unit Number',
-                'apartment-unit': 'Is this a Department/Apartment or Unit?',
-                city: 'City',
-                'location-title': 'Location',
-                state: 'State',
-                'street-address': 'Street Number and Name',
+                address: {
+                  title: 'Current Address',
+                },
                 title: 'Current Address',
-                'zip-code': 'ZIP Code',
               },
               'us-residence-status': {
-                'lives-in-us': 'Do you currently live in the United States?',
                 title: 'US Residence Status',
-                'us-residence-requirement':
-                  'You must be living in the United States to submit this form.',
+                'us-residence-status': {
+                  'lives-in-us': {
+                    title: 'Do you currently live in the United States?',
+                  },
+                  'us-residence-requirement':
+                    'You must be living in the United States to submit this form.',
+                },
               },
             },
             screenTitle: 'Personal Information',

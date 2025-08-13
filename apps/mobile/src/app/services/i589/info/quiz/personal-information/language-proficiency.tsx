@@ -1,107 +1,120 @@
-import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { FadeView } from '@/components/fade-view';
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { required } from '@/lib/utils';
 
 export default function LanguageProficiency() {
-  const { t } = useTranslation();
-
   return (
     <QuizScreen>
-      {/* Page 1: Native Language */}
       <QuizPage
-        onSubmit={() => {
-          if (!nativeLanguage) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          nativeLanguage: '',
         }}
+        onSubmit={() => true}
+        pageId='native-language'
+        schema={z.object({
+          nativeLanguage: z.string().nonempty(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.language-proficiency.title' />
-        </FormLabel>
-
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.language-proficiency.native_language'
-          )}
-          onChangeText={setNativeLanguage}
-          value={nativeLanguage}
-        />
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='nativeLanguage'>
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: English Proficiency */}
       <QuizPage
-        onSubmit={() => {
-          if (speakEnglish === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          readWriteEnglish: null,
+          speakEnglish: null,
         }}
+        onSubmit={() => true}
+        pageId='english-proficiency'
+        schema={z.object({
+          readWriteEnglish: required(z.boolean().nullable()),
+          speakEnglish: required(z.boolean().nullable()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.language-proficiency.english_proficiency_title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='speakEnglish'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.language-proficiency.speak_english' />
-        </FormLabel>
-        <FormBooleanInput onChange={setSpeakEnglish} value={speakEnglish} />
-
-        <FadeView visible={speakEnglish === true}>
-          <FormLabel>
-            <Trans i18nKey='services.i589.info.personal-information.language-proficiency.read_write_english' />
-          </FormLabel>
-          <FormBooleanInput
-            onChange={setReadWriteEnglish}
-            value={readWriteEnglish}
-          />
-        </FadeView>
+            <FormBlock>
+              <FormField control={control} name='readWriteEnglish'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 3: Spanish and Other Languages */}
       <QuizPage
-        onSubmit={() => {
-          if (speakSpanish === undefined) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          readWriteSpanish: null,
+          speakSpanish: null,
         }}
+        onSubmit={() => true}
+        pageId='spanish-proficiency'
+        schema={z.object({
+          readWriteSpanish: required(z.boolean().nullable()),
+          speakSpanish: required(z.boolean().nullable()),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.language-proficiency.spanish_other_languages_title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='speakSpanish'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
 
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.personal-information.language-proficiency.speak_spanish' />
-        </FormLabel>
-        <FormBooleanInput onChange={setSpeakSpanish} value={speakSpanish} />
+            <FormBlock>
+              <FormField control={control} name='readWriteSpanish'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
+      </QuizPage>
 
-        <FadeView visible={speakSpanish === true}>
-          <FormLabel>
-            <Trans i18nKey='services.i589.info.personal-information.language-proficiency.read_write_spanish' />
-          </FormLabel>
-          <FormBooleanInput
-            onChange={setReadWriteSpanish}
-            value={readWriteSpanish}
-          />
-        </FadeView>
-
-        <TextInput
-          label={t(
-            'services.i589.info.personal-information.language-proficiency.other_languages'
-          )}
-          onChangeText={setOtherLanguages}
-          value={otherLanguages}
-        />
+      <QuizPage
+        defaultValues={{
+          otherLanguages: '',
+        }}
+        onSubmit={() => true}
+        pageId='other-languages'
+        schema={z.object({
+          otherLanguages: z.string(),
+        })}
+      >
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='otherLanguages'>
+                <QuizFieldTitle />
+                <QuizTextInput optional />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

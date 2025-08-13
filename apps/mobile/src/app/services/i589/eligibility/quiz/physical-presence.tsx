@@ -6,7 +6,7 @@ import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
-import { nullableInput } from '@/lib/utils';
+import { required } from '@/lib/utils';
 
 export default function PhysicalPresence() {
   const router = useRouter();
@@ -25,14 +25,14 @@ export default function PhysicalPresence() {
 
           return true;
         }}
-        pageId="is-in-usa"
+        pageId='is-in-usa'
         schema={z.object({
-          isInUsa: nullableInput(z.boolean()),
+          isInUsa: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name="isInUsa">
+            <FormField control={control} name='isInUsa'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>

@@ -1,142 +1,97 @@
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { RadioButton, TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
+import {
+  AddressSchema,
+  DEFAULT_ADDRESS,
+  FormAddressInput,
+} from '@/components/ui/form/address';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormField } from '@/components/ui/form/field';
+import { FormRadioGroup } from '@/components/ui/form/radio';
+import {
+  DEFAULT_RANGE,
+  FormRangeInput,
+  RangeSchemaWithOptionalEnd,
+} from '@/components/ui/form/range';
+import { QuizRadioItem } from '@/components/ui/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/ui/quiz/title';
+import { SchoolLevelEnum } from '@/lib/schema/common';
+import { required } from '@/lib/utils';
 
 export default function SchoolInformation() {
-  const { t } = useTranslation();
-  const [schoolName, setSchoolName] = useAtom(answerFamily('schoolName'));
-  const [schoolLevel, setSchoolLevel] = useAtom(answerFamily('schoolLevel'));
-  const [schoolCity, setSchoolCity] = useAtom(answerFamily('schoolCity'));
-  const [schoolState, setSchoolState] = useAtom(answerFamily('schoolState'));
-  const [schoolCountry, setSchoolCountry] = useAtom(
-    answerFamily('schoolCountry')
-  );
-  const [schoolFrom, setSchoolFrom] = useAtom(answerFamily('schoolFrom'));
-  const [schoolTo, setSchoolTo] = useAtom(answerFamily('schoolTo'));
-
-  const schoolLevelOptions = [
-    'Elementary or Primary',
-    'Secondary',
-    'Vocational/Technical',
-    'University',
-  ];
-
   return (
     <QuizScreen>
-      {/* Page 1: Basic School Information */}
       <QuizPage
-        onSubmit={() => {
-          if (!schoolName || !schoolLevel) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          schoolLevel: null,
+          schoolName: '',
         }}
+        onSubmit={() => true}
+        pageId='basic-school-info'
+        schema={z.object({
+          schoolLevel: required(SchoolLevelEnum.nullable()),
+          schoolName: z.string().nonempty(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.education.school-information.title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='schoolName'>
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.education.school-information.school_name'
-          )}
-          onChangeText={setSchoolName}
-          value={schoolName}
-        />
-
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.education.school-information.school_level' />
-        </FormLabel>
-        <RadioButton.Group
-          onValueChange={(value) => setSchoolLevel(value as any)}
-          value={schoolLevel || ''}
-        >
-          {schoolLevelOptions.map((option) => (
-            <RadioButton.Item
-              key={option}
-              label={t(
-                `services.i589.info.education.school-information.school_level_options.${option.toLowerCase().replaceAll(' ', '_')}`
-              )}
-              value={option}
-            />
-          ))}
-        </RadioButton.Group>
+              <FormField control={control} name='schoolLevel'>
+                <QuizFieldTitle />
+                <FormRadioGroup>
+                  {SchoolLevelEnum.options.map((level) => (
+                    <QuizRadioItem key={level} value={level} />
+                  ))}
+                </FormRadioGroup>
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: School Location */}
       <QuizPage
-        onSubmit={() => {
-          if (!schoolCity || !schoolCountry) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
-        }}
+        defaultValues={DEFAULT_ADDRESS}
+        onSubmit={() => true}
+        pageId='school-location'
+        schema={AddressSchema}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.education.school-information.location_title' />
-        </FormLabel>
+        {({ lens }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <TextInput
-          label={t(
-            'services.i589.info.education.school-information.school_city'
-          )}
-          onChangeText={setSchoolCity}
-          value={schoolCity}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.education.school-information.school_state'
-          )}
-          onChangeText={setSchoolState}
-          value={schoolState}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.education.school-information.school_country'
-          )}
-          onChangeText={setSchoolCountry}
-          value={schoolCountry}
-        />
+            <FormBlock>
+              <FormAddressInput lens={lens} />
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 3: Attendance Period */}
       <QuizPage
-        onSubmit={() => {
-          if (!schoolFrom || !schoolTo) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
-        }}
+        defaultValues={DEFAULT_RANGE}
+        onSubmit={() => true}
+        pageId='attendance-period'
+        schema={RangeSchemaWithOptionalEnd}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.education.school-information.attendance_period_title' />
-        </FormLabel>
+        {({ lens }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <TextInput
-          label={t(
-            'services.i589.info.education.school-information.school_from'
-          )}
-          onChangeText={setSchoolFrom}
-          placeholder='MM/YYYY'
-          value={schoolFrom}
-        />
-
-        <TextInput
-          label={t('services.i589.info.education.school-information.school_to')}
-          onChangeText={setSchoolTo}
-          placeholder='MM/YYYY'
-          value={schoolTo}
-        />
+            <FormBlock>
+              <FormRangeInput lens={lens} optionalEnd />
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

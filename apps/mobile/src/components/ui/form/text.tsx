@@ -7,11 +7,13 @@ import { Trans } from '@/components/trans';
 import { useFormField } from '@/components/ui/form/field';
 
 export function FormTextInput({
+  helperText = true,
   label,
   optional,
   required,
   ...props
 }: ComponentProps<typeof TextInput> & {
+  helperText?: boolean;
   optional?: boolean;
   required?: boolean;
 }) {
@@ -51,9 +53,11 @@ export function FormTextInput({
         value={value}
         {...props}
       />
-      <HelperText type='error' visible={!!error}>
-        {error?.message}
-      </HelperText>
+      {helperText && (
+        <HelperText type='error' visible={!!error}>
+          {error?.message}
+        </HelperText>
+      )}
     </View>
   );
 }

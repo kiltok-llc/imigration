@@ -5,14 +5,14 @@ import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
 import { FormCheckboxGroup } from '@/components/ui/form/checkbox';
-import { ConditionalFormField, FormField } from '@/components/ui/form/field';
+import { ConditionalFormBlock, FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizCheckboxItem } from '@/components/ui/quiz/checkbox';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
 import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
-import { nullableInput } from '@/lib/utils';
+import { required } from '@/lib/utils';
 
 export default function ReasonForLeaving() {
   const router = useRouter();
@@ -31,14 +31,14 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId="is-escaping-harm"
+        pageId='is-escaping-harm'
         schema={z.object({
-          isEscapingHarm: nullableInput(z.boolean()),
+          isEscapingHarm: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <View>
-            <FormField control={control} name="isEscapingHarm">
+            <FormField control={control} name='isEscapingHarm'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>
@@ -59,7 +59,7 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId="harm-reasons"
+        pageId='harm-reasons'
         schema={z.object({
           customHarmReason: z.string().nonempty().nullable(),
           harmReasons: z.array(HarmReasonEnum).nonempty(),
@@ -68,7 +68,7 @@ export default function ReasonForLeaving() {
         {({ control, watch }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="harmReasons">
+              <FormField control={control} name='harmReasons'>
                 <QuizFieldTitle />
                 <FormCheckboxGroup>
                   {HarmReasonEnum.options.map((reason) => (
@@ -83,14 +83,14 @@ export default function ReasonForLeaving() {
             </FormBlock>
 
             <FormBlock>
-              <ConditionalFormField
+              <ConditionalFormBlock
                 active={watch('harmReasons').includes('other')}
-                activeValue=""
+                activeValue=''
                 control={control}
-                name="customHarmReason"
+                name='customHarmReason'
               >
                 <QuizTextInput />
-              </ConditionalFormField>
+              </ConditionalFormBlock>
             </FormBlock>
           </>
         )}
@@ -108,14 +108,14 @@ export default function ReasonForLeaving() {
 
           return true;
         }}
-        pageId="is-harmed-by-gov"
+        pageId='is-harmed-by-gov'
         schema={z.object({
-          isHarmedByGov: nullableInput(z.boolean()),
+          isHarmedByGov: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name="isHarmedByGov">
+            <FormField control={control} name='isHarmedByGov'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>

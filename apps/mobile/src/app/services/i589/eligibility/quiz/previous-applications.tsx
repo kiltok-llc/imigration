@@ -7,7 +7,7 @@ import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
-import { nullableInput } from '@/lib/utils';
+import { required } from '@/lib/utils';
 
 export default function PreviousApplications() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function PreviousApplications() {
         }}
         pageId='has-previous-app'
         schema={z.object({
-          hasPreviousApp: nullableInput(z.boolean()),
+          hasPreviousApp: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (

@@ -6,7 +6,7 @@ import { FormField } from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizFieldTitle } from '@/components/ui/quiz/title';
-import { nullableInput } from '@/lib/utils';
+import { required } from '@/lib/utils';
 
 export default function ArrivalDate() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function ArrivalDate() {
         }}
         pageId='is-recent-arrival'
         schema={z.object({
-          isRecentArrival: nullableInput(z.boolean()),
+          isRecentArrival: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (

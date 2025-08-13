@@ -33,7 +33,7 @@ export function FormDateInput({
   return (
     <View>
       <DatePicker
-        date={value ?? new Date()}
+        date={value instanceof Date ? value : new Date()}
         modal
         mode='date'
         onCancel={() => {

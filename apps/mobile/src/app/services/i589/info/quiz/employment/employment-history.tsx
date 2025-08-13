@@ -1,138 +1,89 @@
-import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native-paper';
-import { toast } from 'sonner-native';
+import z from 'zod/v4';
 
-import { Trans } from '@/components/trans';
-import { FormLabel } from '@/components/ui/form/label';
+import {
+  AddressSchema,
+  DEFAULT_ADDRESS,
+  FormAddressInput,
+} from '@/components/ui/form/address';
+import { FormBlock } from '@/components/ui/form/block';
+import { FormField } from '@/components/ui/form/field';
+import {
+  DEFAULT_RANGE,
+  FormRangeInput,
+  RangeSchemaWithOptionalEnd,
+} from '@/components/ui/form/range';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
+import { QuizTextInput } from '@/components/ui/quiz/text';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/ui/quiz/title';
 
 export default function EmploymentHistory() {
-  const { t } = useTranslation();
-  const [employerName, setEmployerName] = useAtom(answerFamily('employerName'));
-  const [employerAddress, setEmployerAddress] = useAtom(
-    answerFamily('employerAddress')
-  );
-  const [employerCity, setEmployerCity] = useAtom(answerFamily('employerCity'));
-  const [employerState, setEmployerState] = useAtom(
-    answerFamily('employerState')
-  );
-  const [employerCountry, setEmployerCountry] = useAtom(
-    answerFamily('employerCountry')
-  );
-  const [occupation, setOccupation] = useAtom(answerFamily('occupation'));
-  const [workFrom, setWorkFrom] = useAtom(answerFamily('workFrom'));
-  const [workTo, setWorkTo] = useAtom(answerFamily('workTo'));
-
   return (
     <QuizScreen>
-      {/* Page 1: Basic Employment Information */}
       <QuizPage
-        onSubmit={() => {
-          if (!employerName || !occupation) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
+        defaultValues={{
+          employerName: '',
+          occupation: '',
         }}
+        onSubmit={() => true}
+        pageId='basic-employment-info'
+        schema={z.object({
+          employerName: z.string().nonempty(),
+          occupation: z.string().nonempty(),
+        })}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.employment.employment-history.title' />
-        </FormLabel>
+        {({ control }) => (
+          <>
+            <FormBlock>
+              <FormField control={control} name='employerName'>
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
 
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.employer_name'
-          )}
-          onChangeText={setEmployerName}
-          value={employerName}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.occupation'
-          )}
-          onChangeText={setOccupation}
-          value={occupation}
-        />
+              <FormField control={control} name='occupation'>
+                <QuizFieldTitle />
+                <QuizTextInput />
+              </FormField>
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 2: Employer Location */}
       <QuizPage
-        onSubmit={() => {
-          if (!employerAddress || !employerCity || !employerCountry) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
-        }}
+        defaultValues={DEFAULT_ADDRESS}
+        onSubmit={() => true}
+        pageId='employer-location'
+        schema={AddressSchema}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.employment.employment-history.employer_location_title' />
-        </FormLabel>
+        {({ lens }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.employer_address'
-          )}
-          onChangeText={setEmployerAddress}
-          value={employerAddress}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.employer_city'
-          )}
-          onChangeText={setEmployerCity}
-          value={employerCity}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.employer_state'
-          )}
-          onChangeText={setEmployerState}
-          value={employerState}
-        />
-
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.employer_country'
-          )}
-          onChangeText={setEmployerCountry}
-          value={employerCountry}
-        />
+            <FormBlock>
+              <FormAddressInput lens={lens} />
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
 
-      {/* Page 3: Employment Period */}
       <QuizPage
-        onSubmit={() => {
-          if (!workFrom || !workTo) {
-            toast.error(t('quiz.missing'));
-            return false;
-          }
-          return true;
-        }}
+        defaultValues={DEFAULT_RANGE}
+        onSubmit={() => true}
+        pageId='employment-period'
+        schema={RangeSchemaWithOptionalEnd}
       >
-        <FormLabel>
-          <Trans i18nKey='services.i589.info.employment.employment-history.employment_period_title' />
-        </FormLabel>
+        {({ lens }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-        <TextInput
-          label={t(
-            'services.i589.info.employment.employment-history.work_from'
-          )}
-          onChangeText={setWorkFrom}
-          placeholder='MM/YYYY'
-          value={workFrom}
-        />
-
-        <TextInput
-          label={t('services.i589.info.employment.employment-history.work_to')}
-          onChangeText={setWorkTo}
-          placeholder='MM/YYYY'
-          value={workTo}
-        />
+            <FormBlock>
+              <FormRangeInput lens={lens} optionalEnd />
+            </FormBlock>
+          </>
+        )}
       </QuizPage>
     </QuizScreen>
   );

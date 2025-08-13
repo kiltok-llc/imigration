@@ -32,7 +32,7 @@ export function* clearMMKVKeys<T extends string[]>(exp: RegExp) {
 
   for (const match of matches) {
     const [key, ...groups] = match;
-    yield groups as T
+    yield groups as T;
     console.debug(`Clearing storage key: ${key}`);
     defaultStorage.delete(key);
   }
@@ -40,8 +40,16 @@ export function* clearMMKVKeys<T extends string[]>(exp: RegExp) {
   console.debug(`${matches.length} storage keys cleared`);
 }
 
-export function nullableInput<T extends z.ZodTypeAny>(schema: T) {
-  return schema.nullable().transform((val, ctx) => {
+export async function raiseStatus<T extends Response>(res: T) {
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP error! status: ${res.status}, body: ${text}`);
+  }
+  return res;
+}
+
+export function required<T extends z.ZodTypeAny>(schema: T) {
+  return schema.transform((val, ctx) => {
     if (val === null) {
       ctx.addIssue({
         code: 'invalid_type',
@@ -55,14 +63,6 @@ export function nullableInput<T extends z.ZodTypeAny>(schema: T) {
 
     return val;
   });
-}
-
-export async function raiseStatus<T extends Response>(res: T) {
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`HTTP error! status: ${res.status}, body: ${text}`);
-  }
-  return res;
 }
 
 export async function sleep(ms: number) {

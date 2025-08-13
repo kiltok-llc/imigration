@@ -1,3 +1,4 @@
+import { Lens, useLens } from '@hookform/lenses';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'expo-router';
 import { useAtom, useSetAtom } from 'jotai';
@@ -15,6 +16,7 @@ import {
   useMemo,
 } from 'react';
 import {
+  Control,
   DefaultValues,
   FieldValues,
   FormProvider,
@@ -65,7 +67,9 @@ export function QuizPage<Input extends FieldValues, Output>({
   style,
   ...props
 }: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
-  children: (context: UseFormReturn<Input, any, Output>) => ReactNode;
+  children: (
+    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
+  ) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
   onSubmit: (data: Output) => boolean;
@@ -81,7 +85,11 @@ export function QuizPage<Input extends FieldValues, Output>({
     resolver: standardSchemaResolver<Input, any, Output>(schema),
     ...formOptions,
   });
-  const { handleSubmit, reset, subscribe } = context;
+  const { control, handleSubmit, reset, subscribe } = context;
+
+  const lens = useLens<Input>({
+    control: control as unknown as Control<Input>,
+  });
 
   const loadQuizValues = useStableAtomCallback(
     (get) => {
@@ -141,7 +149,9 @@ export function QuizPage<Input extends FieldValues, Output>({
       {...props}
     >
       <QuizPageContext.Provider value={{ pageId }}>
-        <FormProvider {...context}>{children(context)}</FormProvider>
+        <FormProvider {...context}>
+          {children({ ...context, lens })}
+        </FormProvider>
       </QuizPageContext.Provider>
     </ScrollView>
   );

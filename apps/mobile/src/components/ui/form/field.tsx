@@ -1,13 +1,14 @@
-import * as React from 'react';
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
   type FieldPath,
   type FieldValues,
+  PathValue,
   useController,
   UseControllerProps,
   UseControllerReturn,
   useFormContext,
 } from 'react-hook-form';
+import tw from 'twrnc';
 
 import { FadeView } from '@/components/fade-view';
 
@@ -45,20 +46,24 @@ const FormFieldContext = createContext<UseControllerReturn>({
   },
 });
 
-export const ConditionalFormField = <
+export const ConditionalFormBlock = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TTransformedValues = TFieldValues,
 >({
-    active,
-    activeValue,
-    children,
-    name,
-    ...props
-  }: PropsWithChildren<WithRequired<UseControllerProps<TFieldValues, TName>, 'control'>> & {
+  active,
+  activeValue,
+  children,
+  name,
+  ...props
+}: PropsWithChildren<
+  WithRequired<
+    UseControllerProps<TFieldValues, TName, TTransformedValues>,
+    'control'
+  >
+> & {
   active: boolean;
-  activeValue: NonNullable<
-    UseControllerProps<TFieldValues, TName>['defaultValue']
-  >;
+  activeValue?: PathValue<TFieldValues, TName>;
 }) => {
   const controller = useController({
     disabled: !active,
@@ -73,35 +78,49 @@ export const ConditionalFormField = <
   const { resetField, setValue } = useFormContext();
 
   useEffect(() => {
+    // No reset logic if there's no active value
+    if (activeValue === undefined) {
+      return;
+    }
+
     if (disabled) {
       console.debug(
-        `Resetting field "${name}" to default value because it is disabled.`,
+        `Resetting field "${name}" to default value because it is disabled.`
       );
       resetField(name);
     } else {
-      console.debug(`Setting field "${name}" to active value: '${activeValue}'`);
+      console.debug(
+        `Setting field "${name}" to active value: '${activeValue}'`
+      );
+      // @ts-ignore
       setValue(name, activeValue);
     }
   }, [activeValue, disabled, name, onChange, resetField, setValue]);
 
   return (
     <FormFieldContext.Provider value={controller as UseControllerReturn}>
-      <FadeView visible={active}>{children}</FadeView>
+      <FadeView style={tw`gap-4`} visible={active}>
+        {children}
+      </FadeView>
     </FormFieldContext.Provider>
   );
 };
 
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 export const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  {
-    children,
-    ...props
-  }: PropsWithChildren<WithRequired<UseControllerProps<TFieldValues, TName>, 'control'>>,
-) => {
+  TTransformedValues = TFieldValues,
+>({
+  children,
+  ...props
+}: PropsWithChildren<
+  WithRequired<
+    UseControllerProps<TFieldValues, TName, TTransformedValues>,
+    'control'
+  >
+>) => {
   const controller = useController(props);
 
   return (
