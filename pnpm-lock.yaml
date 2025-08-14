@@ -9,9 +9,18 @@ catalogs:
     '@tanstack/react-query':
       specifier: 5.80.7
       version: 5.80.7
+    '@tanstack/react-query-devtools':
+      specifier: ^5.80.7
+      version: 5.80.7
+    '@tanstack/react-query-next-experimental':
+      specifier: ^5.80.7
+      version: 5.80.7
     '@trpc/client':
       specifier: ^11.4.1
       version: 11.4.3
+    '@trpc/server':
+      specifier: ^11.4.1
+      version: 11.4.1
     '@trpc/tanstack-react-query':
       specifier: ^11.4.1
       version: 11.4.3
@@ -21,6 +30,9 @@ catalogs:
     prettier:
       specifier: ^3.6.2
       version: 3.5.3
+    tailwindcss:
+      specifier: ^4.1.10
+      version: 4.1.10
     typescript:
       specifier: ^5.9.2
       version: 5.8.3
@@ -31,6 +43,9 @@ catalogs:
     '@types/react':
       specifier: ~19.0.10
       version: 19.0.14
+    '@types/react-dom':
+      specifier: ~19.0.6
+      version: 19.0.6
     react:
       specifier: 19.0.0
       version: 19.0.0
@@ -224,7 +239,7 @@ importers:
         version: 2.0.6
       nuqs:
         specifier: ^2.4.3
-        version: 2.4.3(next@15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        version: 2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       optics-ts:
         specifier: ^2.4.1
         version: 2.4.1
@@ -322,6 +337,9 @@ importers:
       '@babel/core':
         specifier: ^7.27.4
         version: 7.27.7
+      '@expo/env':
+        specifier: ^1.0.7
+        version: 1.0.7
       '@repo/prettier-config':
         specifier: workspace:*
         version: link:../../tooling/prettier-config
@@ -16067,13 +16085,6 @@ snapshots:
       boolbase: 1.0.0
 
   nullthrows@1.1.1: {}
-
-  nuqs@2.4.3(next@15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
-    dependencies:
-      mitt: 3.0.1
-      react: 19.0.0
-    optionalDependencies:
-      next: 15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   nuqs@2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:

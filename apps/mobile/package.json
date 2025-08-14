@@ -102,6 +102,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
+    "@expo/env": "^1.0.7",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/tsconfig": "workspace:*",
