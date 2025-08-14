@@ -183,6 +183,44 @@ export default {
             title: 'You May Not Be Eligible for Asylum',
           },
           info: {
+            'asylum-and-fear': {
+              'asylum-reasons-and-fear': {
+                'detailed-harm-reasons': {
+                  'custom-harm-reason': {
+                    label: 'Please specify the other reason',
+                  },
+                  'harm-reasons': {
+                    title:
+                      'What are the detailed reasons for the harm you fear? (Select all that apply)',
+                  },
+                },
+                'fear-description': {
+                  'fear-description': {
+                    label: 'Fear Description',
+                    title:
+                      'Please describe in detail what you fear will happen if you return to your home country.',
+                  },
+                },
+                'fear-of-return': {
+                  'fear-of-return': {
+                    title: 'Do you fear returning to your home country?',
+                  },
+                },
+                'other-country-fear': {
+                  'has-other-country-fear': {
+                    title: 'Do you fear persecution in any other country?',
+                  },
+                },
+                'persecution-description': {
+                  'persecution-description': {
+                    label: 'Persecution Description',
+                    title:
+                      'Please describe in detail the persecution you experienced or fear.',
+                  },
+                },
+                title: 'Asylum Reasons and Fear',
+              },
+            },
             children: {
               'children-details': {
                 'add-child': 'Add Child',
@@ -229,6 +267,45 @@ export default {
                   male: 'Male',
                 },
                 title: 'Children Details',
+              },
+            },
+            declaration: {
+              'final-declaration': {
+                'information-accuracy': {
+                  'information-accurate': {
+                    title:
+                      'I certify that the information I have provided in this application is true and correct to the best of my knowledge.',
+                  },
+                },
+                'interpreter-language': {
+                  'interpreter-language': {
+                    label: 'Interpreter Language',
+                    title: 'What language do you need an interpreter for?',
+                  },
+                },
+                'interpreter-needed': {
+                  'needs-interpreter': {
+                    title: 'Do you need an interpreter for your interview?',
+                  },
+                },
+                signature: {
+                  'applicant-signature': {
+                    label: 'Full Name (Signature)',
+                    title:
+                      'Please type your full name as your electronic signature.',
+                  },
+                  'signature-date': {
+                    label: 'Date',
+                    title: 'Date of signature',
+                  },
+                },
+                title: 'Final Declaration',
+                'understands-consequences': {
+                  'understands-consequences': {
+                    title:
+                      'I understand that any false information may result in denial of my application or other legal consequences.',
+                  },
+                },
               },
             },
             description:
@@ -354,6 +431,121 @@ export default {
                   title: "Please provide your spouse's name.",
                 },
                 title: 'Spouse Information',
+              },
+            },
+            identification: {
+              'other-identification': {
+                'drivers-license-details': {
+                  'drivers-license-number': {
+                    label: 'License Number',
+                    title: "What is your driver's license number?",
+                  },
+                  'drivers-license-state': {
+                    label: 'State/Province',
+                    title:
+                      "Which state or province issued your driver's license?",
+                  },
+                },
+                'has-drivers-license': {
+                  'has-drivers-license': {
+                    title: "Do you have a driver's license?",
+                  },
+                },
+                'has-social-security': {
+                  'has-social-security': {
+                    title: 'Do you have a Social Security Number?',
+                  },
+                },
+                'social-security-details': {
+                  'social-security-number': {
+                    label: 'Social Security Number',
+                    title: 'What is your Social Security Number?',
+                  },
+                },
+                title: 'Other Identification',
+              },
+              'passport-information': {
+                'has-passport': {
+                  'has-passport': {
+                    title: 'Do you have a passport?',
+                  },
+                },
+                'passport-dates': {
+                  'expiration-date': {
+                    label: 'Expiration Date',
+                    title: 'When does your passport expire?',
+                  },
+                  'issue-date': {
+                    label: 'Issue Date',
+                    title: 'When was your passport issued?',
+                  },
+                },
+                'passport-details': {
+                  country: {
+                    label: 'Issuing Country',
+                    title: 'Which country issued your passport?',
+                  },
+                  number: {
+                    label: 'Passport Number',
+                    title: 'What is your passport number?',
+                  },
+                },
+                title: 'Passport Information',
+              },
+            },
+            'legal-history': {
+              'legal-and-affiliations': {
+                'arrest-details': {
+                  'arrest-details': {
+                    label: 'Arrest Details',
+                    title: 'Please provide details about your arrest history.',
+                  },
+                },
+                'arrest-history': {
+                  'has-arrest-history': {
+                    title: 'Have you ever been arrested or detained?',
+                  },
+                },
+                'military-details': {
+                  'military-details': {
+                    label: 'Military Service Details',
+                    title:
+                      'Please provide details about your military service.',
+                  },
+                },
+                'military-service': {
+                  'has-military-service': {
+                    title:
+                      'Have you ever served in the military or armed forces?',
+                  },
+                },
+                'organization-details': {
+                  'organization-details': {
+                    label: 'Organization Details',
+                    title:
+                      'Please provide details about your organizational memberships.',
+                  },
+                },
+                'organization-membership': {
+                  'has-organization-membership': {
+                    title:
+                      'Have you ever been a member of any organization, association, fund, foundation, party, club, society, or similar group?',
+                  },
+                },
+                'political-affiliation': {
+                  'has-political-affiliation': {
+                    title:
+                      'Have you ever been affiliated with any political organization or party?',
+                  },
+                },
+                'political-details': {
+                  'political-details': {
+                    label: 'Political Affiliation Details',
+                    title:
+                      'Please provide details about your political affiliations.',
+                  },
+                },
+                title: 'Legal History and Affiliations',
               },
             },
             'personal-information': {

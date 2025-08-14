@@ -8,6 +8,13 @@ export const UserDataSchema = z
   .object({
     maritalStatus: MaritalStatusEnum,
     numberOfChildren: z.number(),
+    passport: z
+      .object({
+        country: z.string(),
+        number: z.string(),
+      })
+      .partial()
+      .nullable(),
   })
   .partial();
 

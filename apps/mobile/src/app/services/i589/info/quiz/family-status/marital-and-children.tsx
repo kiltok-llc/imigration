@@ -62,8 +62,8 @@ export default function MaritalAndChildren() {
           hasChildren: required(z.boolean().nullable()),
           numberOfChildren: z
             .string()
-            .regex(/^\d+$/)
-            .transform(Number)
+            // .regex(/^\d+$/)
+            .pipe(z.coerce.number<string>().int().positive())
             .optional(),
         })}
       >

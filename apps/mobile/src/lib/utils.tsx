@@ -1,3 +1,4 @@
+import { ComponentType, isValidElement, ReactElement, ReactNode } from 'react';
 import z from 'zod/v4';
 
 import { defaultStorage } from '@/lib/mmkv';
@@ -38,6 +39,13 @@ export function* clearMMKVKeys<T extends string[]>(exp: RegExp) {
   }
 
   console.debug(`${matches.length} storage keys cleared`);
+}
+
+export function isElementOfType<P>(
+  node: ReactNode,
+  type: ComponentType<P>
+): node is ReactElement<P> {
+  return isValidElement(node) && node.type === type;
 }
 
 export async function raiseStatus<T extends Response>(res: T) {

@@ -8,13 +8,14 @@ import {
   ComponentProps,
   createRef,
   Key,
-  ReactElement,
+  PropsWithChildren,
   ReactNode,
   Ref,
   useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
+  useState,
 } from 'react';
 import {
   Control,
@@ -41,8 +42,7 @@ import {
 } from '@/hooks/use-required-context';
 import { useRouteNavigation } from '@/hooks/use-route-navigation';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
-
-type QuizPageElement = ReactElement<{ ref: Ref<QuizPageHandle> }>;
+import { isElementOfType } from '@/lib/utils';
 
 type QuizPageHandle = {
   submit: () => Promise<boolean>;
@@ -169,21 +169,18 @@ const QuizContext = createRequiredContext<{
   handlePrev: () => void;
 }>();
 
-export function QuizScreen({
-  children,
-}: {
-  children: QuizPageElement | QuizPageElement[];
-}) {
+export function QuizScreen({ children }: PropsWithChildren) {
   const router = useRouter();
   const [page, setPage] = useAtom(useQuizPageAtom());
   const { finalRoute, routes } = useQuizRoutes();
   const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
     useRouteNavigation(routes);
+  const [isNextPage, setIsNextPage] = useState(false);
 
   const childRefs = useMemo(
     () =>
       Array.from(
-        { length: Children.count(children) },
+        { length: Children.toArray(children).length },
         createRef<QuizPageHandle>
       ),
     [children]
@@ -207,6 +204,15 @@ export function QuizScreen({
     setPage,
   ]);
 
+  // Since `handleNext` behavior could depend on state in the page, we want to
+  // render the component before calling it.
+  useEffect(() => {
+    if (isNextPage) {
+      handleNext();
+      setIsNextPage(false);
+    }
+  }, [isNextPage, handleNext]);
+
   const handleSubmit = useCallback(async () => {
     const activeChild = childRefs[page]?.current;
     if (!activeChild) {
@@ -216,9 +222,9 @@ export function QuizScreen({
 
     const result = await activeChild.submit();
     if (result) {
-      handleNext();
+      setIsNextPage(true);
     }
-  }, [childRefs, handleNext, page]);
+  }, [childRefs, page]);
 
   const handlePrev = useCallback(() => {
     if (page > 0) {
@@ -241,11 +247,13 @@ export function QuizScreen({
           page={page}
           style={tw`flex-1`}
         >
-          {Children.map(children, (child, index) => (
-            <View key={index}>
-              {cloneElement(child, {
-                ref: childRefs[index],
-              })}
+          {Children.toArray(children).map((child, idx) => (
+            <View key={idx}>
+              {isElementOfType(child, QuizPage)
+                ? cloneElement(child, {
+                    ref: childRefs[idx],
+                  })
+                : child}
             </View>
           ))}
         </ReactivePagerView>
