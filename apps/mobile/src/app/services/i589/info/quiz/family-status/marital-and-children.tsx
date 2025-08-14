@@ -68,24 +68,24 @@ export default function MaritalAndChildren() {
         })}
       >
         {({ control, watch }) => (
-          <>
+          <FormBlock>
             <FormBlock>
               <FormField control={control} name='hasChildren'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
-
-              <ConditionalFormBlock
-                active={!!watch('hasChildren')}
-                activeValue={'0'}
-                control={control}
-                name='numberOfChildren'
-              >
-                <QuizFieldTitle />
-                <QuizTextInput inputMode='numeric' />
-              </ConditionalFormBlock>
             </FormBlock>
-          </>
+
+            <ConditionalFormBlock
+              active={!!watch('hasChildren')}
+              activeValue={'0'}
+              control={control}
+              name='numberOfChildren'
+            >
+              <QuizFieldTitle />
+              <QuizTextInput inputMode='numeric' />
+            </ConditionalFormBlock>
+          </FormBlock>
         )}
       </QuizPage>
     </QuizScreen>

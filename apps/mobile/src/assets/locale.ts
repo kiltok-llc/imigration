@@ -436,11 +436,11 @@ export default {
             identification: {
               'other-identification': {
                 'drivers-license-details': {
-                  'drivers-license-number': {
+                  number: {
                     label: 'License Number',
                     title: "What is your driver's license number?",
                   },
-                  'drivers-license-state': {
+                  state: {
                     label: 'State/Province',
                     title:
                       "Which state or province issued your driver's license?",
@@ -451,13 +451,11 @@ export default {
                     title: "Do you have a driver's license?",
                   },
                 },
-                'has-social-security': {
-                  'has-social-security': {
+                'social-security': {
+                  'has-ssn': {
                     title: 'Do you have a Social Security Number?',
                   },
-                },
-                'social-security-details': {
-                  'social-security-number': {
+                  'ssn-number': {
                     label: 'Social Security Number',
                     title: 'What is your Social Security Number?',
                   },
@@ -471,11 +469,11 @@ export default {
                   },
                 },
                 'passport-dates': {
-                  'expiration-date': {
+                  expiration: {
                     label: 'Expiration Date',
                     title: 'When does your passport expire?',
                   },
-                  'issue-date': {
+                  issue: {
                     label: 'Issue Date',
                     title: 'When was your passport issued?',
                   },

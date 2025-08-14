@@ -6,6 +6,13 @@ import { MaritalStatusEnum } from '@/lib/schema/common';
 
 export const UserDataSchema = z
   .object({
+    driversLicense: z
+      .object({
+        number: z.string(),
+        state: z.string(),
+      })
+      .partial()
+      .nullable(),
     maritalStatus: MaritalStatusEnum,
     numberOfChildren: z.number(),
     passport: z

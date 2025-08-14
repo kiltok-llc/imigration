@@ -82,16 +82,14 @@ export default function ReasonForLeaving() {
               </FormField>
             </FormBlock>
 
-            <FormBlock>
-              <ConditionalFormBlock
-                active={watch('harmReasons').includes('other')}
-                activeValue=''
-                control={control}
-                name='customHarmReason'
-              >
-                <QuizTextInput />
-              </ConditionalFormBlock>
-            </FormBlock>
+            <ConditionalFormBlock
+              active={watch('harmReasons').includes('other')}
+              activeValue=''
+              control={control}
+              name='customHarmReason'
+            >
+              <QuizTextInput />
+            </ConditionalFormBlock>
           </>
         )}
       </QuizPage>
