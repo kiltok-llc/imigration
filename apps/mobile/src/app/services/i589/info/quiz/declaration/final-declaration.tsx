@@ -1,7 +1,10 @@
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
-import { FormField } from '@/components/ui/form/field';
+import {
+  ConditionalFormFieldBlock,
+  FormField,
+} from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizDateInput } from '@/components/ui/quiz/date';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
@@ -59,35 +62,28 @@ export default function FinalDeclaration() {
         onSubmit={() => true}
         pageId='interpreter-needed'
         schema={z.object({
+          interpreterLanguage: z.string().nonempty().optional(),
           needsInterpreter: required(z.boolean().nullable()),
         })}
       >
-        {({ control }) => (
+        {({ control, watch }) => (
           <FormBlock>
-            <FormField control={control} name='needsInterpreter'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizPage>
+            <FormBlock>
+              <FormField control={control} name='needsInterpreter'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
 
-      <QuizPage
-        defaultValues={{
-          interpreterLanguage: '',
-        }}
-        onSubmit={() => true}
-        pageId='interpreter-language'
-        schema={z.object({
-          interpreterLanguage: z.string().nonempty(),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='interpreterLanguage'>
+            <ConditionalFormFieldBlock
+              active={!!watch('needsInterpreter')}
+              activeValue=''
+              control={control}
+              name='interpreterLanguage'
+            >
               <QuizFieldTitle />
               <QuizTextInput />
-            </FormField>
+            </ConditionalFormFieldBlock>
           </FormBlock>
         )}
       </QuizPage>
@@ -95,13 +91,13 @@ export default function FinalDeclaration() {
       <QuizPage
         defaultValues={{
           applicantSignature: '',
-          signatureDate: null,
+          signatureDate: new Date(),
         }}
         onSubmit={() => true}
         pageId='signature'
         schema={z.object({
           applicantSignature: z.string().nonempty(),
-          signatureDate: required(z.date().nullable()),
+          signatureDate: z.date(),
         })}
       >
         {({ control }) => (
@@ -116,7 +112,7 @@ export default function FinalDeclaration() {
             <FormBlock>
               <FormField control={control} name='signatureDate'>
                 <QuizFieldTitle />
-                <QuizDateInput />
+                <QuizDateInput readOnly={true} />
               </FormField>
             </FormBlock>
           </>

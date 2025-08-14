@@ -53,7 +53,7 @@ const FormFieldContext = createContext<UseControllerReturn>({
   },
 });
 
-export const ConditionalFormBlock = <
+export const ConditionalFormFieldBlock = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues,

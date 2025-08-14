@@ -2,7 +2,10 @@ import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
-import { ConditionalFormBlock, FormField } from '@/components/ui/form/field';
+import {
+  ConditionalFormFieldBlock,
+  FormField,
+} from '@/components/ui/form/field';
 import { FormBooleanInput, FormRadioGroup } from '@/components/ui/form/radio';
 import { QuizRadioItem } from '@/components/ui/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
@@ -76,7 +79,7 @@ export default function MaritalAndChildren() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormBlock
+            <ConditionalFormFieldBlock
               active={!!watch('hasChildren')}
               activeValue={'0'}
               control={control}
@@ -84,7 +87,7 @@ export default function MaritalAndChildren() {
             >
               <QuizFieldTitle />
               <QuizTextInput inputMode='numeric' />
-            </ConditionalFormBlock>
+            </ConditionalFormFieldBlock>
           </FormBlock>
         )}
       </QuizPage>

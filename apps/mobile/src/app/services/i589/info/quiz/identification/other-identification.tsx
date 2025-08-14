@@ -2,7 +2,10 @@ import { atom, useAtom, useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
-import { ConditionalFormBlock, FormField } from '@/components/ui/form/field';
+import {
+  ConditionalFormFieldBlock,
+  FormField,
+} from '@/components/ui/form/field';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
@@ -111,7 +114,7 @@ export default function OtherIdentification() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormBlock
+            <ConditionalFormFieldBlock
               active={!!watch('hasSsn')}
               activeValue=''
               control={control}
@@ -119,7 +122,7 @@ export default function OtherIdentification() {
             >
               <QuizFieldTitle />
               <QuizTextInput />
-            </ConditionalFormBlock>
+            </ConditionalFormFieldBlock>
           </>
         )}
       </QuizPage>

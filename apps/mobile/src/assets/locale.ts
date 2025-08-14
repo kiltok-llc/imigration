@@ -190,6 +190,15 @@ export default {
                     label: 'Please specify the other reason',
                   },
                   'harm-reasons': {
+                    options: {
+                      nationality: 'Nationality',
+                      none: 'None of the above',
+                      other: 'Other',
+                      'political-opinion': 'Political Opinion',
+                      race: 'Race',
+                      religion: 'Religion',
+                      'social-group': 'Social Group',
+                    },
                     title:
                       'What are the detailed reasons for the harm you fear? (Select all that apply)',
                   },
@@ -277,13 +286,11 @@ export default {
                       'I certify that the information I have provided in this application is true and correct to the best of my knowledge.',
                   },
                 },
-                'interpreter-language': {
+                'interpreter-needed': {
                   'interpreter-language': {
                     label: 'Interpreter Language',
                     title: 'What language do you need an interpreter for?',
                   },
-                },
-                'interpreter-needed': {
                   'needs-interpreter': {
                     title: 'Do you need an interpreter for your interview?',
                   },
@@ -493,13 +500,11 @@ export default {
             },
             'legal-history': {
               'legal-and-affiliations': {
-                'arrest-details': {
+                'arrest-history': {
                   'arrest-details': {
                     label: 'Arrest Details',
                     title: 'Please provide details about your arrest history.',
                   },
-                },
-                'arrest-history': {
                   'has-arrest-history': {
                     title: 'Have you ever been arrested or detained?',
                   },
