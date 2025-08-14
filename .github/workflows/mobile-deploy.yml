@@ -49,4 +49,4 @@ jobs:
           working-directory: apps/mobile
 
       - name: Upload Sentry Sourcemaps
-        run: eas env:exec --environment ${{ inputs.environment }} 'npx sentry-expo-upload-sourcemaps dist'
+        run: eas env:exec ${{ inputs.environment }} 'npx sentry-expo-upload-sourcemaps dist' --non-interactive
