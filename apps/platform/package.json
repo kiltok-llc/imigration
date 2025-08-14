@@ -58,7 +58,7 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-error-boundary": "^6.0.0",
-    "react-hook-form": "^7.57.0",
+    "react-hook-form": "^7.62.0",
     "react-twc": "^1.4.2",
     "short-uuid": "^5.2.0",
     "sonner": "^2.0.5",
