@@ -33,6 +33,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
 
       - uses: expo/expo-github-action@main
         with:
