@@ -26,7 +26,8 @@ import {
   UseFormProps,
   UseFormReturn,
 } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { Keyboard, ScrollView, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 import z from 'zod/v4';
@@ -35,7 +36,7 @@ import { useQuizPageAtom } from '@/atoms/quiz-page-family';
 import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { TransButton } from '@/components/trans';
-import { useQuizRoutes } from '@/components/ui/quiz/layout';
+import { useQuiz } from '@/components/ui/quiz/layout';
 import {
   createRequiredContext,
   useRequiredContext,
@@ -147,12 +148,13 @@ export function QuizPage<Input extends FieldValues, Output>({
   );
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
+      bottomOffset={80}
       contentContainerStyle={[
-        tw`grow-1 justify-center gap-16 py-4`,
+        tw`grow justify-center gap-16 py-4`,
         contentContainerStyle,
       ]}
-      style={[tw`mx-4 flex-1`, style]}
+      style={[tw`flex-1 px-4`, style]}
       {...props}
     >
       <QuizPageContext.Provider value={{ pageId }}>
@@ -160,7 +162,7 @@ export function QuizPage<Input extends FieldValues, Output>({
           {children({ ...context, lens })}
         </FormProvider>
       </QuizPageContext.Provider>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -172,10 +174,26 @@ const QuizContext = createRequiredContext<{
 export function QuizScreen({ children }: PropsWithChildren) {
   const router = useRouter();
   const [page, setPage] = useAtom(useQuizPageAtom());
-  const { finalRoute, routes } = useQuizRoutes();
+  const { finalRoute, routes } = useQuiz();
   const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
     useRouteNavigation(routes);
-  const [isNextPage, setIsNextPage] = useState(false);
+  const [isNextPage, setisNextPage] = useState(false);
+  const [isPrevPage, setisPrevPage] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
+      setKeyboardVisible(true)
+    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
+      setKeyboardVisible(false)
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const childRefs = useMemo(
     () =>
@@ -207,24 +225,11 @@ export function QuizScreen({ children }: PropsWithChildren) {
   // Since `handleNext` behavior could depend on state in the page, we want to
   // render the component before calling it.
   useEffect(() => {
-    if (isNextPage) {
+    if (isNextPage && !keyboardVisible) {
       handleNext();
-      setIsNextPage(false);
+      setisNextPage(false);
     }
-  }, [isNextPage, handleNext]);
-
-  const handleSubmit = useCallback(async () => {
-    const activeChild = childRefs[page]?.current;
-    if (!activeChild) {
-      console.warn('No active child found for submission.');
-      return;
-    }
-
-    const result = await activeChild.submit();
-    if (result) {
-      setIsNextPage(true);
-    }
-  }, [childRefs, page]);
+  }, [isNextPage, handleNext, keyboardVisible]);
 
   const handlePrev = useCallback(() => {
     if (page > 0) {
@@ -234,47 +239,67 @@ export function QuizScreen({ children }: PropsWithChildren) {
     } else {
       prevRoute();
     }
-  }, [page, isFirstRoute, setPage, router, prevRoute]);
+  }, [isFirstRoute, page, prevRoute, router, setPage]);
+
+  useEffect(() => {
+    if (isPrevPage && !keyboardVisible) {
+      handlePrev();
+      setisPrevPage(false);
+    }
+  }, [handlePrev, isPrevPage, keyboardVisible]);
+
+  const handleSubmit = async () => {
+    const activeChild = childRefs[page]?.current;
+    if (!activeChild) {
+      console.warn('No active child found for submission.');
+      return;
+    }
+
+    const result = await activeChild.submit();
+    if (result) {
+      Keyboard.dismiss();
+      setisNextPage(true);
+    }
+  };
+
+  const handleBack = () => {
+    Keyboard.dismiss();
+    setisPrevPage(true);
+  };
 
   return (
     <QuizContext.Provider value={{ handleNext, handlePrev }}>
+      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
+        {Children.toArray(children).map((child, idx) => (
+          <View key={idx} style={tw`flex-1`}>
+            {isElementOfType(child, QuizPage)
+              ? cloneElement(child, {
+                  ref: childRefs[idx],
+                })
+              : child}
+          </View>
+        ))}
+      </ReactivePagerView>
       <SafeAreaView
-        edges={['left', 'bottom', 'right']}
-        style={tw`flex-1 gap-4`}
+        edges={{ bottom: 'maximum' }}
+        style={[tw`mt-auto flex-row gap-4 p-4`]}
       >
-        <ReactivePagerView
-          orientation='vertical'
-          page={page}
-          style={tw`flex-1`}
-        >
-          {Children.toArray(children).map((child, idx) => (
-            <View key={idx}>
-              {isElementOfType(child, QuizPage)
-                ? cloneElement(child, {
-                    ref: childRefs[idx],
-                  })
-                : child}
-            </View>
-          ))}
-        </ReactivePagerView>
-        <View style={tw`mx-4 mt-auto flex-row gap-4`}>
-          <View style={tw`flex-1`}>
-            <TransButton
-              i18nKey='quiz.previous'
-              icon='arrow-left'
-              mode='contained-tonal'
-              onPress={handlePrev}
-            />
-          </View>
-          <View style={tw`flex-1`}>
-            <TransButton
-              contentStyle={tw`flex-row-reverse`}
-              i18nKey='quiz.next'
-              icon='arrow-right'
-              mode='contained'
-              onPress={handleSubmit}
-            />
-          </View>
+        <View style={tw`flex-1`}>
+          <TransButton
+            i18nKey='quiz.previous'
+            icon='arrow-left'
+            mode='contained-tonal'
+            onPress={handleBack}
+          />
+        </View>
+        <View style={tw`flex-1`}>
+          <TransButton
+            contentStyle={tw`flex-row-reverse`}
+            i18nKey='quiz.next'
+            icon='arrow-right'
+            mode='contained'
+            onPress={handleSubmit}
+          />
         </View>
       </SafeAreaView>
     </QuizContext.Provider>

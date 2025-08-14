@@ -24,7 +24,7 @@ export default function Ineligible() {
           <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
             <View style={tw`mb-8 items-center`}>
               <View
-                style={tw`mb-6 h-20 w-20 items-center justify-center rounded-full bg-red-500`}
+                style={tw`mb-6 h-20 w-20 items-center justify-center rounded-full`}
               >
                 {/*TODO replace with icon*/}
                 <Text style={tw`text-3xl font-bold text-white`}>✗</Text>

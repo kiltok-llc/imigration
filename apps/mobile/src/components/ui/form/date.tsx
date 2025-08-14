@@ -89,6 +89,7 @@ export function FormDateInput({
             }
           />
         }
+        showSoftInputOnFocus={false}
         value={value ? FORMAT.format(value) : ''}
         {...props}
       />

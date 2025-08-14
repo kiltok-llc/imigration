@@ -9,9 +9,18 @@ catalogs:
     '@tanstack/react-query':
       specifier: 5.80.7
       version: 5.80.7
+    '@tanstack/react-query-devtools':
+      specifier: ^5.80.7
+      version: 5.80.7
+    '@tanstack/react-query-next-experimental':
+      specifier: ^5.80.7
+      version: 5.80.7
     '@trpc/client':
       specifier: ^11.4.1
       version: 11.4.3
+    '@trpc/server':
+      specifier: ^11.4.1
+      version: 11.4.1
     '@trpc/tanstack-react-query':
       specifier: ^11.4.1
       version: 11.4.3
@@ -21,6 +30,9 @@ catalogs:
     prettier:
       specifier: ^3.6.2
       version: 3.5.3
+    tailwindcss:
+      specifier: ^4.1.10
+      version: 4.1.10
     typescript:
       specifier: ^5.9.2
       version: 5.8.3
@@ -31,6 +43,9 @@ catalogs:
     '@types/react':
       specifier: ~19.0.10
       version: 19.0.14
+    '@types/react-dom':
+      specifier: ~19.0.6
+      version: 19.0.6
     react:
       specifier: 19.0.0
       version: 19.0.0
@@ -221,7 +236,7 @@ importers:
         version: 2.0.6
       nuqs:
         specifier: ^2.4.3
-        version: 2.4.3(next@15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        version: 2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       optics-ts:
         specifier: ^2.4.1
         version: 2.4.1
@@ -258,6 +273,9 @@ importers:
       react-native-gesture-handler:
         specifier: ~2.24.0
         version: 2.24.0(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-keyboard-controller:
+        specifier: ^1.18.4
+        version: 1.18.4(react-native-reanimated@3.17.5(@babel/core@7.27.7)(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-mmkv:
         specifier: ^3.2.0
         version: 3.3.0(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -7424,6 +7442,19 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-is-edge-to-edge@1.2.1:
+    resolution: {integrity: sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-keyboard-controller@1.18.4:
+    resolution: {integrity: sha512-s5mY3kymUVQ1LGISW4h9Sd9JU7arKQuEvWJVfcA7ZNKJI3ao5JXhHlnCBjuydh1l7vzFppYNSo0s0cixtcDP2Q==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-reanimated: '>=3.0.0'
 
   react-native-mmkv@3.3.0:
     resolution: {integrity: sha512-2iPjIJ+IAODXN35wm53EN6nv+hR/0NXLLiLWOdPA/0gXDB2dYVrr6MqvoiFpxhLhdj0B8fkf5ARNVavJaSvuuQ==}
@@ -15981,13 +16012,6 @@ snapshots:
 
   nullthrows@1.1.1: {}
 
-  nuqs@2.4.3(next@15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
-    dependencies:
-      mitt: 3.0.1
-      react: 19.0.0
-    optionalDependencies:
-      next: 15.3.3(@babel/core@7.27.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-
   nuqs@2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
       mitt: 3.0.1
@@ -16574,6 +16598,18 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-is-edge-to-edge@1.2.1(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-keyboard-controller@1.18.4(react-native-reanimated@3.17.5(@babel/core@7.27.7)(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0)
+      react-native-is-edge-to-edge: 1.2.1(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.17.5(@babel/core@7.27.7)(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-mmkv@3.3.0(react-native@0.79.5(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

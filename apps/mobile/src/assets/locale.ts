@@ -35,6 +35,9 @@ export default {
           male: 'Male',
         },
       },
+      keyboard: {
+        done: 'Done',
+      },
       next: 'Next',
       onboarding: {
         english: 'Select English',

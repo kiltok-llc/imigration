@@ -7,10 +7,12 @@ import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-bound
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { KeyboardToolbar } from 'react-native-keyboard-controller';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
+import { quizHeaderHeightAtom } from '@/atoms/quiz-header-height-atom';
 import { quizRouteFamily, useQuizRouteAtom } from '@/atoms/quiz-route-family';
 import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { TransButton, TransText } from '@/components/trans';
@@ -27,13 +29,13 @@ import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
 import { toRouteId } from '@/lib/utils';
 
-const QuizRoutesContext = createRequiredContext<{
+const QuizContext = createRequiredContext<{
   finalRoute: string;
   routes: string[];
 }>();
 
 export function SavedQuizRouteRedirect() {
-  const { routes } = useQuizRoutes();
+  const { routes } = useQuiz();
   const savedQuizRoute = useAtomValue(useQuizRouteAtom());
   const route =
     savedQuizRoute && routes.includes(savedQuizRoute)
@@ -45,7 +47,7 @@ export function SavedQuizRouteRedirect() {
   return <Redirect href={`./quiz/${route}`} />;
 }
 
-export const useQuizRoutes = () => useRequiredContext(QuizRoutesContext);
+export const useQuiz = () => useRequiredContext(QuizContext);
 
 export function QuizErrorFallback({
   children,
@@ -124,7 +126,7 @@ export function QuizLayout({
   });
 
   return (
-    <QuizRoutesContext.Provider value={{ finalRoute, routes }}>
+    <QuizContext.Provider value={{ finalRoute, routes }}>
       <View style={tw`flex-1`}>
         <QuizHeader
           current={routeIdx + 1}
@@ -141,8 +143,9 @@ export function QuizLayout({
           total={routes.length}
         />
         {children}
+        <KeyboardToolbar doneText={t('keyboard.done')} />
       </View>
-    </QuizRoutesContext.Provider>
+    </QuizContext.Provider>
   );
 }
 
@@ -158,9 +161,13 @@ function QuizHeader({
   total: number;
 }) {
   const theme = useTheme();
+  const setQuizHeaderHeight = useSetAtom(quizHeaderHeightAtom);
 
   return (
-    <View style={tw`flex-row items-stretch justify-between gap-2 p-4`}>
+    <View
+      onLayout={(e) => setQuizHeaderHeight(e.nativeEvent.layout.height)}
+      style={tw`flex-row items-stretch justify-between gap-2 p-4`}
+    >
       <AnimatedCircularProgress
         backgroundColor={theme.colors.surfaceDisabled}
         fill={(current / total) * 100}

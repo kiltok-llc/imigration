@@ -10,7 +10,9 @@ export default function Root() {
 
   if (__DEV__) {
     setStepId('info');
-    return <Redirect href='/services/i589' />;
+    return (
+      <Redirect href='/services/i589/info/quiz/personal-information/name-and-aliases' />
+    );
   }
 
   if (!isOnboarded) {

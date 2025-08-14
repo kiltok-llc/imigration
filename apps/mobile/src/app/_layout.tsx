@@ -2,10 +2,11 @@ import * as Sentry from '@sentry/react-native';
 import { isRunningInExpoGo } from 'expo';
 import { Stack } from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
+import React from 'react';
 
 import '@/polyfill';
-import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { PaperProvider, useTheme } from 'react-native-paper';
 import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
@@ -65,10 +66,12 @@ function RootLayout() {
         <TRPCProvider>
           <LanguageProvider>
             <GestureHandlerRootView style={tw`flex-1`}>
-              <SplashScreenBarrier>
-                <StackWrapper />
-                <Toaster />
-              </SplashScreenBarrier>
+              <KeyboardProvider>
+                <SplashScreenBarrier>
+                  <StackWrapper />
+                  <Toaster />
+                </SplashScreenBarrier>
+              </KeyboardProvider>
             </GestureHandlerRootView>
           </LanguageProvider>
         </TRPCProvider>
