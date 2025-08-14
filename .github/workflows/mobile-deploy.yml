@@ -45,6 +45,7 @@ jobs:
         with:
           profile: ${{ inputs.environment }}
           branch: ${{ inputs.environment }}
+          environment: ${{ inputs.environment }}
           working-directory: apps/mobile
 
       - name: Upload Sentry Sourcemaps
