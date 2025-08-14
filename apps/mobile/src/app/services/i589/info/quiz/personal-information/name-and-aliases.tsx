@@ -2,6 +2,11 @@ import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
 import { ConditionalFormBlock, FormField } from '@/components/ui/form/field';
+import {
+  DEFAULT_NAME,
+  FormNameInput,
+  NameSchema,
+} from '@/components/ui/form/name';
 import { FormBooleanInput } from '@/components/ui/form/radio';
 import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
 import { QuizTextInput } from '@/components/ui/quiz/text';
@@ -12,37 +17,19 @@ export default function NameAndAliases() {
   return (
     <QuizScreen>
       <QuizPage
-        defaultValues={{
-          firstName: '',
-          lastName: '',
-          middleName: '',
-        }}
+        defaultValues={DEFAULT_NAME}
         onSubmit={() => true}
         pageId='basic-names'
-        schema={z.object({
-          firstName: z.string().nonempty(),
-          lastName: z.string().nonempty(),
-          middleName: z.string(),
-        })}
+        schema={NameSchema}
       >
-        {({ control }) => (
+        {({ lens }) => (
           <>
             <FormBlock>
               <QuizPageTitle />
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name='firstName'>
-                <QuizTextInput autoComplete='given-name' />
-              </FormField>
-
-              <FormField control={control} name='middleName'>
-                <QuizTextInput autoComplete='name-middle' optional />
-              </FormField>
-
-              <FormField control={control} name='lastName'>
-                <QuizTextInput autoComplete='family-name' />
-              </FormField>
+              <FormNameInput lens={lens} />
             </FormBlock>
           </>
         )}

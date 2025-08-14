@@ -19,6 +19,11 @@ export default {
           no: 'No',
           yes: 'Yes',
         },
+        name: {
+          first: 'First Name',
+          last: 'Last Name',
+          middle: 'Middle Name',
+        },
         optional: ' (optional)',
         range: {
           end: 'End Date',
@@ -186,13 +191,37 @@ export default {
                 'birth-city': 'City of Birth',
                 'birth-country': 'Country of Birth',
                 'birth-info-title': 'Birth Information',
-                'child-number': 'Child {{current}} of {{total}}',
+                child: {
+                  dob: {
+                    label: 'Date of Birth',
+                    title: "What is the child's date of birth?",
+                    title_named: "What is {{ name }}'s date of birth?",
+                  },
+                  ethnicity: {
+                    label: 'Ethnicity',
+                    title: "What is the child's ethnicity?",
+                    title_named: "What is {{ name }}'s ethnicity?",
+                  },
+                  'lives-in-usa': {
+                    title:
+                      'Does this child currently live in the United States?',
+                    title_named:
+                      'Does {{ name }} currently live in the United States?',
+                  },
+                  name: {
+                    title: "What is the child's name?",
+                  },
+                  sex: {
+                    title: "What is the child's sex?",
+                    title_named: "What is {{ name }}'s sex?",
+                  },
+                  title: 'Child {{ current }} of {{ total }}',
+                  title_named: 'Child {{ current }} of {{ total }}: {{ name }}',
+                },
+                'child-number': 'Child {{current}} of {{total}} details',
                 dob: 'Date of Birth',
                 ethnicity: 'Race, Ethnicity, or Tribal Group',
-                'first-name': 'First Name',
-                'last-name': 'Last Name',
                 'lives-in-us': 'Do they currently live in the United States?',
-                'middle-name': 'Middle Name',
                 nationality: 'Nationality',
                 sex: 'Sex',
                 'sex-options': {
@@ -322,15 +351,6 @@ export default {
                     'Please provide the following information about your current or most recent marriage.',
                 },
                 'spouse-name': {
-                  'first-name': {
-                    label: 'First Name',
-                  },
-                  'last-name': {
-                    label: 'Last Name',
-                  },
-                  'middle-name': {
-                    label: 'Middle Name',
-                  },
                   title: "Please provide your spouse's name.",
                 },
                 title: 'Spouse Information',
@@ -431,15 +451,6 @@ export default {
                   },
                 },
                 'basic-names': {
-                  'first-name': {
-                    label: 'First Name',
-                  },
-                  'last-name': {
-                    label: 'Last Name',
-                  },
-                  'middle-name': {
-                    label: 'Middle Name',
-                  },
                   title: 'What is your full name?',
                 },
                 title: 'Names and Aliases',

@@ -7,6 +7,7 @@ import {
   cloneElement,
   ComponentProps,
   createRef,
+  Key,
   ReactElement,
   ReactNode,
   Ref,
@@ -60,6 +61,7 @@ export function QuizPage<Input extends FieldValues, Output>({
   contentContainerStyle,
   defaultValues,
   formOptions = {},
+  key,
   onSubmit,
   pageId,
   ref = null,
@@ -72,12 +74,14 @@ export function QuizPage<Input extends FieldValues, Output>({
   ) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
+  key?: Key;
   onSubmit: (data: Output) => boolean;
   pageId: string;
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
-  const quizValuesAtom = useQuizValuesAtom<Input>(pageId);
+  const persistenceKey = key ? `${pageId}.${key}` : pageId;
+  const quizValuesAtom = useQuizValuesAtom<Input>(persistenceKey);
   const setPersistedValues = useSetAtom(quizValuesAtom);
 
   const context = useForm<Input, any, Output>({
@@ -94,7 +98,10 @@ export function QuizPage<Input extends FieldValues, Output>({
   const loadQuizValues = useStableAtomCallback(
     (get) => {
       const persistedValues = get(quizValuesAtom);
-      console.debug(`Loaded quiz values for ${pageId}:`, persistedValues);
+      console.debug(
+        `Loaded quiz values for ${persistenceKey}:`,
+        persistedValues
+      );
       if (persistedValues) {
         reset(persistedValues, {
           keepDefaultValues: true,
@@ -102,7 +109,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [pageId, quizValuesAtom, reset]
+    [persistenceKey, quizValuesAtom, reset]
   );
 
   useEffect(() => {

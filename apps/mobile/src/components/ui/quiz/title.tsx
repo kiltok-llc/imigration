@@ -11,22 +11,12 @@ import { toI18nKey } from '@/lib/utils';
 
 export function QuizFieldTitle({
   ...props
-}: Omit<ComponentProps<typeof FormLabel>, 'children'>) {
-  const serviceId = useServiceId();
-  const quizId = useStepId();
-  const screenId = useQuizScreenId();
-  const pageId = useQuizPageId();
+}: Omit<ComponentProps<typeof QuizTitle>, 'name'>) {
   const {
     field: { name },
   } = useFormField();
 
-  return (
-    <FormLabel {...props}>
-      <Trans
-        i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.title`}
-      />
-    </FormLabel>
-  );
+  return <QuizTitle {...props} name={toI18nKey(name)} />;
 }
 
 export function QuizPageTitle({
@@ -41,6 +31,26 @@ export function QuizPageTitle({
     <FormLabel {...props}>
       <Trans
         i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.title`}
+      />
+    </FormLabel>
+  );
+}
+
+export function QuizTitle({
+  name,
+  ...props
+}: Omit<ComponentProps<typeof FormLabel>, 'children'> & {
+  name: string;
+}) {
+  const serviceId = useServiceId();
+  const quizId = useStepId();
+  const screenId = useQuizScreenId();
+  const pageId = useQuizPageId();
+
+  return (
+    <FormLabel {...props}>
+      <Trans
+        i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.${name}.title`}
       />
     </FormLabel>
   );

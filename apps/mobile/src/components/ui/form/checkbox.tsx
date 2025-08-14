@@ -10,7 +10,10 @@ import { useFormField } from '@/components/ui/form/field';
 import { arraysEqual } from '@/lib/utils';
 
 export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {
-  return <View {...props} />;
+  const {
+    field: { ref },
+  } = useFormField();
+  return <View ref={ref} {...props} />;
 }
 
 export function FormCheckboxItem<T>({

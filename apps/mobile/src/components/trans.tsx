@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, createContext, useContext } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
 import { Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -6,10 +6,16 @@ import tw from 'twrnc';
 
 import { Button } from '@/components/ui/button';
 
+const TranslationContextContext = createContext<Record<string, any>>({});
+export const TranslationContextProvider = TranslationContextContext.Provider;
+const useTranslationContext = () => useContext(TranslationContextContext);
+
+// TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
 export function Trans({
   ...props
 }: Omit<ComponentProps<typeof I18NTrans>, 'components'>) {
-  // TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
+  const { context, count, ...values } = useTranslationContext();
+
   return (
     <I18NTrans
       components={{
@@ -17,7 +23,10 @@ export function Trans({
         pre: <RNText style={tw`font-mono`} />,
         strong: <RNText style={tw`font-bold`} />,
       }}
+      context={context}
+      count={count}
       parent={RNText}
+      values={values}
       {...props}
     />
   );

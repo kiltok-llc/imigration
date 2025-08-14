@@ -10,9 +10,9 @@ import { useStepId } from '@/hooks/use-step-id';
 import { toI18nKey } from '@/lib/utils';
 
 export function QuizRadioItem<T>({
-                                   value,
-                                   ...props
-                                 }: Omit<ComponentProps<typeof FormRadioItem<T>>, 'label'>) {
+  value,
+  ...props
+}: Omit<ComponentProps<typeof FormRadioItem<T>>, 'label'>) {
   const { t } = useTranslation();
   const serviceId = useServiceId();
   const quizId = useStepId();
@@ -25,7 +25,7 @@ export function QuizRadioItem<T>({
   return (
     <FormRadioItem
       label={t(
-        `services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.options.${toI18nKey(String(value))}`,
+        `services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.options.${toI18nKey(String(value))}`
       )}
       value={value}
       {...props}
