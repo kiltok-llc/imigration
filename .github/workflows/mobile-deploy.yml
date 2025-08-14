@@ -60,7 +60,7 @@ jobs:
           if [ ! -f eas-fingerprint.txt ]; then
             echo "Previous fingerprint not found, native build needed"
             echo "build-needed=true" >> $GITHUB_OUTPUT
-          elif eas fingerprint:compare $(cat eas-fingerprint.txt) --platform ${{ matrix.platform }} --environment ${{ inputs.environment }}; then
+          elif eas fingerprint:compare $(cat eas-fingerprint.txt) --environment ${{ inputs.environment }}; then
             echo "Fingerprint unchanged, no native build needed"
             echo "build-needed=false" >> $GITHUB_OUTPUT
           else
