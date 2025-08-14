@@ -708,6 +708,114 @@ export default {
     },
   },
   es: {
-    translation: {},
+    translation: {
+      error: {
+        message:
+          'Hubo un error al cargar este contenido:\n<pre>{{message}}</pre>',
+        retry: 'Reintentar',
+        title: 'Ocurrió un error',
+      },
+      form: {
+        address: {
+          city: 'Ciudad',
+          state: 'Estado',
+          street: 'Dirección',
+          unit: 'Apto, suite, unidad, etc.',
+          'zip-code': 'Código Postal',
+        },
+        boolean: {
+          no: 'No',
+          yes: 'Sí',
+        },
+        name: {
+          first: 'Nombre',
+          last: 'Apellido',
+          middle: 'Segundo Nombre',
+        },
+        optional: ' (opcional)',
+        range: {
+          end: 'Fecha Final',
+          start: 'Fecha de Inicio',
+        },
+        required: ' *',
+        sex: {
+          female: 'Femenino',
+          male: 'Masculino',
+        },
+      },
+      keyboard: {
+        done: 'Hecho',
+      },
+      next: 'Siguiente',
+      onboarding: {
+        english: 'Seleccionar Inglés',
+        language: 'Elige tu idioma para comenzar.',
+        spanish: 'Elige español',
+        title: 'Bienvenido a iMigration',
+      },
+      previous: 'Atrás',
+      quiz: {
+        header: {
+          nextTitle: 'Siguiente: {{ nextTitle }}',
+          progress: '{{ current }} de {{ total }}',
+          title: '{{ title }}',
+        },
+        missing: 'Por favor responde todas las preguntas antes de continuar.',
+        next: 'Continuar',
+        previous: 'Atrás',
+      },
+      services: {
+        asylum: 'Asilo',
+        b2: {
+          subtitle: 'Solicitud de Visa de Visitante B-2',
+          title: 'Visa de Visitante',
+        },
+        categories: {
+          education: {
+            title: 'Educación',
+          },
+          family: {
+            title: 'Familia',
+          },
+          residency: {
+            title: 'Residencia',
+          },
+          title: 'Categorías',
+          work: {
+            title: 'Trabajo',
+          },
+        },
+        i589: {
+          eligible: {
+            continueButton: 'Continuar con la Solicitud',
+            description:
+              'Basado en sus respuestas, parece ser elegible para solicitar asilo en los Estados Unidos.',
+            nextSteps:
+              'Ahora puede proceder con su solicitud I-589 para asilo. Los siguientes pasos lo guiarán a través del proceso.',
+            screenTitle: 'Elegibilidad Confirmada',
+            title: 'Usted Puede Ser Elegible para Asilo',
+          },
+          ineligible: {
+            alternatives:
+              'Es posible que desee consultar con un abogado de inmigración para explorar otras opciones de inmigración que podrían estar disponibles para usted.',
+            backButton: 'Volver a Servicios',
+            description:
+              'Basado en sus respuestas, es posible que no sea elegible para solicitar asilo en los Estados Unidos en este momento.',
+            screenTitle: 'Resultados de Elegibilidad',
+            title: 'Usted Puede No Ser Elegible para Asilo',
+          },
+          subtitle: 'Solicitud I-589 para Asilo',
+          title: 'Asilo',
+        },
+        i765: {
+          subtitle: 'Solicitud I-765 para Autorización de Empleo',
+          title: 'Permiso de Trabajo',
+        },
+        popular: 'Servicios Populares',
+        screenTitle: 'Servicios',
+        searchPlaceholder: 'Buscar servicios...',
+        title: 'Servicios de iMigration',
+      },
+    },
   },
 };
