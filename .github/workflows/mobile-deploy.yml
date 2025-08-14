@@ -68,6 +68,8 @@ jobs:
             echo "Fingerprint changed, native build needed"
             echo "build-needed=true" >> $GITHUB_OUTPUT
           fi
+        env:
+          APP_VARIANT: ${{ inputs.environment }}
 
       - name: Native Build
         if: steps.fingerprint.outputs.build-needed == 'true'
