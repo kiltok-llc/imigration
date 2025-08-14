@@ -24,14 +24,14 @@ function getAppIdentifierSuffix(): string {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: config.name + getAppNameSuffix(),
+  name: 'iMigration' + getAppNameSuffix(),
   slug: config.slug!,
   ios: {
     ...config.ios,
-    bundleIdentifier: config.ios!.bundleIdentifier + getAppIdentifierSuffix(),
+    bundleIdentifier: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
   },
   android: {
     ...config.android,
-    package: config.android!.package + getAppIdentifierSuffix(),
+    package: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
   },
 });

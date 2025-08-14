@@ -1,6 +1,5 @@
 {
   "expo": {
-    "name": "iMigration",
     "slug": "imigration",
     "version": "1.0.0",
     "scheme": "imigration",
@@ -42,7 +41,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kiltok.imigration",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
