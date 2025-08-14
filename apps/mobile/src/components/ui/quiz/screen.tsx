@@ -61,9 +61,9 @@ export function QuizPage<Input extends FieldValues, Output>({
   contentContainerStyle,
   defaultValues,
   formOptions = {},
-  key,
   onSubmit,
   pageId,
+  pageKey,
   ref = null,
   schema,
   style,
@@ -74,13 +74,13 @@ export function QuizPage<Input extends FieldValues, Output>({
   ) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
-  key?: Key;
   onSubmit: (data: Output) => boolean;
   pageId: string;
+  pageKey?: Key;
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
-  const persistenceKey = key ? `${pageId}.${key}` : pageId;
+  const persistenceKey = pageKey ? `${pageId}.${pageKey}` : pageId;
   const quizValuesAtom = useQuizValuesAtom<Input>(persistenceKey);
   const setPersistedValues = useSetAtom(quizValuesAtom);
 

@@ -1,7 +1,14 @@
-import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
 import {
   type FieldPath,
   type FieldValues,
+  get,
   PathValue,
   useController,
   UseControllerProps,
@@ -72,8 +79,14 @@ export const ConditionalFormBlock = <
   });
 
   const {
-    field: { disabled, onChange },
+    field: { disabled, onChange, value },
+    formState: { defaultValues },
   } = controller;
+
+  const currentValueRef = useRef(value);
+  useEffect(() => {
+    currentValueRef.current = value;
+  }, [value]);
 
   const { resetField, setValue } = useFormContext();
 
@@ -85,17 +98,25 @@ export const ConditionalFormBlock = <
 
     if (disabled) {
       console.debug(
-        `Resetting field "${name}" to default value because it is disabled.`
+        `Resetting field "${name}" to default value because it field was disabled.`
       );
       resetField(name);
-    } else {
+    } else if (get(defaultValues, name) === currentValueRef.current) {
       console.debug(
-        `Setting field "${name}" to active value: '${activeValue}'`
+        `Setting field "${name}" to active value: '${activeValue}' because field was enabled and current value is default.`
       );
       // @ts-ignore
       setValue(name, activeValue);
     }
-  }, [activeValue, disabled, name, onChange, resetField, setValue]);
+  }, [
+    activeValue,
+    defaultValues,
+    disabled,
+    name,
+    onChange,
+    resetField,
+    setValue,
+  ]);
 
   return (
     <FormFieldContext.Provider value={controller as UseControllerReturn}>

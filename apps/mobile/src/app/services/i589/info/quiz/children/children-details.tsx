@@ -39,6 +39,7 @@ export default function ChildrenDetails() {
           key={i}
           onSubmit={() => true}
           pageId='child'
+          pageKey={i}
           schema={z.object({
             dob: required(z.date().nullable()),
             ethnicity: z.string(),
