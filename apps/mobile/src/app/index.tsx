@@ -10,9 +10,7 @@ export default function Root() {
 
   if (__DEV__) {
     setStepId('info');
-    return (
-      <Redirect href='/services/i589/info/quiz/identification/passport-information' />
-    );
+    return <Redirect href='/services/i589' />;
   }
 
   if (!isOnboarded) {

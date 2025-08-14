@@ -46,7 +46,6 @@ export default function I589() {
             contentStyle={tw`flex-row-reverse`}
             i18nKey='next'
             icon='arrow-right'
-            labelStyle={tw`text-lg`}
             mode='contained'
             onPress={() => {
               router.push(`/services/i589/${stepId}`);

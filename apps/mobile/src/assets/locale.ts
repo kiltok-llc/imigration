@@ -700,7 +700,7 @@ export default {
         popular: 'Popular Services',
         screenTitle: 'Services',
         searchPlaceholder: 'Search services...',
-        title: 'iMigration Services',
+        title: 'iMigration Services TEST',
       },
     },
   },
