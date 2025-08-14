@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { View } from 'react-native';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/ui/form/block';
@@ -40,12 +39,12 @@ export default function ReasonForLeaving() {
         })}
       >
         {({ control }) => (
-          <View>
+          <FormBlock>
             <FormField control={control} name='isEscapingHarm'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>
-          </View>
+          </FormBlock>
         )}
       </QuizPage>
 
