@@ -27,7 +27,7 @@ defaults:
 
 jobs:
   build:
-    name: Build ${{ matrix.name }}
+    name: Build EAS
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
 
@@ -43,7 +43,6 @@ jobs:
         with:
           profile: ${{ inputs.environment }}
           branch: ${{ inputs.environment }}
-          platform: ${{ matrix.platform }}
           working-directory: apps/mobile
 
       - name: Upload Sentry Sourcemaps
