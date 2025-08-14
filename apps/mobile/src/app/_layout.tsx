@@ -56,7 +56,7 @@ void SystemUI.setBackgroundColorAsync(theme.colors?.background ?? null);
 
 function RootLayout() {
   useDeviceContext(tw);
-  useRegisterDevMenuItems()
+  useRegisterDevMenuItems();
 
   return (
     <PaperProvider theme={theme}>

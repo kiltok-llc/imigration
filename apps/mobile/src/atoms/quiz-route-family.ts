@@ -9,19 +9,15 @@ import { useStepId } from '@/hooks/use-step-id';
 type QuizRouteParam = {
   quizId: string;
   serviceId: string;
-}
+};
 
-const quizRouteKey = (
-  {
-    quizId,
-    serviceId,
-  }: QuizRouteParam,
-) => `services.${serviceId}.${quizId}.route`;
+const quizRouteKey = ({ quizId, serviceId }: QuizRouteParam) =>
+  `services.${serviceId}.${quizId}.route`;
 
 export const quizRouteFamily = atomFamily(
   (param: QuizRouteParam) =>
     atomWithMmkvStorage(quizRouteKey(param), null, z.string().nullable()),
-  isEqual,
+  isEqual
 );
 
 export const useQuizRouteAtom = () => {

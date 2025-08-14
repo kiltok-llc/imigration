@@ -19,9 +19,7 @@ const languageDetector: LanguageDetectorModule = {
   type: 'languageDetector',
 };
 
-const instance = i18n
-  .use(languageDetector)
-  .use(initReactI18next);
+const instance = i18n.use(languageDetector).use(initReactI18next);
 
 instance.on('languageChanged', (lng) => {
   switch (lng) {

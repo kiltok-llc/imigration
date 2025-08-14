@@ -10,7 +10,7 @@ const devMenuItemAtom = (
   id: string,
   name: string,
   callback: (get: Getter, set: Setter) => void,
-  { shouldCollapse = true }: { shouldCollapse?: boolean } = {},
+  { shouldCollapse = true }: { shouldCollapse?: boolean } = {}
 ) => atom({ callback, id, name, shouldCollapse });
 
 const clearQuizStorageAtom = devMenuItemAtom(
@@ -19,7 +19,7 @@ const clearQuizStorageAtom = devMenuItemAtom(
   () => {
     resetAllQuizValues();
     resetAllQuizPages();
-  },
+  }
 );
 
 const clearStorageAtom = devMenuItemAtom(
@@ -27,39 +27,33 @@ const clearStorageAtom = devMenuItemAtom(
   'Clear Storage',
   () => {
     defaultStorage.clearAll();
-  },
+  }
 );
 
-const devMenuItemsAtom = atom(
-  (get) => ([
-    clearQuizStorageAtom,
-    clearStorageAtom,
-  ].map((atom) => get(atom))),
+const devMenuItemsAtom = atom((get) =>
+  [clearQuizStorageAtom, clearStorageAtom].map((atom) => get(atom))
 );
 
-const invokeDevMenuItemAtom = atom(
-  null,
-  (get, set, id: string) => {
-    const { callback } = get(devMenuItemsAtom)
-      .find((item) => item.id === id)!;
+const invokeDevMenuItemAtom = atom(null, (get, set, id: string) => {
+  const { callback } = get(devMenuItemsAtom).find((item) => item.id === id)!;
 
-    callback(get, set);
-  },
-);
-
+  callback(get, set);
+});
 
 export const useRegisterDevMenuItems = () => {
   const devMenuItems = useAtomValue(devMenuItemsAtom);
   const invokeDevMenuItem = useSetAtom(invokeDevMenuItemAtom);
 
-  const register = useCallback(() =>
-    registerDevMenuItems(
-      devMenuItems.map(({ id, name, shouldCollapse }) => ({
-        callback: () => invokeDevMenuItem(id),
-        name,
-        shouldCollapse,
-      })),
-    ), [devMenuItems, invokeDevMenuItem],
+  const register = useCallback(
+    () =>
+      registerDevMenuItems(
+        devMenuItems.map(({ id, name, shouldCollapse }) => ({
+          callback: () => invokeDevMenuItem(id),
+          name,
+          shouldCollapse,
+        }))
+      ),
+    [devMenuItems, invokeDevMenuItem]
   );
 
   useEffect(() => {
