@@ -52,7 +52,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: apps/mobile/eas-fingerprint.txt
-          key: eas-fingerprint-${{ matrix.platform }}-${{ inputs.environment }}
+          key: eas-fingerprint-${{ matrix.platform }}-${{ inputs.environment }}-${{ github.run_id }}
+          restore-keys: eas-fingerprint-${{ matrix.platform }}-${{ inputs.environment }}-
 
       - name: Compare fingerprints
         id: fingerprint
@@ -70,10 +71,14 @@ jobs:
 
       - name: Native Build
         if: steps.fingerprint.outputs.build-needed == 'true'
+        env:
+          NODE_ENV: production
         run: eas build --non-interactive --json --platform ${{ matrix.platform }} --profile ${{ inputs.environment }} | jq -r '.[0].runtimeVersion' > eas-fingerprint.txt
 
       - name: EAS Update
         if: steps.fingerprint.outputs.build-needed == 'false'
+        env:
+          NODE_ENV: production
         run: |
           eas update --non-interactive --json --platform ${{ matrix.platform }} --channel ${{ inputs.environment }} --environment ${{ inputs.environment }} --message ${{ github.sha }} | jq -r '.[0].runtimeVersion' > eas-fingerprint.txt
           eas env:pull --non-interactive --environment ${{ inputs.environment }}
