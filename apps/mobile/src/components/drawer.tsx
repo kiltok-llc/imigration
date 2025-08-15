@@ -1,15 +1,22 @@
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
+  DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import { CommonActions, DrawerActions } from '@react-navigation/native';
-import { Image } from 'expo-image';
+import { HeaderButton } from '@react-navigation/elements';
+import {
+  CommonActions,
+  DrawerActions,
+  ParamListBase,
+} from '@react-navigation/native';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
 import * as React from 'react';
 import { ComponentProps } from 'react';
+import { Image } from 'react-native';
 import { Drawer as PaperDrawer, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
+import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
 import stars from '@/assets/stars.png';
 
 export function Drawer({
@@ -44,11 +51,37 @@ export function Drawer({
   );
 }
 
-export function DrawerItemList({
+export function DrawerToggleButton({
+  navigation,
+  tintColor,
+}: {
+  navigation: DrawerNavigationProp<ParamListBase>;
+  tintColor?: string;
+}) {
+  return (
+    <HeaderButton
+      accessibilityLabel='Show navigation enu'
+      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+      style={tw`px-0`}
+    >
+      <Image
+        fadeDuration={0}
+        resizeMode='contain'
+        source={toggleDrawerIcon}
+        style={tw`size-6`}
+        tintColor={tintColor}
+      />
+    </HeaderButton>
+  );
+}
+
+function DrawerItemList({
   descriptors,
   navigation,
   state,
 }: DrawerContentComponentProps) {
+  const theme = useTheme();
+
   return (
     <PaperDrawer.Section showDivider={false}>
       {state.routes.map((route, i) => {
@@ -96,6 +129,13 @@ export function DrawerItemList({
             label={label}
             onPress={onPress}
             style={drawerItemStyle}
+            theme={{
+              fonts: {
+                labelLarge: {
+                  fontSize: theme.fonts.titleMedium.fontSize,
+                },
+              },
+            }}
           />
         );
       })}

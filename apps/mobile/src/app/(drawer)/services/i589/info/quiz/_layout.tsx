@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
-import { FadeSlot } from '@/components/layouts/fade-slot';
+import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/ui/quiz/layout';
 import { userDataFamily } from '@/lib/data/user';
 
@@ -15,7 +15,7 @@ export default function InfoLayout() {
     <>
       <Stack.Screen
         options={{
-          headerTitle: t('services.i589.info.headerTitle'),
+          title: t('services.i589.info.screenTitle'),
         }}
       />
       <QuizLayout

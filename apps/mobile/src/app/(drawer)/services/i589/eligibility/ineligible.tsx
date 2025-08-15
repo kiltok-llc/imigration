@@ -16,7 +16,7 @@ export default function Ineligible() {
     <>
       <Stack.Screen
         options={{
-          headerTitle: t('services.i589.ineligible.headerTitle'),
+          title: t('services.i589.ineligible.screenTitle'),
         }}
       />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>

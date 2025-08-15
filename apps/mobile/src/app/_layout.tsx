@@ -11,8 +11,8 @@ import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
 import tw, { useDeviceContext } from 'twrnc';
 
-import { Stack } from '@/components/layouts/stack';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
+import { Stack } from '@/components/stack';
 import { env } from '@/env';
 import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
 import { theme } from '@/lib/paper-theme';

@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-import { FadeSlot } from '@/components/layouts/fade-slot';
+import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/ui/quiz/layout';
 
 export default function EligibilityLayout() {
@@ -11,7 +11,7 @@ export default function EligibilityLayout() {
     <>
       <Stack.Screen
         options={{
-          headerTitle: t('services.i589.eligibility.headerTitle'),
+          title: t('services.i589.eligibility.screenTitle'),
         }}
       />
       <QuizLayout

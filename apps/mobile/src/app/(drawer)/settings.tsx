@@ -13,7 +13,7 @@ export default function Settings() {
     <>
       <Drawer.Screen
         options={{
-          headerTitle: t('settings.headerTitle'),
+          headerTitle: t('settings.screenTitle'),
         }}
       />
       <View style={tw`flex-1 items-center justify-center`}>

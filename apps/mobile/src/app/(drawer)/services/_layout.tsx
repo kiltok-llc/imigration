@@ -1,7 +1,7 @@
 import Drawer from 'expo-router/drawer';
 import * as React from 'react';
 
-import { Stack } from '@/components/layouts/stack';
+import { Stack } from '@/components/stack';
 
 export default function DrawerLayout() {
   return (
