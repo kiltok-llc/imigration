@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
 import { FadeSlot } from '@/components/fade-slot';
-import { QuizLayout } from '@/components/ui/quiz/layout';
+import { QuizLayout } from '@/components/quiz/layout';
 import { userDataFamily } from '@/lib/data/user';
 
 export default function InfoLayout() {
@@ -48,4 +48,4 @@ export default function InfoLayout() {
   );
 }
 
-export { QuizErrorFallback as ErrorBoundary } from '@/components/ui/quiz/layout';
+export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';

@@ -1,16 +1,13 @@
 import tw from 'twrnc';
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import { FormCheckboxGroup } from '@/components/ui/form/checkbox';
-import {
-  ConditionalFormFieldBlock,
-  FormField,
-} from '@/components/ui/form/field';
-import { QuizCheckboxItem } from '@/components/ui/quiz/checkbox';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { FormBlock } from '@/components/form/block';
+import { FormCheckboxGroup } from '@/components/form/checkbox';
+import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { QuizCheckboxItem } from '@/components/quiz/checkbox';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle } from '@/components/quiz/title';
 import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
 
 export default function AsylumReasonsAndFear() {

@@ -38,11 +38,13 @@ export default {
       keyboard: {
         done: 'Done',
       },
+      language: {
+        en: '🇺🇸 English',
+        es: '🇪🇸 Español',
+      },
       next: 'Next',
       onboarding: {
-        english: 'Select English',
-        language: 'Choose your language to get started.',
-        spanish: 'Elige español',
+        'choose-language': 'Choose your language to get started.',
         title: 'Welcome to iMigration',
       },
       previous: 'Back',
@@ -707,7 +709,19 @@ export default {
       },
       settings: {
         drawerLabel: 'Settings',
+        language: {
+          screenTitle: 'Language',
+        },
         screenTitle: 'Settings',
+        sections: {
+          'language-and-accessibility': {
+            language: {
+              description: 'Select your preferred language for the app.',
+              title: 'Preferred Language',
+            },
+            title: 'Language & Accessibility',
+          },
+        },
       },
     },
   },

@@ -1,23 +1,23 @@
 import { useAtomValue } from 'jotai';
 import z from 'zod/v4';
 
-import { TranslationContextProvider } from '@/components/trans';
-import { FormBlock } from '@/components/ui/form/block';
-import { FormField } from '@/components/ui/form/field';
+import { FormBlock } from '@/components/form/block';
+import { FormField } from '@/components/form/field';
 import {
   DEFAULT_NAME,
   FormNameInput,
   NameSchema,
-} from '@/components/ui/form/name';
-import { FormBooleanInput, FormSexInput } from '@/components/ui/form/radio';
-import { QuizDateInput } from '@/components/ui/quiz/date';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
+} from '@/components/form/name';
+import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
+import { QuizDateInput } from '@/components/quiz/date';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
 import {
   QuizFieldTitle,
   QuizPageTitle,
   QuizTitle,
-} from '@/components/ui/quiz/title';
+} from '@/components/quiz/title';
+import { TranslationContextProvider } from '@/components/trans';
 import { userDataFamily } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';

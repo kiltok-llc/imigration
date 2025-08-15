@@ -1,11 +1,11 @@
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import { FormField } from '@/components/ui/form/field';
-import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { FormBlock } from '@/components/form/block';
+import { FormField } from '@/components/form/field';
+import { FormBooleanInput } from '@/components/form/radio';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function LanguageProficiency() {

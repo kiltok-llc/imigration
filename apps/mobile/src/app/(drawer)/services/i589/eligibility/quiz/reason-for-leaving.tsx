@@ -2,17 +2,14 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import { FormCheckboxGroup } from '@/components/ui/form/checkbox';
-import {
-  ConditionalFormFieldBlock,
-  FormField,
-} from '@/components/ui/form/field';
-import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizCheckboxItem } from '@/components/ui/quiz/checkbox';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { FormBlock } from '@/components/form/block';
+import { FormCheckboxGroup } from '@/components/form/checkbox';
+import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { FormBooleanInput } from '@/components/form/radio';
+import { QuizCheckboxItem } from '@/components/quiz/checkbox';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle } from '@/components/quiz/title';
 import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
 import { required } from '@/lib/utils';
 

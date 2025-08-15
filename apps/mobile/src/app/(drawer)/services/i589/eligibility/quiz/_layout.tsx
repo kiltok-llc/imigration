@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { FadeSlot } from '@/components/fade-slot';
-import { QuizLayout } from '@/components/ui/quiz/layout';
+import { QuizLayout } from '@/components/quiz/layout';
 
 export default function EligibilityLayout() {
   const { t } = useTranslation();
@@ -30,4 +30,4 @@ export default function EligibilityLayout() {
   );
 }
 
-export { QuizErrorFallback as ErrorBoundary } from '@/components/ui/quiz/layout';
+export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';

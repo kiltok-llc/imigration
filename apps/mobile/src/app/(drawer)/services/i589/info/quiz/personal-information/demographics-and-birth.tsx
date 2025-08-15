@@ -1,12 +1,12 @@
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import { FormField } from '@/components/ui/form/field';
-import { FormSexInput } from '@/components/ui/form/radio';
-import { QuizDateInput } from '@/components/ui/quiz/date';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { FormBlock } from '@/components/form/block';
+import { FormField } from '@/components/form/field';
+import { FormSexInput } from '@/components/form/radio';
+import { QuizDateInput } from '@/components/quiz/date';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle } from '@/components/quiz/title';
 import { SexEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
 

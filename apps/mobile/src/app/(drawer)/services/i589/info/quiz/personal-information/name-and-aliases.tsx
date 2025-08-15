@@ -1,19 +1,16 @@
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import {
-  ConditionalFormFieldBlock,
-  FormField,
-} from '@/components/ui/form/field';
+import { FormBlock } from '@/components/form/block';
+import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import {
   DEFAULT_NAME,
   FormNameInput,
   NameSchema,
-} from '@/components/ui/form/name';
-import { FormBooleanInput } from '@/components/ui/form/radio';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle, QuizPageTitle } from '@/components/ui/quiz/title';
+} from '@/components/form/name';
+import { FormBooleanInput } from '@/components/form/radio';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function NameAndAliases() {

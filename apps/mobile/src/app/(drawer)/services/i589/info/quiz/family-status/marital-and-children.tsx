@@ -1,16 +1,13 @@
 import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
-import { FormBlock } from '@/components/ui/form/block';
-import {
-  ConditionalFormFieldBlock,
-  FormField,
-} from '@/components/ui/form/field';
-import { FormBooleanInput, FormRadioGroup } from '@/components/ui/form/radio';
-import { QuizRadioItem } from '@/components/ui/quiz/radio';
-import { QuizPage, QuizScreen } from '@/components/ui/quiz/screen';
-import { QuizTextInput } from '@/components/ui/quiz/text';
-import { QuizFieldTitle } from '@/components/ui/quiz/title';
+import { FormBlock } from '@/components/form/block';
+import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
+import { QuizRadioItem } from '@/components/quiz/radio';
+import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
+import { QuizFieldTitle } from '@/components/quiz/title';
 import { userDataFamily } from '@/lib/data/user';
 import { MaritalStatusEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';

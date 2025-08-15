@@ -1,1 +1,1 @@
-export { SavedQuizRouteRedirect as default } from '@/components/ui/quiz/layout';
+export { SavedQuizRouteRedirect as default } from '@/components/quiz/layout';
