@@ -1,18 +1,17 @@
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Image } from 'expo-image';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import Drawer from 'expo-router/drawer';
 import * as React from 'react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { Searchbar, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import banner from '@/assets/onboarding/usa-banner-2.png';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
-import { Container } from '@/components/ui/container';
 import { IconProps } from '@/lib/icon-props';
 
 const popularServices = [
@@ -49,100 +48,95 @@ export default function Services() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
-      <Stack.Screen
+      <Drawer.Screen
         options={{
-          headerShown: false,
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+          headerTintColor: theme.colors.primary,
+          headerTitle: t('services.title'),
+          headerTitleStyle: tw`text-2xl`,
           title: t('services.screenTitle'),
         }}
       />
-      <SafeAreaView edges={['top', 'right', 'left']} style={tw`flex-1`}>
+      <View style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />
-        <TransText
-          i18nKey='services.title'
-          style={tw.style('pb-4 text-center font-bold', {
-            color: theme.colors.primary,
-          })}
-          variant='displaySmall'
-        />
 
-        <ScrollView
-          contentContainerStyle={tw`grow-1 gap-8 pt-4`}
-          style={tw`flex-1`}
-        >
-          <SafeAreaView edges={['bottom']} style={tw`flex-1`}>
-            <Container style={tw`flex-1 gap-8`}>
-              <Searchbar
-                onChangeText={setSearchQuery}
-                placeholder={t('services.searchPlaceholder')}
-                value={searchQuery}
+        <ScrollView contentContainerStyle={tw`grow-1`} style={tw`flex-1`}>
+          <SafeAreaView
+            edges={{ bottom: 'maximum' }}
+            style={tw`flex-1 gap-8 p-4`}
+          >
+            {/*<Searchbar*/}
+            {/*  onChangeText={setSearchQuery}*/}
+            {/*  placeholder={t('services.searchPlaceholder')}*/}
+            {/*  value={searchQuery}*/}
+            {/*/>*/}
+
+            <View style={tw`gap-2`}>
+              <TransText
+                i18nKey='services.popular'
+                style={tw.style('font-bold', {
+                  color: theme.colors.primary,
+                })}
+                variant='headlineSmall'
               />
-
               <View style={tw`gap-2`}>
-                <TransText
-                  i18nKey='services.popular'
-                  style={tw.style('font-bold', {
-                    color: theme.colors.primary,
-                  })}
-                  variant='headlineSmall'
-                />
-                <View style={tw`gap-2`}>
-                  {popularServices.map(({ href, Icon, id }) => (
-                    <Button
-                      contentStyle={tw`justify-start gap-2`}
-                      icon={(props) => (
-                        <View style={tw`w-9 items-center justify-center`}>
-                          <Icon {...props} size={36} />
-                        </View>
-                      )}
-                      key={id}
-                      mode='outlined'
-                      onPress={() => router.push(href)}
-                    >
-                      <View>
-                        <TransText
-                          i18nKey={`services.${id}.title`}
-                          style={tw`font-semibold`}
-                        />
-                        <TransText
-                          i18nKey={`services.${id}.subtitle`}
-                          variant='bodySmall'
-                        />
+                {popularServices.map(({ href, Icon, id }) => (
+                  <Button
+                    contentStyle={tw`justify-start gap-2`}
+                    icon={(props) => (
+                      <View style={tw`w-9 items-center justify-center`}>
+                        <Icon {...props} size={36} />
                       </View>
-                    </Button>
-                  ))}
-                </View>
+                    )}
+                    key={id}
+                    mode='outlined'
+                    onPress={() => router.push(href)}
+                  >
+                    <View>
+                      <TransText
+                        i18nKey={`services.${id}.title`}
+                        style={tw`font-semibold`}
+                      />
+                      <TransText
+                        i18nKey={`services.${id}.subtitle`}
+                        variant='bodySmall'
+                      />
+                    </View>
+                  </Button>
+                ))}
               </View>
+            </View>
 
+            <View style={tw`gap-2`}>
+              <TransText
+                i18nKey='services.categories.title'
+                style={tw.style('font-bold', {
+                  color: theme.colors.primary,
+                })}
+                variant='headlineSmall'
+              />
               <View style={tw`gap-2`}>
-                <TransText
-                  i18nKey='services.categories.title'
-                  style={tw.style('font-bold', {
-                    color: theme.colors.primary,
-                  })}
-                  variant='headlineSmall'
-                />
-                <View style={tw`gap-2`}>
-                  {categories.map(({ href, id }) => (
-                    <TransButton
-                      contentStyle={tw`flex-row-reverse justify-between`}
-                      i18nKey={`services.categories.${id}.title`}
-                      icon='chevron-right'
-                      key={id}
-                      mode='outlined'
-                      onPress={() => router.push(href)}
-                      size='sm'
-                    />
-                  ))}
-                </View>
+                {categories.map(({ href, id }) => (
+                  <TransButton
+                    contentStyle={tw`flex-row-reverse justify-between`}
+                    i18nKey={`services.categories.${id}.title`}
+                    icon='chevron-right'
+                    key={id}
+                    mode='outlined'
+                    onPress={() => router.push(href)}
+                  />
+                ))}
               </View>
-            </Container>
+            </View>
           </SafeAreaView>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </>
   );
 }

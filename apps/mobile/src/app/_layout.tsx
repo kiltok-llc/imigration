@@ -1,17 +1,17 @@
 import * as Sentry from '@sentry/react-native';
 import { isRunningInExpoGo } from 'expo';
-import { Stack } from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
 import React from 'react';
 
 import '@/polyfill';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { PaperProvider, useTheme } from 'react-native-paper';
+import { PaperProvider } from 'react-native-paper';
 import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
 import tw, { useDeviceContext } from 'twrnc';
 
+import { Drawer } from '@/components/layouts/drawer';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
@@ -53,7 +53,7 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
-void SystemUI.setBackgroundColorAsync(theme.colors?.background ?? null);
+void SystemUI.setBackgroundColorAsync(theme.colors.background);
 
 function RootLayout() {
   useDeviceContext(tw);
@@ -68,7 +68,7 @@ function RootLayout() {
             <GestureHandlerRootView style={tw`flex-1`}>
               <KeyboardProvider>
                 <SplashScreenBarrier>
-                  <StackWrapper />
+                  <Drawer />
                   <Toaster />
                 </SplashScreenBarrier>
               </KeyboardProvider>
@@ -77,28 +77,6 @@ function RootLayout() {
         </TRPCProvider>
       </QueryProvider>
     </PaperProvider>
-  );
-}
-
-/**
- * Wrap the Stack component so that we can use PaperProvider
- */
-function StackWrapper() {
-  const theme = useTheme();
-
-  return (
-    <Stack
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerTintColor: theme.colors.onSurface,
-        title: '',
-      }}
-    />
   );
 }
 
