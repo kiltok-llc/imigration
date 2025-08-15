@@ -79,12 +79,11 @@ export default function Services() {
           headerShadowVisible: false,
           headerShown: true,
           headerStyle: {
-            backgroundColor: 'transparent',
+            backgroundColor: theme.colors.background,
           },
           headerTintColor: theme.colors.primary,
-          headerTitle: t('services.title'),
+          headerTitle: t('services.headerTitle'),
           headerTitleStyle: tw`text-2xl`,
-          title: t('services.screenTitle'),
         }}
       />
       <View style={tw`flex-1`}>

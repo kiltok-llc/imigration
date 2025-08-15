@@ -77,6 +77,8 @@ export default {
             title: 'Work',
           },
         },
+        drawerLabel: 'Services',
+        headerTitle: 'iMigration Services',
         i589: {
           appeal: {
             description:
@@ -113,6 +115,7 @@ export default {
             },
             description:
               'Complete a short quiz to check if you qualify to apply for asylum.',
+            headerTitle: 'Asylum Eligibility Assessment',
             'physical-presence': {
               'is-in-usa': {
                 'is-in-usa': {
@@ -164,16 +167,15 @@ export default {
               },
               title: 'Reason for Leaving',
             },
-            screenTitle: 'Asylum Eligibility Assessment',
             title: 'Eligibility',
           },
           eligible: {
             continueButton: 'Continue to Application',
             description:
               'Based on your answers, you appear to be eligible to apply for asylum in the United States.',
+            headerTitle: 'Eligibility Confirmed',
             nextSteps:
               'You can now proceed with your I-589 application for asylum. The following steps will guide you through the process.',
-            screenTitle: 'Eligibility Confirmed',
             title: 'You May Be Eligible for Asylum',
           },
           ineligible: {
@@ -182,7 +184,7 @@ export default {
             backButton: 'Return to Services',
             description:
               'Based on your answers, you may not be eligible to apply for asylum in the United States at this time.',
-            screenTitle: 'Eligibility Results',
+            headerTitle: 'Eligibility Results',
             title: 'You May Not Be Eligible for Asylum',
           },
           info: {
@@ -443,6 +445,7 @@ export default {
                 title: 'Spouse Information',
               },
             },
+            headerTitle: 'Personal Information',
             identification: {
               'other-identification': {
                 'drivers-license-details': {
@@ -672,7 +675,6 @@ export default {
                 },
               },
             },
-            screenTitle: 'Personal Information',
             title: 'Personal Info',
           },
           interview: {
@@ -681,7 +683,7 @@ export default {
             title: 'Interview',
           },
           progress: {
-            screenTitle: 'Application Progress',
+            headerTitle: 'Application Progress',
           },
           review: {
             description:
@@ -701,12 +703,11 @@ export default {
           title: 'Work Permit',
         },
         popular: 'Popular Services',
-        screenTitle: 'Services',
         searchPlaceholder: 'Search services...',
-        title: 'iMigration Services',
       },
       settings: {
-        screenTitle: 'Settings',
+        drawerLabel: 'Settings',
+        headerTitle: 'Settings',
       },
     },
   },

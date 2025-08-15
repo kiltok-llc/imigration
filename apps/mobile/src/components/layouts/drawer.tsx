@@ -6,12 +6,16 @@ import { CommonActions, DrawerActions } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
 import * as React from 'react';
+import { ComponentProps } from 'react';
 import { Drawer as PaperDrawer, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import stars from '@/assets/stars.png';
 
-export function Drawer() {
+export function Drawer({
+  screenOptions,
+  ...props
+}: ComponentProps<typeof ExpoDrawer>) {
   const theme = useTheme();
 
   return (
@@ -33,7 +37,9 @@ export function Drawer() {
           backgroundColor: theme.colors.surface,
         },
         headerTintColor: theme.colors.onSurface,
+        ...screenOptions,
       }}
+      {...props}
     />
   );
 }

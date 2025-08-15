@@ -11,7 +11,7 @@ export default function EligibilityLayout() {
     <>
       <Stack.Screen
         options={{
-          title: t('services.i589.eligibility.screenTitle'),
+          headerTitle: t('services.i589.eligibility.headerTitle'),
         }}
       />
       <QuizLayout

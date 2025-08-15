@@ -15,7 +15,7 @@ export default function InfoLayout() {
     <>
       <Stack.Screen
         options={{
-          title: t('services.i589.info.screenTitle'),
+          headerTitle: t('services.i589.info.headerTitle'),
         }}
       />
       <QuizLayout

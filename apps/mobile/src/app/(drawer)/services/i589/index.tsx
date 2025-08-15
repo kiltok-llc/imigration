@@ -21,7 +21,7 @@ export default function I589() {
     <>
       <Stack.Screen
         options={{
-          title: t('services.i589.progress.screenTitle'),
+          headerTitle: t('services.i589.progress.headerTitle'),
         }}
       />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
