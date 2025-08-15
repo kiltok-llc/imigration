@@ -705,6 +705,9 @@ export default {
         searchPlaceholder: 'Search services...',
         title: 'iMigration Services',
       },
+      settings: {
+        screenTitle: 'Settings',
+      },
     },
   },
   es: {

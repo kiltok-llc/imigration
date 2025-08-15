@@ -1,7 +1,9 @@
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { HeaderButton } from '@react-navigation/elements';
+import { DrawerActions, ParamListBase } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import Drawer from 'expo-router/drawer';
+import { Stack, useNavigation, useRouter } from 'expo-router';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
@@ -9,6 +11,7 @@ import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
+import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
 import banner from '@/assets/onboarding/usa-banner-2.png';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
@@ -48,12 +51,33 @@ export default function Services() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
-  // const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
   return (
     <>
-      <Drawer.Screen
+      <Stack.Screen
         options={{
+          headerLeft: ({ tintColor }) => (
+            <>
+              <HeaderButton
+                accessibilityLabel='Show navigation menu'
+                onPress={() =>
+                  navigation.dispatch(DrawerActions.toggleDrawer())
+                }
+                style={tw`px-0`}
+              >
+                <Image
+                  contentFit='contain'
+                  source={toggleDrawerIcon}
+                  style={tw`h-6 w-6`}
+                  tintColor={tintColor}
+                  transition={0}
+                />
+              </HeaderButton>
+            </>
+          ),
+          headerShadowVisible: false,
+          headerShown: true,
           headerStyle: {
             backgroundColor: 'transparent',
           },

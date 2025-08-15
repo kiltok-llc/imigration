@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
 import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
@@ -24,7 +25,11 @@ export default function Onboarding() {
 
   return (
     <>
-      <Stack.Screen options={{ headerShown: false }} />
+      <Drawer.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
       <View style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 2 })} />
         <ScrollView

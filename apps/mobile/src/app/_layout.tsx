@@ -11,7 +11,7 @@ import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
 import tw, { useDeviceContext } from 'twrnc';
 
-import { Drawer } from '@/components/layouts/drawer';
+import { Stack } from '@/components/layouts/stack';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
@@ -68,7 +68,11 @@ function RootLayout() {
             <GestureHandlerRootView style={tw`flex-1`}>
               <KeyboardProvider>
                 <SplashScreenBarrier>
-                  <Drawer />
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  />
                   <Toaster />
                 </SplashScreenBarrier>
               </KeyboardProvider>

@@ -1,7 +1,11 @@
 import { Stack as ExpoStack } from 'expo-router';
+import { ComponentProps } from 'react';
 import { useTheme } from 'react-native-paper';
 
-export function Stack() {
+export function Stack({
+  screenOptions,
+  ...props
+}: ComponentProps<typeof ExpoStack>) {
   const theme = useTheme();
 
   return (
@@ -15,7 +19,9 @@ export function Stack() {
         },
         headerTintColor: theme.colors.onSurface,
         title: '',
+        ...screenOptions,
       }}
+      {...props}
     />
   );
 }

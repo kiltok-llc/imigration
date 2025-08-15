@@ -7,7 +7,7 @@ export default function Root() {
   const isOnboarded = useAtomValue(isOnboardedAtom);
 
   if (__DEV__) {
-    return <Redirect href='/services' />;
+    return <Redirect href='/settings' />;
   }
 
   if (!isOnboarded) {
