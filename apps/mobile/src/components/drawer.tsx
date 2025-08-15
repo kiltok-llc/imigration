@@ -83,7 +83,7 @@ function DrawerItemList({
   const theme = useTheme();
 
   return (
-    <PaperDrawer.Section showDivider={false}>
+    <PaperDrawer.Section showDivider={false} style={tw`gap-2`}>
       {state.routes.map((route, i) => {
         const focused = i === state.index;
 
