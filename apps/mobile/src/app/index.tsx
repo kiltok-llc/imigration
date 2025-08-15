@@ -1,7 +1,7 @@
 import { Redirect } from 'expo-router';
 import { useAtomValue, useSetAtom } from 'jotai';
 
-import { isOnboardedAtom } from '@/atoms/onboarding';
+import { isOnboardedAtom } from '@/atoms/is-onboarding-atom';
 import { serviceStepFamily } from '@/atoms/service-step-family';
 
 export default function Root() {
@@ -10,9 +10,7 @@ export default function Root() {
 
   if (__DEV__) {
     setStepId('info');
-    return (
-      <Redirect href='/services/i589/info/quiz/personal-information/name-and-aliases' />
-    );
+    return <Redirect href='/onboarding' />;
   }
 
   if (!isOnboarded) {

@@ -21,7 +21,7 @@ export const AddressSchema = z.object({
   state: z.string().nonempty(),
   street: z.string().nonempty(),
   unit: z.string(),
-  zipCode: z.string().regex(/^\d{5}(-\d{4})?$/),
+  zipCode: z.string().nonempty(),
 });
 
 export function FormAddressInput({
