@@ -40,8 +40,8 @@
   },
   "prettier": "@repo/prettier-config",
   "dependencies": {
-    "@supabase-cache-helpers/postgrest-core": "^0.12.1",
-    "@supabase-cache-helpers/postgrest-react-query": "^1.13.4",
+    "@supabase-cache-helpers/postgrest-core": "^0.12.2",
+    "@supabase-cache-helpers/postgrest-react-query": "^1.13.5",
     "@supabase/postgrest-js": "^1.19.4",
     "@supabase/supabase-js": "^2.50.0",
     "@tanstack/react-query": "catalog:"
