@@ -29,8 +29,16 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you upload documents for your application.",
-          "cameraPermission": "The app accesses your camera to let you take photos of documents for your application."
+          "photosPermission": "iMigration accesses your photos to let you upload documents for your application.",
+          "cameraPermission": "iMigration accesses your camera to let you take photos of documents for your application.",
+          "microphonePermission": "iMigration uses the microphone to allow you to dictate text instead of typing."
+        }
+      ],
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": false,
+          "speechRecognitionPermission": "iMigration uses speech recognition to allow you to dictate text instead of typing."
         }
       ]
     ],
