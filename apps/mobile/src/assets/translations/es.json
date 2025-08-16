@@ -1,0 +1,702 @@
+{
+  "error": {
+    "message": "Se produjo un error al cargar este contenido:\n<pre>{{message}}</pre>",
+    "retry": "Reintentar",
+    "title": "Se ha producido un error"
+  },
+  "form": {
+    "address": {
+      "city": "Ciudad",
+      "state": "Estado",
+      "street": "Dirección",
+      "unit": "Apto, suite, unidad, etc.",
+      "zip-code": "Código postal"
+    },
+    "boolean": {
+      "no": "No",
+      "yes": "Sí"
+    },
+    "name": {
+      "first": "Nombre",
+      "last": "Apellido",
+      "middle": "Segundo nombre"
+    },
+    "optional": " (opcional)",
+    "range": {
+      "end": "Fecha de finalización",
+      "start": "Fecha de inicio"
+    },
+    "required": " *",
+    "sex": {
+      "female": "Mujer",
+      "male": "Hombre"
+    }
+  },
+  "keyboard": {
+    "done": "Listo"
+  },
+  "language": {
+    "en": "🇺🇸 English",
+    "es": "🇪🇸 Español"
+  },
+  "next": "Siguiente",
+  "onboarding": {
+    "choose-language": "Elige tu idioma para comenzar.",
+    "title": "Bienvenido a iMigration"
+  },
+  "previous": "Atrás",
+  "quiz": {
+    "header": {
+      "nextTitle": "Siguiente: {{ nextTitle }}",
+      "progress": "{{ current }} de {{ total }}",
+      "title": "{{ title }}"
+    },
+    "missing": "Por favor responda todas las preguntas antes de continuar.",
+    "next": "Continuar",
+    "previous": "Atrás"
+  },
+  "services": {
+    "asylum": "Asilo",
+    "b2": {
+      "subtitle": "Solicitud de Visa de Visita B-2",
+      "title": "Visa de Visitante"
+    },
+    "categories": {
+      "education": {
+        "title": "Educación"
+      },
+      "family": {
+        "title": "Familia"
+      },
+      "residency": {
+        "title": "Residencia"
+      },
+      "title": "Categorías",
+      "work": {
+        "title": "Trabajo"
+      }
+    },
+    "drawerLabel": "Servicios",
+    "i589": {
+      "appeal": {
+        "description": "Presente una apelación para reabrir o revisar su caso si se deniega su solicitud.",
+        "title": "Apelación",
+        "label": "Apelación"
+      },
+      "decision": {
+        "description": "Reciba la determinación oficial sobre su solicitud de asilo.",
+        "title": "Decisión",
+        "label": "Decisión"
+      },
+      "documents": {
+        "description": "Sube los documentos de identidad requeridos (por ejemplo, pasaporte, certificado de nacimiento).",
+        "title": "Documentos",
+        "label": "Docs"
+      },
+      "eligibility": {
+        "arrival-date": {
+          "is-recent-arrival": {
+            "is-recent-arrival": {
+              "title": "¿Has llegado a los EE. UU. en el último año?"
+            }
+          },
+          "title": "Fecha de Llegada"
+        },
+        "country-of-origin": {
+          "is-from-safe-country": {
+            "is-from-safe-country": {
+              "title": "¿Eres de un país que los EE. UU. consideran como “safe” donde podrías haber solicitado protección?"
+            }
+          },
+          "title": "País de Origen"
+        },
+        "description": "Completa un breve cuestionario para verificar si cumples con los requisitos para solicitar asilo.",
+        "physical-presence": {
+          "is-in-usa": {
+            "is-in-usa": {
+              "title": "¿Te encuentras actualmente en los Estados Unidos?"
+            }
+          },
+          "title": "Presencia Física en EE. UU."
+        },
+        "previous-applications": {
+          "has-previous-app": {
+            "has-previous-app": {
+              "title": "¿Has solicitado previamente asilo en los Estados Unidos?"
+            }
+          },
+          "title": "Solicitudes Anteriores"
+        },
+        "reason-for-leaving": {
+          "harm-reasons": {
+            "custom-harm-reason": {
+              "label": "Por favor especifica la otra razón por la que te fuiste"
+            },
+            "harm-reasons": {
+              "options": {
+                "nationality": "Nacionalidad",
+                "none": "Ninguna de las anteriores",
+                "other": "Otra",
+                "political-opinion": "Opinión Política",
+                "race": "Raza",
+                "religion": "Religión",
+                "social-group": "Grupo Social"
+              },
+              "title": "¿Se basó ese daño en alguna de estas razones?\n(Seleccione todas las que correspondan)"
+            }
+          },
+          "is-escaping-harm": {
+            "is-escaping-harm": {
+              "title": "¿Dejó su país de origen porque temía daño o persecución?"
+            }
+          },
+          "is-harmed-by-gov": {
+            "is-harmed-by-gov": {
+              "title": "¿Fue el daño causado por su gobierno o por personas que su gobierno no podía controlar?"
+            }
+          },
+          "title": "Motivo de Salida"
+        },
+        "screenTitle": "Evaluación de Elegibilidad para Asilo",
+        "title": "Elegibilidad",
+        "label": "Elegibilidad"
+      },
+      "eligible": {
+        "continueButton": "Continuar con la Solicitud",
+        "description": "Basado en sus respuestas, parece ser elegible para solicitar asilo en los Estados Unidos.",
+        "nextSteps": "Ahora puede proceder con su solicitud I-589 para asilo. Los siguientes pasos lo guiarán a través del proceso.",
+        "screenTitle": "Elegibilidad Confirmada",
+        "title": "Podría ser Elegible para Asilo"
+      },
+      "ineligible": {
+        "alternatives": "Puede consultar con un abogado de inmigración para explorar otras opciones de inmigración que podrían estar disponibles para usted.",
+        "backButton": "Volver a Servicios",
+        "description": "Según sus respuestas, es posible que no sea elegible para solicitar asilo en los Estados Unidos en este momento.",
+        "screenTitle": "Resultados de Elegibilidad",
+        "title": "Es posible que no sea elegible para el asilo"
+      },
+      "info": {
+        "asylum-and-fear": {
+          "asylum-reasons-and-fear": {
+            "detailed-harm-reasons": {
+              "custom-harm-reason": {
+                "label": "Por favor especifique la otra razón"
+              },
+              "harm-reasons": {
+                "options": {
+                  "nationality": "Nacionalidad",
+                  "none": "Ninguno de los anteriores",
+                  "other": "Otro",
+                  "political-opinion": "Opinión Política",
+                  "race": "Raza",
+                  "religion": "Religión",
+                  "social-group": "Grupo Social"
+                },
+                "title": "¿Cuáles son las razones detalladas del daño que teme? (Seleccione todas las que correspondan)"
+              }
+            },
+            "fear-description": {
+              "fear-description": {
+                "label": "Descripción del Temor",
+                "title": "Por favor describe detalladamente qué temes que suceda si regresas a tu país de origen."
+              }
+            },
+            "fear-of-return": {
+              "fear-of-return": {
+                "title": "¿Temes regresar a tu país de origen?"
+              }
+            },
+            "other-country-fear": {
+              "has-other-country-fear": {
+                "title": "¿Temes persecución en algún otro país?"
+              }
+            },
+            "persecution-description": {
+              "persecution-description": {
+                "label": "Descripción de la Persecución",
+                "title": "Por favor describe detalladamente la persecución que has experimentado o temes."
+              }
+            },
+            "title": "Razones para Asilo y Temor"
+          }
+        },
+        "children": {
+          "children-details": {
+            "add-child": "Agregar Niño",
+            "additional-info-title": "Información Adicional",
+            "basic-info-title": "Información Básica",
+            "birth-city": "Ciudad de Nacimiento",
+            "birth-country": "País de Nacimiento",
+            "birth-info-title": "Información de Nacimiento",
+            "child": {
+              "dob": {
+                "label": "Fecha de Nacimiento",
+                "title": "¿Cuál es la fecha de nacimiento del niño?",
+                "title_named": "¿Cuál es la fecha de nacimiento de {{ name }}?"
+              },
+              "ethnicity": {
+                "label": "Etnicidad",
+                "title": "¿Cuál es la etnicidad del niño?",
+                "title_named": "¿Cuál es la etnicidad de {{ name }}?"
+              },
+              "lives-in-usa": {
+                "title": "¿Este niño vive actualmente en los Estados Unidos?",
+                "title_named": "¿{{ name }} vive actualmente en los Estados Unidos?"
+              },
+              "name": {
+                "title": "¿Cuál es el nombre del niño?"
+              },
+              "sex": {
+                "title": "¿Cuál es el sexo del niño?",
+                "title_named": "¿Cuál es el sexo de {{ name }}?"
+              },
+              "title": "Niño/a {{ current }} de {{ total }}",
+              "title_named": "Niño/a {{ current }} de {{ total }}: {{ name }}"
+            },
+            "child-number": "Detalles del niño/a {{current}} de {{total}}",
+            "dob": "Fecha de Nacimiento",
+            "ethnicity": "Raza, Etnicidad o Grupo Tribal",
+            "lives-in-us": "¿Vive actualmente en los Estados Unidos?",
+            "nationality": "Nacionalidad",
+            "sex": "Sexo",
+            "sex-options": {
+              "female": "Femenino",
+              "male": "Masculino"
+            },
+            "title": "Detalles de los hijos"
+          }
+        },
+        "declaration": {
+          "final-declaration": {
+            "information-accuracy": {
+              "information-accurate": {
+                "title": "Certifico que la información que he proporcionado en esta solicitud es veraz y correcta según mi leal saber y entender."
+              }
+            },
+            "interpreter-needed": {
+              "interpreter-language": {
+                "label": "Idioma del intérprete",
+                "title": "¿Para qué idioma necesitas un intérprete?"
+              },
+              "needs-interpreter": {
+                "title": "¿Necesitas un intérprete para tu entrevista?"
+              }
+            },
+            "signature": {
+              "applicant-signature": {
+                "label": "Nombre completo (Firma)",
+                "title": "Por favor, escribe tu nombre completo como tu firma electrónica."
+              },
+              "signature-date": {
+                "label": "Fecha",
+                "title": "Fecha de la firma"
+              }
+            },
+            "title": "Declaración final",
+            "understands-consequences": {
+              "understands-consequences": {
+                "title": "Entiendo que cualquier información falsa puede resultar en la negación de mi solicitud u otras consecuencias legales."
+              }
+            }
+          }
+        },
+        "description": "Ingresa tus detalles personales como nombre, fecha de nacimiento y nacionalidad.",
+        "education": {
+          "school-information": {
+            "attendance-period": {
+              "end": {
+                "label": "Fecha de finalización"
+              },
+              "start": {
+                "label": "Fecha de inicio"
+              },
+              "title": "¿Cuándo asistió a esta escuela?"
+            },
+            "basic-school-info": {
+              "school-level": {
+                "options": {
+                  "primary": "Primaria",
+                  "secondary": "Secundaria",
+                  "university": "Universidad",
+                  "vocational": "Vocacional/Técnica"
+                },
+                "title": "¿Cuál es el nivel educativo más alto que completó?"
+              },
+              "school-name": {
+                "label": "Nombre de la escuela/colegio",
+                "title": "¿Cuál es el nombre de la última escuela o colegio al que asistió?"
+              }
+            },
+            "school-location": {
+              "school-city": {
+                "title": "Ciudad"
+              },
+              "school-country": {
+                "title": "País"
+              },
+              "school-state": {
+                "title": "Estado"
+              },
+              "title": "Ubicación de la escuela"
+            },
+            "title": "Información de la escuela"
+          }
+        },
+        "employment": {
+          "employment-history": {
+            "basic-employment-info": {
+              "employer-name": {
+                "label": "Nombre del Empleador o Empresa",
+                "title": "¿Cuál es el nombre de su empleador actual o más reciente?"
+              },
+              "occupation": {
+                "label": "Ocupación",
+                "title": "¿Cuál era/es su ocupación?"
+              }
+            },
+            "employer-location": {
+              "employer-address": {
+                "title": "Dirección de la Empresa"
+              },
+              "employer-city": {
+                "title": "Ciudad"
+              },
+              "employer-country": {
+                "title": "País"
+              },
+              "employer-state": {
+                "title": "Estado"
+              },
+              "title": "Ubicación del Empleador"
+            },
+            "employment-period": {
+              "title": "¿Durante qué periodo trabajó en su empleador?"
+            },
+            "title": "Historial Laboral"
+          }
+        },
+        "family-status": {
+          "marital-and-children": {
+            "children-information": {
+              "has-children": {
+                "title": "¿Tiene hijos (independientemente de la edad, ubicación o estado civil)?"
+              },
+              "number-of-children": {
+                "label": "Número de Hijos",
+                "title": "¿Cuántos hijos tiene?"
+              },
+              "title": "Información de los Hijos"
+            },
+            "marital-status": {
+              "marital-status": {
+                "options": {
+                  "divorced": "Divorciado/a",
+                  "married": "Casado/a",
+                  "single": "Soltero/a",
+                  "widowed": "Viudo/a"
+                },
+                "title": "¿Cuál es tu estado civil?"
+              }
+            },
+            "title": "Estado Familiar"
+          },
+          "spouse-information": {
+            "marriage-information": {
+              "city": {
+                "label": "Ciudad donde se casó"
+              },
+              "country": {
+                "label": "País donde se casó"
+              },
+              "date": {
+                "label": "Fecha de matrimonio"
+              },
+              "title": "Proporcione la siguiente información sobre su matrimonio actual o más reciente."
+            },
+            "spouse-name": {
+              "title": "Proporcione el nombre de su cónyuge."
+            },
+            "title": "Información del Cónyuge"
+          }
+        },
+        "identification": {
+          "other-identification": {
+            "drivers-license-details": {
+              "number": {
+                "label": "Número de licencia",
+                "title": "¿Cuál es el número de su licencia de conducir?"
+              },
+              "state": {
+                "label": "Estado/Provincia",
+                "title": "¿Qué estado o provincia emitió tu licencia de conducir?"
+              }
+            },
+            "has-drivers-license": {
+              "has-drivers-license": {
+                "title": "¿Tienes licencia de conducir?"
+              }
+            },
+            "social-security": {
+              "has-ssn": {
+                "title": "¿Tienes un Número de Seguro Social?"
+              },
+              "ssn-number": {
+                "label": "Número de Seguro Social",
+                "title": "¿Cuál es tu Número de Seguro Social?"
+              }
+            },
+            "title": "Otra Identificación"
+          },
+          "passport-information": {
+            "has-passport": {
+              "has-passport": {
+                "title": "¿Tienes pasaporte?"
+              }
+            },
+            "passport-dates": {
+              "expiration": {
+                "label": "Fecha de vencimiento",
+                "title": "¿Cuándo vence tu pasaporte?"
+              },
+              "issue": {
+                "label": "Fecha de emisión",
+                "title": "¿Cuándo se emitió tu pasaporte?"
+              }
+            },
+            "passport-details": {
+              "country": {
+                "label": "País emisor",
+                "title": "¿Qué país emitió tu pasaporte?"
+              },
+              "number": {
+                "label": "Número de pasaporte",
+                "title": "¿Cuál es tu número de pasaporte?"
+              }
+            },
+            "title": "Información del Pasaporte"
+          }
+        },
+        "legal-history": {
+          "legal-and-affiliations": {
+            "arrest-history": {
+              "arrest-details": {
+                "label": "Detalles del Arresto",
+                "title": "Por favor proporciona detalles sobre tu historial de arrestos."
+              },
+              "has-arrest-history": {
+                "title": "¿Has sido arrestado o detenido alguna vez?"
+              }
+            },
+            "military-details": {
+              "military-details": {
+                "label": "Detalles del Servicio Militar",
+                "title": "Por favor proporciona detalles sobre tu servicio militar."
+              }
+            },
+            "military-service": {
+              "has-military-service": {
+                "title": "¿Has servido en el ejército o fuerzas armadas alguna vez?"
+              }
+            },
+            "organization-details": {
+              "organization-details": {
+                "label": "Detalles de la Organización",
+                "title": "Por favor proporciona detalles sobre tus afiliaciones organizativas."
+              }
+            },
+            "organization-membership": {
+              "has-organization-membership": {
+                "title": "¿Has sido miembro de alguna organización, asociación, fondo, fundación, partido, club, sociedad o grupo similar alguna vez?"
+              }
+            },
+            "political-affiliation": {
+              "has-political-affiliation": {
+                "title": "¿Has estado afiliado a alguna organización política o partido alguna vez?"
+              }
+            },
+            "political-details": {
+              "political-details": {
+                "label": "Detalles de la Afiliación Política",
+                "title": "Por favor proporciona detalles sobre tus afiliaciones políticas."
+              }
+            },
+            "title": "Historial Legal y Afiliaciones"
+          }
+        },
+        "personal-information": {
+          "demographics-and-birth": {
+            "additional-info": {
+              "ethnicity": {
+                "label": "Raza, Etnia o Grupo Tribal",
+                "title": "¿Cuál es tu etnia?"
+              },
+              "religion": {
+                "label": "Religión",
+                "title": "¿Cuál es tu religión?"
+              },
+              "title": "Información Adicional"
+            },
+            "basic-demographics": {
+              "dob": {
+                "label": "Fecha de nacimiento",
+                "title": "¿Cuándo naciste?"
+              },
+              "sex": {
+                "title": "¿Cuál es tu género?"
+              }
+            },
+            "birth-location": {
+              "birth-city": {
+                "label": "Ciudad de nacimiento",
+                "title": "¿En qué ciudad naciste?"
+              },
+              "birth-country": {
+                "label": "País de nacimiento",
+                "title": "¿En qué país naciste?"
+              }
+            },
+            "nationality": {
+              "birth-nationality": {
+                "label": "Nacionalidad al nacer",
+                "title": "¿Cuál era tu nacionalidad al nacer?"
+              },
+              "current-nationality": {
+                "label": "Nacionalidad actual",
+                "title": "¿Cuál es tu nacionalidad actual? (Ciudadanía)"
+              }
+            },
+            "title": "Demografía y Nacimiento"
+          },
+          "language-proficiency": {
+            "english-proficiency": {
+              "read-write-english": {
+                "title": "¿Lee y escribe en inglés?"
+              },
+              "speak-english": {
+                "title": "¿Habla inglés con fluidez?"
+              }
+            },
+            "native-language": {
+              "native-language": {
+                "label": "Idioma Nativo",
+                "title": "¿Cuál es tu idioma nativo?"
+              }
+            },
+            "other-languages": {
+              "other-languages": {
+                "label": "Otros Idiomas",
+                "title": "¿Qué otros idiomas hablas con fluidez?"
+              }
+            },
+            "spanish-proficiency": {
+              "read-write-spanish": {
+                "title": "¿Lee y escribe en español?"
+              },
+              "speak-spanish": {
+                "title": "¿Habla español con fluidez?"
+              }
+            },
+            "title": "Dominio de Idiomas"
+          },
+          "name-and-aliases": {
+            "additional-names": {
+              "maiden-name": {
+                "label": "Apellido de Soltera"
+              },
+              "other-names": {
+                "label": "Otros Nombres"
+              },
+              "title": "¿Qué otros nombres o apellidos has utilizado?"
+            },
+            "additional-names-title": "Nombres Adicionales",
+            "alias-information": {
+              "alias-name": {
+                "label": "¿Cuál es o fue tu alias?"
+              },
+              "has-alias": {
+                "title": "¿Has utilizado un alias?"
+              }
+            },
+            "basic-names": {
+              "title": "¿Cuál es tu nombre completo?"
+            },
+            "title": "Nombres y Aliases"
+          }
+        },
+        "residence": {
+          "current-address": {
+            "address": {
+              "title": "Dirección Actual"
+            },
+            "title": "Dirección Actual"
+          },
+          "us-residence-status": {
+            "title": "Estado de Residencia en EE. UU.",
+            "us-residence-status": {
+              "lives-in-us": {
+                "title": "¿Vives actualmente en los Estados Unidos?"
+              },
+              "us-residence-requirement": "Debes estar viviendo en los Estados Unidos para enviar este formulario."
+            }
+          }
+        },
+        "screenTitle": "Información Personal",
+        "title": "Información Personal",
+        "label": "Info",
+        "intro": {
+          "intro": {
+            "description": "Antes de comenzar, recuerde que Ud puede corregir y cambiar lo que necesite antes de terminar, si no tiene o no recuerda algo, continue y vuelva mas tarde. Es importante que recuerde que todo lo que escriba o diga y los documentos, fotos, o cualquier otra informacion que incluya o envie es su responsabilidad que sea verdadero a su mejor saber y entender.",
+            "title": "Solicitud de Asilo",
+            "agreed": {
+              "label": "Estoy de acuerdo"
+            }
+          },
+          "title": "Solicitud de Asilo"
+        }
+      },
+      "interview": {
+        "description": "Asiste a tu entrevista programada de asilo con un oficial o juez.",
+        "title": "Entrevista",
+        "label": "Entrevista"
+      },
+      "progress": {
+        "screenTitle": "Progreso de la Solicitud"
+      },
+      "review": {
+        "description": "Verifica que todas tus respuestas y cargas estén completas y sean precisas.",
+        "title": "Revisión",
+        "label": "Revisión"
+      },
+      "subtitle": "Solicitud de Asilo I-589",
+      "title": "Asilo",
+      "waiting": {
+        "description": "Siga el estado de su solicitud mientras está en revisión.",
+        "title": "Esperar",
+        "label": "Esperar"
+      }
+    },
+    "i765": {
+      "subtitle": "Solicitud I-765 para Autorización de Empleo",
+      "title": "Permitido de Trabajo"
+    },
+    "popular": "Servicios Populares",
+    "screenTitle": "Servicios de iMigración",
+    "searchPlaceholder": "Buscar servicios..."
+  },
+  "settings": {
+    "drawerLabel": "Ajustes",
+    "language": {
+      "screenTitle": "Idioma"
+    },
+    "screenTitle": "Ajustes",
+    "sections": {
+      "language-and-accessibility": {
+        "language": {
+          "description": "Seleccione su idioma preferido para la aplicación.",
+          "title": "Idioma Preferido"
+        },
+        "title": "Idioma y Accesibilidad"
+      }
+    }
+  }
+}

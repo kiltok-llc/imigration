@@ -8,9 +8,9 @@ import {
   NameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function NameAndAliases() {

@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { FormCheckboxItem } from '@/components/form/checkbox';
+import { FormCheckboxItem, FormConfirmBox } from '@/components/form/checkbox';
 import { useFormField } from '@/components/form/field';
 import { useQuizPageId } from '@/components/quiz/screen';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
@@ -28,6 +28,28 @@ export function QuizCheckboxItem<T>({
         `services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.options.${toI18nKey(String(value))}`
       )}
       value={value}
+      {...props}
+    />
+  );
+}
+
+export function QuizConfirmBox({
+  ...props
+}: Omit<ComponentProps<typeof FormConfirmBox>, 'label'>) {
+  const { t } = useTranslation();
+  const serviceId = useServiceId();
+  const quizId = useStepId();
+  const screenId = useQuizScreenId();
+  const pageId = useQuizPageId();
+  const {
+    field: { name },
+  } = useFormField();
+
+  return (
+    <FormConfirmBox
+      label={t(
+        `services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.label`
+      )}
       {...props}
     />
   );

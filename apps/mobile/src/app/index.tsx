@@ -7,7 +7,9 @@ export default function Root() {
   const isOnboarded = useAtomValue(isOnboardedAtom);
 
   if (__DEV__) {
-    return <Redirect href='/services' />;
+    return (
+      <Redirect href='/services/i589/info/quiz/personal-information/demographics-and-birth' />
+    );
   }
 
   if (!isOnboarded) {

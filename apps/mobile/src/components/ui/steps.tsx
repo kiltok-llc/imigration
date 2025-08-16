@@ -69,7 +69,7 @@ export function StepIcons({
                     : 'font-semibold'
                 )}
               >
-                <Trans i18nKey={`services.${serviceId}.${id}.title`} />
+                <Trans i18nKey={`services.${serviceId}.${id}.label`} />
               </Text>
             </View>
           ))}

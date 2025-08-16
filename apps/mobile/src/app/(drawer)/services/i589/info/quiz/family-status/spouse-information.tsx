@@ -8,9 +8,9 @@ import {
   NameSchema,
 } from '@/components/form/name';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizPageTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function SpouseInformation() {

@@ -25,6 +25,13 @@
           "project": "mobile",
           "organization": "imigration"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you upload documents for your application.",
+          "cameraPermission": "The app accesses your camera to let you take photos of documents for your application."
+        }
       ]
     ],
     "experiments": {

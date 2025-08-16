@@ -63,3 +63,28 @@ export function FormCheckboxItem<T>({
     />
   );
 }
+
+export function FormConfirmBox({
+  ...props
+}: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'status'>) {
+  const theme = useTheme();
+  const {
+    field: { disabled, onChange, value },
+    fieldState: { invalid },
+  } = useFormField();
+
+  return (
+    <PaperCheckbox.Item
+      color={invalid ? theme.colors.error : undefined}
+      disabled={disabled}
+      labelStyle={{
+        color: invalid ? theme.colors.error : undefined,
+      }}
+      mode='android'
+      onPress={() => onChange(!value)}
+      status={value ? 'checked' : 'unchecked'}
+      uncheckedColor={invalid ? theme.colors.error : undefined}
+      {...props}
+    />
+  );
+}

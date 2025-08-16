@@ -4,8 +4,8 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
+import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
-import { QuizFieldTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function ArrivalDate() {

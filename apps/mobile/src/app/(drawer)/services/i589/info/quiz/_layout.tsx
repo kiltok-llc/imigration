@@ -21,6 +21,7 @@ export default function InfoLayout() {
       <QuizLayout
         finalRoute='../complete'
         routes={[
+          'intro',
           'personal-information/name-and-aliases',
           'personal-information/demographics-and-birth',
           'personal-information/language-proficiency',

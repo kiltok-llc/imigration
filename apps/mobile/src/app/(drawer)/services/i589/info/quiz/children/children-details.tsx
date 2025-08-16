@@ -10,13 +10,9 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import {
-  QuizFieldTitle,
-  QuizPageTitle,
-  QuizTitle,
-} from '@/components/quiz/title';
 import { TranslationContextProvider } from '@/components/trans';
 import { userDataFamily } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';
@@ -60,7 +56,7 @@ export default function ChildrenDetails() {
               <QuizPageTitle />
 
               <FormBlock>
-                <QuizTitle name='name' variant='titleLarge' />
+                <QuizFieldTitle name='name' variant='titleLarge' />
                 <FormNameInput lens={lens.focus('name')} />
               </FormBlock>
 

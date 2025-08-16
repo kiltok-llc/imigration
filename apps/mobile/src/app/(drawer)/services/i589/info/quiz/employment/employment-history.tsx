@@ -12,9 +12,9 @@ import {
   FormRangeInput,
   RangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/title';
 
 export default function EmploymentHistory() {
   return (

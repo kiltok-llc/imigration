@@ -2,30 +2,30 @@ import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
-import { FormBooleanInput } from '@/components/form/radio';
-import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizConfirmBox } from '@/components/quiz/checkbox';
+import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
-import { required } from '@/lib/utils';
 
-export default function USResidenceStatus() {
+export default function Intro() {
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          livesInUS: null,
+          agreed: false,
         }}
         onSubmit={() => true}
-        pageId='us-residence-status'
+        pageId='intro'
         schema={z.object({
-          livesInUS: required(z.boolean().nullable()),
+          agreed: z.literal<boolean>(true),
         })}
       >
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name='livesInUS'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
+              <QuizPageTitle />
+              <QuizPageDescription />
+              <FormField control={control} name='agreed'>
+                <QuizConfirmBox />
               </FormField>
             </FormBlock>
           </>

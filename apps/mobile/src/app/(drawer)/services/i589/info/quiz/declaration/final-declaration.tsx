@@ -4,9 +4,9 @@ import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizFieldTitle } from '@/components/quiz/title';
 import { required } from '@/lib/utils';
 
 export default function FinalDeclaration() {

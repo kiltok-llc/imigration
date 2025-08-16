@@ -16,13 +16,7 @@ export function FormLabel({
 
   return (
     <Text
-      style={[
-        tw.style('text-center font-bold', {
-          color: invalid ? theme.colors.error : undefined,
-        }),
-        style,
-      ]}
-      variant='headlineMedium'
+      style={[tw.style(invalid && { color: theme.colors.error }), style]}
       {...props}
     >
       {children}

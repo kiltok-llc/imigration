@@ -13,10 +13,10 @@ import {
   FormRangeInput,
   RangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
+import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/title';
 import { SchoolLevelEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
 

@@ -4,8 +4,8 @@ import {
   FormAddressInput,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
+import { QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
-import { QuizPageTitle } from '@/components/quiz/title';
 
 export default function CurrentAddress() {
   return (

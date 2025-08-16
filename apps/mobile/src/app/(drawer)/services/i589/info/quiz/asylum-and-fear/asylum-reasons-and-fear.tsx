@@ -5,9 +5,9 @@ import { FormBlock } from '@/components/form/block';
 import { FormCheckboxGroup } from '@/components/form/checkbox';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { QuizCheckboxItem } from '@/components/quiz/checkbox';
+import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { QuizFieldTitle } from '@/components/quiz/title';
 import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
 
 export default function AsylumReasonsAndFear() {
