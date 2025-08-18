@@ -3,7 +3,6 @@ import z from 'zod/v4';
 
 import { FormDateInput } from '@/components/form/date';
 import { FormField } from '@/components/form/field';
-import { Trans } from '@/components/trans';
 import { required } from '@/lib/utils';
 
 export const DEFAULT_RANGE = {
@@ -35,10 +34,7 @@ export function FormRangeInput({
       </FormField>
 
       <FormField {...lens.focus('end').interop()}>
-        <FormDateInput
-          i18nKey='form.range.end'
-          optional={optionalEnd}
-        />
+        <FormDateInput i18nKey='form.range.end' optional={optionalEnd} />
       </FormField>
     </>
   );

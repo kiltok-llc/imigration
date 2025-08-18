@@ -7,12 +7,20 @@ import {
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
+import {
+  FormFieldArray,
+  FormFieldArrayItemBlocks,
+} from '@/components/form/fieldarray';
 import { FormRadioGroup } from '@/components/form/radio';
 import {
   DEFAULT_RANGE,
   FormRangeInput,
   RangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
+import {
+  QuizFieldArrayAdd,
+  QuizFieldArrayItemHeader,
+} from '@/components/quiz/fieldarray';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
@@ -25,25 +33,27 @@ export default function SchoolInformation() {
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          schoolLevel: null,
-          schoolName: '',
+          level: null,
+          name: '',
         }}
         onSubmit={() => true}
         pageId='basic-school-info'
         schema={z.object({
-          schoolLevel: required(SchoolLevelEnum.nullable()),
-          schoolName: z.string().nonempty(),
+          level: required(SchoolLevelEnum.nullable()),
+          name: z.string().nonempty(),
         })}
       >
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name='schoolName'>
+              <FormField control={control} name='name'>
                 <QuizFieldTitle />
                 <QuizTextInput />
               </FormField>
+            </FormBlock>
 
-              <FormField control={control} name='schoolLevel'>
+            <FormBlock>
+              <FormField control={control} name='level'>
                 <QuizFieldTitle />
                 <FormRadioGroup>
                   {SchoolLevelEnum.options.map((level) => (
@@ -90,6 +100,63 @@ export default function SchoolInformation() {
             <FormBlock>
               <FormRangeInput lens={lens} optionalEnd />
             </FormBlock>
+          </>
+        )}
+      </QuizPage>
+
+      <QuizPage
+        defaultValues={{
+          schools: [],
+        }}
+        onSubmit={() => true}
+        pageId='other-schools'
+        schema={z.object({
+          schools: z.array(
+            z.object({
+              address: AddressSchema,
+              name: z.string().nonempty(),
+              range: RangeSchemaWithOptionalEnd,
+            })
+          ),
+        })}
+      >
+        {({ control, lens }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
+
+            <FormFieldArray control={control} name='schools'>
+              <FormFieldArrayItemBlocks>
+                {(idx) => (
+                  <>
+                    <FormBlock>
+                      <QuizFieldArrayItemHeader />
+                      <FormField control={control} name={`schools.${idx}.name`}>
+                        <QuizTextInput />
+                      </FormField>
+                      <FormAddressInput
+                        lens={lens.focus(`schools.${idx}.address`)}
+                      />
+                      <FormRangeInput
+                        lens={lens.focus(`schools.${idx}.range`)}
+                        optionalEnd
+                      />
+                    </FormBlock>
+                  </>
+                )}
+              </FormFieldArrayItemBlocks>
+              <QuizFieldArrayAdd
+                value={{
+                  address: DEFAULT_ADDRESS,
+                  name: '',
+                  range: {
+                    end: null,
+                    start: null,
+                  },
+                }}
+              />
+            </FormFieldArray>
           </>
         )}
       </QuizPage>

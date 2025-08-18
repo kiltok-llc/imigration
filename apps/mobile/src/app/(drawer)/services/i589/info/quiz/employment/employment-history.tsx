@@ -8,11 +8,19 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import {
+  FormFieldArray,
+  FormFieldArrayItemBlocks,
+} from '@/components/form/fieldarray';
+import {
   DEFAULT_RANGE,
   FormRangeInput,
   RangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
-import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
+import {
+  QuizFieldArrayAdd,
+  QuizFieldArrayItemHeader,
+} from '@/components/quiz/fieldarray';
+import { QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 
@@ -21,67 +29,74 @@ export default function EmploymentHistory() {
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          employerName: '',
-          occupation: '',
+          jobs: [
+            {
+              address: DEFAULT_ADDRESS,
+              employer: '',
+              occupation: '',
+              range: DEFAULT_RANGE,
+            },
+          ],
         }}
         onSubmit={() => true}
-        pageId='basic-employment-info'
+        pageId='jobs'
         schema={z.object({
-          employerName: z.string().nonempty(),
-          occupation: z.string().nonempty(),
+          jobs: z.array(
+            z.object({
+              address: AddressSchema,
+              employer: z.string().nonempty(),
+              occupation: z.string().nonempty(),
+              range: RangeSchemaWithOptionalEnd,
+            })
+          ),
         })}
       >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='employerName'>
-                <QuizFieldTitle />
-                <QuizTextInput />
-              </FormField>
-
-              <FormField control={control} name='occupation'>
-                <QuizFieldTitle />
-                <QuizTextInput />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizPage>
-
-      <QuizPage
-        defaultValues={DEFAULT_ADDRESS}
-        onSubmit={() => true}
-        pageId='employer-location'
-        schema={AddressSchema}
-      >
-        {({ lens }) => (
+        {({ control, lens }) => (
           <>
             <FormBlock>
               <QuizPageTitle />
             </FormBlock>
 
-            <FormBlock>
-              <FormAddressInput lens={lens} />
-            </FormBlock>
-          </>
-        )}
-      </QuizPage>
-
-      <QuizPage
-        defaultValues={DEFAULT_RANGE}
-        onSubmit={() => true}
-        pageId='employment-period'
-        schema={RangeSchemaWithOptionalEnd}
-      >
-        {({ lens }) => (
-          <>
-            <FormBlock>
-              <QuizPageTitle />
-            </FormBlock>
-
-            <FormBlock>
-              <FormRangeInput lens={lens} optionalEnd />
-            </FormBlock>
+            <FormFieldArray control={control} name='jobs'>
+              <FormFieldArrayItemBlocks>
+                {(idx) => (
+                  <>
+                    <FormBlock>
+                      <QuizFieldArrayItemHeader />
+                      <FormField
+                        control={control}
+                        name={`jobs.${idx}.employer`}
+                      >
+                        <QuizTextInput />
+                      </FormField>
+                      <FormField
+                        control={control}
+                        name={`jobs.${idx}.occupation`}
+                      >
+                        <QuizTextInput />
+                      </FormField>
+                      <FormAddressInput
+                        lens={lens.focus(`jobs.${idx}.address`)}
+                      />
+                      <FormRangeInput
+                        lens={lens.focus(`jobs.${idx}.range`)}
+                        optionalEnd
+                      />
+                    </FormBlock>
+                  </>
+                )}
+              </FormFieldArrayItemBlocks>
+              <QuizFieldArrayAdd
+                value={{
+                  address: DEFAULT_ADDRESS,
+                  name: '',
+                  range: {
+                    end: null,
+                    start: null,
+                  },
+                }}
+              />
+            </FormFieldArray>
           </>
         )}
       </QuizPage>

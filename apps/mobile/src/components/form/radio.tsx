@@ -21,17 +21,7 @@ export function FormRadioGroup({ ...props }: ComponentProps<typeof View>) {
   const {
     field: { ref },
   } = useFormField();
-<<<<<<< Updated upstream
-  return (
-    <View ref={ref} {...props}>
-      {children}
-      {__DEV__ && <FormRadioItem label='Null (Dev Only)' value={null} />}
-    </View>
-  );
-=======
-
   return <View ref={ref} {...props} />;
->>>>>>> Stashed changes
 }
 
 export function FormRadioItem<T>({

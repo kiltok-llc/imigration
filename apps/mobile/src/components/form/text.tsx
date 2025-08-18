@@ -8,11 +8,11 @@ import { useFormField } from '@/components/form/field';
 import { Trans } from '@/components/trans';
 
 export function FormTextInput({
-                                i18nKey,
-                                optional,
-                                required,
-                                ...props
-                              }: ComponentProps<typeof TextInput> & {
+  i18nKey,
+  optional,
+  required,
+  ...props
+}: ComponentProps<typeof TextInput> & {
   i18nKey?: string;
   optional?: boolean;
   required?: boolean;
@@ -35,7 +35,7 @@ export function FormTextInput({
             </RNText>
             {required && (
               <RNText style={{ color: theme.colors.error }}>
-                <Trans i18nKey="form.required" />
+                <Trans i18nKey='form.required' />
               </RNText>
             )}
             {optional && (
@@ -44,7 +44,7 @@ export function FormTextInput({
                   color: theme.colors.onSurfaceDisabled,
                 })}
               >
-                <Trans i18nKey="form.optional" />
+                <Trans i18nKey='form.optional' />
               </RNText>
             )}
           </>
@@ -56,7 +56,7 @@ export function FormTextInput({
         {...props}
       />
       {error?.message && (
-        <HelperText type="error" visible={!!error}>
+        <HelperText type='error' visible={!!error}>
           {error?.message}
         </HelperText>
       )}

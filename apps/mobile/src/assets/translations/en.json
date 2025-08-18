@@ -399,7 +399,7 @@
               "title": "When did you attend this school?"
             },
             "basic-school-info": {
-              "school-level": {
+              "level": {
                 "options": {
                   "primary": "Elementary or Primary",
                   "secondary": "Secondary",
@@ -408,9 +408,22 @@
                 },
                 "title": "What is the highest level of education you completed?"
               },
-              "school-name": {
+              "name": {
                 "label": "Name of School/College",
                 "title": "What is the name of last school or college you attended?"
+              }
+            },
+            "other-schools": {
+              "title": "Starting with the most recent, please list all the other schools you have attended.",
+              "schools": {
+                "name": {
+                  "label": "Name of School/College"
+                },
+                "title_ordinal_one": "{{count}}st School",
+                "title_ordinal_two": "{{count}}nd School",
+                "title_ordinal_few": "{{count}}rd School",
+                "title_ordinal_other": "{{count}}th School",
+                "add": "Add school"
               }
             },
             "school-location": {
@@ -430,35 +443,23 @@
         },
         "employment": {
           "employment-history": {
-            "basic-employment-info": {
-              "employer-name": {
-                "label": "Employer or Company Name",
-                "title": "What is the name of your current or most recent employer?"
-              },
-              "occupation": {
-                "label": "Occupation",
-                "title": "What was/is your occupation?"
+            "title": "Employment History",
+            "jobs": {
+              "title": "Starting with the most recent, please list all the jobs (in the USA and in other countries) you have had in the last five years.",
+              "jobs": {
+                "title_ordinal_one": "{{count}}st Job (most recent)",
+                "title_ordinal_two": "{{count}}nd Job",
+                "title_ordinal_few": "{{count}}rd Job",
+                "title_ordinal_other": "{{count}}th Job",
+                "add": "Add job",
+                "employer": {
+                  "label": "Employer or Company Name"
+                },
+                "occupation": {
+                  "label": "Occupation"
+                }
               }
-            },
-            "employer-location": {
-              "employer-address": {
-                "title": "Workplace Street Address"
-              },
-              "employer-city": {
-                "title": "City"
-              },
-              "employer-country": {
-                "title": "Country"
-              },
-              "employer-state": {
-                "title": "State"
-              },
-              "title": "Employer Location"
-            },
-            "employment-period": {
-              "title": "During what period did you work at your employer?"
-            },
-            "title": "Employment History"
+            }
           }
         },
         "family-status": {
@@ -728,7 +729,7 @@
                 "title": "Before arriving in the United States, where did you live?"
               },
               "range": {
-                "title": "During what period did you live there?"
+                "title": "During which period did you live there?"
               }
             },
             "past-residences": {
@@ -738,13 +739,7 @@
                 "title_ordinal_two": "{{count}}nd Residence",
                 "title_ordinal_few": "{{count}}rd Residence",
                 "title_ordinal_other": "{{count}}th Residence",
-                "add": "Add residence",
-              },
-              "dialog":{
-                "title": "Wait!",
-                "content": "You have not entered any previous addresses. Have you lived in the USA for the past 5 years? If not, press \"Go back\" to add your previous addresses.",
-                "cancel": "Go back",
-                "confirm": "Yes, I have"
+                "add": "Add residence"
               }
             }
           },

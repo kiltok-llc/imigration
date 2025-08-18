@@ -6,7 +6,6 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormTextInput } from '@/components/form/text';
-import { Trans } from '@/components/trans';
 
 export const DEFAULT_ADDRESS = {
   city: '',

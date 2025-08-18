@@ -1,13 +1,19 @@
-import {ComponentProps} from 'react';
+import { ComponentProps } from 'react';
 import { View } from 'react-native';
-import {IconButton, useTheme} from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import {FormFieldArrayAdd, useFormFieldArray, useFormFieldArrayItem} from '@/components/form/fieldarray';
-import {useQuizFieldKey} from '@/components/quiz/hooks';
-import {QuizFieldTitle} from "@/components/quiz/label";
+import {
+  FormFieldArrayAdd,
+  useFormFieldArray,
+  useFormFieldArrayItem,
+} from '@/components/form/fieldarray';
+import { useQuizFieldKey } from '@/components/quiz/hooks';
+import { QuizFieldTitle } from '@/components/quiz/label';
 
-export function QuizFieldArrayAdd({...props}: Omit<ComponentProps<typeof FormFieldArrayAdd>, 'i18nKey'>) {
+export function QuizFieldArrayAdd({
+  ...props
+}: Omit<ComponentProps<typeof FormFieldArrayAdd>, 'i18nKey'>) {
   const i18nKey = useQuizFieldKey('add');
 
   return <FormFieldArrayAdd i18nKey={i18nKey} {...props} />;
@@ -19,15 +25,15 @@ export function QuizFieldArrayItemHeader() {
   const { remove } = useFormFieldArray();
 
   return (
-    <View style={tw`flex-row gap-2 justify-between items-center`}>
+    <View style={tw`flex-row items-center justify-between gap-2`}>
       <QuizFieldTitle />
       <IconButton
         containerColor={theme.colors.errorContainer}
-        icon="close"
+        icon='close'
         iconColor={theme.colors.error}
-        mode="contained"
+        mode='contained'
         onPress={() => remove(index)}
       />
     </View>
-  )
+  );
 }

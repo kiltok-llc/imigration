@@ -61,3 +61,5 @@ android/
 # supabase
 .branches/
 .temp/
+
+.venv/

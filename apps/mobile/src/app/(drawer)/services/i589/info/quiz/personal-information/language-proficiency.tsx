@@ -19,7 +19,7 @@ export default function LanguageProficiency() {
           language: '',
         }}
         onSubmit={() => true}
-        pageId="native-language"
+        pageId='native-language'
         schema={z.object({
           dialect: z.string(),
           language: z.string().nonempty(),
@@ -28,11 +28,9 @@ export default function LanguageProficiency() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="language">
+              <FormField control={control} name='language'>
                 <QuizFieldTitle />
-                <QuizDropdown
-                  options={LANGUAGE_OPTIONS}
-                />
+                <QuizDropdown options={LANGUAGE_OPTIONS} />
               </FormField>
               <FormField control={control} name='dialect'>
                 <QuizTextInput optional />
@@ -48,7 +46,7 @@ export default function LanguageProficiency() {
           speak: null,
         }}
         onSubmit={() => true}
-        pageId="english-proficiency"
+        pageId='english-proficiency'
         schema={z.object({
           readWrite: required(z.boolean().nullable()),
           speak: required(z.boolean().nullable()),
@@ -57,14 +55,14 @@ export default function LanguageProficiency() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="speak">
+              <FormField control={control} name='speak'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="readWrite">
+              <FormField control={control} name='readWrite'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
@@ -79,7 +77,7 @@ export default function LanguageProficiency() {
           speak: null,
         }}
         onSubmit={() => true}
-        pageId="spanish-proficiency"
+        pageId='spanish-proficiency'
         schema={z.object({
           readWrite: required(z.boolean().nullable()),
           speak: required(z.boolean().nullable()),
@@ -88,14 +86,14 @@ export default function LanguageProficiency() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="speak">
+              <FormField control={control} name='speak'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
             </FormBlock>
 
             <FormBlock>
-              <FormField control={control} name="readWrite">
+              <FormField control={control} name='readWrite'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
@@ -109,7 +107,7 @@ export default function LanguageProficiency() {
           languages: [],
         }}
         onSubmit={() => true}
-        pageId="other-languages"
+        pageId='other-languages'
         schema={z.object({
           languages: z.array(z.string()),
         })}
@@ -117,10 +115,12 @@ export default function LanguageProficiency() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="languages">
+              <FormField control={control} name='languages'>
                 <QuizFieldTitle />
                 <QuizMultiDropdown
-                  options={LANGUAGE_OPTIONS.filter(({ value }) => !['en', 'es'].includes(value))}
+                  options={LANGUAGE_OPTIONS.filter(
+                    ({ value }) => !['en', 'es'].includes(value)
+                  )}
                 />
               </FormField>
             </FormBlock>

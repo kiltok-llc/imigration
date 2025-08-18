@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import { ComponentProps } from 'react';
 import * as React from 'react';
+import { ComponentProps } from 'react';
 import { List } from 'react-native-paper';
 
 import { Trans } from '@/components/trans';

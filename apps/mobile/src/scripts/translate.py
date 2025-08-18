@@ -7,16 +7,12 @@
 # ]
 # ///
 import json
-import itertools
-import sys
 from pathlib import Path
-from typing import Annotated
 
 import openai
+import typer
 from openai import OpenAI
 from tqdm import tqdm
-from pprint import pprint
-import typer
 
 client = OpenAI()
 
@@ -27,9 +23,7 @@ LANGUAGE_CODES = {
 
 TRANSLATIONS_DIR = Path(__file__, "../../assets/translations").resolve()
 
-EXCLUDED_KEYS = [
-    'language'
-]
+EXCLUDED_KEYS = ["language"]
 
 
 def flatten(data, sep=".", parent=""):

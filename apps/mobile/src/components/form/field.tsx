@@ -139,8 +139,9 @@ export const FormField = <
 >({
   children,
   ...props
-}: PropsWithChildren<UseControllerProps<TFieldValues, TName, TTransformedValues>>
-) => {
+}: PropsWithChildren<
+  UseControllerProps<TFieldValues, TName, TTransformedValues>
+>) => {
   const controller = useController(props);
 
   return (

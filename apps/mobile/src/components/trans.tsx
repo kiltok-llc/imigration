@@ -1,5 +1,5 @@
 import { ComponentProps, createContext, useContext } from 'react';
-import { Trans as I18NTrans, useTranslation } from 'react-i18next';
+import { Trans as I18NTrans } from 'react-i18next';
 import { Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
 import tw from 'twrnc';

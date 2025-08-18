@@ -52,7 +52,7 @@ export default function ChildrenDetails() {
                 values: {
                   name: watch('name.first'),
                   ordinal: true,
-                  total: numberOfChildren
+                  total: numberOfChildren,
                 },
               }}
             >

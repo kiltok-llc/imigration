@@ -5,14 +5,13 @@ import tw from 'twrnc';
 import { useFormField } from '@/components/form/field';
 import { TransText } from '@/components/trans';
 
-export function FormLabel(
-  {
-    i18nKey,
-    style,
-    ...props
-  }: Omit<ComponentProps<typeof Text>, 'children'> & {
-    i18nKey: string;
-  }) {
+export function FormLabel({
+  i18nKey,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof Text>, 'children'> & {
+  i18nKey: string;
+}) {
   const theme = useTheme();
   const {
     fieldState: { invalid },

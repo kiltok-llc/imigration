@@ -79,20 +79,20 @@ export default function CurrentAddress() {
       >
         {({ control, lens, watch }) => (
           <>
-              <FormField control={control} name='receivesMail'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
+            <FormField control={control} name='receivesMail'>
+              <QuizFieldTitle />
+              <FormBooleanInput />
+            </FormField>
 
-              <ConditionalFormFieldBlock
-                active={watch('receivesMail') === false}
-                activeValue={DEFAULT_ADDRESS}
-                control={control}
-                name={'mailingAddress'}
-              >
-                <QuizFieldTitle />
-                <FormAddressInput lens={lens.focus('mailingAddress')} />
-              </ConditionalFormFieldBlock>
+            <ConditionalFormFieldBlock
+              active={watch('receivesMail') === false}
+              activeValue={DEFAULT_ADDRESS}
+              control={control}
+              name={'mailingAddress'}
+            >
+              <QuizFieldTitle />
+              <FormAddressInput lens={lens.focus('mailingAddress')} />
+            </ConditionalFormFieldBlock>
           </>
         )}
       </QuizPage>

@@ -13,14 +13,22 @@ import {
 import tw from 'twrnc';
 
 import { FormBlock } from '@/components/form/block';
-import { FormField, FormFieldContext, useFormField } from '@/components/form/field';
+import {
+  FormField,
+  FormFieldContext,
+  useFormField,
+} from '@/components/form/field';
 import { TransButton, TranslationContextProvider } from '@/components/trans';
-import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { WithRequired } from '@/lib/utils';
 
 const FormFieldArrayItemContext = createRequiredContext<number>();
 
-export const useFormFieldArrayItem = () => useRequiredContext(FormFieldArrayItemContext);
+export const useFormFieldArrayItem = () =>
+  useRequiredContext(FormFieldArrayItemContext);
 
 const FormFieldArrayContext = createContext<UseFieldArrayReturn>({
   append: () => {},
@@ -40,13 +48,14 @@ export const FormFieldArray = <
   TKeyName extends string = 'id',
   TTransformedValues = TFieldValues,
 >({
-    children,
-    ...props
-  }: PropsWithChildren<
+  children,
+  ...props
+}: PropsWithChildren<
   WithRequired<
     UseFieldArrayProps<TFieldValues, TName, TKeyName, TTransformedValues>,
     'control'
-  >>) => {
+  >
+>) => {
   const fieldArray = useFieldArray(props);
 
   const { control, name } = props;
@@ -66,39 +75,43 @@ export const FormFieldArray = <
 
 export const useFormFieldArray = () => useContext(FormFieldArrayContext);
 
-export function FormFieldArrayAdd(
-  {
-    i18nKey,
-    options,
-    value,
-  }: {
-    i18nKey?: string;
-    options?: FieldArrayMethodProps;
-    value: any;
-  },
-) {
+export function FormFieldArrayAdd({
+  i18nKey,
+  options,
+  value,
+}: {
+  i18nKey?: string;
+  options?: FieldArrayMethodProps;
+  value: any;
+}) {
   const { append } = useFormFieldArray() as UseFieldArrayReturn;
   return (
     <TransButton
       contentStyle={tw`flex-row-reverse`}
       i18nKey={i18nKey ?? 'form.fieldarray.add'}
-      icon="plus"
+      icon='plus'
       onPress={() => append(value, options)}
     />
   );
 }
 
-export function FormFieldArrayItemBlocks({ children }: {
+export function FormFieldArrayItemBlocks({
+  children,
+}: {
   children: (idx: number) => ReactNode;
 }) {
   const { fields } = useFormFieldArray() as UseFieldArrayReturn;
-  const { field: { name } } = useFormField();
+  const {
+    field: { name },
+  } = useFormField();
 
   return fields.map(({ id }, index) => (
     <FormBlock key={id}>
       <FormField name={`${name}.${index}`}>
         <FormFieldArrayItemContext.Provider value={index}>
-          <TranslationContextProvider value={{ count: index + 1, values: { ordinal: true } }}>
+          <TranslationContextProvider
+            value={{ count: index + 1, values: { ordinal: true } }}
+          >
             {children(index)}
           </TranslationContextProvider>
         </FormFieldArrayItemContext.Provider>
