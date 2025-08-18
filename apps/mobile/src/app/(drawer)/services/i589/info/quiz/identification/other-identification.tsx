@@ -17,7 +17,7 @@ const hasLicenseAtom = atom(
     if (hasLicense) {
       set(licenseAtom, {});
     } else {
-      set(licenseAtom, null);
+      set(licenseAtom, undefined);
     }
   }
 );

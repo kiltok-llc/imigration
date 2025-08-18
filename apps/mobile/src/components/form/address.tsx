@@ -15,6 +15,16 @@ export const DEFAULT_ADDRESS = {
   zipCode: '',
 };
 
+export const DEFAULT_ADDRESS_WITH_COUNTRY = {
+  ...DEFAULT_ADDRESS,
+  country: '',
+}
+
+export const DEFAULT_SHORT_ADDRESS = {
+  city: '',
+  country: '',
+}
+
 export const AddressSchema = z.object({
   city: z.string().nonempty(),
   state: z.string().nonempty(),
@@ -23,9 +33,18 @@ export const AddressSchema = z.object({
   zipCode: z.string().nonempty(),
 });
 
+export const AddressWithCountrySchema = AddressSchema.extend({
+  country: z.string().nonempty(),
+});
+
+export const ShortAddressSchema = z.object({
+  city: z.string().nonempty(),
+  country: z.string().nonempty(),
+});
+
 export function FormAddressInput({
-  lens,
-}: {
+                                   lens,
+                                 }: {
   lens: Lens<z.input<typeof AddressSchema>>;
 }) {
   return (
@@ -77,6 +96,52 @@ export function FormAddressInput({
           </FormField>
         </View>
       </FormBlock>
+    </>
+  );
+}
+
+export function FormAddressWithCountryInput({
+                                              lens,
+                                            }: {
+  lens: Lens<z.input<typeof AddressWithCountrySchema>>;
+}) {
+  return (
+    <>
+      <FormAddressInput lens={lens.reflect(({country, ...rest}) => rest)}/>
+
+      <FormField {...lens.focus('country').interop()}>
+        <FormTextInput
+          dense
+          i18nKey='form.address.country'
+          textContentType='countryName'
+        />
+      </FormField>
+    </>
+  );
+}
+
+export function FormShortAddressInput({
+                                        lens,
+                                      }: {
+  lens: Lens<z.input<typeof ShortAddressSchema>>;
+}) {
+  return (
+    <>
+      <FormField {...lens.focus('city').interop()}>
+        <FormTextInput
+          dense
+          i18nKey='form.short-address.city'
+          textContentType='addressCity'
+        />
+      </FormField>
+
+      <FormField {...lens.focus('country').interop()}>
+        <FormTextInput
+          dense
+          i18nKey='form.short-address.country'
+          textContentType='countryName'
+        />
+      </FormField>
     </>
   );
 }

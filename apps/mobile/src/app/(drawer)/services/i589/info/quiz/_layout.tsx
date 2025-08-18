@@ -7,7 +7,7 @@ import { QuizLayout } from '@/components/quiz/layout';
 import { userDataFamily } from '@/lib/data/user';
 
 export default function InfoLayout() {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const maritalStatus = useAtomValue(userDataFamily('maritalStatus'));
   const numberOfChildren = useAtomValue(userDataFamily('numberOfChildren'));
 
@@ -29,13 +29,9 @@ export default function InfoLayout() {
           'residence/previous-addresses',
           'education/school-information',
           'employment/employment-history',
-          'family-status/marital-and-children',
-          ...(maritalStatus === 'single'
-            ? []
-            : ['family-status/spouse-information']),
-          ...(numberOfChildren && numberOfChildren > 0
-            ? ['children/children-details']
-            : []),
+          'family-status/marital-status',
+          'family-status/children-details',
+          'family-status/parent-details',
           'identification/passport-information',
           'identification/other-identification',
           'asylum-and-fear/asylum-reasons-and-fear',
@@ -43,10 +39,10 @@ export default function InfoLayout() {
           'declaration/final-declaration',
         ]}
       >
-        <FadeSlot />
+        <FadeSlot/>
       </QuizLayout>
     </>
   );
 }
 
-export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';
+export {QuizErrorFallback as ErrorBoundary} from '@/components/quiz/layout';

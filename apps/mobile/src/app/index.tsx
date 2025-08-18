@@ -8,7 +8,7 @@ export default function Root() {
 
   if (__DEV__) {
     return (
-      <Redirect href='/services/i589/info/quiz/residence/previous-addresses' />
+      <Redirect href='/services' />
     );
   }
 

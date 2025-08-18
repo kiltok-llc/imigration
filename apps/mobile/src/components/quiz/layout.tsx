@@ -34,8 +34,8 @@ const QuizContext = createRequiredContext<{
   isNextPage: boolean;
   isPrevPage: boolean;
   routes: string[];
-  setisNextPage: (value: boolean) => void;
-  setisPrevPage: (value: boolean) => void;
+  setIsNextPage: (value: boolean) => void;
+  setIsPrevPage: (value: boolean) => void;
 }>();
 
 export function SavedQuizRouteRedirect() {
@@ -120,8 +120,8 @@ export function QuizLayout({
   const routeIdx = routes.indexOf(routeName);
   const nextRouteName = routes[routeIdx + 1];
   const setSavedQuizRoute = useSetAtom(quizRouteFamily({ quizId, serviceId }));
-  const [isNextPage, setisNextPage] = useState(false);
-  const [isPrevPage, setisPrevPage] = useState(false);
+  const [isNextPage, setIsNextPage] = useState(false);
+  const [isPrevPage, setIsPrevPage] = useState(false);
 
   useFocusedRouteListener((route) => {
     if (!routes.includes(route)) {
@@ -131,14 +131,14 @@ export function QuizLayout({
     setSavedQuizRoute(route);
   });
 
-  const handleBack = () => {
+  const handlePrev = () => {
     Keyboard.dismiss();
-    setisPrevPage(true);
+    setIsPrevPage(true);
   };
 
-  const handleSubmit = async () => {
+  const handleNext = async () => {
     Keyboard.dismiss();
-    setisNextPage(true);
+    setIsNextPage(true);
   };
 
   return (
@@ -148,8 +148,8 @@ export function QuizLayout({
         isNextPage,
         isPrevPage,
         routes,
-        setisNextPage,
-        setisPrevPage,
+        setIsNextPage,
+        setIsPrevPage,
       }}
     >
       <View style={tw`flex-1`}>
@@ -174,7 +174,7 @@ export function QuizLayout({
               i18nKey='quiz.previous'
               icon='arrow-left'
               mode='contained-tonal'
-              onPress={handleBack}
+              onPress={handlePrev}
             />
           </View>
           <View style={tw`flex-1`}>
@@ -183,7 +183,7 @@ export function QuizLayout({
               i18nKey='quiz.next'
               icon='arrow-right'
               mode='contained'
-              onPress={handleSubmit}
+              onPress={handleNext}
             />
           </View>
         </SafeAreaView>

@@ -35,6 +35,10 @@
       "unit": "Apt, suite, unit, etc.",
       "zip-code": "ZIP Code"
     },
+    "short-address": {
+      "city": "City",
+      "country": "Country",
+    },
     "boolean": {
       "no": "No",
       "yes": "Yes"
@@ -306,52 +310,6 @@
             "title": "Asylum Reasons and Fear"
           }
         },
-        "children": {
-          "children-details": {
-            "add-child": "Add Child",
-            "additional-info-title": "Additional Information",
-            "basic-info-title": "Basic Information",
-            "birth-city": "City of Birth",
-            "birth-country": "Country of Birth",
-            "birth-info-title": "Birth Information",
-            "child": {
-              "dob": {
-                "label": "Date of Birth",
-                "title": "What is the child's date of birth?",
-                "title_named": "What is {{ name }}'s date of birth?"
-              },
-              "ethnicity": {
-                "label": "Ethnicity",
-                "title": "What is the child's ethnicity?",
-                "title_named": "What is {{ name }}'s ethnicity?"
-              },
-              "lives-in-usa": {
-                "title": "Does this child currently live in the United States?",
-                "title_named": "Does {{ name }} currently live in the United States?"
-              },
-              "name": {
-                "title": "What is the child's name?"
-              },
-              "sex": {
-                "title": "What is the child's sex?",
-                "title_named": "What is {{ name }}'s sex?"
-              },
-              "title": "Child {{ current }} of {{ total }}",
-              "title_named": "Child {{ current }} of {{ total }}: {{ name }}"
-            },
-            "child-number": "Child {{current}} of {{total}} details",
-            "dob": "Date of Birth",
-            "ethnicity": "Race, Ethnicity, or Tribal Group",
-            "lives-in-us": "Do they currently live in the United States?",
-            "nationality": "Nationality",
-            "sex": "Sex",
-            "sex-options": {
-              "female": "Female",
-              "male": "Male"
-            },
-            "title": "Children Details"
-          }
-        },
         "declaration": {
           "final-declaration": {
             "information-accuracy": {
@@ -463,19 +421,99 @@
           }
         },
         "family-status": {
-          "marital-and-children": {
+          "children-details": {
             "children-information": {
               "has-children": {
                 "title": "Do you have children (regardless of age, location, or marital status)?"
               },
-              "number-of-children": {
+              "number": {
                 "label": "Number of Children",
                 "title": "How many children do you have?"
               },
               "title": "Children Information"
             },
+            "add-child": "Add Child",
+            "additional-info-title": "Additional Information",
+            "basic-info-title": "Basic Information",
+            "birth-city": "City of Birth",
+            "birth-country": "Country of Birth",
+            "birth-info-title": "Birth Information",
+            "child": {
+              "dob": {
+                "label": "Date of Birth",
+                "title": "What is the child's date of birth?",
+                "title_named": "What is {{ name }}'s date of birth?"
+              },
+              "ethnicity": {
+                "label": "Ethnicity",
+                "title": "What is the child's ethnicity?",
+                "title_named": "What is {{ name }}'s ethnicity?"
+              },
+              "lives-in-usa": {
+                "title": "Does this child currently live in the United States?",
+                "title_named": "Does {{ name }} currently live in the United States?"
+              },
+              "has-birth-certificate": {
+                "title": "Does this child have a birth certificate?",
+                "title_named": "Does {{ name }} have a birth certificate?"
+              },
+              "birth-certificate": {
+                "title": "Please submit a copy of the child's birth certificate.",
+                "title_named": "Please submit a copy of {{ name }}'s birth certificate."
+              },
+              "name": {
+                "title": "What is the child's name?"
+              },
+              "sex": {
+                "title": "What is the child's sex?",
+                "title_named": "What is {{ name }}'s sex?"
+              },
+              "title_one": "{{ count }}st child",
+              "title_two": "{{ count }}nd child",
+              "title_few": "{{ count }}rd child"
+            },
+            "child-number": "Child {{ current }} of {{ total }} details",
+            "dob": "Date of Birth",
+            "ethnicity": "Race, Ethnicity, or Tribal Group",
+            "lives-in-us": "Do they currently live in the United States?",
+            "nationality": "Nationality",
+            "sex": "Sex",
+            "sex-options": {
+              "female": "Female",
+              "male": "Male"
+            },
+            "title": "Children Details"
+          }
+          "marital-status": {
+            "marriage-location": {
+              "location": {
+                "title": "Where did you get married?"
+              },
+              "city": {
+                "label": "City or Region"
+              },
+              "country": {
+                "label": "Country"
+              },
+              "range": {
+                "title": "When did you get married?"
+              }
+            },
+            "spouse-name": {
+              "title": "What is your spouse's name?",
+              "title_divorced": "What was your ex-spouse's name?",
+              "title_widowed": "What was your late spouse's name?"
+            },
+            "marriage-certificate": {
+              "has-certificate": {
+                "title": "Do you have your marriage certificate?"
+              },
+              "certificate": {
+                "title": "Please submit a copy of your marriage certificate."
+              }
+            },
             "marital-status": {
-              "marital-status": {
+              "status": {
                 "options": {
                   "divorced": "Divorced",
                   "married": "Married",

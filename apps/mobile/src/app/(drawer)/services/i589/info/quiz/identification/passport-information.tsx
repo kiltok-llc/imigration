@@ -18,7 +18,7 @@ const hasPassportAtom = atom(
     if (hasPassport) {
       set(passportAtom, {});
     } else {
-      set(passportAtom, null);
+      set(passportAtom, undefined);
     }
   }
 );
