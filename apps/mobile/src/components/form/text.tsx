@@ -1,19 +1,19 @@
 import { ComponentProps } from 'react';
-import { Text as RNText, View } from 'react-native';
+import { Text as RNText } from 'react-native';
 import { HelperText, TextInput, useTheme } from 'react-native-paper';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 
 import { useFormField } from '@/components/form/field';
 import { Trans } from '@/components/trans';
 
 export function FormTextInput({
-  helperText = true,
-  label,
-  optional,
-  required,
-  ...props
-}: ComponentProps<typeof TextInput> & {
-  helperText?: boolean;
+                                i18nKey,
+                                optional,
+                                required,
+                                ...props
+                              }: ComponentProps<typeof TextInput> & {
+  i18nKey?: string;
   optional?: boolean;
   required?: boolean;
 }) {
@@ -24,16 +24,18 @@ export function FormTextInput({
   } = useFormField();
 
   return (
-    <View>
+    <Animated.View layout={LinearTransition}>
       <TextInput
         disabled={disabled}
         error={invalid}
         label={
           <>
-            {label}
+            <RNText>
+              <Trans i18nKey={i18nKey} />
+            </RNText>
             {required && (
               <RNText style={{ color: theme.colors.error }}>
-                <Trans i18nKey='form.required' />
+                <Trans i18nKey="form.required" />
               </RNText>
             )}
             {optional && (
@@ -42,7 +44,7 @@ export function FormTextInput({
                   color: theme.colors.onSurfaceDisabled,
                 })}
               >
-                <Trans i18nKey='form.optional' />
+                <Trans i18nKey="form.optional" />
               </RNText>
             )}
           </>
@@ -53,11 +55,11 @@ export function FormTextInput({
         value={value}
         {...props}
       />
-      {helperText && (
-        <HelperText type='error' visible={!!error}>
+      {error?.message && (
+        <HelperText type="error" visible={!!error}>
           {error?.message}
         </HelperText>
       )}
-    </View>
+    </Animated.View>
   );
 }

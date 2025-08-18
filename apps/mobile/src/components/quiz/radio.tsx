@@ -1,34 +1,14 @@
 import { ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
 
-import { useFormField } from '@/components/form/field';
 import { FormRadioItem } from '@/components/form/radio';
-import { useQuizPageId } from '@/components/quiz/screen';
-import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useQuizFieldKey } from '@/components/quiz/hooks';
 import { toI18nKey } from '@/lib/utils';
 
 export function QuizRadioItem<T>({
-  value,
-  ...props
-}: Omit<ComponentProps<typeof FormRadioItem<T>>, 'label'>) {
-  const { t } = useTranslation();
-  const serviceId = useServiceId();
-  const quizId = useStepId();
-  const screenId = useQuizScreenId();
-  const pageId = useQuizPageId();
-  const {
-    field: { name },
-  } = useFormField();
+                                   value,
+                                   ...props
+                                 }: Omit<ComponentProps<typeof FormRadioItem<T>>, 'i18nKey'>) {
+  const i18nKey = useQuizFieldKey(`options.${toI18nKey(String(value))}`);
 
-  return (
-    <FormRadioItem
-      label={t(
-        `services.${serviceId}.${quizId}.${screenId}.${pageId}.${toI18nKey(name)}.options.${toI18nKey(String(value))}`
-      )}
-      value={value}
-      {...props}
-    />
-  );
+  return <FormRadioItem i18nKey={i18nKey} value={value} {...props} />;
 }

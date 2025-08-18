@@ -1,4 +1,5 @@
 import { ComponentProps, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import {
   CheckboxProps,
@@ -18,13 +19,16 @@ export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {
 
 export function FormCheckboxItem<T>({
   exclusive = false,
+  i18nKey,
   value,
   ...props
-}: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'status'> & {
+}: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'label' | 'status'> & {
   exclusive?: boolean;
+  i18nKey: string;
   status?: CheckboxProps['status'];
   value: T;
 }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const {
     field: { disabled, onChange, value: values },
@@ -52,6 +56,7 @@ export function FormCheckboxItem<T>({
     <PaperCheckbox.Item
       color={invalid ? theme.colors.error : undefined}
       disabled={disabled}
+      label={t(i18nKey)}
       labelStyle={{
         color: invalid ? theme.colors.error : undefined,
       }}
@@ -65,8 +70,12 @@ export function FormCheckboxItem<T>({
 }
 
 export function FormConfirmBox({
+  i18nKey,
   ...props
-}: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'status'>) {
+}: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'label' | 'status'> & {
+  i18nKey: string;
+}) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const {
     field: { disabled, onChange, value },
@@ -77,6 +86,7 @@ export function FormConfirmBox({
     <PaperCheckbox.Item
       color={invalid ? theme.colors.error : undefined}
       disabled={disabled}
+      label={t(i18nKey)}
       labelStyle={{
         color: invalid ? theme.colors.error : undefined,
       }}

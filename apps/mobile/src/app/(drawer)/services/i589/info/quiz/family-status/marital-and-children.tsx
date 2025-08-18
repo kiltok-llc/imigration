@@ -68,7 +68,7 @@ export default function MaritalAndChildren() {
         })}
       >
         {({ control, watch }) => (
-          <FormBlock>
+          <>
             <FormBlock>
               <FormField control={control} name='hasChildren'>
                 <QuizFieldTitle />
@@ -85,7 +85,7 @@ export default function MaritalAndChildren() {
               <QuizFieldTitle />
               <QuizTextInput inputMode='numeric' />
             </ConditionalFormFieldBlock>
-          </FormBlock>
+          </>
         )}
       </QuizPage>
     </QuizScreen>

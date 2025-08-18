@@ -35,8 +35,7 @@ export function FormAddressInput({
         <FormTextInput
           autoComplete='address-line1'
           dense
-          helperText={false}
-          label={<Trans i18nKey='form.address.street' />}
+          i18nKey='form.address.street'
         />
       </FormField>
 
@@ -44,8 +43,7 @@ export function FormAddressInput({
         <FormTextInput
           autoComplete='address-line2'
           dense
-          helperText={false}
-          label={<Trans i18nKey='form.address.unit' />}
+          i18nKey='form.address.unit'
           optional
         />
       </FormField>
@@ -53,8 +51,7 @@ export function FormAddressInput({
       <FormField {...lens.focus('city').interop()}>
         <FormTextInput
           dense
-          helperText={false}
-          label={<Trans i18nKey='form.address.city' />}
+          i18nKey='form.address.city'
           textContentType='addressCity'
         />
       </FormField>
@@ -64,8 +61,7 @@ export function FormAddressInput({
           <FormField {...lens.focus('state').interop()}>
             <FormTextInput
               dense
-              helperText={false}
-              label={<Trans i18nKey='form.address.state' />}
+              i18nKey='form.address.state'
               textContentType='addressState'
             />
           </FormField>
@@ -75,9 +71,8 @@ export function FormAddressInput({
           <FormField {...lens.focus('zipCode').interop()}>
             <FormTextInput
               dense
-              helperText={false}
+              i18nKey='form.address.zip-code'
               inputMode='numeric'
-              label={<Trans i18nKey='form.address.zip-code' />}
               textContentType='postalCode'
             />
           </FormField>

@@ -28,7 +28,6 @@ export function FormNameInput({
         <FormTextInput
           autoComplete='given-name'
           dense
-          helperText={false}
           label={<Trans i18nKey='form.name.first' />}
         />
       </FormField>
@@ -37,7 +36,6 @@ export function FormNameInput({
         <FormTextInput
           autoComplete='name-middle'
           dense
-          helperText={false}
           label={<Trans i18nKey='form.name.middle' />}
           optional
         />
@@ -47,7 +45,6 @@ export function FormNameInput({
         <FormTextInput
           autoComplete='family-name'
           dense
-          helperText={false}
           label={<Trans i18nKey='form.name.last' />}
         />
       </FormField>

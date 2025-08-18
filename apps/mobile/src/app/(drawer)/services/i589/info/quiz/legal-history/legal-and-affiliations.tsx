@@ -24,7 +24,7 @@ export default function LegalAndAffiliations() {
         })}
       >
         {({ control, watch }) => (
-          <FormBlock>
+          <>
             <FormBlock>
               <FormField control={control} name='hasArrestHistory'>
                 <QuizFieldTitle />
@@ -41,7 +41,7 @@ export default function LegalAndAffiliations() {
               <QuizFieldTitle />
               <QuizTextInput multiline style={tw`min-h-60`} />
             </ConditionalFormFieldBlock>
-          </FormBlock>
+          </>
         )}
       </QuizPage>
 

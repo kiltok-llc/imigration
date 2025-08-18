@@ -27,6 +27,10 @@ LANGUAGE_CODES = {
 
 TRANSLATIONS_DIR = Path(__file__, "../../assets/translations").resolve()
 
+EXCLUDED_KEYS = [
+    'language'
+]
+
 
 def flatten(data, sep=".", parent=""):
     items = {}
@@ -79,7 +83,7 @@ def main(from_path: Path, to_path: Path):
     missing_translations = {
         key: value
         for key, value in flat_from_translations.items()
-        if key not in flat_to_translations
+        if key not in flat_to_translations and key not in EXCLUDED_KEYS
     }
 
     print(f"{len(missing_translations)} missing translations found.")

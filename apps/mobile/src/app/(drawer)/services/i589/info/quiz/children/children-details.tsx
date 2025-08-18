@@ -48,9 +48,12 @@ export default function ChildrenDetails() {
             <TranslationContextProvider
               value={{
                 context: watch('name.first') ? 'named' : 'unnamed',
-                current: i + 1,
-                name: watch('name.first'),
-                total: numberOfChildren,
+                count: i + 1,
+                values: {
+                  name: watch('name.first'),
+                  ordinal: true,
+                  total: numberOfChildren
+                },
               }}
             >
               <QuizPageTitle />

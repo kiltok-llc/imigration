@@ -3,6 +3,8 @@ import z from 'zod/v4';
 
 import { defaultStorage } from '@/lib/mmkv';
 
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
 export function arraysEqual<T>(a: T[], b: T[]) {
   if (a.length !== b.length) {
     return false;
@@ -78,7 +80,10 @@ export async function sleep(ms: number) {
 }
 
 export function toI18nKey(name: string) {
-  return name.replaceAll(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  return name
+    .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
+    .replaceAll(/\.\d+/g, '')
+    .toLowerCase();
 }
 
 export function toRouteId(routeName: string) {

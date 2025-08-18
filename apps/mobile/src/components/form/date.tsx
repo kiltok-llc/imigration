@@ -12,12 +12,13 @@ import { Trans } from '@/components/trans';
 const FORMAT = Intl.DateTimeFormat('en-US');
 
 export function FormDateInput({
-  label,
-  optional,
-  required,
-  style,
-  ...props
-}: ComponentProps<typeof TextInput> & {
+                                i18nKey,
+                                optional,
+                                required,
+                                style,
+                                ...props
+                              }: ComponentProps<typeof TextInput> & {
+  i18nKey: string;
   optional?: boolean;
   required?: boolean;
 }) {
@@ -35,7 +36,7 @@ export function FormDateInput({
       <DatePicker
         date={value instanceof Date ? value : new Date()}
         modal
-        mode='date'
+        mode="date"
         onCancel={() => {
           inputRef.current?.blur();
           setOpen(false);
@@ -53,10 +54,12 @@ export function FormDateInput({
         error={invalid}
         label={
           <>
-            {label}
+            <RNText>
+              <Trans i18nKey={i18nKey} />
+            </RNText>
             {required && (
               <RNText style={{ color: theme.colors.error }}>
-                <Trans i18nKey='form.required' />
+                <Trans i18nKey="form.required" />
               </RNText>
             )}
             {optional && (
@@ -65,7 +68,7 @@ export function FormDateInput({
                   color: theme.colors.onSurfaceDisabled,
                 })}
               >
-                <Trans i18nKey='form.optional' />
+                <Trans i18nKey="form.optional" />
               </RNText>
             )}
           </>
@@ -78,13 +81,13 @@ export function FormDateInput({
         ref={mergeRefs([inputRef, ref])}
         right={
           <TextInput.Icon
-            icon='calendar'
+            icon="calendar"
             onPress={
               __DEV__
                 ? () => {
-                    toast('Set date to null (Dev Only)');
-                    onChange(null);
-                  }
+                  toast('Set date to null (Dev Only)');
+                  onChange(null);
+                }
                 : undefined
             }
           />
@@ -93,9 +96,11 @@ export function FormDateInput({
         value={value ? FORMAT.format(value) : ''}
         {...props}
       />
-      <HelperText type='error' visible={!!error}>
-        {error?.message}
-      </HelperText>
+      {error?.message && (
+        <HelperText type="error" visible={!!error}>
+          {error?.message}
+        </HelperText>
+      )}
     </View>
   );
 }

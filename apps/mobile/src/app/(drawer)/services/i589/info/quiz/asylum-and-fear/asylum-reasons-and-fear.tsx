@@ -26,7 +26,7 @@ export default function AsylumReasonsAndFear() {
         })}
       >
         {({ control, watch }) => (
-          <FormBlock>
+          <>
             <FormBlock>
               <FormField control={control} name='harmReasons'>
                 <QuizFieldTitle />
@@ -46,7 +46,7 @@ export default function AsylumReasonsAndFear() {
             >
               <QuizTextInput />
             </ConditionalFormFieldBlock>
-          </FormBlock>
+          </>
         )}
       </QuizPage>
 

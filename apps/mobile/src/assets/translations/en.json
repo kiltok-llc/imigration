@@ -11,6 +11,10 @@
   },
   "or": "or",
   "form": {
+    "fieldarray": {
+      "add": "Add item",
+      "remove": "Remove item"
+    },
     "image": {
       "camera": {
         "cancelled": "Camera action was cancelled.",
@@ -53,7 +57,70 @@
   },
   "language": {
     "en": "🇺🇸 English",
-    "es": "🇪🇸 Español"
+    "es": "🇪🇸 Español",
+    "fr": "🇫🇷 Français",
+    "pt": "🇵🇹 Português",
+    "zh": "🇨🇳 中文",
+    "hi": "🇮🇳 हिंदी",
+    "bn": "🇧🇩 বাংলা",
+    "ru": "🇷🇺 Русский",
+    "ja": "🇯🇵 日本語",
+    "pa": "🇵🇰 اردو",
+    "vi": "🇻🇳 Tiếng Việt",
+    "tr": "🇹🇷 Türkçe",
+    "ar": "🇸🇦 العربية",
+    "mr": "🇮🇳 मराठी",
+    "ko": "🇰🇷 한국어",
+    "de": "🇩🇪 Deutsch",
+    "it": "🇮🇹 Italiano",
+    "th": "🇹🇭 ไทย",
+    "id": "🇮🇩 Bahasa Indonesia",
+    "fil": "🇵🇭 Filipino",
+    "sw": "🇰🇪 Kiswahili",
+    "fa": "🇮🇷 فارسی",
+    "uk": "🇺🇦 Українська",
+    "he": "🇮🇱 עברית",
+    "el": "🇬🇷 Ελληνικά",
+    "no": "🇳🇴 Norsk",
+    "da": "🇩🇰 Dansk",
+    "fi": "🇫🇮 Suomi",
+    "pl": "🇵🇱 Polski",
+    "hu": "🇭🇺 Magyar",
+    "cs": "🇨🇿 Čeština",
+    "ro": "🇷🇴 Română",
+    "sk": "🇸🇰 Slovenčina",
+    "bg": "🇧🇬 Български",
+    "hr": "🇭🇷 Hrvatski",
+    "sl": "🇸🇮 Slovenščina",
+    "lt": "🇱🇹 Lietuvių",
+    "lv": "🇱🇻 Latviešu",
+    "et": "🇪🇪 Eesti",
+    "is": "🇮🇸 Íslenska",
+    "sr": "🇷🇸 Српски",
+    "mk": "🇲🇰 Македонски",
+    "sq": "🇦🇱 Shqip",
+    "bs": "🇧🇦 Bosanski",
+    "az": "🇦🇿 Azərbaycan",
+    "hy": "🇦🇲 Հայերեն",
+    "ka": "🇬🇪 ქართული",
+    "uz": "🇺🇿 O'zbek",
+    "kk": "🇰🇿 Қазақ",
+    "ky": "🇰🇬 Кыргыз",
+    "tg": "🇹🇯 Тоҷикӣ",
+    "ty": "🇵🇫 Tahitian",
+    "yo": "🇳🇬 Yorùbá",
+    "zu": "🇿🇦 isiZulu",
+    "xh": "🇿🇦 isiXhosa",
+    "af": "🇿🇦 Afrikaans",
+    "am": "🇪🇹 አማርኛ",
+    "ne": "🇳🇵 नेपाली",
+    "si": "🇱🇰 සිංහල",
+    "my": "🇲🇲 မြန်မာ",
+    "km": "🇰🇭 ខ្មែរ",
+    "lo": "🇱🇦 ລາວ",
+    "mn": "🇲🇳 Монгол",
+    "gu": "🇮🇳 ગુજરાતી",
+    "kn": "🇮🇳 ಕನ್ನಡ"
   },
   "next": "Next",
   "onboarding": {
@@ -593,30 +660,33 @@
           },
           "language-proficiency": {
             "english-proficiency": {
-              "read-write-english": {
+              "read-write": {
                 "title": "Do you read and write English?"
               },
-              "speak-english": {
+              "speak": {
                 "title": "Do you speak English fluently?"
               }
             },
             "native-language": {
-              "native-language": {
+              "language": {
                 "label": "Native Language",
                 "title": "What is your native language?"
+              },
+              "dialect": {
+                "label": "Dialect"
               }
             },
             "other-languages": {
-              "other-languages": {
+              "languages": {
                 "label": "Other Languages",
                 "title": "Which other languages do you speak fluently?"
               }
             },
             "spanish-proficiency": {
-              "read-write-spanish": {
+              "read-write": {
                 "title": "Do you read and write Spanish?"
               },
-              "speak-spanish": {
+              "speak": {
                 "title": "Do you speak Spanish fluently?"
               }
             },
@@ -648,25 +718,66 @@
           }
         },
         "residence": {
+          "previous-addresses": {
+            "title": "Previous Addresses",
+            "previous-residence": {
+              "address": {
+                "title": "Before arriving in the United States, where did you live?"
+              },
+              "range": {
+                "title": "During what period did you live there?"
+              }
+            },
+            "past-residences": {
+              "title": "Starting with the most recent, please list all the other places you have lived in the last five years.",
+              "residences": {
+                "title_ordinal_one": "{{count}}st Residence",
+                "title_ordinal_two": "{{count}}nd Residence",
+                "title_ordinal_few": "{{count}}rd Residence",
+                "title_ordinal_other": "{{count}}th Residence",
+                "add": "Add residence",
+              },
+              "dialog":{
+                "title": "Wait!",
+                "content": "You have not entered any previous addresses. Have you lived in the USA for the past 5 years? If not, press \"Go back\" to add your previous addresses.",
+                "cancel": "Go back",
+                "confirm": "Yes, I have"
+              }
+            }
+          },
           "current-address": {
             "address": {
               "title": "Current Address"
             },
-            "title": "Current Address"
-          },
-          "us-residence-status": {
-            "title": "US Residence Status",
-            "us-residence-status": {
-              "lives-in-us": {
-                "title": "Do you currently live in the United States?"
+            "mailing-address": {
+              "receives-mail": {
+                "title": "Do you receive mail where you currently live?"
               },
-              "us-residence-requirement": "You must be living in the United States to submit this form."
+              "mailing-address": {
+                "title": "What is your mailing address or P.O. Box?"
+              }
+            },
+            "title": "Current Address",
+            "us-residence-status": {
+              "resident": {
+                "title": "Do you currently live in the United States?"
+              }
             }
           }
         },
         "screenTitle": "Personal Information",
         "title": "Personal Info",
-        "label": "Personal Info"
+        "label": "Personal Info",
+        "intro": {
+          "title": "Asylum Application",
+          "intro": {
+            "title": "Asylum Application",
+            "description": "Before you start, remember that you can correct and change anything you need before finishing. If you don't have or don't remember something, continue and come back later. It is important to remember that everything you write or say and the documents, photos, or any other information you include or send is your responsibility to be true to the best of your knowledge and belief.",
+            "agreed": {
+              "label": "I agree"
+            }
+          }
+        }
       },
       "interview": {
         "description": "Attend your scheduled asylum interview with an officer or judge.",

@@ -17,9 +17,15 @@ import {
 } from 'react-hook-form';
 import tw from 'twrnc';
 
+<<<<<<< Updated upstream
 import { FadeView } from '@/components/fade-view';
 
 const FormFieldContext = createContext<UseControllerReturn>({
+=======
+import { WithRequired } from '@/lib/utils';
+
+export const FormFieldContext = createContext<UseControllerReturn>({
+>>>>>>> Stashed changes
   field: {
     disabled: false,
     name: '',
@@ -127,8 +133,6 @@ export const ConditionalFormFieldBlock = <
   );
 };
 
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
-
 export const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -136,12 +140,8 @@ export const FormField = <
 >({
   children,
   ...props
-}: PropsWithChildren<
-  WithRequired<
-    UseControllerProps<TFieldValues, TName, TTransformedValues>,
-    'control'
-  >
->) => {
+}: PropsWithChildren<UseControllerProps<TFieldValues, TName, TTransformedValues>>
+) => {
   const controller = useController(props);
 
   return (

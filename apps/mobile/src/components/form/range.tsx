@@ -31,12 +31,12 @@ export function FormRangeInput({
   return (
     <>
       <FormField {...lens.focus('start').interop()}>
-        <FormDateInput label={<Trans i18nKey='form.range.start' />} />
+        <FormDateInput i18nKey='form.range.start' />
       </FormField>
 
       <FormField {...lens.focus('end').interop()}>
         <FormDateInput
-          label={<Trans i18nKey='form.range.end' />}
+          i18nKey='form.range.end'
           optional={optionalEnd}
         />
       </FormField>

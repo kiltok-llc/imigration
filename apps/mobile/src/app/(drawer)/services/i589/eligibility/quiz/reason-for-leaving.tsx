@@ -65,7 +65,7 @@ export default function ReasonForLeaving() {
         })}
       >
         {({ control, watch }) => (
-          <FormBlock>
+          <>
             <FormBlock>
               <FormField control={control} name='harmReasons'>
                 <QuizFieldTitle />
@@ -89,7 +89,7 @@ export default function ReasonForLeaving() {
             >
               <QuizTextInput />
             </ConditionalFormFieldBlock>
-          </FormBlock>
+          </>
         )}
       </QuizPage>
 

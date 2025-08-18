@@ -231,6 +231,9 @@ importers:
       i18next:
         specifier: ^25.3.6
         version: 25.3.6(typescript@5.8.3)
+      intl-pluralrules:
+        specifier: ^2.0.1
+        version: 2.0.1
       jotai:
         specifier: ^2.13.1
         version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)
@@ -294,6 +297,9 @@ importers:
       react-native-paper:
         specifier: ^5.14.5
         version: 5.14.5(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-paper-dropdown:
+        specifier: ^2.3.1
+        version: 2.3.1(react-native-paper@5.14.5(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-pdf-renderer:
         specifier: ^2.3.0
         version: 2.3.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))
@@ -5834,6 +5840,9 @@ packages:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
 
+  intl-pluralrules@2.0.1:
+    resolution: {integrity: sha512-astxTLzIdXPeN0K9Rumi6LfMpm3rvNO0iJE+h/k8Kr/is+wPbRe4ikyDjlLr6VTh/mEfNv8RjN+gu3KwDiuhqg==}
+
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
 
@@ -7641,6 +7650,13 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-paper-dropdown@2.3.1:
+    resolution: {integrity: sha512-IvcHTucAV5+fiX2IVMiVdBDKT6KHxycW0o9QzZe7bpmeZWmuCajHDnwG3OSBGlXhUxrrM3TC0/HJZHwORWGgQg==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-paper: '*'
 
   react-native-paper@5.14.5:
     resolution: {integrity: sha512-eaIH5bUQjJ/mYm4AkI6caaiyc7BcHDwX6CqNDi6RIxfxfWxROsHpll1oBuwn/cFvknvA8uEAkqLk/vzVihI3AQ==}
@@ -15218,6 +15234,8 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.1.0
 
+  intl-pluralrules@2.0.1: {}
+
   invariant@2.2.4:
     dependencies:
       loose-envify: 1.4.0
@@ -16962,6 +16980,12 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-paper-dropdown@2.3.1(react-native-paper@5.14.5(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)
+      react-native-paper: 5.14.5(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-paper@5.14.5(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

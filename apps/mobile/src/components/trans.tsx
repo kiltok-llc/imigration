@@ -1,5 +1,5 @@
 import { ComponentProps, createContext, useContext } from 'react';
-import { Trans as I18NTrans } from 'react-i18next';
+import { Trans as I18NTrans, useTranslation } from 'react-i18next';
 import { Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
 import tw from 'twrnc';
@@ -14,7 +14,7 @@ const useTranslationContext = () => useContext(TranslationContextContext);
 export function Trans({
   ...props
 }: Omit<ComponentProps<typeof I18NTrans>, 'components'>) {
-  const { context, count, ...values } = useTranslationContext();
+  const ctx = useTranslationContext();
 
   return (
     <I18NTrans
@@ -23,11 +23,9 @@ export function Trans({
         pre: <RNText style={tw`font-mono`} />,
         strong: <RNText style={tw`font-bold`} />,
       }}
-      context={context}
-      count={count}
       parent={RNText}
-      values={values}
       {...props}
+      {...ctx}
     />
   );
 }

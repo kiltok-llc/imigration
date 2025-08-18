@@ -64,7 +64,7 @@ export default function FinalDeclaration() {
         })}
       >
         {({ control, watch }) => (
-          <FormBlock>
+          <>
             <FormBlock>
               <FormField control={control} name='needsInterpreter'>
                 <QuizFieldTitle />
@@ -81,7 +81,7 @@ export default function FinalDeclaration() {
               <QuizFieldTitle />
               <QuizTextInput />
             </ConditionalFormFieldBlock>
-          </FormBlock>
+          </>
         )}
       </QuizPage>
 
