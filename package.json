@@ -23,6 +23,7 @@
     "conventional-changelog-conventionalcommits": "latest",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.4",
+    "minimatch": "^10.0.3",
     "prettier": "catalog:",
     "sherif": "latest",
     "turbo": "^2.5.5",

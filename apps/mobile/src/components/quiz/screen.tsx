@@ -28,15 +28,15 @@ import {
 } from 'react-hook-form';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { useQuizPageAtom } from '@/atoms/quiz-page-family';
 import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
+import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { useQuiz } from '@/components/quiz/layout';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
-import { TransButton } from '@/components/trans';
 import {
   createRequiredContext,
   useRequiredContext,
@@ -99,10 +99,10 @@ export function QuizPage<Input extends FieldValues, Output>({
   const loadQuizValues = useStableAtomCallback(
     (get) => {
       const persistedValues = get(quizValuesAtom);
-      console.debug(
-        `Loaded quiz values for ${persistenceKey}:`,
-        persistedValues
-      );
+      // console.debug(
+      //   `Loaded quiz values for ${persistenceKey}:`,
+      //   persistedValues
+      // );
       if (persistedValues) {
         reset(persistedValues, {
           keepDefaultValues: true,
@@ -110,7 +110,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [persistenceKey, quizValuesAtom, reset]
+    [quizValuesAtom, reset]
   );
 
   useEffect(() => {
@@ -150,35 +150,34 @@ export function QuizPage<Input extends FieldValues, Output>({
   return (
     <KeyboardAwareScrollView
       bottomOffset={80}
-      contentContainerStyle={[
-        tw`grow justify-center gap-16 py-4`,
-        contentContainerStyle,
-      ]}
+      contentContainerStyle={[tw`grow justify-center`, contentContainerStyle]}
       style={[tw`flex-1 px-4 pt-4`, style]}
       {...props}
     >
-      <QuizPageContext.Provider value={{ pageId }}>
-        <FormProvider {...context}>
-          {children({ ...context, lens })}
-        </FormProvider>
-      </QuizPageContext.Provider>
+      <Animated.View layout={LinearTransition} style={tw`gap-16 py-4`}>
+        <QuizPageContext.Provider value={{ pageId }}>
+          <FormProvider {...context}>
+            {children({ ...context, lens })}
+          </FormProvider>
+        </QuizPageContext.Provider>
+      </Animated.View>
     </KeyboardAwareScrollView>
   );
 }
 
-const QuizContext = createRequiredContext<{
-  handleNext: () => void;
-  handlePrev: () => void;
-}>();
-
 export function QuizScreen({ children }: PropsWithChildren) {
   const router = useRouter();
   const [page, setPage] = useAtom(useQuizPageAtom());
-  const { finalRoute, routes } = useQuiz();
+  const {
+    finalRoute,
+    isNextPage,
+    isPrevPage,
+    routes,
+    setisNextPage,
+    setisPrevPage,
+  } = useQuiz();
   const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
     useRouteNavigation(routes);
-  const [isNextPage, setisNextPage] = useState(false);
-  const [isPrevPage, setisPrevPage] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -204,7 +203,18 @@ export function QuizScreen({ children }: PropsWithChildren) {
     [children]
   );
 
-  const handleNext = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    const activeChild = childRefs[page]?.current;
+    if (!activeChild) {
+      console.warn('No active child found for submission.');
+      return;
+    }
+
+    const result = await activeChild.submit();
+    if (!result) {
+      return;
+    }
+
     if (page < childRefs.length - 1) {
       void setPage(page + 1);
     } else if (isLastRoute) {
@@ -212,24 +222,16 @@ export function QuizScreen({ children }: PropsWithChildren) {
     } else {
       nextRoute();
     }
-  }, [
-    childRefs.length,
-    finalRoute,
-    isLastRoute,
-    nextRoute,
-    page,
-    router,
-    setPage,
-  ]);
+  }, [childRefs, finalRoute, isLastRoute, nextRoute, page, router, setPage]);
 
   // Since `handleNext` behavior could depend on state in the page, we want to
   // render the component before calling it.
   useEffect(() => {
     if (isNextPage && !keyboardVisible) {
-      handleNext();
+      void handleSubmit();
       setisNextPage(false);
     }
-  }, [isNextPage, handleNext, keyboardVisible]);
+  }, [isNextPage, keyboardVisible, setisNextPage, handleSubmit]);
 
   const handlePrev = useCallback(() => {
     if (page > 0) {
@@ -246,29 +248,10 @@ export function QuizScreen({ children }: PropsWithChildren) {
       handlePrev();
       setisPrevPage(false);
     }
-  }, [handlePrev, isPrevPage, keyboardVisible]);
-
-  const handleSubmit = async () => {
-    const activeChild = childRefs[page]?.current;
-    if (!activeChild) {
-      console.warn('No active child found for submission.');
-      return;
-    }
-
-    const result = await activeChild.submit();
-    if (result) {
-      Keyboard.dismiss();
-      setisNextPage(true);
-    }
-  };
-
-  const handleBack = () => {
-    Keyboard.dismiss();
-    setisPrevPage(true);
-  };
+  }, [handlePrev, isPrevPage, keyboardVisible, setisPrevPage]);
 
   return (
-    <QuizContext.Provider value={{ handleNext, handlePrev }}>
+    <FadeSlotPageWrapper>
       <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
         {Children.toArray(children).map((child, idx) => (
           <View key={idx} style={tw`flex-1`}>
@@ -280,28 +263,6 @@ export function QuizScreen({ children }: PropsWithChildren) {
           </View>
         ))}
       </ReactivePagerView>
-      <SafeAreaView
-        edges={{ bottom: 'maximum' }}
-        style={[tw`mt-auto flex-row gap-4 p-4`]}
-      >
-        <View style={tw`flex-1`}>
-          <TransButton
-            i18nKey='quiz.previous'
-            icon='arrow-left'
-            mode='contained-tonal'
-            onPress={handleBack}
-          />
-        </View>
-        <View style={tw`flex-1`}>
-          <TransButton
-            contentStyle={tw`flex-row-reverse`}
-            i18nKey='quiz.next'
-            icon='arrow-right'
-            mode='contained'
-            onPress={handleSubmit}
-          />
-        </View>
-      </SafeAreaView>
-    </QuizContext.Provider>
+    </FadeSlotPageWrapper>
   );
 }
