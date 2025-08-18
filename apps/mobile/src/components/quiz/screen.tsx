@@ -154,7 +154,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         tw`grow justify-center gap-16 py-4`,
         contentContainerStyle,
       ]}
-      style={[tw`flex-1 px-4`, style]}
+      style={[tw`flex-1 px-4 pt-4`, style]}
       {...props}
     >
       <QuizPageContext.Provider value={{ pageId }}>

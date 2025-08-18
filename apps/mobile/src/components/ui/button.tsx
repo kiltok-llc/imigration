@@ -5,6 +5,7 @@ import { Button as PaperButton } from 'react-native-paper';
 import tw from 'twrnc';
 
 type ButtonProps = ComponentProps<typeof PaperButton> & {
+  shrink?: boolean;
   size?: 'md' | 'sm';
 };
 
@@ -13,6 +14,7 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
     children,
     contentStyle,
     labelStyle,
+    shrink = false,
     size = 'md',
     style,
     ...props
@@ -25,7 +27,7 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
       labelStyle={[tw.style(size === 'md' && 'text-lg'), labelStyle]}
       mode='contained'
       ref={ref}
-      style={[tw`w-full`, style]}
+      style={[tw.style(shrink || 'w-full'), style]}
       {...props}
     >
       {children}

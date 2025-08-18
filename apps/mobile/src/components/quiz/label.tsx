@@ -28,8 +28,8 @@ export function QuizFieldTitle({
   return (
     <FormLabel
       {...props}
-      style={tw`text-center font-semibold`}
-      variant='headlineMedium'
+      style={tw`mx-4 text-center font-semibold`}
+      variant='headlineSmall'
     >
       <Trans
         i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.${name ?? toI18nKey(fieldName)}.title`}
@@ -67,7 +67,7 @@ export function QuizPageTitle({
     <FormLabel
       {...props}
       style={tw`text-center font-semibold`}
-      variant='headlineMedium'
+      variant='headlineSmall'
     >
       <Trans
         i18nKey={`services.${serviceId}.${quizId}.${screenId}.${pageId}.title`}

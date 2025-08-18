@@ -1,6 +1,8 @@
 {
   "permission": {
-    "camera": "iMigration needs access to your camera to take photos for your application."
+    "camera": {
+      "denied": "To take photos, please allow camera access in your device settings."
+    }
   },
   "error": {
     "message": "There was an error loading this content:\n<pre>{{message}}</pre>",
@@ -10,8 +12,14 @@
   "or": "or",
   "form": {
     "image": {
-      "camera": "Take a photo",
-      "select": "Select file"
+      "camera": {
+        "cancelled": "Camera action was cancelled.",
+        "label": "Open camera"
+      },
+      "select": {
+        "cancelled": "Image selection was cancelled.",
+        "label": "Tap to upload photo"
+      }
     },
     "address": {
       "city": "City",
