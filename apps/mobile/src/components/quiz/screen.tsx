@@ -28,12 +28,14 @@ import {
 } from 'react-hook-form';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { LinearTransition } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { useQuizPageAtom } from '@/atoms/quiz-page-family';
 import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
+import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { useQuiz } from '@/components/quiz/layout';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { TransButton } from '@/components/trans';
@@ -99,10 +101,10 @@ export function QuizPage<Input extends FieldValues, Output>({
   const loadQuizValues = useStableAtomCallback(
     (get) => {
       const persistedValues = get(quizValuesAtom);
-      console.debug(
-        `Loaded quiz values for ${persistenceKey}:`,
-        persistedValues
-      );
+      // console.debug(
+      //   `Loaded quiz values for ${persistenceKey}:`,
+      //   persistedValues
+      // );
       if (persistedValues) {
         reset(persistedValues, {
           keepDefaultValues: true,
@@ -110,7 +112,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [persistenceKey, quizValuesAtom, reset]
+    [quizValuesAtom, reset]
   );
 
   useEffect(() => {
@@ -150,18 +152,17 @@ export function QuizPage<Input extends FieldValues, Output>({
   return (
     <KeyboardAwareScrollView
       bottomOffset={80}
-      contentContainerStyle={[
-        tw`grow justify-center gap-16 py-4`,
-        contentContainerStyle,
-      ]}
+      contentContainerStyle={[tw`grow justify-center`, contentContainerStyle]}
       style={[tw`flex-1 px-4 pt-4`, style]}
       {...props}
     >
-      <QuizPageContext.Provider value={{ pageId }}>
-        <FormProvider {...context}>
-          {children({ ...context, lens })}
-        </FormProvider>
-      </QuizPageContext.Provider>
+      <Animated.View layout={LinearTransition} style={tw`gap-16 py-4`}>
+        <QuizPageContext.Provider value={{ pageId }}>
+          <FormProvider {...context}>
+            {children({ ...context, lens })}
+          </FormProvider>
+        </QuizPageContext.Provider>
+      </Animated.View>
     </KeyboardAwareScrollView>
   );
 }
@@ -267,41 +268,54 @@ export function QuizScreen({ children }: PropsWithChildren) {
     setisPrevPage(true);
   };
 
+  const { bottom } = useSafeAreaInsets();
+
   return (
     <QuizContext.Provider value={{ handleNext, handlePrev }}>
-      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
-        {Children.toArray(children).map((child, idx) => (
-          <View key={idx} style={tw`flex-1`}>
-            {isElementOfType(child, QuizPage)
-              ? cloneElement(child, {
-                  ref: childRefs[idx],
-                })
-              : child}
+      <FadeSlotPageWrapper>
+        <ReactivePagerView
+          orientation='vertical'
+          page={page}
+          style={tw`flex-1`}
+        >
+          {Children.toArray(children).map((child, idx) => (
+            <View key={idx} style={tw`flex-1`}>
+              {isElementOfType(child, QuizPage)
+                ? cloneElement(child, {
+                    ref: childRefs[idx],
+                  })
+                : child}
+            </View>
+          ))}
+        </ReactivePagerView>
+        <View
+          // SafeAreaView leads to layout glitches when changing pages, so we need
+          // to use useSafeAreaInsets directly.
+          style={[
+            tw.style('mt-auto flex-row gap-4 p-4', {
+              paddingBottom: Math.max(16, bottom),
+            }),
+          ]}
+        >
+          <View style={tw`flex-1`}>
+            <TransButton
+              i18nKey='quiz.previous'
+              icon='arrow-left'
+              mode='contained-tonal'
+              onPress={handleBack}
+            />
           </View>
-        ))}
-      </ReactivePagerView>
-      <SafeAreaView
-        edges={{ bottom: 'maximum' }}
-        style={[tw`mt-auto flex-row gap-4 p-4`]}
-      >
-        <View style={tw`flex-1`}>
-          <TransButton
-            i18nKey='quiz.previous'
-            icon='arrow-left'
-            mode='contained-tonal'
-            onPress={handleBack}
-          />
+          <View style={tw`flex-1`}>
+            <TransButton
+              contentStyle={tw`flex-row-reverse`}
+              i18nKey='quiz.next'
+              icon='arrow-right'
+              mode='contained'
+              onPress={handleSubmit}
+            />
+          </View>
         </View>
-        <View style={tw`flex-1`}>
-          <TransButton
-            contentStyle={tw`flex-row-reverse`}
-            i18nKey='quiz.next'
-            icon='arrow-right'
-            mode='contained'
-            onPress={handleSubmit}
-          />
-        </View>
-      </SafeAreaView>
+      </FadeSlotPageWrapper>
     </QuizContext.Provider>
   );
 }

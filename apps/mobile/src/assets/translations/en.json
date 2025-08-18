@@ -16,9 +16,12 @@
         "cancelled": "Camera action was cancelled.",
         "label": "Open camera"
       },
-      "select": {
+      "clear": {
+        "label": "Clear image"
+      },
+      "library": {
         "cancelled": "Image selection was cancelled.",
-        "label": "Tap to upload photo"
+        "label": "Tap to submit photo"
       }
     },
     "address": {
@@ -546,7 +549,7 @@
                 "title": "Do you have a birth certificate?"
               },
               "image": {
-                "title": "Please upload a copy of your birth certificate."
+                "title": "Please submit a copy of your birth certificate."
               }
             },
             "additional-info": {

@@ -1,6 +1,6 @@
-import { MD3LightTheme, MD3Theme } from 'react-native-paper';
+import { MD3LightTheme } from 'react-native-paper';
 
-export const theme: MD3Theme = {
+export const theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
@@ -16,6 +16,11 @@ export const theme: MD3Theme = {
     onSecondaryContainer: '#2d1e00',
     secondary: '#c29a3c',
     secondaryContainer: '#ffdea6',
+
+    success: '#39983e',
+    successContainer: '#caefcc',
   },
   roundness: 2,
-};
+} as const;
+
+export type Theme = typeof theme;

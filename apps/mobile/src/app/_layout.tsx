@@ -15,7 +15,7 @@ import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { Stack } from '@/components/stack';
 import { env } from '@/env';
 import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
-import { theme } from '@/lib/paper-theme';
+import { theme } from '@/lib/theme';
 import { LanguageProvider } from '@/providers/language';
 import { QueryProvider } from '@/providers/query';
 import { TRPCProvider } from '@/providers/trpc';

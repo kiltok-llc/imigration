@@ -146,7 +146,7 @@ export default function DemographicsAndBirth() {
         pageId='birth-certificate'
         schema={z.object({
           hasBirthCertificate: required(z.boolean().nullable()),
-          image: z.string().nonempty().optional(),
+          image: required(z.string().nullable()).optional(),
         })}
       >
         {({ control, watch }) => (
@@ -160,7 +160,7 @@ export default function DemographicsAndBirth() {
 
             <ConditionalFormFieldBlock
               active={!!watch('hasBirthCertificate')}
-              activeValue=''
+              activeValue={null}
               control={control}
               name='image'
             >

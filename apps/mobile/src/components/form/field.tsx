@@ -15,9 +15,8 @@ import {
   UseControllerReturn,
   useFormContext,
 } from 'react-hook-form';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import tw from 'twrnc';
-
-import { FadeView } from '@/components/fade-view';
 
 const FormFieldContext = createContext<UseControllerReturn>({
   field: {
@@ -97,14 +96,14 @@ export const ConditionalFormFieldBlock = <
     }
 
     if (disabled) {
-      console.debug(
-        `Resetting field "${name}" to default value because it field was disabled.`
-      );
+      // console.debug(
+      //   `Resetting field "${name}" to default value because it field was disabled.`
+      // );
       resetField(name);
     } else if (get(defaultValues, name) === currentValueRef.current) {
-      console.debug(
-        `Setting field "${name}" to active value: '${activeValue}' because field was enabled and current value is default.`
-      );
+      // console.debug(
+      //   `Setting field "${name}" to active value: '${activeValue}' because field was enabled and current value is default.`
+      // );
       // @ts-ignore
       setValue(name, activeValue);
     }
@@ -118,12 +117,16 @@ export const ConditionalFormFieldBlock = <
     setValue,
   ]);
 
+  if (!active) {
+    return null;
+  }
+
   return (
-    <FormFieldContext.Provider value={controller as UseControllerReturn}>
-      <FadeView style={tw`gap-4`} visible={active}>
+    <Animated.View entering={FadeIn} exiting={FadeOut} style={tw`gap-4`}>
+      <FormFieldContext.Provider value={controller as UseControllerReturn}>
         {children}
-      </FadeView>
-    </FormFieldContext.Provider>
+      </FormFieldContext.Provider>
+    </Animated.View>
   );
 };
 

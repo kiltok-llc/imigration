@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { RadioButton, useTheme } from 'react-native-paper';
@@ -29,7 +29,7 @@ export function FormRadioGroup({
   return (
     <View ref={ref} {...props}>
       {children}
-      {/*{__DEV__ && <FormRadioItem label='Null (Dev Only)' value={null} />}*/}
+      {__DEV__ && <FormRadioItem label='Null (Dev Only)' value={null} />}
     </View>
   );
 }
@@ -50,6 +50,13 @@ export function FormRadioItem<T>({
     field: { disabled, onChange, value: selectedValue },
     fieldState: { invalid },
   } = useFormField();
+
+  // fix bug with radio button animation
+  // re render when selectedValue changes
+  const [_, setFixAnimation] = useState();
+  useEffect(() => {
+    setFixAnimation(selectedValue);
+  }, [selectedValue]);
 
   return (
     <RadioButton.Item

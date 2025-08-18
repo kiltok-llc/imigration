@@ -50,7 +50,7 @@
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
     "expo-dev-client": "~5.2.4",
-    "expo-file-system": "~18.1.11",
+    "expo-file-system": "19.0.0-canary-20250811-5c940c0",
     "expo-font": "~13.3.2",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.0",
@@ -93,6 +93,7 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-uuid": "^2.0.3",
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
     "sonner-native": "^0.21.0",
@@ -102,7 +103,6 @@
     "twrnc": "^4.9.1",
     "type-fest": "^4.41.0",
     "usehooks-ts": "^3.1.1",
-    "uuid": "^11.1.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -112,6 +112,7 @@
     "@repo/tsconfig": "workspace:*",
     "@types/react": "catalog:react19",
     "eslint": "catalog:",
+    "minimatch": "^10.0.3",
     "prettier": "catalog:",
     "react-native-svg-transformer": "^1.5.1",
     "ts-node": "^10.9.2",
@@ -121,6 +122,11 @@
     "node": "^22.16.0"
   },
   "expo": {
+    "install": {
+      "exclude": [
+        "expo-file-system"
+      ]
+    },
     "doctor": {
       "reactNativeDirectoryCheck": {
         "listUnknownPackages": false
