@@ -2,10 +2,10 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ErrorBoundaryProps, Redirect } from 'expo-router';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { KeyboardToolbar } from 'react-native-keyboard-controller';
 import { useTheme } from 'react-native-paper';
@@ -31,7 +31,11 @@ import { toRouteId } from '@/lib/utils';
 
 const QuizContext = createRequiredContext<{
   finalRoute: string;
+  isNextPage: boolean;
+  isPrevPage: boolean;
   routes: string[];
+  setisNextPage: (value: boolean) => void;
+  setisPrevPage: (value: boolean) => void;
 }>();
 
 export function SavedQuizRouteRedirect() {
@@ -116,6 +120,8 @@ export function QuizLayout({
   const routeIdx = routes.indexOf(routeName);
   const nextRouteName = routes[routeIdx + 1];
   const setSavedQuizRoute = useSetAtom(quizRouteFamily({ quizId, serviceId }));
+  const [isNextPage, setisNextPage] = useState(false);
+  const [isPrevPage, setisPrevPage] = useState(false);
 
   useFocusedRouteListener((route) => {
     if (!routes.includes(route)) {
@@ -125,8 +131,27 @@ export function QuizLayout({
     setSavedQuizRoute(route);
   });
 
+  const handleBack = () => {
+    Keyboard.dismiss();
+    setisPrevPage(true);
+  };
+
+  const handleSubmit = async () => {
+    Keyboard.dismiss();
+    setisNextPage(true);
+  };
+
   return (
-    <QuizContext.Provider value={{ finalRoute, routes }}>
+    <QuizContext.Provider
+      value={{
+        finalRoute,
+        isNextPage,
+        isPrevPage,
+        routes,
+        setisNextPage,
+        setisPrevPage,
+      }}
+    >
       <View style={tw`flex-1`}>
         <QuizHeader
           current={routeIdx + 1}
@@ -143,6 +168,25 @@ export function QuizLayout({
           total={routes.length}
         />
         {children}
+        <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
+          <View style={tw`flex-1`}>
+            <TransButton
+              i18nKey='quiz.previous'
+              icon='arrow-left'
+              mode='contained-tonal'
+              onPress={handleBack}
+            />
+          </View>
+          <View style={tw`flex-1`}>
+            <TransButton
+              contentStyle={tw`flex-row-reverse`}
+              i18nKey='quiz.next'
+              icon='arrow-right'
+              mode='contained'
+              onPress={handleSubmit}
+            />
+          </View>
+        </SafeAreaView>
         <KeyboardToolbar doneText={t('keyboard.done')} />
       </View>
     </QuizContext.Provider>

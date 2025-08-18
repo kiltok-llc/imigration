@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { File, Paths } from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
@@ -9,7 +8,6 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import uuid from 'react-native-uuid';
 import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
@@ -18,7 +16,7 @@ import { TransButton } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
 import { Theme } from '@/lib/theme';
 
-export function FormImageInput({ directory = '' }: { directory?: string }) {
+export function FormImageInput() {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
   const {
@@ -32,7 +30,7 @@ export function FormImageInput({ directory = '' }: { directory?: string }) {
         const granted = await requestCameraPermissions();
         if (!granted) {
           toast.error(t('permission.camera.denied'));
-          return null;
+          return;
         }
       }
 
@@ -43,22 +41,10 @@ export function FormImageInput({ directory = '' }: { directory?: string }) {
 
       if (canceled || !assets?.[0]) {
         toast.warning(t(`form.image.${type}.cancelled`));
-        return null;
+        return;
       }
 
-      const capturedImage = new File(assets[0].uri);
-      const savedImage = new File(
-        Paths.document,
-        directory,
-        `${uuid.v4()}${capturedImage.extension}`
-      );
-
-      capturedImage.copy(savedImage);
-
-      return savedImage.uri;
-    },
-    onSuccess(uri) {
-      onChange(uri);
+      onChange(assets[0].uri);
     },
   });
 

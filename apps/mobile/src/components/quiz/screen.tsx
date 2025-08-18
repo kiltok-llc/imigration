@@ -29,7 +29,6 @@ import {
 import { Keyboard, ScrollView, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
@@ -38,7 +37,6 @@ import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { useQuiz } from '@/components/quiz/layout';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
-import { TransButton } from '@/components/trans';
 import {
   createRequiredContext,
   useRequiredContext,
@@ -167,19 +165,19 @@ export function QuizPage<Input extends FieldValues, Output>({
   );
 }
 
-const QuizContext = createRequiredContext<{
-  handleNext: () => void;
-  handlePrev: () => void;
-}>();
-
 export function QuizScreen({ children }: PropsWithChildren) {
   const router = useRouter();
   const [page, setPage] = useAtom(useQuizPageAtom());
-  const { finalRoute, routes } = useQuiz();
+  const {
+    finalRoute,
+    isNextPage,
+    isPrevPage,
+    routes,
+    setisNextPage,
+    setisPrevPage,
+  } = useQuiz();
   const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
     useRouteNavigation(routes);
-  const [isNextPage, setisNextPage] = useState(false);
-  const [isPrevPage, setisPrevPage] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -205,7 +203,18 @@ export function QuizScreen({ children }: PropsWithChildren) {
     [children]
   );
 
-  const handleNext = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    const activeChild = childRefs[page]?.current;
+    if (!activeChild) {
+      console.warn('No active child found for submission.');
+      return;
+    }
+
+    const result = await activeChild.submit();
+    if (!result) {
+      return;
+    }
+
     if (page < childRefs.length - 1) {
       void setPage(page + 1);
     } else if (isLastRoute) {
@@ -213,24 +222,16 @@ export function QuizScreen({ children }: PropsWithChildren) {
     } else {
       nextRoute();
     }
-  }, [
-    childRefs.length,
-    finalRoute,
-    isLastRoute,
-    nextRoute,
-    page,
-    router,
-    setPage,
-  ]);
+  }, [childRefs, finalRoute, isLastRoute, nextRoute, page, router, setPage]);
 
   // Since `handleNext` behavior could depend on state in the page, we want to
   // render the component before calling it.
   useEffect(() => {
     if (isNextPage && !keyboardVisible) {
-      handleNext();
+      void handleSubmit();
       setisNextPage(false);
     }
-  }, [isNextPage, handleNext, keyboardVisible]);
+  }, [isNextPage, keyboardVisible, setisNextPage, handleSubmit]);
 
   const handlePrev = useCallback(() => {
     if (page > 0) {
@@ -247,75 +248,21 @@ export function QuizScreen({ children }: PropsWithChildren) {
       handlePrev();
       setisPrevPage(false);
     }
-  }, [handlePrev, isPrevPage, keyboardVisible]);
-
-  const handleSubmit = async () => {
-    const activeChild = childRefs[page]?.current;
-    if (!activeChild) {
-      console.warn('No active child found for submission.');
-      return;
-    }
-
-    const result = await activeChild.submit();
-    if (result) {
-      Keyboard.dismiss();
-      setisNextPage(true);
-    }
-  };
-
-  const handleBack = () => {
-    Keyboard.dismiss();
-    setisPrevPage(true);
-  };
-
-  const { bottom } = useSafeAreaInsets();
+  }, [handlePrev, isPrevPage, keyboardVisible, setisPrevPage]);
 
   return (
-    <QuizContext.Provider value={{ handleNext, handlePrev }}>
-      <FadeSlotPageWrapper>
-        <ReactivePagerView
-          orientation='vertical'
-          page={page}
-          style={tw`flex-1`}
-        >
-          {Children.toArray(children).map((child, idx) => (
-            <View key={idx} style={tw`flex-1`}>
-              {isElementOfType(child, QuizPage)
-                ? cloneElement(child, {
-                    ref: childRefs[idx],
-                  })
-                : child}
-            </View>
-          ))}
-        </ReactivePagerView>
-        <View
-          // SafeAreaView leads to layout glitches when changing pages, so we need
-          // to use useSafeAreaInsets directly.
-          style={[
-            tw.style('mt-auto flex-row gap-4 p-4', {
-              paddingBottom: Math.max(16, bottom),
-            }),
-          ]}
-        >
-          <View style={tw`flex-1`}>
-            <TransButton
-              i18nKey='quiz.previous'
-              icon='arrow-left'
-              mode='contained-tonal'
-              onPress={handleBack}
-            />
+    <FadeSlotPageWrapper>
+      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
+        {Children.toArray(children).map((child, idx) => (
+          <View key={idx} style={tw`flex-1`}>
+            {isElementOfType(child, QuizPage)
+              ? cloneElement(child, {
+                  ref: childRefs[idx],
+                })
+              : child}
           </View>
-          <View style={tw`flex-1`}>
-            <TransButton
-              contentStyle={tw`flex-row-reverse`}
-              i18nKey='quiz.next'
-              icon='arrow-right'
-              mode='contained'
-              onPress={handleSubmit}
-            />
-          </View>
-        </View>
-      </FadeSlotPageWrapper>
-    </QuizContext.Provider>
+        ))}
+      </ReactivePagerView>
+    </FadeSlotPageWrapper>
   );
 }
