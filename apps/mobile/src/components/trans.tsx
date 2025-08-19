@@ -1,14 +1,11 @@
-import { ComponentProps, createContext, useContext } from 'react';
+import { ComponentProps } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
 import { Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Button } from '@/components/ui/button';
-
-const TranslationContextContext = createContext<Record<string, any>>({});
-export const TranslationContextProvider = TranslationContextContext.Provider;
-const useTranslationContext = () => useContext(TranslationContextContext);
+import { useTranslationContext } from '@/providers/translation';
 
 // TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
 export function Trans({

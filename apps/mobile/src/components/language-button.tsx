@@ -1,5 +1,4 @@
 import { Feather } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 

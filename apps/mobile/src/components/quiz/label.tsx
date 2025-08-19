@@ -4,6 +4,18 @@ import tw from 'twrnc';
 import { FormLabel } from '@/components/form/label';
 import { useQuizFieldKey, useQuizPageKey } from '@/components/quiz/hooks';
 
+export function QuizFieldDescription({
+  name,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'> & {
+  name?: string;
+}) {
+  const i18nKey = useQuizFieldKey('description', name);
+
+  return <FormLabel i18nKey={i18nKey} {...props} variant='titleMedium' />;
+}
+
 export function QuizFieldTitle({
   name,
   style,

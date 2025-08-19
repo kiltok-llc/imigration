@@ -1,7 +1,4 @@
-import {
-  atomWithStorage,
-  unstable_withStorageValidator as withStorageValidator,
-} from 'jotai/utils';
+import { atomWithStorage } from 'jotai/utils';
 import { MMKV } from 'react-native-mmkv';
 import z from 'zod/v4';
 
@@ -14,13 +11,10 @@ export const atomWithMmkvStorage = <T>(
   storage: MMKV = defaultStorage
 ) => {
   const validator = (v: unknown): v is T =>
-    !schema || schema.safeParse(v).success;
+    schema?.safeParse(v)?.success ?? true;
   return atomWithStorage<T>(
     key,
     initialValue,
-    withStorageValidator<T>(validator)(createMMKVStorage(storage)),
-    {
-      getOnInit: true,
-    }
+    createMMKVStorage(storage, validator)
   );
 };

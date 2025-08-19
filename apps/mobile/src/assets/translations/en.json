@@ -33,11 +33,12 @@
       "state": "State",
       "street": "Street address",
       "unit": "Apt, suite, unit, etc.",
-      "zip-code": "ZIP Code"
+      "zip-code": "ZIP Code",
+      "country": "Country"
     },
     "short-address": {
       "city": "City",
-      "country": "Country",
+      "country": "Country"
     },
     "boolean": {
       "no": "No",
@@ -143,7 +144,11 @@
     },
     "missing": "Please answer all questions before continuing.",
     "next": "Continue",
-    "previous": "Back"
+    "previous": "Back",
+    "error": {
+      "reset-route": "Reset saved route",
+      "reset-values": "Reset saved answers"
+    }
   },
   "services": {
     "asylum": "Asylum",
@@ -421,13 +426,104 @@
           }
         },
         "family-status": {
+          "parent-details": {
+            "title": "Parent Information",
+            "mother": {
+              "title": "Please enter the following information about your mother.",
+              "alive": {
+                "title": "Is your mother alive?"
+              },
+              "current-location": {
+                "title": "Where does your mother currently live?"
+              },
+              "name": {
+                "title": "What is your mother's name?"
+              },
+              "birth-location": {
+                "title": "Where was your mother born?"
+              }
+            },
+            "father": {
+              "title": "Please enter the following information about your father.",
+              "alive": {
+                "title": "Is your father alive?"
+              },
+              "current-location": {
+                "title": "Where does your father currently live?"
+              },
+              "name": {
+                "title": "What is your father's name?"
+              },
+              "birth-location": {
+                "title": "Where was your father born?"
+              }
+            }
+          },
+          "sibling-details": {
+            "sibling-information": {
+              "has-siblings": {
+                "title": "Do you have any siblings?"
+              },
+              "number": {
+                "label": "Number of siblings",
+                "title": "How many siblings do you have?"
+              },
+              "title": "Siblings Information"
+            },
+            "add-sibling": "Add Sibling",
+            "additional-info-title": "Additional Information",
+            "basic-info-title": "Basic Information",
+            "birth-city": "City of Birth",
+            "birth-country": "Country of Birth",
+            "birth-info-title": "Birth Information",
+            "sibling": {
+              "dob": {
+                "label": "Date of Birth",
+                "title": "What is the sibling's date of birth?",
+                "title_named": "What is {{ name }}'s date of birth?"
+              },
+              "birth-location": {
+                "title": "Where was this sibling born?",
+                "title_named": "Where was {{ name }} born?"
+              },
+              "lives-in-usa": {
+                "title": "Does this sibling currently live in the United States?",
+                "title_named": "Does {{ name }} currently live in the United States?"
+              },
+              "current-location": {
+                "title": "Where does this sibling currently live?",
+                "title_named": "Where does {{ name }} currently live?"
+              },
+              "name": {
+                "title": "What is the sibling's name?"
+              },
+              "sex": {
+                "title": "What is the sibling's sex?",
+                "title_named": "What is {{ name }}'s sex?"
+              },
+              "title_one": "{{ count }}st sibling",
+              "title_two": "{{ count }}nd sibling",
+              "title_few": "{{ count }}rd sibling"
+            },
+            "sibling-number": "Sibling {{ current }} of {{ total }} details",
+            "dob": "Date of Birth",
+            "ethnicity": "Race, Ethnicity, or Tribal Group",
+            "lives-in-us": "Do they currently live in the United States?",
+            "nationality": "Nationality",
+            "sex": "Sex",
+            "sex-options": {
+              "female": "Female",
+              "male": "Male"
+            },
+            "title": "Siblings Details"
+          },
           "children-details": {
             "children-information": {
               "has-children": {
                 "title": "Do you have children (regardless of age, location, or marital status)?"
               },
               "number": {
-                "label": "Number of Children",
+                "label": "Number of children",
                 "title": "How many children do you have?"
               },
               "title": "Children Information"
@@ -483,9 +579,9 @@
               "male": "Male"
             },
             "title": "Children Details"
-          }
+          },
           "marital-status": {
-            "marriage-location": {
+            "marriage-info": {
               "location": {
                 "title": "Where did you get married?"
               },
@@ -496,10 +592,13 @@
                 "label": "Country"
               },
               "range": {
-                "title": "When did you get married?"
+                "title": "When did you get married?",
+                "start": {
+                  "label": "Marriage Date"
+                }
               }
             },
-            "spouse-name": {
+            "spouse-info": {
               "title": "What is your spouse's name?",
               "title_divorced": "What was your ex-spouse's name?",
               "title_widowed": "What was your late spouse's name?"
@@ -544,61 +643,82 @@
             "title": "Spouse Information"
           }
         },
-        "identification": {
-          "other-identification": {
-            "drivers-license-details": {
-              "number": {
-                "label": "License Number",
-                "title": "What is your driver's license number?"
-              },
-              "state": {
-                "label": "State/Province",
-                "title": "Which state or province issued your driver's license?"
-              }
-            },
-            "has-drivers-license": {
-              "has-drivers-license": {
-                "title": "Do you have a driver's license?"
-              }
-            },
-            "social-security": {
+        "immigration-status": {
+          "status": {
+            "ssn": {
               "has-ssn": {
-                "title": "Do you have a Social Security Number?"
+                "title": "Do you have a Social Security Number?",
+                "title_spouse": "Does your spouse, {{ name }}, have a Social Security Number?",
+                "title_child": "Does your child, {{ name }}, have a Social Security Number?"
               },
-              "ssn-number": {
+              "number": {
                 "label": "Social Security Number",
-                "title": "What is your Social Security Number?"
+                "title_client": "What is your Social Security Number?",
+                "title": "What is {{ name }}'s Social Security Number?"
               }
             },
-            "title": "Other Identification"
-          },
-          "passport-information": {
-            "has-passport": {
-              "has-passport": {
-                "title": "Do you have a passport?"
+            "court": {
+              "court-status": {
+                "title": "Has {{ name }} ever been, or is {{ name }} currently, in immigration court proceedings?",
+                "title_client": "Have you ever been, or are you currently, in immigration court proceedings?",
+                "options": {
+                  "currently_client": "I am Currently in proceedings",
+                  "currently": "{{ name }} is currently in proceedings",
+                  "previously_client": "I was previously in proceedings",
+                  "previously": "{{ name }} was previously in proceedings",
+                  "never_client": "I have never been in proceedings",
+                  "never": "{{ name }} has never been in proceedings"
+                }
               }
             },
-            "passport-dates": {
-              "expiration": {
-                "label": "Expiration Date",
-                "title": "When does your passport expire?"
+            "uscis": {
+              "has-uscis": {
+                "title": "Do you have a USCIS online account number?",
+                "title_spouse": "Does your spouse, {{ name }}, have a USCIS online account number?",
+                "title_child": "Does your child, {{ name }}, have a USCIS online account number?",
+                "description": "The 'USCIS online account number' (Online Account Number or OAN) is a number that’s given to a person when they create an account on the U.S. Citizenship and Immigration Services (USCIS) website. You can also find it in notices you’ve received from the immigration office. This number is different from the Alien Number (A-number)."
               },
-              "issue": {
-                "label": "Issue Date",
-                "title": "When was your passport issued?"
+              "number": {
+                "label": "USCIS Online Account Number",
+                "title_client": "What is your USCIS online account number?",
+                "title": "What is {{ name }}'s USCIS online account number?"
               }
             },
-            "passport-details": {
-              "country": {
-                "label": "Issuing Country",
-                "title": "Which country issued your passport?"
+            "alien-number": {
+              "has-alien-number": {
+                "title": "Do you have an Alien Registration Number?",
+                "title_spouse": "Does your spouse, {{ name }} have an Alien Registration Number?",
+                "title_child": "Does your child, {{ name }} have an Alien Registration Number?",
+                "description": "The Alien Registration Number (A-Number) begins with the letter “A” followed by 8 or 9 digits (e.g., A123456789). This number is printed on the notes and/or documents that may have been given to you by immigration offices (Executive Office for Immigration Review – EOIR) or by the Department of Homeland Security (DHS), USCIS, U.S. Customs and Border Protection (CBP), and U.S. Immigration and Customs Enforcement (ICE)."
+              },
+              "number": {
+                "label": "Alien Registration Number",
+                "title_client": "What is your Alien Registration Number?",
+                "title": "What is {{ name }}'s Alien Registration Number?"
+              }
+            },
+            "title": "Client Immigration Status",
+            "title_spouse": "Spouse Immigration Status",
+            "title_child_ordinal_one": "{{ count }}st Child Immigration Status",
+            "title_child_ordinal_two": "{{ count }}nd Child Immigration Status",
+            "title_child_ordinal_few": "{{ count }}rd Child Immigration Status",
+            "passport": {
+              "has-passport": {
+                "title": "Do you have a passport?",
+                "title_spouse": "Does your spouse, {{ name }} have a passport?",
+                "title_child": "Does your child, {{ name }} have a passport?"
               },
               "number": {
                 "label": "Passport Number",
-                "title": "What is your passport number?"
+                "title_client": "What is your passport number?",
+                "title": "What is {{ name }}'s passport number?"
+              },
+              "country": {
+                "label": "Issuing Country",
+                "title": "Which country issued {{ name }}'s passport?",
+                "title_client": "Which country issued your passport?"
               }
-            },
-            "title": "Passport Information"
+            }
           }
         },
         "legal-history": {

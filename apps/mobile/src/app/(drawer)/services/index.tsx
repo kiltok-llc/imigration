@@ -4,7 +4,6 @@ import { ParamListBase } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { Stack, useNavigation, useRouter } from 'expo-router';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +13,7 @@ import banner from '@/assets/onboarding/usa-banner-2.png';
 import { DrawerToggleButton } from '@/components/drawer';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
+import { useT } from '@/hooks/use-t';
 import { IconProps } from '@/lib/icon-props';
 
 const popularServices = [
@@ -47,7 +47,7 @@ const categories = [
 ];
 
 export default function Services() {
-  const { t } = useTranslation();
+  const t = useT();
   const theme = useTheme();
   const router = useRouter();
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();

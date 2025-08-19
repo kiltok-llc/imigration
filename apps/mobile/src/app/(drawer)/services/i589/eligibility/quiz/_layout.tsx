@@ -1,11 +1,11 @@
 import { Stack } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
+import { useT } from '@/hooks/use-t';
 
 export default function EligibilityLayout() {
-  const { t } = useTranslation();
+  const t = useT();
 
   return (
     <>

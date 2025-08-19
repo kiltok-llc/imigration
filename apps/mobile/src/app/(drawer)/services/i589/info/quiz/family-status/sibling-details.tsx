@@ -4,9 +4,16 @@ import { atomFamily } from 'jotai/utils';
 import { forwardRef } from 'react';
 import z from 'zod/v4';
 
+import {
+  AddressSchema,
+  DEFAULT_ADDRESS,
+  DEFAULT_SHORT_ADDRESS,
+  FormAddressInput,
+  FormShortAddressInput,
+  ShortAddressSchema,
+} from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
-import { FormImageInput } from '@/components/form/image';
 import {
   DEFAULT_NAME,
   FormNameInput,
@@ -17,32 +24,28 @@ import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizPageHandle, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { numberOfChildrenAtom, userDataAtom } from '@/lib/data/user';
+import { numberOfSiblingsAtom, userDataAtom } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
-type ChildQuizPageProps = {
-  index: number;
-};
-
-export default function ChildrenDetails() {
-  const [numberOfChildren, setNumberOfChildren] = useAtom(numberOfChildrenAtom);
+export default function SiblingsDetails() {
+  const [numberOfSiblings, setNumberOfSiblings] = useAtom(numberOfSiblingsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasChildren: null,
+          hasSiblings: null,
         }}
         onSubmit={({ number }) => {
-          setNumberOfChildren(number ?? 0);
+          setNumberOfSiblings(number ?? 0);
 
           return true;
         }}
-        pageId='children-information'
+        pageId='sibling-information'
         schema={z.object({
-          hasChildren: required(z.boolean().nullable()),
+          hasSiblings: required(z.boolean().nullable()),
           number: z
             .string()
             // .regex(/^\d+$/)
@@ -53,14 +56,14 @@ export default function ChildrenDetails() {
         {({ control, watch }) => (
           <>
             <FormBlock>
-              <FormField control={control} name='hasChildren'>
+              <FormField control={control} name='hasSiblings'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
             </FormBlock>
 
             <ConditionalFormFieldBlock
-              active={!!watch('hasChildren')}
+              active={!!watch('hasSiblings')}
               activeValue={'0'}
               control={control}
               name='number'
@@ -72,61 +75,50 @@ export default function ChildrenDetails() {
         )}
       </QuizPage>
 
-      {Array.from({ length: numberOfChildren ?? 0 }).map((_, i) => (
-        <ChildQuizPage index={i} key={i} />
+      {Array.from({ length: numberOfSiblings ?? 0 }).map((_, i) => (
+        <SiblingQuizPage index={i} key={i} />
       ))}
     </QuizScreen>
   );
 }
 
-const childFamily = atomFamily((index: number) =>
+const siblingFamily = atomFamily((index: number) =>
   focusAtom(userDataAtom, (optic) =>
-    optic.prop('children').optional().at(index)
+    optic.prop('siblings').optional().at(index)
   )
 );
 
-const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
-  function ChildQuizPage({ index }: ChildQuizPageProps, ref) {
-    const numberOfChildren = useAtomValue(numberOfChildrenAtom);
-    const setChild = useSetAtom(childFamily(index));
+type SiblingQuizPageProps = {
+  index: number;
+};
+
+const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
+  function SiblingQuizPage({ index }: SiblingQuizPageProps, ref) {
+    const numberOfSiblings = useAtomValue(numberOfSiblingsAtom);
+    const setSibling = useSetAtom(siblingFamily(index));
 
     return (
       <QuizPage
         defaultValues={{
+          birthLocation: DEFAULT_SHORT_ADDRESS,
           dob: null,
-          ethnicity: '',
-          hasBirthCertificate: null,
           livesInUsa: null,
           name: DEFAULT_NAME,
           sex: null,
         }}
-        onSubmit={({
-          birthCertificate,
-          dob,
-          ethnicity,
-          livesInUsa,
-          name,
-          sex,
-        }) => {
-          setChild({
-            birthCertificate,
-            dob,
-            ethnicity,
-            livesInUsa,
-            name,
-            sex,
-          });
+        key={index}
+        onSubmit={({ name, sex }) => {
+          setSibling({ name, sex });
 
           return true;
         }}
-        pageId='child'
+        pageId='sibling'
         pageKey={index}
         ref={ref}
         schema={z.object({
-          birthCertificate: required(z.string().nullable()).optional(),
+          birthLocation: required(ShortAddressSchema),
+          currentLocation: AddressSchema.optional(),
           dob: required(z.date().nullable()),
-          ethnicity: z.string(),
-          hasBirthCertificate: required(z.boolean().nullable()),
           livesInUsa: required(z.boolean().nullable()),
           name: NameSchema,
           sex: required(SexEnum.nullable()),
@@ -140,7 +132,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
               values: {
                 name: watch('name.first'),
                 ordinal: true,
-                total: numberOfChildren,
+                total: numberOfSiblings,
               },
             }}
           >
@@ -166,34 +158,25 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
             </FormBlock>
 
             <FormBlock>
+              <QuizFieldTitle name='birth-location' variant='titleLarge' />
+              <FormShortAddressInput lens={lens.focus('birthLocation')} />
+            </FormBlock>
+
+            <FormBlock>
               <FormField control={control} name='livesInUsa'>
                 <QuizFieldTitle variant='titleLarge' />
                 <FormBooleanInput />
               </FormField>
             </FormBlock>
 
-            <FormBlock>
-              <FormField control={control} name='ethnicity'>
-                <QuizFieldTitle variant='titleLarge' />
-                <QuizTextInput optional />
-              </FormField>
-            </FormBlock>
-
-            <FormBlock>
-              <FormField control={control} name='hasBirthCertificate'>
-                <QuizFieldTitle variant='titleLarge' />
-                <FormBooleanInput />
-              </FormField>
-            </FormBlock>
-
             <ConditionalFormFieldBlock
-              active={!!watch('hasBirthCertificate')}
-              activeValue={null}
+              active={!!watch('livesInUsa')}
+              activeValue={DEFAULT_ADDRESS}
               control={control}
-              name='birthCertificate'
+              name='currentLocation'
             >
-              <QuizFieldTitle />
-              <FormImageInput />
+              <QuizFieldTitle variant='titleLarge' />
+              <FormAddressInput lens={lens.focus('currentLocation')} />
             </ConditionalFormFieldBlock>
           </TranslationContextProvider>
         )}

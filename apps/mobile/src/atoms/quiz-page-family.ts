@@ -1,4 +1,5 @@
 import { isEqual } from '@ver0/deep-equal';
+import { useGlobalSearchParams } from 'expo-router';
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
@@ -9,13 +10,14 @@ import { useStepId } from '@/hooks/use-step-id';
 import { clearMMKVKeys } from '@/lib/utils';
 
 type QuizPageParam = {
+  params: Record<string, string>;
   quizId: string;
   screenId: string;
   serviceId: string;
 };
 
-const quizPageKey = ({ quizId, screenId, serviceId }: QuizPageParam) =>
-  `services.${serviceId}.${quizId}.${screenId}.page`;
+const quizPageKey = ({ params, quizId, screenId, serviceId }: QuizPageParam) =>
+  `services.${serviceId}.${quizId}.${screenId}.${JSON.stringify(params)}.page`;
 
 export const quizPageFamily = atomFamily(
   (param: QuizPageParam) =>
@@ -27,17 +29,23 @@ export const useQuizPageAtom = () => {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
-  return quizPageFamily({ quizId, screenId, serviceId });
+  const params = useGlobalSearchParams<Record<string, string>>();
+  return quizPageFamily({ params, quizId, screenId, serviceId });
 };
 
 export function resetAllQuizPages() {
-  console.debug('Clearing ALL quiz pages');
+  console.log('Clearing ALL quiz pages');
 
-  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.page$/;
-  for (const [serviceId, quizId, screenId] of clearMMKVKeys<
-    [string, string, string]
+  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.([^.]+)\.page$/;
+  for (const [serviceId, quizId, screenId, params] of clearMMKVKeys<
+    [string, string, string, string]
   >(exp)) {
-    quizPageFamily.remove({ quizId, screenId, serviceId });
+    quizPageFamily.remove({
+      params: JSON.parse(params),
+      quizId,
+      screenId,
+      serviceId,
+    });
   }
 }
 
@@ -48,11 +56,18 @@ export function resetQuizPage({
   quizId: string;
   serviceId: string;
 }) {
-  console.debug(`Clearing quiz pages for ${serviceId}.${quizId}`);
+  console.log(`Clearing quiz pages for ${serviceId}.${quizId}`);
 
-  const exp = new RegExp(`^services\\.${serviceId}\\.${quizId}\\.(.+)\\.page$`);
-  for (const [screenId] of clearMMKVKeys<[string]>(exp)) {
-    quizPageFamily.remove({ quizId, screenId, serviceId });
+  const exp = new RegExp(
+    `^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.page$`
+  );
+  for (const [screenId, params] of clearMMKVKeys<[string, string]>(exp)) {
+    quizPageFamily.remove({
+      params: JSON.parse(params),
+      quizId,
+      screenId,
+      serviceId,
+    });
   }
 }
 

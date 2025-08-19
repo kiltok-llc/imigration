@@ -150,7 +150,7 @@ export default function SchoolInformation() {
                 value={{
                   address: DEFAULT_ADDRESS,
                   name: '',
-                  range: DEFAULT_RANGE
+                  range: DEFAULT_RANGE,
                 }}
               />
             </FormFieldArray>

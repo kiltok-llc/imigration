@@ -1,6 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,10 +9,11 @@ import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { StepIcons, Stepper } from '@/components/ui/steps';
+import { useT } from '@/hooks/use-t';
 import { STEPS } from '@/lib/services/i589/steps';
 
 export default function I589() {
-  const { t } = useTranslation();
+  const t = useT();
   const router = useRouter();
   const stepId = useAtomValue(useServiceStepAtom());
 

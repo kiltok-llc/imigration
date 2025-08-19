@@ -11,21 +11,15 @@ const { getSentryExpoConfig } = require('@sentry/react-native/metro');
  * @returns {import('expo/metro-config').MetroConfig}
  */
 function withTurborepoManagedCache(config) {
-  return config;
-}
-
-const config = withTurborepoManagedCache(getSentryExpoConfig(__dirname));
-module.exports = config;
-
-const { getDefaultConfig } = require('expo/metro-config');
-
-module.exports = (() => {
-  const config = getDefaultConfig(__dirname);
-  const { transformer, resolver } = config;
-
   config.cacheStores = [
     new FileStore({ root: path.join(__dirname, '.cache/metro') }),
   ];
+  return config;
+}
+
+function withReactNativeSvgTransformer(config) {
+  const { transformer, resolver } = config;
+
   config.transformer = {
     ...transformer,
     babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
@@ -37,4 +31,8 @@ module.exports = (() => {
   };
 
   return config;
-})();
+}
+
+module.exports = withReactNativeSvgTransformer(
+  withTurborepoManagedCache(getSentryExpoConfig(__dirname))
+);

@@ -1,5 +1,4 @@
 import { ComponentProps, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import {
   CheckboxProps,
@@ -8,6 +7,7 @@ import {
 } from 'react-native-paper';
 
 import { useFormField } from '@/components/form/field';
+import { useT } from '@/hooks/use-t';
 import { arraysEqual } from '@/lib/utils';
 
 export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {
@@ -28,7 +28,7 @@ export function FormCheckboxItem<T>({
   status?: CheckboxProps['status'];
   value: T;
 }) {
-  const { t } = useTranslation();
+  const t = useT();
   const theme = useTheme();
   const {
     field: { disabled, onChange, value: values },
@@ -75,7 +75,7 @@ export function FormConfirmBox({
 }: Omit<ComponentProps<typeof PaperCheckbox.Item>, 'label' | 'status'> & {
   i18nKey: string;
 }) {
-  const { t } = useTranslation();
+  const t = useT();
   const theme = useTheme();
   const {
     field: { disabled, onChange, value },

@@ -1,11 +1,11 @@
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
-import { useTranslation } from 'react-i18next';
 
 import { Drawer } from '@/components/drawer';
+import { useT } from '@/hooks/use-t';
 
 export default function DrawerLayout() {
-  const { t } = useTranslation();
+  const t = useT();
 
   return (
     <Drawer>

@@ -11,7 +11,11 @@ import {
   FormFieldArray,
   FormFieldArrayItemBlocks,
 } from '@/components/form/fieldarray';
-import { DEFAULT_RANGE, FormRangeInput, RangeSchema } from '@/components/form/range';
+import {
+  DEFAULT_RANGE,
+  FormRangeInput,
+  RangeSchema,
+} from '@/components/form/range';
 import {
   QuizFieldArrayAdd,
   QuizFieldArrayItemHeader,
@@ -93,7 +97,7 @@ export default function PreviousAddresses() {
               <QuizFieldArrayAdd
                 value={{
                   address: DEFAULT_ADDRESS,
-                  range: DEFAULT_RANGE
+                  range: DEFAULT_RANGE,
                 }}
               />
             </FormFieldArray>

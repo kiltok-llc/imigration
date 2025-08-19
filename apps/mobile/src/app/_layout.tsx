@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/react-native';
+
+import '@/i18n';
 import { isRunningInExpoGo } from 'expo';
 import * as SystemUI from 'expo-system-ui';
 import React from 'react';
@@ -9,14 +11,13 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { PaperProvider } from 'react-native-paper';
 import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
-import tw, { useDeviceContext } from 'twrnc';
+import tw from 'twrnc';
 
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { Stack } from '@/components/stack';
 import { env } from '@/env';
 import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
 import { theme } from '@/lib/theme';
-import { LanguageProvider } from '@/providers/language';
 import { QueryProvider } from '@/providers/query';
 import { TRPCProvider } from '@/providers/trpc';
 
@@ -56,7 +57,6 @@ Sentry.init({
 void SystemUI.setBackgroundColorAsync(theme.colors.background);
 
 function RootLayout() {
-  useDeviceContext(tw);
   useRegisterDevMenuItems();
 
   return (
@@ -64,20 +64,18 @@ function RootLayout() {
       <ReducedMotionConfig mode={ReduceMotion.Never} />
       <QueryProvider>
         <TRPCProvider>
-          <LanguageProvider>
-            <GestureHandlerRootView style={tw`flex-1`}>
-              <KeyboardProvider>
-                <SplashScreenBarrier>
-                  <Stack
-                    screenOptions={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Toaster />
-                </SplashScreenBarrier>
-              </KeyboardProvider>
-            </GestureHandlerRootView>
-          </LanguageProvider>
+          <GestureHandlerRootView style={tw`flex-1`}>
+            <KeyboardProvider>
+              <SplashScreenBarrier>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                />
+                <Toaster />
+              </SplashScreenBarrier>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
         </TRPCProvider>
       </QueryProvider>
     </PaperProvider>

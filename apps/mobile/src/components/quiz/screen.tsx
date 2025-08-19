@@ -7,6 +7,7 @@ import {
   cloneElement,
   ComponentProps,
   createRef,
+  isValidElement,
   Key,
   PropsWithChildren,
   ReactNode,
@@ -37,12 +38,13 @@ import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { useQuiz } from '@/components/quiz/layout';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
-import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
-import { useRouteNavigation } from '@/hooks/use-route-navigation';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
-import { isElementOfType } from '@/lib/utils';
 
-type QuizPageHandle = {
+export type QuizPageHandle = {
   submit: () => Promise<boolean>;
 };
 
@@ -55,20 +57,20 @@ const useQuizPage = () => useRequiredContext(QuizPageContext);
 export const useQuizPageId = () => useQuizPage().pageId;
 
 export function QuizPage<Input extends FieldValues, Output>({
-                                                              children,
-                                                              contentContainerStyle,
-                                                              defaultValues,
-                                                              formOptions = {},
-                                                              onSubmit,
-                                                              pageId,
-                                                              pageKey,
-                                                              ref = null,
-                                                              schema,
-                                                              style,
-                                                              ...props
-                                                            }: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
+  children,
+  contentContainerStyle,
+  defaultValues,
+  formOptions = {},
+  onSubmit,
+  pageId,
+  pageKey,
+  ref = null,
+  schema,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
   children: (
-    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> },
+    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
   ) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
@@ -107,7 +109,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [quizValuesAtom, reset],
+    [quizValuesAtom, reset]
   );
 
   useEffect(() => {
@@ -125,7 +127,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         (errors) => {
           console.debug('Failed validation!', errors);
           result = false;
-        },
+        }
       )();
       return result;
     },
@@ -141,7 +143,7 @@ export function QuizPage<Input extends FieldValues, Output>({
           values: true,
         },
       }),
-    [subscribe, setPersistedValues],
+    [subscribe, setPersistedValues]
   );
 
   return (
@@ -167,23 +169,24 @@ export function QuizScreen({ children }: PropsWithChildren) {
   const [page, setPage] = useAtom(useQuizPageAtom());
   const {
     finalRoute,
+    isFirstRoute,
+    isLastRoute,
     isNextPage,
     isPrevPage,
-    routes,
+    nextRoute,
+    prevRoute,
     setIsNextPage,
     setIsPrevPage,
   } = useQuiz();
-  const { isFirstRoute, isLastRoute, nextRoute, prevRoute } =
-    useRouteNavigation(routes);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [wasSubmitted, setWasSubmitted] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setKeyboardVisible(true),
+      setKeyboardVisible(true)
     );
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setKeyboardVisible(false),
+      setKeyboardVisible(false)
     );
 
     return () => {
@@ -196,9 +199,9 @@ export function QuizScreen({ children }: PropsWithChildren) {
     () =>
       Array.from(
         { length: Children.toArray(children).length },
-        createRef<QuizPageHandle>,
+        createRef<QuizPageHandle>
       ),
-    [children],
+    [children]
   );
 
   const handleNext = useCallback(async () => {
@@ -226,7 +229,15 @@ export function QuizScreen({ children }: PropsWithChildren) {
     } else {
       nextRoute();
     }
-  }, [childRefs.length, finalRoute, isLastRoute, nextRoute, page, router, setPage]);
+  }, [
+    childRefs.length,
+    finalRoute,
+    isLastRoute,
+    nextRoute,
+    page,
+    router,
+    setPage,
+  ]);
 
   useEffect(() => {
     if (wasSubmitted && !keyboardVisible) {
@@ -263,13 +274,13 @@ export function QuizScreen({ children }: PropsWithChildren) {
 
   return (
     <FadeSlotPageWrapper>
-      <ReactivePagerView orientation="vertical" page={page} style={tw`flex-1`}>
+      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
         {Children.toArray(children).map((child, idx) => (
           <View key={idx} style={tw`flex-1`}>
-            {isElementOfType(child, QuizPage)
+            {isValidElement(child)
               ? cloneElement(child, {
-                ref: childRefs[idx],
-              })
+                  ref: childRefs[idx],
+                } as any)
               : child}
           </View>
         ))}

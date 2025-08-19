@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
-import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import {
   ActivityIndicator,
@@ -14,10 +13,11 @@ import tw from 'twrnc';
 import { useFormField } from '@/components/form/field';
 import { TransButton } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
+import { useT } from '@/hooks/use-t';
 import { Theme } from '@/lib/theme';
 
 export function FormImageInput() {
-  const { t } = useTranslation();
+  const t = useT();
   const theme = useTheme<Theme>();
   const {
     field: { disabled, onChange, value },

@@ -18,12 +18,12 @@ export const DEFAULT_ADDRESS = {
 export const DEFAULT_ADDRESS_WITH_COUNTRY = {
   ...DEFAULT_ADDRESS,
   country: '',
-}
+};
 
 export const DEFAULT_SHORT_ADDRESS = {
   city: '',
   country: '',
-}
+};
 
 export const AddressSchema = z.object({
   city: z.string().nonempty(),
@@ -43,8 +43,8 @@ export const ShortAddressSchema = z.object({
 });
 
 export function FormAddressInput({
-                                   lens,
-                                 }: {
+  lens,
+}: {
   lens: Lens<z.input<typeof AddressSchema>>;
 }) {
   return (
@@ -101,13 +101,13 @@ export function FormAddressInput({
 }
 
 export function FormAddressWithCountryInput({
-                                              lens,
-                                            }: {
+  lens,
+}: {
   lens: Lens<z.input<typeof AddressWithCountrySchema>>;
 }) {
   return (
     <>
-      <FormAddressInput lens={lens.reflect(({country, ...rest}) => rest)}/>
+      <FormAddressInput lens={lens.reflect(({ country, ...rest }) => rest)} />
 
       <FormField {...lens.focus('country').interop()}>
         <FormTextInput
@@ -121,8 +121,8 @@ export function FormAddressWithCountryInput({
 }
 
 export function FormShortAddressInput({
-                                        lens,
-                                      }: {
+  lens,
+}: {
   lens: Lens<z.input<typeof ShortAddressSchema>>;
 }) {
   return (

@@ -1,5 +1,4 @@
 import { Stack, useRouter } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,9 +6,10 @@ import tw from 'twrnc';
 
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
+import { useT } from '@/hooks/use-t';
 
 export default function Ineligible() {
-  const { t } = useTranslation();
+  const t = useT();
   const router = useRouter();
 
   return (

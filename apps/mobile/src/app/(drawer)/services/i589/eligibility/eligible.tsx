@@ -1,7 +1,6 @@
 import { router, Stack } from 'expo-router';
 import { useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,9 +12,10 @@ import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
+import { useT } from '@/hooks/use-t';
 
 export default function Eligible() {
-  const { t } = useTranslation();
+  const t = useT();
   const resetQuizValues = useResetQuizValues();
   const resetQuizPage = useResetQuizPage();
   const resetQuizRoute = useResetAtom(useQuizRouteAtom());

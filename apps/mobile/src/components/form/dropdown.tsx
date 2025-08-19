@@ -1,8 +1,8 @@
 import { ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Dropdown, MultiSelectDropdown } from 'react-native-paper-dropdown';
 
 import { useFormField } from '@/components/form/field';
+import { useT } from '@/hooks/use-t';
 
 export const LANGUAGE_OPTIONS = [
   'en',
@@ -83,7 +83,7 @@ export function FormDropdown({
   i18nKey: string;
   options: { i18nKey: string; value: string }[];
 }) {
-  const { t } = useTranslation();
+  const t = useT();
   const {
     field: { disabled, onChange, ref, value },
     fieldState: { invalid },
@@ -114,7 +114,7 @@ export function FormMultiDropdown({
   i18nKey: string;
   options: { i18nKey: string; value: string }[];
 }) {
-  const { t } = useTranslation();
+  const t = useT();
   const {
     field: { disabled, onChange, ref, value },
     fieldState: { invalid },

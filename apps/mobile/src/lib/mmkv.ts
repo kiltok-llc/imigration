@@ -7,22 +7,46 @@ export const defaultStorage = new MMKV({ id: 'mmkv.default' });
 export const devStorage = new MMKV({ id: 'mmkv.dev' });
 
 export const createMMKVStorage = <Value>(
-  storage: MMKV
+  storage: MMKV,
+  validator: (value: unknown) => value is Value
 ): SyncStorage<Value> => ({
   getItem: (key, initialValue) => {
     const str = storage.getString(key);
     // console.debug(`storage.getItem(${key}) = ${str}`);
+
+    let value;
     try {
-      return superjson.parse<Value>(str ?? '');
-    } catch {
+      value = superjson.parse(str ?? '');
+    } catch (error) {
+      console.warn(
+        `Failed to parse mmkv key while reading from storage: ${key}`,
+        error,
+        str
+      );
       return initialValue;
     }
+
+    if (validator(value)) {
+      return value;
+    }
+
+    console.warn(
+      `Value for mmkv key: ${key} failed validation while reading from storage`,
+      value
+    );
+    return initialValue;
   },
   removeItem: (key) => {
     // console.debug(`storage.removeItem(${key})`);
     storage.delete(key);
   },
   setItem: (key, value) => {
+    if (!validator(value)) {
+      console.warn(
+        `Value for key: ${key} was set to ${value} while writing to storage, but failed validation!`
+      );
+    }
+
     const str = superjson.stringify(value);
     // console.debug(`storage.setItem(${key}, ${str})`);
     storage.set(key, str);

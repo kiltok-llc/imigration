@@ -1,10 +1,20 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { ErrorBoundaryProps, Redirect } from 'expo-router';
+import {
+  ErrorBoundaryProps,
+  Redirect,
+  useGlobalSearchParams,
+  useRouter,
+} from 'expo-router';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import {
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { ErrorBoundaryProps as ReactErrorBoundaryProps } from 'react-error-boundary';
-import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { KeyboardToolbar } from 'react-native-keyboard-controller';
@@ -21,22 +31,35 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import {
-  useFocusedRouteListener,
-  useFocusedRouteName,
-} from '@/hooks/use-route';
+import { useFocusedRouteName } from '@/hooks/use-route';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
+import { useT } from '@/hooks/use-t';
 import { toRouteId } from '@/lib/utils';
+import { TranslationContextProvider } from '@/providers/translation';
 
 const QuizContext = createRequiredContext<{
   finalRoute: string;
+  isFirstRoute: boolean;
+  isLastRoute: boolean;
   isNextPage: boolean;
   isPrevPage: boolean;
+  nextRoute: () => void;
+  prevRoute: () => void;
   routes: string[];
   setIsNextPage: (value: boolean) => void;
   setIsPrevPage: (value: boolean) => void;
 }>();
+
+export function QuizRouteNotFoundRedirect() {
+  const { routes } = useQuiz();
+
+  console.warn(
+    `Redirecting to first route (requested route not found!): ${routes[0]}`
+  );
+
+  return <Redirect href={`./${routes[0]}`} />;
+}
 
 export function SavedQuizRouteRedirect() {
   const { routes } = useQuiz();
@@ -113,23 +136,33 @@ export function QuizLayout({
   onComplete?: () => void;
   routes: string[];
 }>) {
-  const { t } = useTranslation();
+  const t = useT();
+  const router = useRouter();
   const serviceId = useServiceId();
   const quizId = useStepId();
   const routeName = useFocusedRouteName();
-  const routeIdx = routes.indexOf(routeName);
-  const nextRouteName = routes[routeIdx + 1];
-  const setSavedQuizRoute = useSetAtom(quizRouteFamily({ quizId, serviceId }));
+  const routeParams = useGlobalSearchParams<Record<string, string>>();
+  const routeNameWithParams =
+    Object.keys(routeParams).length > 0
+      ? `${routeName}?${new URLSearchParams(routeParams).toString()}`
+      : routeName;
+  const routeIdx = routes.indexOf(routeNameWithParams);
+  const nextRouteNameWithParams = routes[routeIdx + 1];
+  const [nextRouteName, nextRouteParamsString] =
+    nextRouteNameWithParams?.split('?') ?? [];
+  const nextRouteParams = Object.fromEntries(
+    new URLSearchParams(nextRouteParamsString ?? '')
+  );
+
+  const setQuizRoute = useSetAtom(quizRouteFamily({ quizId, serviceId }));
   const [isNextPage, setIsNextPage] = useState(false);
   const [isPrevPage, setIsPrevPage] = useState(false);
 
-  useFocusedRouteListener((route) => {
-    if (!routes.includes(route)) {
-      return;
+  useEffect(() => {
+    if (routes.includes(routeNameWithParams)) {
+      setQuizRoute(routeNameWithParams);
     }
-
-    setSavedQuizRoute(route);
-  });
+  }, [routeNameWithParams, routes, setQuizRoute]);
 
   const handlePrev = () => {
     Keyboard.dismiss();
@@ -141,12 +174,42 @@ export function QuizLayout({
     setIsNextPage(true);
   };
 
+  const incrementRoute = useCallback(
+    (update: number) => {
+      if (routeIdx === -1) {
+        console.warn(`Current route is not in the defined routes list.`);
+        return;
+      }
+
+      const index = routeIdx + update;
+      const route = routes[index];
+      if (!route) {
+        console.warn(`Next route index out of bounds: ${index}.`);
+        return;
+      }
+
+      console.log(`Navigating to ${route} from ${routeNameWithParams}`);
+
+      const level = routeNameWithParams.split('/').length - 1;
+      const nesting = '../'.repeat(level);
+      router.replace(`./${nesting}${route}`);
+    },
+    [routeIdx, routeNameWithParams, router, routes]
+  );
+
+  const nextRoute = useCallback(() => incrementRoute(1), [incrementRoute]);
+  const prevRoute = useCallback(() => incrementRoute(-1), [incrementRoute]);
+
   return (
     <QuizContext.Provider
       value={{
         finalRoute,
+        isFirstRoute: routeIdx === 0,
+        isLastRoute: routeIdx === routes.length - 1,
         isNextPage,
         isPrevPage,
+        nextRoute,
+        prevRoute,
         routes,
         setIsNextPage,
         setIsPrevPage,
@@ -158,16 +221,33 @@ export function QuizLayout({
           nextTitle={
             nextRouteName
               ? t(
-                  `services.${serviceId}.${quizId}.${toRouteId(nextRouteName)}.title`
+                  `services.${serviceId}.${quizId}.${toRouteId(nextRouteName)}.title`,
+                  {
+                    ...nextRouteParams,
+                    count: Number(nextRouteParams.index) + 1,
+                    ordinal: true,
+                  }
                 )
               : undefined
           }
           title={t(
-            `services.${serviceId}.${quizId}.${toRouteId(routeName)}.title`
+            `services.${serviceId}.${quizId}.${toRouteId(routeName)}.title`,
+            {
+              ...routeParams,
+              count: Number(routeParams.index) + 1,
+              ordinal: true,
+            }
           )}
           total={routes.length}
         />
-        {children}
+        <TranslationContextProvider
+          value={{
+            ...routeParams,
+            count: Number(routeParams.index) + 1,
+          }}
+        >
+          {children}
+        </TranslationContextProvider>
         <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
           <View style={tw`flex-1`}>
             <TransButton
@@ -232,13 +312,14 @@ function QuizHeader({
       <View style={tw`flex-1 items-end justify-start gap-2`}>
         <TransText
           i18nKey='quiz.header.title'
-          style={tw`font-bold`}
+          style={tw`text-right font-bold`}
           values={{ title }}
           variant='headlineSmall'
         />
         {nextTitle && (
           <TransText
             i18nKey='quiz.header.nextTitle'
+            style={tw`text-right`}
             values={{ nextTitle }}
             variant='titleSmall'
           />

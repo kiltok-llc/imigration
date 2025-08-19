@@ -15,3 +15,5 @@ export const MaritalStatusEnum = z.enum([
   'divorced',
   'widowed',
 ]);
+
+export const CourtStatusEnum = z.enum(['previously', 'currently', 'never']);

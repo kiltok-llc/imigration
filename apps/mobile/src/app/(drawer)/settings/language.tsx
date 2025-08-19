@@ -1,14 +1,14 @@
 import { Stack } from 'expo-router';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { LanguageButton } from '@/components/language-button';
+import { useT } from '@/hooks/use-t';
 
 export default function Language() {
-  const { t } = useTranslation();
+  const t = useT();
 
   return (
     <>

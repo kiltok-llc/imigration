@@ -1,15 +1,15 @@
 import { Stack } from 'expo-router';
 import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
 
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
-import { userDataFamily } from '@/lib/data/user';
+import { useT } from '@/hooks/use-t';
+import { numberOfChildrenAtom, userDataFamily } from '@/lib/data/user';
 
 export default function InfoLayout() {
-  const {t} = useTranslation();
+  const t = useT();
   const maritalStatus = useAtomValue(userDataFamily('maritalStatus'));
-  const numberOfChildren = useAtomValue(userDataFamily('numberOfChildren'));
+  const numberOfChildren = useAtomValue(numberOfChildrenAtom);
 
   return (
     <>
@@ -32,17 +32,20 @@ export default function InfoLayout() {
           'family-status/marital-status',
           'family-status/children-details',
           'family-status/parent-details',
-          'identification/passport-information',
-          'identification/other-identification',
-          'asylum-and-fear/asylum-reasons-and-fear',
-          'legal-history/legal-and-affiliations',
-          'declaration/final-declaration',
+          'family-status/sibling-details',
+          'immigration-status/status',
+          ...(maritalStatus === 'single'
+            ? []
+            : ['immigration-status/status?context=spouse']),
+          ...Array.from({ length: numberOfChildren }).map(
+            (_, i) => `immigration-status/status?context=child&index=${i}`
+          ),
         ]}
       >
-        <FadeSlot/>
+        <FadeSlot />
       </QuizLayout>
     </>
   );
 }
 
-export {QuizErrorFallback as ErrorBoundary} from '@/components/quiz/layout';
+export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';

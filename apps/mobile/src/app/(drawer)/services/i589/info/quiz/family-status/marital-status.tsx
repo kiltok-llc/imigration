@@ -1,24 +1,63 @@
 import { useAtom, useSetAtom } from 'jotai';
+import { focusAtom } from 'jotai-optics';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
-import { DEFAULT_NAME, FormNameInput, NameSchema } from '@/components/form/name';
+import {
+  DEFAULT_NAME,
+  FormNameInput,
+  NameSchema,
+} from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
-import { DEFAULT_RANGE, FormRangeInput, RangeSchema, RangeSchemaWithOptionalEnd } from '@/components/form/range';
+import {
+  DEFAULT_RANGE,
+  FormRangeInput,
+  RangeSchema,
+  RangeSchemaWithOptionalEnd,
+} from '@/components/form/range';
+import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { TranslationContextProvider } from '@/components/trans';
-import { userDataFamily } from '@/lib/data/user';
+import { userDataAtom, userDataFamily } from '@/lib/data/user';
 import { MaritalStatusEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
+import { TranslationContextProvider } from '@/providers/translation';
+
+const marriageCertificateAtom = focusAtom(userDataAtom, (optic) =>
+  optic
+    .prop('marriage')
+    .valueOr({
+      certificate: undefined,
+    })
+    .prop('certificate')
+);
+
+const spouseNameAtom = focusAtom(userDataAtom, (optic) =>
+  optic.prop('spouse').valueOr({ name: undefined }).prop('name')
+);
+
+const marriageInfoAtom = focusAtom(userDataAtom, (optic) =>
+  optic
+    .prop('marriage')
+    .valueOr({
+      city: undefined,
+      country: undefined,
+      range: undefined,
+    })
+    .pick(['country', 'city', 'range'])
+);
 
 export default function MaritalStatus() {
-  const [maritalStatus, setMaritalStatus] = useAtom(userDataFamily('maritalStatus'));
-  const setNumberOfChildren = useSetAtom(userDataFamily('numberOfChildren'));
+  const [maritalStatus, setMaritalStatus] = useAtom(
+    userDataFamily('maritalStatus')
+  );
+  const setMarriageCertificate = useSetAtom(marriageCertificateAtom);
+  const setMarriageInfo = useSetAtom(marriageInfoAtom);
+  const setSpouseName = useSetAtom(spouseNameAtom);
 
   return (
     <QuizScreen>
@@ -31,7 +70,7 @@ export default function MaritalStatus() {
 
           return true;
         }}
-        pageId="marital-status"
+        pageId='marital-status'
         schema={z.object({
           status: required(MaritalStatusEnum.nullable()),
         })}
@@ -39,7 +78,7 @@ export default function MaritalStatus() {
         {({ control }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="status">
+              <FormField control={control} name='status'>
                 <QuizFieldTitle />
                 <FormRadioGroup>
                   {MaritalStatusEnum.options.map((status) => (
@@ -57,8 +96,14 @@ export default function MaritalStatus() {
           defaultValues={{
             hasCertificate: null,
           }}
-          onSubmit={() => true}
-          pageId="marriage-certificate"
+          onSubmit={({ certificate }) => {
+            if (certificate) {
+              setMarriageCertificate(certificate);
+            }
+
+            return true;
+          }}
+          pageId='marriage-certificate'
           schema={z.object({
             certificate: required(z.string().nullable()).optional(),
             hasCertificate: required(z.boolean().nullable()),
@@ -66,7 +111,7 @@ export default function MaritalStatus() {
         >
           {({ control, watch }) => (
             <>
-              <FormField control={control} name="hasCertificate">
+              <FormField control={control} name='hasCertificate'>
                 <QuizFieldTitle />
                 <FormBooleanInput />
               </FormField>
@@ -75,7 +120,7 @@ export default function MaritalStatus() {
                 active={!!watch('hasCertificate')}
                 activeValue={null}
                 control={control}
-                name="certificate"
+                name='certificate'
               >
                 <QuizFieldTitle />
                 <FormImageInput />
@@ -92,33 +137,44 @@ export default function MaritalStatus() {
             country: '',
             range: DEFAULT_RANGE,
           }}
-          onSubmit={() => true}
-          pageId="marriage-location"
+          onSubmit={({ city, country, range }) => {
+            setMarriageInfo({ city, country, range });
+
+            return true;
+          }}
+          pageId='marriage-info'
           schema={z.object({
             city: z.string().nonempty(),
             country: z.string().nonempty(),
-            range: maritalStatus === 'divorced' ? RangeSchemaWithOptionalEnd : RangeSchema,
+            range:
+              maritalStatus === 'divorced'
+                ? RangeSchema
+                : RangeSchemaWithOptionalEnd,
           })}
         >
           {({ control, lens }) => (
             <>
               <FormBlock>
-                <QuizFieldTitle name="location" />
-                <FormField control={control} name="city">
+                <QuizFieldTitle name='location' />
+                <FormField control={control} name='city'>
                   <QuizTextInput />
                 </FormField>
-                <FormField control={control} name="country">
+                <FormField control={control} name='country'>
                   <QuizTextInput />
                 </FormField>
               </FormBlock>
 
               <FormBlock>
-                <FormField control={control} name="range">
+                <FormField control={control} name='range'>
                   <QuizFieldTitle />
-                  <FormRangeInput
-                    lens={lens.focus('range')}
-                    optionalEnd={maritalStatus === 'divorced'}
-                  />
+
+                  {maritalStatus === 'divorced' ? (
+                    <FormRangeInput lens={lens.focus('range')} />
+                  ) : (
+                    <FormField control={control} name='range.start'>
+                      <QuizDateInput />
+                    </FormField>
+                  )}
                 </FormField>
               </FormBlock>
             </>
@@ -129,8 +185,12 @@ export default function MaritalStatus() {
       {maritalStatus !== 'single' && (
         <QuizPage
           defaultValues={DEFAULT_NAME}
-          onSubmit={() => true}
-          pageId="spouse-name"
+          onSubmit={(name) => {
+            setSpouseName(name);
+
+            return true;
+          }}
+          pageId='spouse-info'
           schema={NameSchema}
         >
           {({ lens }) => (

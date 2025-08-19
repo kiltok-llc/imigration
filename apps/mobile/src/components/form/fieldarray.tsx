@@ -18,12 +18,13 @@ import {
   FormFieldContext,
   useFormField,
 } from '@/components/form/field';
-import { TransButton, TranslationContextProvider } from '@/components/trans';
+import { TransButton } from '@/components/trans';
 import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
 import { WithRequired } from '@/lib/utils';
+import { TranslationContextProvider } from '@/providers/translation';
 
 const FormFieldArrayItemContext = createRequiredContext<number>();
 
