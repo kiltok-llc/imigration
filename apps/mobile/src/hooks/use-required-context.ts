@@ -1,5 +1,3 @@
-'use client';
-
 import { Context, createContext, useContext } from 'react';
 
 const DEFAULT_VALUE = Symbol('Required context default value');

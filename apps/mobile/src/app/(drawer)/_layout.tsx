@@ -1,4 +1,5 @@
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { useSegments } from 'expo-router';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
 
 import { Drawer } from '@/components/drawer';
@@ -6,9 +7,14 @@ import { useT } from '@/hooks/use-t';
 
 export default function DrawerLayout() {
   const t = useT();
+  const segments = useSegments();
 
   return (
-    <Drawer>
+    <Drawer
+      screenOptions={{
+        swipeEnabled: segments.length <= 2,
+      }}
+    >
       <ExpoDrawer.Screen
         name='services'
         options={{
