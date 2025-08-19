@@ -662,7 +662,7 @@
                 "title": "Has {{ name }} ever been, or is {{ name }} currently, in immigration court proceedings?",
                 "title_client": "Have you ever been, or are you currently, in immigration court proceedings?",
                 "options": {
-                  "currently_client": "I am Currently in proceedings",
+                  "currently_client": "I am currently in proceedings",
                   "currently": "{{ name }} is currently in proceedings",
                   "previously_client": "I was previously in proceedings",
                   "previously": "{{ name }} was previously in proceedings",

@@ -4,18 +4,18 @@ import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Stack } from '@/components/stack';
-import { useFocusedRouteName } from '@/hooks/use-route';
+import { useIsIndex } from '@/hooks/use-is-index';
 
 export default function DrawerLayout() {
   const theme = useTheme();
-  const routeName = useFocusedRouteName();
+  const isIndex = useIsIndex();
 
   return (
     <>
       <Drawer.Screen
         options={{
           headerShown: false,
-          swipeEnabled: routeName === 'index',
+          swipeEnabled: isIndex,
         }}
       />
       <Stack

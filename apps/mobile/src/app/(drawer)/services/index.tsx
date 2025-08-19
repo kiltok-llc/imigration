@@ -94,25 +94,28 @@ export default function Services() {
               <View style={tw`gap-2`}>
                 {popularServices.map(({ href, Icon, id }) => (
                   <Button
-                    contentStyle={tw`justify-start gap-2`}
-                    icon={(props) => (
-                      <View style={tw`w-9 items-center justify-center`}>
-                        <Icon {...props} size={36} />
-                      </View>
-                    )}
+                    buttonColor={theme.colors.surface}
+                    contentStyle={tw`flex-row-reverse`}
+                    icon='chevron-right'
                     key={id}
+                    labelStyle={tw`flex-1`}
                     mode='outlined'
                     onPress={() => router.navigate(href)}
                   >
-                    <View>
-                      <TransText
-                        i18nKey={`services.${id}.title`}
-                        style={tw`font-semibold`}
-                      />
-                      <TransText
-                        i18nKey={`services.${id}.subtitle`}
-                        variant='bodySmall'
-                      />
+                    <View style={tw`flex-row items-center justify-start gap-2`}>
+                      <View style={tw`w-9 items-center justify-center`}>
+                        <Icon color={theme.colors.primary} size={36} />
+                      </View>
+                      <View style={tw`flex-1`}>
+                        <TransText
+                          i18nKey={`services.${id}.title`}
+                          style={tw`font-semibold`}
+                        />
+                        <TransText
+                          i18nKey={`services.${id}.subtitle`}
+                          variant='bodySmall'
+                        />
+                      </View>
                     </View>
                   </Button>
                 ))}
@@ -130,12 +133,14 @@ export default function Services() {
               <View style={tw`gap-2`}>
                 {categories.map(({ href, id }) => (
                   <TransButton
+                    buttonColor={theme.colors.surface}
                     contentStyle={tw`flex-row-reverse justify-between`}
                     i18nKey={`services.categories.${id}.title`}
                     icon='chevron-right'
                     key={id}
                     mode='outlined'
                     onPress={() => router.navigate(href)}
+                    textColor={theme.colors.onSurface}
                   />
                 ))}
               </View>

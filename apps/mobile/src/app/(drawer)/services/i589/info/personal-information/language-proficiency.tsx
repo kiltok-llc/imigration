@@ -6,7 +6,8 @@ import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDropdown, QuizMultiDropdown } from '@/components/quiz/dropdown';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizPage } from '@/components/quiz/page';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { required } from '@/lib/utils';
 

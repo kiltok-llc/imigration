@@ -17,7 +17,8 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizPage } from '@/components/quiz/page';
+import { QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
 export default function ParentDetails() {

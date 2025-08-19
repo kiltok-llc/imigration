@@ -21,7 +21,8 @@ import {
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
 import { QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizPage } from '@/components/quiz/page';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 
 export default function EmploymentHistory() {

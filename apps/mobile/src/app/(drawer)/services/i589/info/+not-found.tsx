@@ -1,1 +1,1 @@
-export { QuizRouteNotFoundRedirect as default } from '@/components/quiz/layout';
+export { QuizRouteNotFoundRedirect as default } from '@/components/quiz/not-found';

@@ -19,8 +19,9 @@ import {
 } from '@/components/form/range';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { userDataAtom, userDataFamily } from '@/lib/data/user';
 import { MaritalStatusEnum } from '@/lib/schema/common';

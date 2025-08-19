@@ -11,7 +11,6 @@ import banner from '@/assets/onboarding/usa-banner.png';
 import { isOnboardedAtom } from '@/atoms/is-onboarding-atom';
 import { LanguageButton } from '@/components/language-button';
 import { TransButton, TransText } from '@/components/trans';
-import { Container } from '@/components/ui/container';
 
 export default function Onboarding() {
   const theme = useTheme();
@@ -26,40 +25,51 @@ export default function Onboarding() {
         }}
       />
       <View style={tw`flex-1`}>
-        <Image source={banner} style={tw.style('w-full', { aspectRatio: 2 })} />
+        <Image
+          source={banner}
+          style={tw.style('w-full pb-2', { aspectRatio: 2 })}
+        />
         <ScrollView
-          alwaysBounceVertical={false}
+          // alwaysBounceVertical={false}
           contentContainerStyle={tw`grow`}
+          style={tw`flex-1`}
         >
-          <SafeAreaView edges={['bottom']} style={tw`flex-1`}>
-            <Container style={tw`flex-1 items-center gap-4`}>
-              <TransText
-                i18nKey='onboarding.title'
-                style={tw.style('text-center', { color: theme.colors.primary })}
-                variant='displayMedium'
-              />
-              <TransText
-                i18nKey='onboarding.choose-language'
-                style={tw.style('text-center', { color: theme.colors.primary })}
-                variant='headlineSmall'
-              />
+          <SafeAreaView
+            edges={{ bottom: 'maximum' }}
+            style={tw`flex-1 items-center gap-4 p-4`}
+          >
+            <TransText
+              i18nKey='onboarding.title'
+              style={tw.style('text-center', { color: theme.colors.primary })}
+              variant='displayMedium'
+            />
+            <TransText
+              i18nKey='onboarding.choose-language'
+              style={tw.style('text-center', { color: theme.colors.primary })}
+              variant='headlineSmall'
+            />
+            <View style={tw`mt-auto w-full items-center`}>
               <Image
                 source={personPassport}
-                style={tw.style('mt-auto h-56', { aspectRatio: 1 })}
+                style={tw.style('h-56 translate-y-1.5 -rotate-3', {
+                  aspectRatio: 1,
+                })}
               />
-              <LanguageButton language='en' />
-              <LanguageButton language='es' />
-              <TransButton
-                contentStyle={tw`flex-row-reverse`}
-                i18nKey='next'
-                icon='arrow-right'
-                labelStyle={tw`text-2xl`}
-                onPress={() => {
-                  setIsOnboarded(true);
-                  router.replace('/services');
-                }}
-              />
-            </Container>
+              <View style={tw`w-full gap-2`}>
+                <LanguageButton language='en' />
+                <LanguageButton language='es' />
+              </View>
+            </View>
+            <TransButton
+              contentStyle={tw`flex-row-reverse`}
+              i18nKey='next'
+              icon='arrow-right'
+              labelStyle={tw`text-2xl`}
+              onPress={() => {
+                setIsOnboarded(true);
+                router.replace('/services');
+              }}
+            />
           </SafeAreaView>
         </ScrollView>
       </View>

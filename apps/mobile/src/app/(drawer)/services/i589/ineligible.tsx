@@ -19,7 +19,7 @@ export default function Ineligible() {
           title: t('services.i589.ineligible.screenTitle'),
         }}
       />
-      <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
+      <SafeAreaView edges={['bottom']} style={tw`flex-1`}>
         <Container>
           <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
             <View style={tw`mb-8 items-center`}>

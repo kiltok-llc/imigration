@@ -1,5 +1,5 @@
 import { useFormField } from '@/components/form/field';
-import { useQuizPageId } from '@/components/quiz/screen';
+import { useQuizPageId } from '@/components/quiz/page';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';

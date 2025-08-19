@@ -1,13 +1,12 @@
 import { Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { TransButton, TransText } from '@/components/trans';
-import { Container } from '@/components/ui/container';
 import { StepIcons, Stepper } from '@/components/ui/steps';
 import { useT } from '@/hooks/use-t';
 import { STEPS } from '@/lib/services/i589/steps';
@@ -24,9 +23,13 @@ export default function I589() {
           title: t('services.i589.progress.screenTitle'),
         }}
       />
-      <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
-        <Container>
-          <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
+      <View style={tw`flex-1`}>
+        <ScrollView
+          alwaysBounceVertical={false}
+          contentContainerStyle={tw`grow justify-center`}
+          style={tw`flex-1`}
+        >
+          <Surface style={tw`mx-4 gap-14 p-8`}>
             <Stepper stepId={stepId} steps={STEPS} />
             <View style={tw`gap-2`}>
               <TransText
@@ -40,8 +43,10 @@ export default function I589() {
                 variant='titleSmall'
               />
             </View>
-            <StepIcons stepId={stepId} steps={STEPS} style={tw`my-auto`} />
+            <StepIcons cols={4} stepId={stepId} steps={STEPS} />
           </Surface>
+        </ScrollView>
+        <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
             i18nKey='next'
@@ -51,8 +56,8 @@ export default function I589() {
               router.navigate(`/services/i589/${stepId}`);
             }}
           />
-        </Container>
-      </SafeAreaView>
+        </SafeAreaView>
+      </View>
     </>
   );
 }

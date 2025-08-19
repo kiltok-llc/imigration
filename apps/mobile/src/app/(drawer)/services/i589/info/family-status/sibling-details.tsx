@@ -22,7 +22,8 @@ import {
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage, QuizPageHandle, QuizScreen } from '@/components/quiz/screen';
+import { QuizPage, QuizPageHandle } from '@/components/quiz/page';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { numberOfSiblingsAtom, userDataAtom } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';

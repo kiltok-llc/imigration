@@ -3,6 +3,8 @@ import { Stack } from 'expo-router';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useT } from '@/hooks/use-t';
+import { QuizProvider } from '@/lib/quiz';
+import { RoutesProvider } from '@/providers/routes';
 
 export default function EligibilityLayout() {
   const t = useT();
@@ -14,7 +16,7 @@ export default function EligibilityLayout() {
           title: t('services.i589.eligibility.screenTitle'),
         }}
       />
-      <QuizLayout
+      <RoutesProvider
         finalRoute='../eligible'
         routes={[
           'physical-presence',
@@ -24,10 +26,14 @@ export default function EligibilityLayout() {
           'country-of-origin',
         ]}
       >
-        <FadeSlot />
-      </QuizLayout>
+        <QuizProvider>
+          <QuizLayout>
+            <FadeSlot />
+          </QuizLayout>
+        </QuizProvider>
+      </RoutesProvider>
     </>
   );
 }
 
-export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';
+export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/error';

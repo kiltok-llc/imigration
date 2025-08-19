@@ -63,6 +63,13 @@ export const createMMKVStorage = <Value>(
 
       const str = storage.getString(key);
       // console.debug(`storage.subscribe(${key}) = ${str}`);
+      if (str === undefined) {
+        console.warn(
+          `MMKV value with key: ${key} was deleted, but subscription was active!`
+        );
+        return;
+      }
+
       try {
         const value = superjson.parse<Value>(str ?? '');
         callback(value);

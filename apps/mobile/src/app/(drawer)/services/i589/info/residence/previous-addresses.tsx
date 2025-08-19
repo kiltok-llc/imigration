@@ -21,7 +21,8 @@ import {
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizPage } from '@/components/quiz/page';
+import { QuizScreen } from '@/components/quiz/screen';
 
 export default function PreviousAddresses() {
   return (

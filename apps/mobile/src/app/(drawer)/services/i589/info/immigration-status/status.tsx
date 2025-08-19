@@ -9,8 +9,9 @@ import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizFieldDescription, QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { userDataAtom } from '@/lib/data/user';
 import { CourtStatusEnum } from '@/lib/schema/common';
@@ -63,7 +64,6 @@ const useParam = () => {
 export default function Status() {
   const param = useParam();
   const setPassport = useSetAtom(passportFamily(param));
-  console.log('userdata', useAtomValue(userDataAtom));
   const name = useAtomValue(firstNameFamily(param));
 
   return (

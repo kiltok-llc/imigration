@@ -5,6 +5,8 @@ import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useT } from '@/hooks/use-t';
 import { numberOfChildrenAtom, userDataFamily } from '@/lib/data/user';
+import { QuizProvider } from '@/lib/quiz';
+import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
   const t = useT();
@@ -18,7 +20,7 @@ export default function InfoLayout() {
           title: t('services.i589.info.screenTitle'),
         }}
       />
-      <QuizLayout
+      <RoutesProvider
         finalRoute='../complete'
         routes={[
           'intro',
@@ -33,7 +35,7 @@ export default function InfoLayout() {
           'family-status/children-details',
           'family-status/parent-details',
           'family-status/sibling-details',
-          'immigration-status/status',
+          'immigration-status/status?context=client',
           ...(maritalStatus === 'single'
             ? []
             : ['immigration-status/status?context=spouse']),
@@ -42,10 +44,14 @@ export default function InfoLayout() {
           ),
         ]}
       >
-        <FadeSlot />
-      </QuizLayout>
+        <QuizProvider>
+          <QuizLayout>
+            <FadeSlot />
+          </QuizLayout>
+        </QuizProvider>
+      </RoutesProvider>
     </>
   );
 }
 
-export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/layout';
+export { QuizErrorFallback as ErrorBoundary } from '@/components/quiz/error';

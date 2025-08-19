@@ -22,8 +22,9 @@ import {
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
-import { QuizPage, QuizScreen } from '@/components/quiz/screen';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { SchoolLevelEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
