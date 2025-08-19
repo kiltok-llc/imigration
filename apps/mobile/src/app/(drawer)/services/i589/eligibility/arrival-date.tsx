@@ -8,31 +8,31 @@ import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
-export default function PhysicalPresence() {
+export default function ArrivalDate() {
   const router = useRouter();
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          isInUsa: null,
+          isRecentArrival: null,
         }}
-        onSubmit={({ isInUsa }) => {
-          if (!isInUsa) {
-            router.replace('../ineligible');
+        onSubmit={({ isRecentArrival }) => {
+          if (!isRecentArrival) {
+            router.navigate('../ineligible');
             return false;
           }
 
           return true;
         }}
-        pageId='is-in-usa'
+        pageId='is-recent-arrival'
         schema={z.object({
-          isInUsa: required(z.boolean().nullable()),
+          isRecentArrival: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='isInUsa'>
+            <FormField control={control} name='isRecentArrival'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>

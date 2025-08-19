@@ -102,7 +102,7 @@ export default function Services() {
                     )}
                     key={id}
                     mode='outlined'
-                    onPress={() => router.push(href)}
+                    onPress={() => router.navigate(href)}
                   >
                     <View>
                       <TransText
@@ -135,7 +135,7 @@ export default function Services() {
                     icon='chevron-right'
                     key={id}
                     mode='outlined'
-                    onPress={() => router.push(href)}
+                    onPress={() => router.navigate(href)}
                   />
                 ))}
               </View>

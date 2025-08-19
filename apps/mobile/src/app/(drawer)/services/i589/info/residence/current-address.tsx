@@ -24,7 +24,7 @@ export default function CurrentAddress() {
         }}
         onSubmit={({ resident }) => {
           if (!resident) {
-            router.replace('/services/i589/eligibility/ineligible');
+            router.navigate('/services/i589/ineligible');
             return false;
           }
 

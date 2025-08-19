@@ -48,7 +48,7 @@ export default function I589() {
             icon='arrow-right'
             mode='contained'
             onPress={() => {
-              router.push(`/services/i589/${stepId}`);
+              router.navigate(`/services/i589/${stepId}`);
             }}
           />
         </Container>

@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import * as React from 'react';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
@@ -8,31 +9,31 @@ import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
-export default function ArrivalDate() {
+export default function PreviousApplications() {
   const router = useRouter();
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          isRecentArrival: null,
+          hasPreviousApp: null,
         }}
-        onSubmit={({ isRecentArrival }) => {
-          if (!isRecentArrival) {
-            router.replace('../ineligible');
+        onSubmit={({ hasPreviousApp }) => {
+          if (hasPreviousApp) {
+            router.navigate('../ineligible');
             return false;
           }
 
           return true;
         }}
-        pageId='is-recent-arrival'
+        pageId='has-previous-app'
         schema={z.object({
-          isRecentArrival: required(z.boolean().nullable()),
+          hasPreviousApp: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='isRecentArrival'>
+            <FormField control={control} name='hasPreviousApp'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>

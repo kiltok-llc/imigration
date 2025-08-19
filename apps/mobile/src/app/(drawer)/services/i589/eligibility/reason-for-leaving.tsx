@@ -24,7 +24,7 @@ export default function ReasonForLeaving() {
         }}
         onSubmit={({ isEscapingHarm }) => {
           if (!isEscapingHarm) {
-            router.replace('../ineligible');
+            router.navigate('../ineligible');
             return false;
           }
 
@@ -52,7 +52,7 @@ export default function ReasonForLeaving() {
         }}
         onSubmit={({ harmReasons }) => {
           if (harmReasons.includes('none')) {
-            router.replace('../ineligible');
+            router.navigate('../ineligible');
             return false;
           }
 
@@ -99,7 +99,7 @@ export default function ReasonForLeaving() {
         }}
         onSubmit={({ isHarmedByGov }) => {
           if (!isHarmedByGov) {
-            router.replace('../ineligible');
+            router.navigate('../ineligible');
             return false;
           }
 

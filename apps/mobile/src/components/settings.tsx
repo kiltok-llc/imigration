@@ -24,7 +24,7 @@ export function SettingsItem({
         <Trans i18nKey={`settings.sections.${section}.${id}.description`} />
       }
       onPress={() => {
-        router.push(`./settings/${id}`);
+        router.navigate(`./settings/${id}`);
       }}
       right={(props) => <List.Icon {...props} icon={icon} />}
       title={<Trans i18nKey={`settings.sections.${section}.${id}.title`} />}

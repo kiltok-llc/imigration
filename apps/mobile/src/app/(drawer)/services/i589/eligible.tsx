@@ -1,14 +1,10 @@
 import { router, Stack } from 'expo-router';
 import { useSetAtom } from 'jotai';
-import { useResetAtom } from 'jotai/utils';
 import { View } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { useResetQuizPage } from '@/atoms/quiz-page-family';
-import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
-import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
@@ -16,9 +12,6 @@ import { useT } from '@/hooks/use-t';
 
 export default function Eligible() {
   const t = useT();
-  const resetQuizValues = useResetQuizValues();
-  const resetQuizPage = useResetQuizPage();
-  const resetQuizRoute = useResetAtom(useQuizRouteAtom());
   const setStep = useSetAtom(useServiceStepAtom());
 
   return (
@@ -63,9 +56,6 @@ export default function Eligible() {
             i18nKey='services.i589.eligible.continueButton'
             icon='arrow-right'
             onPress={() => {
-              resetQuizValues();
-              resetQuizPage();
-              resetQuizRoute();
               setStep('info');
               router.dismissTo('/services/i589');
             }}

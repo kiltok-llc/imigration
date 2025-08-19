@@ -71,7 +71,7 @@ export function SavedQuizRouteRedirect() {
 
   console.log(`Redirecting to saved route: ${route}`);
 
-  return <Redirect href={`./quiz/${route}`} />;
+  return <Redirect href={`./${route}`} relativeToDirectory={true} />;
 }
 
 export const useQuiz = () => useRequiredContext(QuizContext);

@@ -7,33 +7,32 @@ import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage, QuizScreen } from '@/components/quiz/screen';
-import { required } from '@/lib/utils';
 
-export default function PreviousApplications() {
+export default function CountryOfOrigin() {
   const router = useRouter();
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasPreviousApp: null,
+          isFromSafeCountry: null,
         }}
-        onSubmit={({ hasPreviousApp }) => {
-          if (hasPreviousApp) {
-            router.replace('../ineligible');
+        onSubmit={({ isFromSafeCountry }) => {
+          if (isFromSafeCountry) {
+            router.navigate('../ineligible');
             return false;
           }
 
           return true;
         }}
-        pageId='has-previous-app'
+        pageId='is-from-safe-country'
         schema={z.object({
-          hasPreviousApp: required(z.boolean().nullable()),
+          isFromSafeCountry: z.boolean().nullable(),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasPreviousApp'>
+            <FormField control={control} name='isFromSafeCountry'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>
