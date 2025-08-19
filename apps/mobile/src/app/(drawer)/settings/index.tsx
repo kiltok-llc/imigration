@@ -1,6 +1,6 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import { useT } from '@/hooks/use-t';
 export default function Index() {
   const t = useT();
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
+  const router = useRouter();
 
   return (
     <>
@@ -28,6 +29,13 @@ export default function Index() {
         <SafeAreaView edges={['bottom']} style={tw`flex-1`}>
           <SettingsSection id='language-and-accessibility'>
             <SettingsItem id='language' />
+          </SettingsSection>
+          <SettingsSection id='support'>
+            <SettingsItem
+              icon='launch'
+              id='onboarding'
+              onPress={() => router.dismissTo('/onboarding')}
+            />
           </SettingsSection>
         </SafeAreaView>
       </ScrollView>

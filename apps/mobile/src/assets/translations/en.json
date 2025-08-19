@@ -971,6 +971,13 @@
     },
     "screenTitle": "Settings",
     "sections": {
+      "support": {
+        "title": "Support",
+        "onboarding": {
+          "title": "Show onboarding",
+          "description": "Walk through the app's features."
+        }
+      },
       "language-and-accessibility": {
         "language": {
           "description": "Select your preferred language for the app.",

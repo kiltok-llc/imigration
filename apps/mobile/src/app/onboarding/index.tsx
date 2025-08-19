@@ -1,6 +1,5 @@
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import { Drawer } from 'expo-router/drawer';
+import { Stack, useRouter } from 'expo-router';
 import { useSetAtom } from 'jotai';
 import { ScrollView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -21,7 +20,7 @@ export default function Onboarding() {
 
   return (
     <>
-      <Drawer.Screen
+      <Stack.Screen
         options={{
           headerShown: false,
         }}

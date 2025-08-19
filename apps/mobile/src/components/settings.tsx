@@ -12,9 +12,10 @@ import {
 const SectionContext = createRequiredContext<string>();
 
 export function SettingsItem({
+  icon = 'chevron-right',
   id,
   ...props
-}: Partial<ComponentProps<typeof List.Item>> & { id: string }) {
+}: Partial<ComponentProps<typeof List.Item>> & { icon?: string; id: string }) {
   const router = useRouter();
   const section = useRequiredContext(SectionContext);
   return (
@@ -25,7 +26,7 @@ export function SettingsItem({
       onPress={() => {
         router.push(`./settings/${id}`);
       }}
-      right={(props) => <List.Icon {...props} icon='chevron-right' />}
+      right={(props) => <List.Icon {...props} icon={icon} />}
       title={<Trans i18nKey={`settings.sections.${section}.${id}.title`} />}
       {...props}
     />
