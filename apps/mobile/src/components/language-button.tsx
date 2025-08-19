@@ -12,6 +12,7 @@ export function LanguageButton({ language }: { language: string }) {
 
   return (
     <TransButton
+      buttonColor={theme.colors.surface}
       contentStyle={tw`flex-row-reverse justify-between gap-2`}
       i18nKey={`language.${language}`}
       icon={({ size }) => (
@@ -25,9 +26,6 @@ export function LanguageButton({ language }: { language: string }) {
       mode='outlined'
       onPress={() => void i18n.changeLanguage(language)}
       style={tw.style(
-        {
-          backgroundColor: theme.colors.surface,
-        },
         active && {
           borderColor: theme.colors.secondary,
           borderWidth: 2,

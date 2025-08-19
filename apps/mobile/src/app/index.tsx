@@ -6,12 +6,12 @@ import { isOnboardedAtom } from '@/atoms/is-onboarding-atom';
 export default function Root() {
   const isOnboarded = useAtomValue(isOnboardedAtom);
 
-  if (__DEV__) {
-    return <Redirect href='/services' />;
-  }
-
   if (!isOnboarded) {
     return <Redirect href='/onboarding' />;
+  }
+
+  if (__DEV__) {
+    return <Redirect href='/services' />;
   }
 
   return <Redirect href='/services' />;

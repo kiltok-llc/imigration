@@ -971,6 +971,19 @@
     },
     "screenTitle": "Settings",
     "sections": {
+      "advanced": {
+        "title": "Advanced",
+        "reset": {
+          "title": "Reset Data",
+          "description": "Completely reset <strong>ALL</strong> app data, including your profile and all applications.",
+          "dialog": {
+            "title": "Reset Data",
+            "content": "Are you sure you want to reset all app data? This will restart the app. This action <strong>cannot</strong> be undone.",
+            "cancel": "Cancel",
+            "confirm": "Reset"
+          }
+        }
+      },
       "support": {
         "title": "Support",
         "onboarding": {

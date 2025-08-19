@@ -14,9 +14,13 @@ export const createMMKVStorage = <Value>(
     const str = storage.getString(key);
     // console.debug(`storage.getItem(${key}) = ${str}`);
 
+    if (str === undefined) {
+      return initialValue;
+    }
+
     let value;
     try {
-      value = superjson.parse(str ?? '');
+      value = superjson.parse(str);
     } catch (error) {
       console.warn(
         `Failed to parse mmkv key while reading from storage: ${key}`,

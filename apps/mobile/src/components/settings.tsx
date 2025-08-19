@@ -12,7 +12,7 @@ import {
 const SectionContext = createRequiredContext<string>();
 
 export function SettingsItem({
-  icon = 'chevron-right',
+  icon,
   id,
   ...props
 }: Partial<ComponentProps<typeof List.Item>> & { icon?: string; id: string }) {
@@ -26,7 +26,7 @@ export function SettingsItem({
       onPress={() => {
         router.navigate(`./settings/${id}`);
       }}
-      right={(props) => <List.Icon {...props} icon={icon} />}
+      right={icon ? (props) => <List.Icon {...props} icon={icon} /> : undefined}
       title={<Trans i18nKey={`settings.sections.${section}.${id}.title`} />}
       {...props}
     />
