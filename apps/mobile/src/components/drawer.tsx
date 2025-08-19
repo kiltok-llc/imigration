@@ -29,7 +29,7 @@ export function Drawer({
     <ExpoDrawer
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView {...props}>
+          <DrawerContentScrollView alwaysBounceVertical={false} {...props}>
             <Image
               source={stars}
               style={tw.style('mx-auto mb-8 h-20', { aspectRatio: 8 / 3 })}
