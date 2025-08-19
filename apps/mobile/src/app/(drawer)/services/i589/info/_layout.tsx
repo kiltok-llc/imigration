@@ -29,18 +29,18 @@ export default function InfoLayout() {
           'personal-information/language-proficiency',
           'residence/current-address',
           'residence/previous-addresses',
-          'education/school-information',
-          'employment/employment-history',
+          'school-information',
+          'employment-history',
           'family-status/marital-status',
           'family-status/children-details',
           'family-status/parent-details',
           'family-status/sibling-details',
-          'immigration-status/status?context=client',
+          'immigration-status?context=client',
           ...(maritalStatus === 'single'
             ? []
-            : ['immigration-status/status?context=spouse']),
+            : ['immigration-status?context=spouse']),
           ...Array.from({ length: numberOfChildren }).map(
-            (_, i) => `immigration-status/status?context=child&index=${i}`
+            (_, i) => `immigration-status?context=child&index=${i}`
           ),
         ]}
       >

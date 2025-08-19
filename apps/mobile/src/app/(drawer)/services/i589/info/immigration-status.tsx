@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { focusAtom } from 'jotai-optics';
 import { atomFamily } from 'jotai/utils';
+import { OpticFor_ } from 'optics-ts';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
@@ -13,23 +14,23 @@ import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { userDataAtom } from '@/lib/data/user';
-import { CourtStatusEnum } from '@/lib/schema/common';
+import { UserData, userDataAtom } from '@/lib/data/user';
+import { ImmigrationCourtStatusEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
+
+const child = (optic: OpticFor_<UserData>, index: number) =>
+  optic.prop('children').optional().at(index);
+
+const ctx = (optic: OpticFor_<UserData>, context: 'client' | 'spouse') =>
+  optic.prop(context).optional();
 
 const firstNameFamily = atomFamily(
   ({ context, index }: Param) =>
     focusAtom(userDataAtom, (optic) =>
       context === 'child'
-        ? optic
-            .prop('children')
-            .optional()
-            .at(index)
-            .prop('name')
-            .optional()
-            .prop('first')
-        : optic.prop(context).optional().prop('name').optional().prop('first')
+        ? child(optic, index).prop('name').optional().prop('first')
+        : ctx(optic, context).prop('name').optional().prop('first')
     ),
   isEqual
 );
@@ -38,8 +39,48 @@ const passportFamily = atomFamily(
   ({ context, index }: Param) =>
     focusAtom(userDataAtom, (optic) =>
       context === 'child'
-        ? optic.prop('children').optional().at(index).prop('passport')
-        : optic.prop(context).optional().prop('passport')
+        ? child(optic, index).prop('passport')
+        : ctx(optic, context).prop('passport')
+    ),
+  isEqual
+);
+
+const alienNumberFamily = atomFamily(
+  ({ context, index }: Param) =>
+    focusAtom(userDataAtom, (optic) =>
+      context === 'child'
+        ? child(optic, index).prop('alienNumber')
+        : ctx(optic, context).prop('alienNumber')
+    ),
+  isEqual
+);
+
+const ssnFamily = atomFamily(
+  ({ context, index }: Param) =>
+    focusAtom(userDataAtom, (optic) =>
+      context === 'child'
+        ? child(optic, index).prop('ssn')
+        : ctx(optic, context).prop('ssn')
+    ),
+  isEqual
+);
+
+const uscisNumberFamily = atomFamily(
+  ({ context, index }: Param) =>
+    focusAtom(userDataAtom, (optic) =>
+      context === 'child'
+        ? child(optic, index).prop('uscisNumber')
+        : ctx(optic, context).prop('uscisNumber')
+    ),
+  isEqual
+);
+
+const immigrationCourtStatusFamily = atomFamily(
+  ({ context, index }: Param) =>
+    focusAtom(userDataAtom, (optic) =>
+      context === 'child'
+        ? child(optic, index).prop('immigrationCourtStatus')
+        : ctx(optic, context).prop('immigrationCourtStatus')
     ),
   isEqual
 );
@@ -61,9 +102,15 @@ const useParam = () => {
   };
 };
 
-export default function Status() {
+export default function ImmigrationStatus() {
   const param = useParam();
   const setPassport = useSetAtom(passportFamily(param));
+  const setAlienNumber = useSetAtom(alienNumberFamily(param));
+  const setSsn = useSetAtom(ssnFamily(param));
+  const setUscisNumber = useSetAtom(uscisNumberFamily(param));
+  const setImmigrationCourtStatus = useSetAtom(
+    immigrationCourtStatusFamily(param)
+  );
   const name = useAtomValue(firstNameFamily(param));
 
   return (
@@ -130,7 +177,10 @@ export default function Status() {
 
         <QuizPage
           defaultValues={{ hasAlienNumber: null }}
-          onSubmit={() => true}
+          onSubmit={({ number }) => {
+            setAlienNumber(number);
+            return true;
+          }}
           pageId='alien-number'
           schema={z.object({
             hasAlienNumber: required(z.boolean().nullable()),
@@ -164,7 +214,10 @@ export default function Status() {
           defaultValues={{
             hasSsn: null,
           }}
-          onSubmit={() => true}
+          onSubmit={({ number }) => {
+            setSsn(number);
+            return true;
+          }}
           pageId='ssn'
           schema={z.object({
             hasSsn: required(z.boolean().nullable()),
@@ -197,7 +250,10 @@ export default function Status() {
           defaultValues={{
             hasUscis: null,
           }}
-          onSubmit={() => true}
+          onSubmit={({ number }) => {
+            setUscisNumber(number);
+            return true;
+          }}
           pageId='uscis'
           schema={z.object({
             hasUscis: required(z.boolean().nullable()),
@@ -228,21 +284,24 @@ export default function Status() {
 
         <QuizPage
           defaultValues={{
-            courtStatus: null,
+            status: null,
           }}
-          onSubmit={() => true}
+          onSubmit={({ status }) => {
+            setImmigrationCourtStatus(status);
+            return true;
+          }}
           pageId='court'
           schema={z.object({
-            courtStatus: required(CourtStatusEnum.nullable()),
+            status: required(ImmigrationCourtStatusEnum.nullable()),
           })}
         >
           {({ control }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='courtStatus'>
+                <FormField control={control} name='status'>
                   <QuizFieldTitle />
                   <FormRadioGroup>
-                    {CourtStatusEnum.options.map((status) => (
+                    {ImmigrationCourtStatusEnum.options.map((status) => (
                       <QuizRadioItem key={status} value={status} />
                     ))}
                   </FormRadioGroup>

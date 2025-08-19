@@ -271,156 +271,74 @@
         "title": "You May Not Be Eligible for Asylum"
       },
       "info": {
-        "asylum-and-fear": {
-          "asylum-reasons-and-fear": {
-            "detailed-harm-reasons": {
-              "custom-harm-reason": {
-                "label": "Please specify the other reason"
-              },
-              "harm-reasons": {
-                "options": {
-                  "nationality": "Nationality",
-                  "none": "None of the above",
-                  "other": "Other",
-                  "political-opinion": "Political Opinion",
-                  "race": "Race",
-                  "religion": "Religion",
-                  "social-group": "Social Group"
-                },
-                "title": "What are the detailed reasons for the harm you fear? (Select all that apply)"
-              }
-            },
-            "fear-description": {
-              "fear-description": {
-                "label": "Fear Description",
-                "title": "Please describe in detail what you fear will happen if you return to your home country."
-              }
-            },
-            "fear-of-return": {
-              "fear-of-return": {
-                "title": "Do you fear returning to your home country?"
-              }
-            },
-            "other-country-fear": {
-              "has-other-country-fear": {
-                "title": "Do you fear persecution in any other country?"
-              }
-            },
-            "persecution-description": {
-              "persecution-description": {
-                "label": "Persecution Description",
-                "title": "Please describe in detail the persecution you experienced or fear."
-              }
-            },
-            "title": "Asylum Reasons and Fear"
-          }
-        },
-        "declaration": {
-          "final-declaration": {
-            "information-accuracy": {
-              "information-accurate": {
-                "title": "I certify that the information I have provided in this application is true and correct to the best of my knowledge."
-              }
-            },
-            "interpreter-needed": {
-              "interpreter-language": {
-                "label": "Interpreter Language",
-                "title": "What language do you need an interpreter for?"
-              },
-              "needs-interpreter": {
-                "title": "Do you need an interpreter for your interview?"
-              }
-            },
-            "signature": {
-              "applicant-signature": {
-                "label": "Full Name (Signature)",
-                "title": "Please type your full name as your electronic signature."
-              },
-              "signature-date": {
-                "label": "Date",
-                "title": "Date of signature"
-              }
-            },
-            "title": "Final Declaration",
-            "understands-consequences": {
-              "understands-consequences": {
-                "title": "I understand that any false information may result in denial of my application or other legal consequences."
-              }
-            }
-          }
-        },
         "description": "Enter your personal details such as name, date of birth, and nationality.",
-        "education": {
-          "school-information": {
-            "attendance-period": {
-              "end": {
-                "label": "End Date"
-              },
-              "start": {
-                "label": "Start Date"
-              },
-              "title": "When did you attend this school?"
+        "school-information": {
+          "attendance-period": {
+            "end": {
+              "label": "End Date"
             },
-            "basic-school-info": {
-              "level": {
-                "options": {
-                  "primary": "Elementary or Primary",
-                  "secondary": "Secondary",
-                  "university": "University",
-                  "vocational": "Vocational/Technical"
-                },
-                "title": "What is the highest level of education you completed?"
+            "start": {
+              "label": "Start Date"
+            },
+            "title": "When did you attend this school?"
+          },
+          "basic-school-info": {
+            "level": {
+              "options": {
+                "primary": "Elementary or Primary",
+                "secondary": "Secondary",
+                "university": "University",
+                "vocational": "Vocational/Technical"
               },
+              "title": "What is the highest level of education you completed?"
+            },
+            "name": {
+              "label": "Name of School/College",
+              "title": "What is the name of last school or college you attended?"
+            }
+          },
+          "other-schools": {
+            "title": "Starting with the most recent, please list all the other schools you have attended.",
+            "schools": {
               "name": {
-                "label": "Name of School/College",
-                "title": "What is the name of last school or college you attended?"
-              }
-            },
-            "other-schools": {
-              "title": "Starting with the most recent, please list all the other schools you have attended.",
-              "schools": {
-                "name": {
-                  "label": "Name of School/College"
-                },
-                "title_ordinal_one": "{{count}}st School",
-                "title_ordinal_two": "{{count}}nd School",
-                "title_ordinal_few": "{{count}}rd School",
-                "title_ordinal_other": "{{count}}th School",
-                "add": "Add school"
-              }
-            },
-            "school-location": {
-              "school-city": {
-                "title": "City"
+                "label": "Name of School/College"
               },
-              "school-country": {
-                "title": "Country"
-              },
-              "school-state": {
-                "title": "State"
-              },
-              "title": "School Location"
+              "title_ordinal_one": "{{count}}st School",
+              "title_ordinal_two": "{{count}}nd School",
+              "title_ordinal_few": "{{count}}rd School",
+              "title_ordinal_other": "{{count}}th School",
+              "add": "Add school"
+            }
+          },
+          "school-location": {
+            "school-city": {
+              "title": "City"
             },
-            "title": "School Information"
-          }
+            "school-country": {
+              "title": "Country"
+            },
+            "school-state": {
+              "title": "State"
+            },
+            "title": "School Location"
+          },
+          "title": "School Information"
         },
-        "employment": {
-          "employment-history": {
-            "title": "Employment History",
+        "employment-history": {
+          "title": "Employment History",
+          "jobs": {
+            "title": "Starting with the most recent, please list all the jobs (in the USA and in other countries) you have had in the last five years.",
             "jobs": {
-              "title": "Starting with the most recent, please list all the jobs (in the USA and in other countries) you have had in the last five years.",
-              "jobs": {
-                "title_ordinal_one": "{{count}}st Job (most recent)",
-                "title_ordinal_two": "{{count}}nd Job",
-                "title_ordinal_few": "{{count}}rd Job",
-                "title_ordinal_other": "{{count}}th Job",
-                "add": "Add job",
-                "employer": {
-                  "label": "Employer or Company Name"
-                },
-                "occupation": {
-                  "label": "Occupation"
-                }
+              "title_ordinal_one": "{{count}}st Job (most recent)",
+              "title_ordinal_two": "{{count}}nd Job",
+              "title_ordinal_few": "{{count}}rd Job",
+              "title_ordinal_other": "{{count}}th Job",
+              "add": "Add job",
+              "employer": {
+                "label": "Employer or Company Name"
+              },
+              "occupation": {
+                "label": "Occupation"
               }
             }
           }
@@ -644,128 +562,79 @@
           }
         },
         "immigration-status": {
-          "status": {
-            "ssn": {
-              "has-ssn": {
-                "title": "Do you have a Social Security Number?",
-                "title_spouse": "Does your spouse, {{ name }}, have a Social Security Number?",
-                "title_child": "Does your child, {{ name }}, have a Social Security Number?"
-              },
-              "number": {
-                "label": "Social Security Number",
-                "title_client": "What is your Social Security Number?",
-                "title": "What is {{ name }}'s Social Security Number?"
-              }
+          "ssn": {
+            "has-ssn": {
+              "title": "Do you have a Social Security Number?",
+              "title_spouse": "Does your spouse, {{ name }}, have a Social Security Number?",
+              "title_child": "Does your child, {{ name }}, have a Social Security Number?"
             },
-            "court": {
-              "court-status": {
-                "title": "Has {{ name }} ever been, or is {{ name }} currently, in immigration court proceedings?",
-                "title_client": "Have you ever been, or are you currently, in immigration court proceedings?",
-                "options": {
-                  "currently_client": "I am currently in proceedings",
-                  "currently": "{{ name }} is currently in proceedings",
-                  "previously_client": "I was previously in proceedings",
-                  "previously": "{{ name }} was previously in proceedings",
-                  "never_client": "I have never been in proceedings",
-                  "never": "{{ name }} has never been in proceedings"
-                }
-              }
-            },
-            "uscis": {
-              "has-uscis": {
-                "title": "Do you have a USCIS online account number?",
-                "title_spouse": "Does your spouse, {{ name }}, have a USCIS online account number?",
-                "title_child": "Does your child, {{ name }}, have a USCIS online account number?",
-                "description": "The 'USCIS online account number' (Online Account Number or OAN) is a number that’s given to a person when they create an account on the U.S. Citizenship and Immigration Services (USCIS) website. You can also find it in notices you’ve received from the immigration office. This number is different from the Alien Number (A-number)."
-              },
-              "number": {
-                "label": "USCIS Online Account Number",
-                "title_client": "What is your USCIS online account number?",
-                "title": "What is {{ name }}'s USCIS online account number?"
-              }
-            },
-            "alien-number": {
-              "has-alien-number": {
-                "title": "Do you have an Alien Registration Number?",
-                "title_spouse": "Does your spouse, {{ name }} have an Alien Registration Number?",
-                "title_child": "Does your child, {{ name }} have an Alien Registration Number?",
-                "description": "The Alien Registration Number (A-Number) begins with the letter “A” followed by 8 or 9 digits (e.g., A123456789). This number is printed on the notes and/or documents that may have been given to you by immigration offices (Executive Office for Immigration Review – EOIR) or by the Department of Homeland Security (DHS), USCIS, U.S. Customs and Border Protection (CBP), and U.S. Immigration and Customs Enforcement (ICE)."
-              },
-              "number": {
-                "label": "Alien Registration Number",
-                "title_client": "What is your Alien Registration Number?",
-                "title": "What is {{ name }}'s Alien Registration Number?"
-              }
-            },
-            "title": "Client Immigration Status",
-            "title_spouse": "Spouse Immigration Status",
-            "title_child_ordinal_one": "{{ count }}st Child Immigration Status",
-            "title_child_ordinal_two": "{{ count }}nd Child Immigration Status",
-            "title_child_ordinal_few": "{{ count }}rd Child Immigration Status",
-            "passport": {
-              "has-passport": {
-                "title": "Do you have a passport?",
-                "title_spouse": "Does your spouse, {{ name }} have a passport?",
-                "title_child": "Does your child, {{ name }} have a passport?"
-              },
-              "number": {
-                "label": "Passport Number",
-                "title_client": "What is your passport number?",
-                "title": "What is {{ name }}'s passport number?"
-              },
-              "country": {
-                "label": "Issuing Country",
-                "title": "Which country issued {{ name }}'s passport?",
-                "title_client": "Which country issued your passport?"
+            "number": {
+              "label": "Social Security Number",
+              "title_client": "What is your Social Security Number?",
+              "title": "What is {{ name }}'s Social Security Number?"
+            }
+          },
+          "court": {
+            "status": {
+              "title": "Has {{ name }} ever been, or is {{ name }} currently, in immigration court proceedings?",
+              "title_client": "Have you ever been, or are you currently, in immigration court proceedings?",
+              "options": {
+                "currently_client": "I am currently in proceedings",
+                "currently": "{{ name }} is currently in proceedings",
+                "previously_client": "I was previously in proceedings",
+                "previously": "{{ name }} was previously in proceedings",
+                "never_client": "I have never been in proceedings",
+                "never": "{{ name }} has never been in proceedings"
               }
             }
-          }
-        },
-        "legal-history": {
-          "legal-and-affiliations": {
-            "arrest-history": {
-              "arrest-details": {
-                "label": "Arrest Details",
-                "title": "Please provide details about your arrest history."
-              },
-              "has-arrest-history": {
-                "title": "Have you ever been arrested or detained?"
-              }
+          },
+          "uscis": {
+            "has-uscis": {
+              "title": "Do you have a USCIS online account number?",
+              "title_spouse": "Does your spouse, {{ name }}, have a USCIS online account number?",
+              "title_child": "Does your child, {{ name }}, have a USCIS online account number?",
+              "description": "The 'USCIS online account number' (Online Account Number or OAN) is a number that’s given to a person when they create an account on the U.S. Citizenship and Immigration Services (USCIS) website. You can also find it in notices you’ve received from the immigration office. This number is different from the Alien Number (A-number)."
             },
-            "military-details": {
-              "military-details": {
-                "label": "Military Service Details",
-                "title": "Please provide details about your military service."
-              }
+            "number": {
+              "label": "USCIS Online Account Number",
+              "title_client": "What is your USCIS online account number?",
+              "title": "What is {{ name }}'s USCIS online account number?"
+            }
+          },
+          "alien-number": {
+            "has-alien-number": {
+              "title": "Do you have an Alien Registration Number?",
+              "title_spouse": "Does your spouse, {{ name }} have an Alien Registration Number?",
+              "title_child": "Does your child, {{ name }} have an Alien Registration Number?",
+              "description": "The Alien Registration Number (A-Number) begins with the letter “A” followed by 8 or 9 digits (e.g., A123456789). This number is printed on the notes and/or documents that may have been given to you by immigration offices (Executive Office for Immigration Review – EOIR) or by the Department of Homeland Security (DHS), USCIS, U.S. Customs and Border Protection (CBP), and U.S. Immigration and Customs Enforcement (ICE)."
             },
-            "military-service": {
-              "has-military-service": {
-                "title": "Have you ever served in the military or armed forces?"
-              }
+            "number": {
+              "label": "Alien Registration Number",
+              "title_client": "What is your Alien Registration Number?",
+              "title": "What is {{ name }}'s Alien Registration Number?"
+            }
+          },
+          "title": "Client Immigration Status",
+          "title_spouse": "Spouse Immigration Status",
+          "title_child_ordinal_one": "{{ count }}st Child Immigration Status",
+          "title_child_ordinal_two": "{{ count }}nd Child Immigration Status",
+          "title_child_ordinal_few": "{{ count }}rd Child Immigration Status",
+          "passport": {
+            "has-passport": {
+              "title": "Do you have a passport?",
+              "title_spouse": "Does your spouse, {{ name }} have a passport?",
+              "title_child": "Does your child, {{ name }} have a passport?"
             },
-            "organization-details": {
-              "organization-details": {
-                "label": "Organization Details",
-                "title": "Please provide details about your organizational memberships."
-              }
+            "number": {
+              "label": "Passport Number",
+              "title_client": "What is your passport number?",
+              "title": "What is {{ name }}'s passport number?"
             },
-            "organization-membership": {
-              "has-organization-membership": {
-                "title": "Have you ever been a member of any organization, association, fund, foundation, party, club, society, or similar group?"
-              }
-            },
-            "political-affiliation": {
-              "has-political-affiliation": {
-                "title": "Have you ever been affiliated with any political organization or party?"
-              }
-            },
-            "political-details": {
-              "political-details": {
-                "label": "Political Affiliation Details",
-                "title": "Please provide details about your political affiliations."
-              }
-            },
-            "title": "Legal History and Affiliations"
+            "country": {
+              "label": "Issuing Country",
+              "title": "Which country issued {{ name }}'s passport?",
+              "title_client": "Which country issued your passport?"
+            }
           }
         },
         "personal-information": {

@@ -3,9 +3,17 @@ import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { objectPropertyAtomFamily } from '@/atoms/object-property-atom-family';
-import { MaritalStatusEnum, SexEnum } from '@/lib/schema/common';
+import {
+  ImmigrationCourtStatusEnum,
+  MaritalStatusEnum,
+  SexEnum,
+} from '@/lib/schema/common';
 
 const AlienNumberSchema = z.string();
+
+const UscisNumberSchema = z.string();
+
+const SsnSchema = z.string();
 
 const PassportSchema = z.object({
   country: z.string(),
@@ -24,10 +32,13 @@ const ChildSchema = z
     birthCertificate: z.string(),
     dob: z.date(),
     ethnicity: z.string(),
+    immigrationCourtStatus: ImmigrationCourtStatusEnum,
     livesInUsa: z.boolean(),
     name: NameSchema,
     passport: PassportSchema,
     sex: SexEnum,
+    ssn: SsnSchema,
+    uscisNumber: UscisNumberSchema,
   })
   .partial();
 
@@ -41,19 +52,24 @@ const SiblingSchema = z
 const SpouseSchema = z
   .object({
     alienNumber: AlienNumberSchema,
+    immigrationCourtStatus: ImmigrationCourtStatusEnum,
     name: NameSchema,
     passport: PassportSchema,
     sex: SexEnum,
-    ssn: z.string(),
+    ssn: SsnSchema,
+    uscisNumber: UscisNumberSchema,
   })
   .partial();
 
 const ClientSchema = z
   .object({
     alienNumber: AlienNumberSchema,
+    immigrationCourtStatus: ImmigrationCourtStatusEnum,
     name: NameSchema,
     passport: PassportSchema,
     sex: SexEnum,
+    ssn: SsnSchema,
+    uscisNumber: UscisNumberSchema,
   })
   .partial();
 
@@ -79,6 +95,8 @@ export const UserDataSchema = z
     spouse: SpouseSchema,
   })
   .partial();
+
+export type UserData = z.input<typeof UserDataSchema>;
 
 export const userDataAtom = atomWithMmkvStorage('userData', {}, UserDataSchema);
 
