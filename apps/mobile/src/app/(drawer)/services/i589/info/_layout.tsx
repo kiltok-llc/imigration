@@ -4,14 +4,15 @@ import { useAtomValue } from 'jotai';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useT } from '@/hooks/use-t';
-import { numberOfChildrenAtom, userDataFamily } from '@/lib/data/user';
+import { childIdsAtom } from '@/lib/data/child';
+import { maritalStatusAtom } from '@/lib/data/marriage';
 import { QuizProvider } from '@/lib/quiz';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
   const t = useT();
-  const maritalStatus = useAtomValue(userDataFamily('maritalStatus'));
-  const numberOfChildren = useAtomValue(numberOfChildrenAtom);
+  const maritalStatus = useAtomValue(maritalStatusAtom);
+  const childIds = useAtomValue(childIdsAtom);
 
   return (
     <>
@@ -36,11 +37,12 @@ export default function InfoLayout() {
           'family-status/parent-details',
           'family-status/sibling-details',
           'immigration-status?context=client',
-          ...(maritalStatus === 'single'
-            ? []
-            : ['immigration-status?context=spouse']),
-          ...Array.from({ length: numberOfChildren }).map(
-            (_, i) => `immigration-status?context=child&index=${i}`
+          ...(maritalStatus === 'married'
+            ? ['immigration-status?context=spouse']
+            : []),
+          ...childIds.map(
+            (id, index) =>
+              `immigration-status?context=child&id=${id}&count=${index + 1}`
           ),
         ]}
       >

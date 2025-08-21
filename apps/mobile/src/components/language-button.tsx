@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
@@ -16,19 +16,19 @@ export function LanguageButton({ language }: { language: string }) {
       contentStyle={tw`flex-row-reverse justify-between gap-2`}
       i18nKey={`language.${language}`}
       icon={({ size }) => (
-        <Feather
+        <MaterialCommunityIcons
           color={active ? theme.colors.secondary : theme.colors.outline}
-          name={active ? 'check-circle' : 'circle'}
-          size={size}
+          name={active ? 'checkbox-marked-circle-outline' : 'circle-outline'}
+          size={size * 1.2}
         />
       )}
       labelStyle={tw.style('text-2xl', active && 'font-semibold')}
       mode='outlined'
       onPress={() => void i18n.changeLanguage(language)}
       style={tw.style(
+        'border-2',
         active && {
           borderColor: theme.colors.secondary,
-          borderWidth: 2,
         }
       )}
     />

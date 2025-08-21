@@ -3,7 +3,6 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useSetAtom } from 'jotai';
 import {
   ComponentProps,
-  Key,
   ReactNode,
   Ref,
   useEffect,
@@ -24,7 +23,7 @@ import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
-import { useQuizValuesAtom } from '@/atoms/quiz-values-family';
+import { useQuizValuesAtom } from '@/atoms/quiz-page-values';
 import {
   createRequiredContext,
   useRequiredContext,
@@ -59,12 +58,11 @@ export function QuizPage<Input extends FieldValues, Output>({
   formOptions?: UseFormProps<Input, any, Output>;
   onSubmit: (data: Output) => boolean;
   pageId: string;
-  pageKey?: Key;
+  pageKey?: string;
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
-  const persistenceKey = pageKey ? `${pageId}.${pageKey}` : pageId;
-  const quizValuesAtom = useQuizValuesAtom<Input>(persistenceKey);
+  const quizValuesAtom = useQuizValuesAtom<Input>(pageId, pageKey);
   const setPersistedValues = useSetAtom(quizValuesAtom);
 
   const context = useForm<Input, any, Output>({
@@ -82,7 +80,7 @@ export function QuizPage<Input extends FieldValues, Output>({
     (get) => {
       const persistedValues = get(quizValuesAtom);
       // console.debug(
-      //   `Loaded quiz values for ${persistenceKey}:`,
+      //   `Loaded quiz values for ${pageId}:${pageKey}`,
       //   persistedValues
       // );
       if (persistedValues) {
@@ -133,6 +131,8 @@ export function QuizPage<Input extends FieldValues, Output>({
     <KeyboardAwareScrollView
       bottomOffset={80}
       contentContainerStyle={[tw`grow justify-center`, contentContainerStyle]}
+      disableScrollOnKeyboardHide={true}
+      scrollsToTop={false}
       style={[tw`flex-1 px-4 pt-4`, style]}
       {...props}
     >

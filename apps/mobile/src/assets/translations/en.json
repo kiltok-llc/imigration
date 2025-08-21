@@ -132,7 +132,7 @@
   },
   "next": "Next",
   "onboarding": {
-    "choose-language": "Choose your language to get started.",
+    "choose-language": "Touch your preferred language below to get started.",
     "title": "Welcome to iMigration"
   },
   "previous": "Back",
@@ -346,34 +346,24 @@
         "family-status": {
           "parent-details": {
             "title": "Parent Information",
-            "mother": {
-              "title": "Please enter the following information about your mother.",
+            "parent": {
+              "title_male": "Please enter the following information about your father.",
+              "title_female": "Please enter the following information about your mother.",
               "alive": {
-                "title": "Is your mother alive?"
+                "title_female": "Is your mother alive?",
+                "title_male": "Is your father alive?"
               },
               "current-location": {
-                "title": "Where does your mother currently live?"
+                "title_female": "Where does your mother currently live?",
+                "title_male": "Where does your father currently live?"
               },
               "name": {
-                "title": "What is your mother's name?"
+                "title_female": "What is your mother's name?",
+                "title_male": "What is your father's name?"
               },
               "birth-location": {
-                "title": "Where was your mother born?"
-              }
-            },
-            "father": {
-              "title": "Please enter the following information about your father.",
-              "alive": {
-                "title": "Is your father alive?"
-              },
-              "current-location": {
-                "title": "Where does your father currently live?"
-              },
-              "name": {
-                "title": "What is your father's name?"
-              },
-              "birth-location": {
-                "title": "Where was your father born?"
+                "title_female": "Where was your mother born?",
+                "title_male": "Where was your father born?"
               }
             }
           },
@@ -382,7 +372,7 @@
               "has-siblings": {
                 "title": "Do you have any siblings?"
               },
-              "number": {
+              "num-siblings": {
                 "label": "Number of siblings",
                 "title": "How many siblings do you have?"
               },
@@ -440,7 +430,7 @@
               "has-children": {
                 "title": "Do you have children (regardless of age, location, or marital status)?"
               },
-              "number": {
+              "num-children": {
                 "label": "Number of children",
                 "title": "How many children do you have?"
               },
@@ -509,11 +499,12 @@
               "country": {
                 "label": "Country"
               },
-              "range": {
+              "date": {
                 "title": "When did you get married?",
-                "start": {
-                  "label": "Marriage Date"
-                }
+                "label": "Marriage Date"
+              },
+              "divorce-date": {
+                "label": "Divorce Date"
               }
             },
             "spouse-info": {
@@ -562,6 +553,34 @@
           }
         },
         "immigration-status": {
+          "first-entry": {
+            "is-in-usa": {
+              "title": "Is {{ name }} currently in the United States?"
+            },
+            "entry": {
+              "date": {
+                "title_client": "When did you enter the United States?",
+                "title": "When did {{ name }} enter the United States?",
+                "tip": "(the most recent date of entry)",
+                "label": "Entry Date"
+              },
+              "port": {
+                "title": "Where did {{ name }} enter the United States?",
+                "title_client": "Where did you enter the United States?",
+                "label": "Port of Entry"
+              },
+              "status": {
+                "title": "What was {{ name }}'s immigration status at entry?",
+                "title_client": "What was your immigration status at entry?",
+                "label": "Immigration Status"
+              },
+              "status-expiration": {
+                "title": "When does {{ name }}'s immigration status expire?",
+                "title_client": "When does your immigration status expire?",
+                "label": "Expiration Date"
+              }
+            }
+          },
           "ssn": {
             "has-ssn": {
               "title": "Do you have a Social Security Number?",
@@ -625,15 +644,39 @@
               "title_spouse": "Does your spouse, {{ name }} have a passport?",
               "title_child": "Does your child, {{ name }} have a passport?"
             },
-            "number": {
-              "label": "Passport Number",
-              "title_client": "What is your passport number?",
-              "title": "What is {{ name }}'s passport number?"
+            "passport": {
+              "number": {
+                "label": "Passport Number",
+                "title_client": "What is your passport number?",
+                "title": "What is {{ name }}'s passport number?"
+              },
+              "country": {
+                "label": "Issuing Country",
+                "title": "Which country issued {{ name }}'s passport?",
+                "title_client": "Which country issued your passport?"
+              }
+            }
+          },
+          "immigration-status": {
+            "lastDepartureDate": {
+              "title": "Last departure from home country",
+              "label": "Date (MM/DD/YYYY)"
             },
-            "country": {
-              "label": "Issuing Country",
-              "title": "Which country issued {{ name }}'s passport?",
-              "title_client": "Which country issued your passport?"
+            "lastUsEntryDate": {
+              "title": "Most recent entry to the United States",
+              "label": "Date (MM/DD/YYYY)"
+            },
+            "lastUsEntryPort": {
+              "title": "Port of entry to the United States",
+              "label": "Enter the city/port"
+            },
+            "entryStatus": {
+              "title": "Immigration status at entry",
+              "label": "What status were you admitted under?"
+            },
+            "statusExpirationDate": {
+              "title": "Expiration date of this status",
+              "label": "Date (MM/DD/YYYY)"
             }
           }
         },
@@ -835,37 +878,60 @@
   },
   "settings": {
     "drawerLabel": "Settings",
-    "language": {
-      "screenTitle": "Language"
-    },
     "screenTitle": "Settings",
     "sections": {
       "advanced": {
         "title": "Advanced",
-        "reset": {
-          "title": "Reset Data",
-          "description": "Completely reset <strong>ALL</strong> app data, including your profile and all applications.",
-          "dialog": {
+        "items": {
+          "data": {
+            "title": "Inspect App Data",
+            "description": "View and edit data stored in the app about you."
+          },
+          "reset": {
             "title": "Reset Data",
-            "content": "Are you sure you want to reset all app data? This will restart the app. This action <strong>cannot</strong> be undone.",
-            "cancel": "Cancel",
-            "confirm": "Reset"
+            "description": "Completely reset <strong>ALL</strong> app data, including your profile and all applications.",
+            "dialog": {
+              "title": "Reset Data",
+              "content": "Are you sure you want to reset all app data? This will restart the app. This action <strong>cannot</strong> be undone.",
+              "cancel": "Cancel",
+              "confirm": "Reset"
+            }
           }
         }
       },
       "support": {
         "title": "Support",
-        "onboarding": {
-          "title": "Show onboarding",
-          "description": "Walk through the app's features."
+        "items": {
+          "onboarding": {
+            "title": "Show onboarding",
+            "description": "Walk through the app's features."
+          }
         }
       },
       "language-and-accessibility": {
-        "language": {
-          "description": "Select your preferred language for the app.",
-          "title": "Preferred language"
+        "items": {
+          "language": {
+            "description": "Select your preferred language for the app.",
+            "title": "Preferred language"
+          }
         },
         "title": "Language & Accessibility"
+      }
+    },
+    "data": {
+      "screenTitle": "Data",
+      "sections": {
+        "user": {
+          "title": "User Data"
+        }
+      }
+    },
+    "language": {
+      "screenTitle": "Language",
+      "sections": {
+        "languages": {
+          "title": "Preferred Language"
+        }
       }
     }
   }

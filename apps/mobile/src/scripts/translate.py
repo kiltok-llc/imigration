@@ -7,11 +7,10 @@
 # ]
 # ///
 import json
-from pathlib import Path
-
 import openai
 import typer
 from openai import OpenAI
+from pathlib import Path
 from tqdm import tqdm
 
 client = OpenAI()

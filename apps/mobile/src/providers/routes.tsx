@@ -3,20 +3,24 @@ import {
   useNavigationState,
 } from '@react-navigation/native';
 import { useGlobalSearchParams, useRouter } from 'expo-router';
-import { PropsWithChildren, useCallback, useRef } from 'react';
-
 import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useRef,
+} from 'react';
+
 import { useStable } from '@/hooks/use-stable';
 
-const RouteUrlsContext = createRequiredContext<string[]>();
-const FinalRouteContext = createRequiredContext<string>();
-const CurrentRouteContext =
-  createRequiredContext<[string, Record<string, string>]>();
+const RouteUrlsContext = createContext<string[]>([]);
+const FinalRouteContext = createContext<string>('/');
+const CurrentRouteContext = createContext<[string, Record<string, string>]>([
+  '',
+  {},
+]);
 
-export const useRouteUrls = () => useRequiredContext(RouteUrlsContext);
+export const useRouteUrls = () => useContext(RouteUrlsContext);
 export const useIsLastRoute = () => {
   const routes = useRouteUrls();
   const index = useCurrentRouteIndex();
@@ -26,8 +30,8 @@ export const useIsFirstRoute = () => {
   const index = useCurrentRouteIndex();
   return index === 0;
 };
-export const useFinalRouteUrl = () => useRequiredContext(FinalRouteContext);
-export const useCurrentRoute = () => useRequiredContext(CurrentRouteContext);
+export const useFinalRouteUrl = () => useContext(FinalRouteContext);
+export const useCurrentRoute = () => useContext(CurrentRouteContext);
 export const useCurrentRouteUrl = () => {
   const [name, params] = useCurrentRoute();
   if (Object.keys(params).length === 0) {

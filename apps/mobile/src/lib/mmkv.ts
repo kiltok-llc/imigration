@@ -1,14 +1,19 @@
 import { SyncStorage } from 'jotai/vanilla/utils/atomWithStorage';
 import { MMKV } from 'react-native-mmkv';
 import superjson from 'superjson';
+import z from 'zod/v4';
 
 export const defaultStorage = new MMKV({ id: 'mmkv.default' });
+
+export const quizStorage = new MMKV({ id: 'mmkv.quiz' });
+
+export const userStorage = new MMKV({ id: 'mmkv.user' });
 
 export const devStorage = new MMKV({ id: 'mmkv.dev' });
 
 export const createMMKVStorage = <Value>(
   storage: MMKV,
-  validator: (value: unknown) => value is Value
+  schema: z.ZodType<Value>
 ): SyncStorage<Value> => ({
   getItem: (key, initialValue) => {
     const str = storage.getString(key);
@@ -30,28 +35,43 @@ export const createMMKVStorage = <Value>(
       return initialValue;
     }
 
-    if (validator(value)) {
-      return value;
+    const { data, error } = schema.safeParse(value);
+    if (error) {
+      console.warn(
+        `Value for key: ${key} was read as ${value} while reading from storage, but failed validation!`
+      );
+      console.warn(z.prettifyError(error));
+      return initialValue;
     }
 
-    console.warn(
-      `Value for mmkv key: ${key} failed validation while reading from storage`,
-      value
-    );
-    return initialValue;
+    return data;
   },
   removeItem: (key) => {
     // console.debug(`storage.removeItem(${key})`);
     storage.delete(key);
   },
   setItem: (key, value) => {
-    if (!validator(value)) {
+    const { error } = schema.safeParse(value);
+    if (error) {
       console.warn(
         `Value for key: ${key} was set to ${value} while writing to storage, but failed validation!`
       );
+      console.warn(z.prettifyError(error));
+      return;
     }
 
-    const str = superjson.stringify(value);
+    let str;
+    try {
+      str = superjson.stringify(value);
+    } catch (error) {
+      console.warn(
+        `Failed to serialize value for key: ${key} while writing to storage`,
+        error,
+        value
+      );
+      return;
+    }
+
     // console.debug(`storage.setItem(${key}, ${str})`);
     storage.set(key, str);
   },
@@ -71,8 +91,8 @@ export const createMMKVStorage = <Value>(
       }
 
       try {
-        const value = superjson.parse<Value>(str ?? '');
-        callback(value);
+        const value = superjson.parse(str);
+        callback(schema.parse(value));
       } catch (error) {
         console.warn(
           `Error parsing mmkv value in subscription with key: ${key}`,

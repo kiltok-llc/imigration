@@ -1,4 +1,5 @@
 import { ComponentType, isValidElement, ReactElement, ReactNode } from 'react';
+import { MMKV } from 'react-native-mmkv';
 import z from 'zod/v4';
 
 import { defaultStorage } from '@/lib/mmkv';
@@ -27,8 +28,8 @@ export function chunked<T>(array: T[], size: number): T[][] {
 
 // Clears all MMKV keys that match the provided regular expression.
 // @yields An array of groups captured by the regular expression for each cleared key.
-export function* clearMMKVKeys<T extends string[]>(exp: RegExp) {
-  const matches = defaultStorage
+export function* clearMMKVKeys<T extends string[]>(exp: RegExp, storage: MMKV) {
+  const matches = storage
     .getAllKeys()
     .map((key) => key.match(exp))
     .filter((m) => !!m);
@@ -82,10 +83,31 @@ export async function sleep(ms: number) {
 export function toI18nKey(name: string) {
   return name
     .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
-    .replaceAll(/\.\d+/g, '')
+    .replaceAll(/.\d+/g, '')
     .toLowerCase();
 }
 
 export function toRouteId(routeName: string) {
   return routeName.replaceAll('/', '.');
 }
+
+export const growTo = <T>(
+  array: T[],
+  targetLength: number,
+  fillValue: () => T
+) => [
+  ...array,
+  ...Array.from({ length: targetLength - array.length }).map(() => fillValue()),
+];
+
+export const shrinkTo = <T>(array: T[], targetLength: number) =>
+  array.slice(0, targetLength);
+
+export const stretchTo = <T>(
+  array: T[],
+  targetLength: number,
+  fillValue: () => T
+) =>
+  array.length < targetLength
+    ? growTo(array, targetLength, fillValue)
+    : shrinkTo(array, targetLength);

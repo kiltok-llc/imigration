@@ -1,7 +1,11 @@
 import { useAtom, useSetAtom } from 'jotai';
-import { focusAtom } from 'jotai-optics';
 import z from 'zod/v4';
 
+import {
+  DEFAULT_FORM_SHORT_ADDRESS,
+  FormShortAddressInput,
+  FormShortAddressSchema,
+} from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
@@ -11,53 +15,29 @@ import {
   NameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
-import {
-  DEFAULT_RANGE,
-  FormRangeInput,
-  RangeSchema,
-  RangeSchemaWithOptionalEnd,
-} from '@/components/form/range';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
-import { QuizTextInput } from '@/components/quiz/text';
-import { userDataAtom, userDataFamily } from '@/lib/data/user';
+import {
+  divorceDateAtom,
+  maritalStatusAtom,
+  marriageCertificateAtom,
+  marriageDateAtom,
+  marriageLocationAtom,
+} from '@/lib/data/marriage';
+import { spouseNameAtom } from '@/lib/data/spouse';
 import { MaritalStatusEnum } from '@/lib/schema/common';
 import { required } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
-const marriageCertificateAtom = focusAtom(userDataAtom, (optic) =>
-  optic
-    .prop('marriage')
-    .valueOr({
-      certificate: undefined,
-    })
-    .prop('certificate')
-);
-
-const spouseNameAtom = focusAtom(userDataAtom, (optic) =>
-  optic.prop('spouse').valueOr({ name: undefined }).prop('name')
-);
-
-const marriageInfoAtom = focusAtom(userDataAtom, (optic) =>
-  optic
-    .prop('marriage')
-    .valueOr({
-      city: undefined,
-      country: undefined,
-      range: undefined,
-    })
-    .pick(['country', 'city', 'range'])
-);
-
 export default function MaritalStatus() {
-  const [maritalStatus, setMaritalStatus] = useAtom(
-    userDataFamily('maritalStatus')
-  );
+  const [maritalStatus, setMaritalStatus] = useAtom(maritalStatusAtom);
   const setMarriageCertificate = useSetAtom(marriageCertificateAtom);
-  const setMarriageInfo = useSetAtom(marriageInfoAtom);
+  const setMarriageLocation = useSetAtom(marriageLocationAtom);
+  const setMarriageDate = useSetAtom(marriageDateAtom);
+  const setDivorceDate = useSetAtom(divorceDateAtom);
   const setSpouseName = useSetAtom(spouseNameAtom);
 
   return (
@@ -92,7 +72,7 @@ export default function MaritalStatus() {
         )}
       </QuizPage>
 
-      {maritalStatus !== 'single' && (
+      {maritalStatus === 'married' && (
         <QuizPage
           defaultValues={{
             hasCertificate: null,
@@ -134,49 +114,45 @@ export default function MaritalStatus() {
       {maritalStatus !== 'single' && (
         <QuizPage
           defaultValues={{
-            city: '',
-            country: '',
-            range: DEFAULT_RANGE,
+            date: null,
+            divorceDate: null,
+            location: DEFAULT_FORM_SHORT_ADDRESS,
           }}
-          onSubmit={({ city, country, range }) => {
-            setMarriageInfo({ city, country, range });
+          onSubmit={({ date, divorceDate, location }) => {
+            setMarriageLocation(location);
+            setMarriageDate(date);
+            setDivorceDate(divorceDate);
 
             return true;
           }}
           pageId='marriage-info'
           schema={z.object({
-            city: z.string().nonempty(),
-            country: z.string().nonempty(),
-            range:
+            date: required(z.date().nullable()),
+            divorceDate:
               maritalStatus === 'divorced'
-                ? RangeSchema
-                : RangeSchemaWithOptionalEnd,
+                ? required(z.date().nullable())
+                : z.date().nullable(),
+            location: FormShortAddressSchema,
           })}
         >
           {({ control, lens }) => (
             <>
               <FormBlock>
                 <QuizFieldTitle name='location' />
-                <FormField control={control} name='city'>
-                  <QuizTextInput />
-                </FormField>
-                <FormField control={control} name='country'>
-                  <QuizTextInput />
-                </FormField>
+                <FormShortAddressInput lens={lens.focus('location')} />
               </FormBlock>
 
               <FormBlock>
-                <FormField control={control} name='range'>
+                <FormField control={control} name='date'>
                   <QuizFieldTitle />
-
-                  {maritalStatus === 'divorced' ? (
-                    <FormRangeInput lens={lens.focus('range')} />
-                  ) : (
-                    <FormField control={control} name='range.start'>
-                      <QuizDateInput />
-                    </FormField>
-                  )}
+                  <QuizDateInput />
                 </FormField>
+
+                {maritalStatus === 'divorced' && (
+                  <FormField control={control} name='divorceDate'>
+                    <QuizDateInput />
+                  </FormField>
+                )}
               </FormBlock>
             </>
           )}

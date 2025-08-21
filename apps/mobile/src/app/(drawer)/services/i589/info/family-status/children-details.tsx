@@ -1,7 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { focusAtom } from 'jotai-optics';
-import { atomFamily } from 'jotai/utils';
 import { forwardRef } from 'react';
+import uuid from 'react-native-uuid';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
@@ -18,17 +17,27 @@ import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizPageHandle } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { numberOfChildrenAtom, userDataAtom } from '@/lib/data/user';
+import {
+  childBirthCertificateAtom,
+  childDobAtom,
+  childEthnicityAtom,
+  childIdsAtom,
+  childLivesInUsaAtom,
+  childNameAtom,
+  childSexAtom,
+} from '@/lib/data/child';
+import { nameAtom } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';
-import { required } from '@/lib/utils';
+import { required, stretchTo } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
 type ChildQuizPageProps = {
+  id: string;
   index: number;
 };
 
 export default function ChildrenDetails() {
-  const [numberOfChildren, setNumberOfChildren] = useAtom(numberOfChildrenAtom);
+  const [childIds, setChildIds] = useAtom(childIdsAtom);
 
   return (
     <QuizScreen>
@@ -36,15 +45,15 @@ export default function ChildrenDetails() {
         defaultValues={{
           hasChildren: null,
         }}
-        onSubmit={({ number }) => {
-          setNumberOfChildren(number ?? 0);
+        onSubmit={({ numChildren }) => {
+          setChildIds(stretchTo(childIds, numChildren ?? 0, () => uuid.v4()));
 
           return true;
         }}
         pageId='children-information'
         schema={z.object({
           hasChildren: required(z.boolean().nullable()),
-          number: z
+          numChildren: z
             .string()
             // .regex(/^\d+$/)
             .pipe(z.coerce.number<string>().int().positive())
@@ -64,7 +73,7 @@ export default function ChildrenDetails() {
               active={!!watch('hasChildren')}
               activeValue={'0'}
               control={control}
-              name='number'
+              name='numChildren'
             >
               <QuizFieldTitle />
               <QuizTextInput inputMode='numeric' />
@@ -73,23 +82,23 @@ export default function ChildrenDetails() {
         )}
       </QuizPage>
 
-      {Array.from({ length: numberOfChildren ?? 0 }).map((_, i) => (
-        <ChildQuizPage index={i} key={i} />
+      {childIds.map((id, index) => (
+        <ChildQuizPage id={id} index={index} key={id} />
       ))}
     </QuizScreen>
   );
 }
 
-const childFamily = atomFamily((index: number) =>
-  focusAtom(userDataAtom, (optic) =>
-    optic.prop('children').optional().at(index)
-  )
-);
-
 const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
-  function ChildQuizPage({ index }: ChildQuizPageProps, ref) {
-    const numberOfChildren = useAtomValue(numberOfChildrenAtom);
-    const setChild = useSetAtom(childFamily(index));
+  function ChildQuizPage({ id, index }, ref) {
+    const numberOfChildren = useAtomValue(childIdsAtom).length;
+    const setDob = useSetAtom(childDobAtom(id));
+    const setEthnicity = useSetAtom(childEthnicityAtom(id));
+    const setBirthCertificate = useSetAtom(childBirthCertificateAtom(id));
+    const setLivesInUsa = useSetAtom(childLivesInUsaAtom(id));
+    const setSex = useSetAtom(childSexAtom(id));
+    const setName = useSetAtom(childNameAtom(id));
+    const lastName = useAtomValue(nameAtom).last;
 
     return (
       <QuizPage
@@ -98,7 +107,10 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           ethnicity: '',
           hasBirthCertificate: null,
           livesInUsa: null,
-          name: DEFAULT_NAME,
+          name: {
+            ...DEFAULT_NAME,
+            last: lastName,
+          },
           sex: null,
         }}
         onSubmit={({
@@ -109,14 +121,12 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           name,
           sex,
         }) => {
-          setChild({
-            birthCertificate,
-            dob,
-            ethnicity,
-            livesInUsa,
-            name,
-            sex,
-          });
+          setDob(dob);
+          setEthnicity(ethnicity);
+          setBirthCertificate(birthCertificate ?? '');
+          setLivesInUsa(livesInUsa);
+          setName(name);
+          setSex(sex);
 
           return true;
         }}

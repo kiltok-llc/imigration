@@ -2,7 +2,7 @@ import { Redirect } from 'expo-router';
 
 import { useRouteUrls } from '@/providers/routes';
 
-export function QuizRouteNotFoundRedirect() {
+export function QuizRouteNotFound() {
   const routes = useRouteUrls();
 
   console.warn(

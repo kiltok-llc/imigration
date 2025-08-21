@@ -85,15 +85,17 @@ function QuizHeader() {
     `services.${serviceId}.${quizId}.${toRouteId(currentRoute)}.title`,
     {
       ...currentParams,
-      count: Number(currentParams.index) + 1,
+      count: Number(currentParams.count),
       ordinal: true,
     }
   );
 
+  console.log(nextParams);
+
   const nextTitle = nextRoute
     ? t(`services.${serviceId}.${quizId}.${toRouteId(nextRoute)}.title`, {
         ...nextParams,
-        count: Number(nextParams.index) + 1,
+        count: Number(nextParams.count),
         ordinal: true,
       })
     : undefined;

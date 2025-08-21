@@ -1,9 +1,9 @@
 import z from 'zod/v4';
 
 import {
-  AddressSchema,
-  DEFAULT_ADDRESS,
+  DEFAULT_FORM_ADDRESS,
   FormAddressInput,
+  FormAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
@@ -68,10 +68,10 @@ export default function SchoolInformation() {
       </QuizPage>
 
       <QuizPage
-        defaultValues={DEFAULT_ADDRESS}
+        defaultValues={DEFAULT_FORM_ADDRESS}
         onSubmit={() => true}
         pageId='school-location'
-        schema={AddressSchema}
+        schema={FormAddressSchema}
       >
         {({ lens }) => (
           <>
@@ -114,7 +114,7 @@ export default function SchoolInformation() {
         schema={z.object({
           schools: z.array(
             z.object({
-              address: AddressSchema,
+              address: FormAddressSchema,
               name: z.string().nonempty(),
               range: RangeSchemaWithOptionalEnd,
             })
@@ -149,7 +149,7 @@ export default function SchoolInformation() {
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd
                 value={{
-                  address: DEFAULT_ADDRESS,
+                  address: DEFAULT_FORM_ADDRESS,
                   name: '',
                   range: DEFAULT_RANGE,
                 }}

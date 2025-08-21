@@ -1,28 +1,36 @@
-import { Stack } from 'expo-router';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import tw from 'twrnc';
 
-import { LanguageButton } from '@/components/language-button';
-import { useT } from '@/hooks/use-t';
+import {
+  SettingsItem,
+  SettingsPage,
+  SettingsScreen,
+  SettingsSection,
+} from '@/components/settings';
+import { Trans } from '@/components/trans';
 
 export default function Language() {
-  const t = useT();
-
   return (
-    <>
-      <Stack.Screen
-        options={{
-          title: t('settings.language.screenTitle'),
-        }}
-      />
-      <ScrollView contentContainerStyle={tw`grow`} style={tw`flex-1`}>
-        <SafeAreaView edges={['bottom']} style={tw`flex-1 gap-2 p-4`}>
-          <LanguageButton language='en' />
-          <LanguageButton language='es' />
-        </SafeAreaView>
-      </ScrollView>
-    </>
+    <SettingsScreen>
+      <SettingsPage>
+        <SettingsSection id='languages'>
+          <LanguageItem language='en' />
+          <LanguageItem language='es' />
+        </SettingsSection>
+      </SettingsPage>
+    </SettingsScreen>
+  );
+}
+
+function LanguageItem({ language }: { language: string }) {
+  const { i18n } = useTranslation();
+  return (
+    <SettingsItem
+      contentStyle={tw`h-8`}
+      icon={i18n.language === language ? 'check' : undefined}
+      onPress={() => void i18n.changeLanguage(language)}
+      title={<Trans i18nKey={`language.${language}`} />}
+    ></SettingsItem>
   );
 }

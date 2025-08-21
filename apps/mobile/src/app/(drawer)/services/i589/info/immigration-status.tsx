@@ -1,117 +1,129 @@
 import { isEqual } from '@ver0/deep-equal';
 import { useLocalSearchParams } from 'expo-router';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { focusAtom } from 'jotai-optics';
+import { PrimitiveAtom, useAtomValue, useSetAtom } from 'jotai';
+import { withImmer } from 'jotai-immer';
 import { atomFamily } from 'jotai/utils';
-import { OpticFor_ } from 'optics-ts';
+import { View } from 'react-native';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
-import { QuizFieldDescription, QuizFieldTitle } from '@/components/quiz/label';
+import { QuizDateInput } from '@/components/quiz/date';
+import {
+  QuizFieldDescription,
+  QuizFieldTip,
+  QuizFieldTitle,
+} from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { UserData, userDataAtom } from '@/lib/data/user';
+import {
+  childAlienNumberAtom,
+  childEntriesAtom,
+  childImmigrationCourtStatusAtom,
+  childNameAtom,
+  childPassportAtom,
+  childSsnAtom,
+  childStatusExpirationAtom,
+  childUscisNumberAtom,
+} from '@/lib/data/child';
+import { DEFAULT_PASSPORT, DEFAULT_USA_ENTRY } from '@/lib/data/schema';
+import {
+  spouseAlienNumberAtom,
+  spouseEntriesAtom,
+  spouseImmigrationCourtStatusAtom,
+  spouseNameAtom,
+  spousePassportAtom,
+  spouseSsnAtom,
+  spouseStatusExpirationAtom,
+  spouseUscisNumberAtom,
+} from '@/lib/data/spouse';
+import {
+  alienNumberAtom,
+  entriesAtom,
+  immigrationCourtStatusAtom,
+  nameAtom,
+  passportAtom,
+  ssnAtom,
+  statusExpirationAtom,
+  uscisNumberAtom,
+} from '@/lib/data/user';
 import { ImmigrationCourtStatusEnum } from '@/lib/schema/common';
-import { required } from '@/lib/utils';
+import { growTo, required } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
-const child = (optic: OpticFor_<UserData>, index: number) =>
-  optic.prop('children').optional().at(index);
-
-const ctx = (optic: OpticFor_<UserData>, context: 'client' | 'spouse') =>
-  optic.prop(context).optional();
-
-const firstNameFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('name').optional().prop('first')
-        : ctx(optic, context).prop('name').optional().prop('first')
-    ),
-  isEqual
-);
-
-const passportFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('passport')
-        : ctx(optic, context).prop('passport')
-    ),
-  isEqual
-);
-
-const alienNumberFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('alienNumber')
-        : ctx(optic, context).prop('alienNumber')
-    ),
-  isEqual
-);
-
-const ssnFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('ssn')
-        : ctx(optic, context).prop('ssn')
-    ),
-  isEqual
-);
-
-const uscisNumberFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('uscisNumber')
-        : ctx(optic, context).prop('uscisNumber')
-    ),
-  isEqual
-);
-
-const immigrationCourtStatusFamily = atomFamily(
-  ({ context, index }: Param) =>
-    focusAtom(userDataAtom, (optic) =>
-      context === 'child'
-        ? child(optic, index).prop('immigrationCourtStatus')
-        : ctx(optic, context).prop('immigrationCourtStatus')
-    ),
-  isEqual
-);
+const contextFamily = <T,>(
+  clientAtom: PrimitiveAtom<T>,
+  spouseAtom: PrimitiveAtom<T>,
+  childAtom: (id: string) => PrimitiveAtom<T>
+) =>
+  atomFamily(
+    ({ context, id }: Param) =>
+      ({
+        child: childAtom(id ?? ''),
+        client: clientAtom,
+        spouse: spouseAtom,
+      })[context],
+    isEqual
+  );
 
 type Context = 'child' | 'client' | 'spouse';
 type Param = {
   context: Context;
-  index: number;
-};
-
-const useParam = () => {
-  const { context, index } = useLocalSearchParams<{
-    context: Context;
-    index: string;
-  }>();
-  return {
-    context,
-    index: Number(index),
-  };
+  id?: string;
 };
 
 export default function ImmigrationStatus() {
-  const param = useParam();
-  const setPassport = useSetAtom(passportFamily(param));
-  const setAlienNumber = useSetAtom(alienNumberFamily(param));
-  const setSsn = useSetAtom(ssnFamily(param));
-  const setUscisNumber = useSetAtom(uscisNumberFamily(param));
-  const setImmigrationCourtStatus = useSetAtom(
-    immigrationCourtStatusFamily(param)
+  const param = useLocalSearchParams<{
+    context: Context;
+    id: string;
+  }>();
+  const { context, id } = param;
+
+  const name = useAtomValue(
+    contextFamily(nameAtom, spouseNameAtom, childNameAtom)(param)
+  ).first;
+  const setPassport = useSetAtom(
+    contextFamily(passportAtom, spousePassportAtom, childPassportAtom)(param)
   );
-  const name = useAtomValue(firstNameFamily(param));
+  const setAlienNumber = useSetAtom(
+    contextFamily(
+      alienNumberAtom,
+      spouseAlienNumberAtom,
+      childAlienNumberAtom
+    )(param)
+  );
+  const setSsn = useSetAtom(
+    contextFamily(ssnAtom, spouseSsnAtom, childSsnAtom)(param)
+  );
+  const setUscisNumber = useSetAtom(
+    contextFamily(
+      uscisNumberAtom,
+      spouseUscisNumberAtom,
+      childUscisNumberAtom
+    )(param)
+  );
+  const setImmigrationCourtStatus = useSetAtom(
+    contextFamily(
+      immigrationCourtStatusAtom,
+      spouseImmigrationCourtStatusAtom,
+      childImmigrationCourtStatusAtom
+    )(param)
+  );
+  const setEntries = useSetAtom(
+    withImmer(
+      contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
+    )
+  );
+  const setStatusExpiration = useSetAtom(
+    contextFamily(
+      statusExpirationAtom,
+      spouseStatusExpirationAtom,
+      childStatusExpirationAtom
+    )(param)
+  );
 
   return (
     <TranslationContextProvider
@@ -119,28 +131,25 @@ export default function ImmigrationStatus() {
         values: { name },
       }}
     >
-      <QuizScreen>
+      <QuizScreen screenKey={`${context}${id ? `-${id}` : ''}`}>
         <QuizPage
           defaultValues={{
             hasPassport: null,
           }}
-          onSubmit={({ country, hasPassport, number }) => {
-            if (hasPassport) {
-              setPassport({
-                country: country!,
-                number: number!,
-              });
-            } else {
-              setPassport(undefined);
-            }
+          onSubmit={({ passport }) => {
+            setPassport(passport ?? DEFAULT_PASSPORT);
 
             return true;
           }}
           pageId='passport'
           schema={z.object({
-            country: z.string().nonempty().optional(),
             hasPassport: required(z.boolean().nullable()),
-            number: z.string().nonempty().optional(),
+            passport: z
+              .object({
+                country: z.string().nonempty(),
+                number: z.string().nonempty(),
+              })
+              .optional(),
           })}
         >
           {({ control, watch }) => (
@@ -154,22 +163,19 @@ export default function ImmigrationStatus() {
 
               <ConditionalFormFieldBlock
                 active={!!watch('hasPassport')}
-                activeValue=''
+                activeValue={{ country: '', number: '' }}
                 control={control}
-                name='number'
+                name='passport'
               >
-                <QuizFieldTitle />
-                <QuizTextInput />
-              </ConditionalFormFieldBlock>
+                <FormField control={control} name='passport.country'>
+                  <QuizFieldTitle />
+                  <QuizTextInput />
+                </FormField>
 
-              <ConditionalFormFieldBlock
-                active={!!watch('hasPassport')}
-                activeValue=''
-                control={control}
-                name='country'
-              >
-                <QuizFieldTitle />
-                <QuizTextInput />
+                <FormField control={control} name='passport.number'>
+                  <QuizFieldTitle />
+                  <QuizTextInput />
+                </FormField>
               </ConditionalFormFieldBlock>
             </>
           )}
@@ -178,7 +184,7 @@ export default function ImmigrationStatus() {
         <QuizPage
           defaultValues={{ hasAlienNumber: null }}
           onSubmit={({ number }) => {
-            setAlienNumber(number);
+            setAlienNumber(number ?? '');
             return true;
           }}
           pageId='alien-number'
@@ -215,7 +221,7 @@ export default function ImmigrationStatus() {
             hasSsn: null,
           }}
           onSubmit={({ number }) => {
-            setSsn(number);
+            setSsn(number ?? '');
             return true;
           }}
           pageId='ssn'
@@ -251,7 +257,7 @@ export default function ImmigrationStatus() {
             hasUscis: null,
           }}
           onSubmit={({ number }) => {
-            setUscisNumber(number);
+            setUscisNumber(number ?? '');
             return true;
           }}
           pageId='uscis'
@@ -307,6 +313,98 @@ export default function ImmigrationStatus() {
                   </FormRadioGroup>
                 </FormField>
               </FormBlock>
+            </>
+          )}
+        </QuizPage>
+
+        <QuizPage
+          defaultValues={{
+            isInUsa: null,
+          }}
+          onSubmit={({ entry }) => {
+            if (entry) {
+              const { date, port, status, statusExpiration } = entry;
+
+              setEntries((entries) => {
+                growTo(entries, 1, () => DEFAULT_USA_ENTRY);
+                entries[0] = {
+                  date,
+                  port,
+                  status,
+                };
+              });
+
+              setStatusExpiration(statusExpiration);
+            }
+
+            return true;
+          }}
+          pageId='first-entry'
+          schema={z.object({
+            entry: z
+              .object({
+                date: required(z.date().nullable()),
+                port: z.string().nonempty(),
+                status: z.string(),
+                statusExpiration: z.date().nullable(),
+              })
+              .optional(),
+            isInUsa: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
+              {context !== 'client' && (
+                <FormBlock>
+                  <FormField control={control} name='isInUsa'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+              )}
+
+              <ConditionalFormFieldBlock
+                active={context === 'client' || !!watch('isInUsa')}
+                activeValue={{
+                  date: null,
+                  port: '',
+                  status: '',
+                  statusExpiration: null,
+                }}
+                control={control}
+                name='entry'
+              >
+                <FormBlock>
+                  <FormField control={control} name='entry.date'>
+                    <View>
+                      <QuizFieldTitle />
+                      <QuizFieldTip />
+                    </View>
+                    <QuizDateInput />
+                  </FormField>
+                </FormBlock>
+
+                <FormBlock>
+                  <FormField control={control} name='entry.port'>
+                    <QuizFieldTitle />
+                    <QuizTextInput />
+                  </FormField>
+                </FormBlock>
+
+                <FormBlock>
+                  <FormField control={control} name='entry.status'>
+                    <QuizFieldTitle />
+                    <QuizTextInput />
+                  </FormField>
+                </FormBlock>
+
+                <FormBlock>
+                  <FormField control={control} name='entry.statusExpiration'>
+                    <QuizFieldTitle />
+                    <QuizDateInput />
+                  </FormField>
+                </FormBlock>
+              </ConditionalFormFieldBlock>
             </>
           )}
         </QuizPage>

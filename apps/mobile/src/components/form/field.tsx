@@ -18,6 +18,7 @@ import {
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import tw from 'twrnc';
 
+import { useIsFirstRender } from '@/hooks/use-is-first-render';
 import { WithRequired } from '@/lib/utils';
 
 export const FormFieldContext = createContext<UseControllerReturn>({
@@ -79,21 +80,27 @@ export const ConditionalFormFieldBlock = <
     ...props,
   });
 
+  const isFirstRender = useIsFirstRender();
+
   const {
-    field: { disabled, onChange, value },
+    field: { disabled, value },
     formState: { defaultValues },
   } = controller;
 
-  const currentValueRef = useRef(value);
-  useEffect(() => {
-    currentValueRef.current = value;
-  }, [value]);
-
   const { resetField, setValue } = useFormContext();
+
+  const currentValueRef = useRef(value);
+  currentValueRef.current = value;
+
+  const activeValueRef = useRef<PathValue<TFieldValues, TName>>(activeValue);
+  activeValueRef.current = activeValue;
+
+  const defaultValueRef = useRef(get(defaultValues, name));
+  defaultValueRef.current = get(defaultValues, name);
 
   useEffect(() => {
     // No reset logic if there's no active value
-    if (activeValue === undefined) {
+    if (activeValueRef.current === undefined) {
       return;
     }
 
@@ -102,29 +109,24 @@ export const ConditionalFormFieldBlock = <
       //   `Resetting field "${name}" to default value because it field was disabled.`
       // );
       resetField(name);
-    } else if (get(defaultValues, name) === currentValueRef.current) {
+    } else if (defaultValueRef.current === currentValueRef.current) {
       // console.debug(
-      //   `Setting field "${name}" to active value: '${activeValue}' because field was enabled and current value is default.`
+      //   `Setting field "${name}" to active value: '${activeValueRef.current}' because field was enabled and current value is default.`
       // );
-      // @ts-ignore
-      setValue(name, activeValue);
+      setValue(name, activeValueRef.current);
     }
-  }, [
-    activeValue,
-    defaultValues,
-    disabled,
-    name,
-    onChange,
-    resetField,
-    setValue,
-  ]);
+  }, [disabled, name, resetField, setValue]);
 
   if (!active) {
     return null;
   }
 
   return (
-    <Animated.View entering={FadeIn} exiting={FadeOut} style={tw`gap-4`}>
+    <Animated.View
+      entering={isFirstRender ? undefined : FadeIn}
+      exiting={FadeOut}
+      style={tw`gap-4`}
+    >
       <FormFieldContext.Provider value={controller as UseControllerReturn}>
         {children}
       </FormFieldContext.Provider>

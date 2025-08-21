@@ -27,6 +27,7 @@ export default function I589() {
         <ScrollView
           alwaysBounceVertical={false}
           contentContainerStyle={tw`grow justify-center`}
+          scrollsToTop={false}
           style={tw`flex-1`}
         >
           <Surface style={tw`mx-4 gap-14 p-8`}>

@@ -14,12 +14,13 @@ import {
 import { View } from 'react-native';
 import tw from 'twrnc';
 
-import { useQuizPageAtom } from '@/atoms/quiz-page-family';
+import { useQuizScreenPageAtom } from '@/atoms/quiz-screen-page-family';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { QuizPageHandle } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
 import {
+  QuizScreenKeyContext,
   useIsNextPage,
   useIsPrevPage,
   useSetIsNextPage,
@@ -32,9 +33,12 @@ import {
   useIsLastRoute,
 } from '@/providers/routes';
 
-export function QuizScreen({ children }: PropsWithChildren) {
+export function QuizScreen({
+  children,
+  screenKey,
+}: PropsWithChildren<{ screenKey?: string }>) {
   const router = useRouter();
-  const [page, setPage] = useAtom(useQuizPageAtom());
+  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
   const keyboardVisible = useKeyboardVisible();
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
   const isNextPage = useIsNextPage();
@@ -124,18 +128,24 @@ export function QuizScreen({ children }: PropsWithChildren) {
   }, [handlePrev, isPrevPage, keyboardVisible, setIsPrevPage]);
 
   return (
-    <FadeSlotPageWrapper>
-      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
-        {Children.toArray(children).map((child, idx) => (
-          <View key={idx} style={tw`flex-1`}>
-            {isValidElement(child)
-              ? cloneElement(child, {
-                  ref: childRefs[idx],
-                } as any)
-              : child}
-          </View>
-        ))}
-      </ReactivePagerView>
-    </FadeSlotPageWrapper>
+    <QuizScreenKeyContext.Provider value={screenKey}>
+      <FadeSlotPageWrapper>
+        <ReactivePagerView
+          orientation='vertical'
+          page={page}
+          style={tw`flex-1`}
+        >
+          {Children.toArray(children).map((child, idx) => (
+            <View key={idx} style={tw`flex-1`}>
+              {isValidElement(child)
+                ? cloneElement(child, {
+                    ref: childRefs[idx],
+                  } as any)
+                : child}
+            </View>
+          ))}
+        </ReactivePagerView>
+      </FadeSlotPageWrapper>
+    </QuizScreenKeyContext.Provider>
   );
 }

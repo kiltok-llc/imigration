@@ -1,5 +1,4 @@
 import { isEqual } from '@ver0/deep-equal';
-import { useGlobalSearchParams } from 'expo-router';
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
@@ -7,43 +6,48 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
+import { quizStorage } from '@/lib/mmkv';
 import { clearMMKVKeys } from '@/lib/utils';
 
-type QuizPageParam = {
-  params: Record<string, string>;
+type QuizScreenPageParam = {
   quizId: string;
   screenId: string;
+  screenKey: string;
   serviceId: string;
 };
 
-const quizPageKey = ({ params, quizId, screenId, serviceId }: QuizPageParam) =>
-  `services.${serviceId}.${quizId}.${screenId}.${JSON.stringify(params)}.page`;
+const quizScreenPageKey = ({
+  quizId,
+  screenId,
+  screenKey,
+  serviceId,
+}: QuizScreenPageParam) =>
+  `services:${serviceId}:${quizId}:${screenId}:${screenKey}:page`;
 
-export const quizPageFamily = atomFamily(
-  (param: QuizPageParam) =>
-    atomWithMmkvStorage(quizPageKey(param), 0, z.number()),
+export const quizScreenPageFamily = atomFamily(
+  (param: QuizScreenPageParam) =>
+    atomWithMmkvStorage(quizScreenPageKey(param), 0, z.number(), quizStorage),
   isEqual
 );
 
-export const useQuizPageAtom = () => {
+export const useQuizScreenPageAtom = (screenKey: string = '') => {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
-  const params = useGlobalSearchParams<Record<string, string>>();
-  return quizPageFamily({ params, quizId, screenId, serviceId });
+  return quizScreenPageFamily({ quizId, screenId, screenKey, serviceId });
 };
 
 export function resetAllQuizPages() {
   console.log('Clearing ALL quiz pages');
 
-  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.([^.]+)\.page$/;
-  for (const [serviceId, quizId, screenId, params] of clearMMKVKeys<
+  const exp = /^services:([^.]+):([^.]+):(.+):([^.]+):page$/;
+  for (const [serviceId, quizId, screenId, screenKey] of clearMMKVKeys<
     [string, string, string, string]
-  >(exp)) {
-    quizPageFamily.remove({
-      params: JSON.parse(params),
+  >(exp, quizStorage)) {
+    quizScreenPageFamily.remove({
       quizId,
       screenId,
+      screenKey,
       serviceId,
     });
   }
@@ -58,14 +62,15 @@ export function resetQuizPage({
 }) {
   console.log(`Clearing quiz pages for ${serviceId}.${quizId}`);
 
-  const exp = new RegExp(
-    `^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.page$`
-  );
-  for (const [screenId, params] of clearMMKVKeys<[string, string]>(exp)) {
-    quizPageFamily.remove({
-      params: JSON.parse(params),
+  const exp = new RegExp(`^services:${serviceId}:${quizId}:(.+):([^.]+):page$`);
+  for (const [screenId, screenKey] of clearMMKVKeys<[string, string]>(
+    exp,
+    quizStorage
+  )) {
+    quizScreenPageFamily.remove({
       quizId,
       screenId,
+      screenKey,
       serviceId,
     });
   }

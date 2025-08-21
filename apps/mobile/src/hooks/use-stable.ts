@@ -10,3 +10,9 @@ export const useStable = <T>(value: T) => {
 
   return ref.current;
 };
+
+export const useStableRef = <T>(value: T) => {
+  const ref = useRef<T>(value);
+  ref.current = value;
+  return ref;
+};

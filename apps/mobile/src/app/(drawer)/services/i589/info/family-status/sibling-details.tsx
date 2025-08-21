@@ -1,16 +1,15 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { focusAtom } from 'jotai-optics';
-import { atomFamily } from 'jotai/utils';
 import { forwardRef } from 'react';
+import uuid from 'react-native-uuid';
 import z from 'zod/v4';
 
 import {
-  AddressSchema,
-  DEFAULT_ADDRESS,
-  DEFAULT_SHORT_ADDRESS,
+  DEFAULT_FORM_ADDRESS,
+  DEFAULT_FORM_SHORT_ADDRESS,
   FormAddressInput,
+  FormAddressSchema,
   FormShortAddressInput,
-  ShortAddressSchema,
+  FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
@@ -25,13 +24,25 @@ import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizPageHandle } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { numberOfSiblingsAtom, userDataAtom } from '@/lib/data/user';
+import {
+  siblingDobAtom,
+  siblingIdsAtom,
+  siblingLivesInUsaAtom,
+  siblingNameAtom,
+  siblingSexAtom,
+} from '@/lib/data/sibling';
+import { nameAtom } from '@/lib/data/user';
 import { SexEnum } from '@/lib/schema/common';
-import { required } from '@/lib/utils';
+import { required, stretchTo } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
+type SiblingQuizPageProps = {
+  id: string;
+  index: number;
+};
+
 export default function SiblingsDetails() {
-  const [numberOfSiblings, setNumberOfSiblings] = useAtom(numberOfSiblingsAtom);
+  const [siblingIds, setSiblingIds] = useAtom(siblingIdsAtom);
 
   return (
     <QuizScreen>
@@ -39,15 +50,17 @@ export default function SiblingsDetails() {
         defaultValues={{
           hasSiblings: null,
         }}
-        onSubmit={({ number }) => {
-          setNumberOfSiblings(number ?? 0);
+        onSubmit={({ numSiblings }) => {
+          setSiblingIds(
+            stretchTo(siblingIds, numSiblings ?? 0, () => uuid.v4())
+          );
 
           return true;
         }}
         pageId='sibling-information'
         schema={z.object({
           hasSiblings: required(z.boolean().nullable()),
-          number: z
+          numSiblings: z
             .string()
             // .regex(/^\d+$/)
             .pipe(z.coerce.number<string>().int().positive())
@@ -67,7 +80,7 @@ export default function SiblingsDetails() {
               active={!!watch('hasSiblings')}
               activeValue={'0'}
               control={control}
-              name='number'
+              name='numSiblings'
             >
               <QuizFieldTitle />
               <QuizTextInput inputMode='numeric' />
@@ -76,40 +89,40 @@ export default function SiblingsDetails() {
         )}
       </QuizPage>
 
-      {Array.from({ length: numberOfSiblings ?? 0 }).map((_, i) => (
-        <SiblingQuizPage index={i} key={i} />
+      {siblingIds.map((id, index) => (
+        <SiblingQuizPage id={id} index={index} key={id} />
       ))}
     </QuizScreen>
   );
 }
 
-const siblingFamily = atomFamily((index: number) =>
-  focusAtom(userDataAtom, (optic) =>
-    optic.prop('siblings').optional().at(index)
-  )
-);
-
-type SiblingQuizPageProps = {
-  index: number;
-};
-
 const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
-  function SiblingQuizPage({ index }: SiblingQuizPageProps, ref) {
-    const numberOfSiblings = useAtomValue(numberOfSiblingsAtom);
-    const setSibling = useSetAtom(siblingFamily(index));
+  function SiblingQuizPage({ id, index }, ref) {
+    const numberOfSiblings = useAtomValue(siblingIdsAtom).length;
+    const setDob = useSetAtom(siblingDobAtom(id));
+    const setLivesInUsa = useSetAtom(siblingLivesInUsaAtom(id));
+    const setSex = useSetAtom(siblingSexAtom(id));
+    const setName = useSetAtom(siblingNameAtom(id));
+    const lastName = useAtomValue(nameAtom).last;
 
     return (
       <QuizPage
         defaultValues={{
-          birthLocation: DEFAULT_SHORT_ADDRESS,
+          birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
           dob: null,
           livesInUsa: null,
-          name: DEFAULT_NAME,
+          name: {
+            ...DEFAULT_NAME,
+            last: lastName,
+          },
           sex: null,
         }}
         key={index}
-        onSubmit={({ name, sex }) => {
-          setSibling({ name, sex });
+        onSubmit={({ dob, livesInUsa, name, sex }) => {
+          setDob(dob);
+          setLivesInUsa(livesInUsa);
+          setName(name);
+          setSex(sex);
 
           return true;
         }}
@@ -117,8 +130,8 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
         pageKey={index}
         ref={ref}
         schema={z.object({
-          birthLocation: required(ShortAddressSchema),
-          currentLocation: AddressSchema.optional(),
+          birthLocation: required(FormShortAddressSchema),
+          currentLocation: FormAddressSchema.optional(),
           dob: required(z.date().nullable()),
           livesInUsa: required(z.boolean().nullable()),
           name: NameSchema,
@@ -172,7 +185,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
 
             <ConditionalFormFieldBlock
               active={!!watch('livesInUsa')}
-              activeValue={DEFAULT_ADDRESS}
+              activeValue={DEFAULT_FORM_ADDRESS}
               control={control}
               name='currentLocation'
             >

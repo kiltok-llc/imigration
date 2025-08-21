@@ -1,9 +1,9 @@
 import z from 'zod/v4';
 
 import {
-  AddressSchema,
-  DEFAULT_ADDRESS,
+  DEFAULT_FORM_ADDRESS,
   FormAddressInput,
+  FormAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
@@ -29,13 +29,13 @@ export default function PreviousAddresses() {
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          address: DEFAULT_ADDRESS,
+          address: DEFAULT_FORM_ADDRESS,
           range: DEFAULT_RANGE,
         }}
         onSubmit={() => true}
         pageId='previous-residence'
         schema={z.object({
-          address: AddressSchema,
+          address: FormAddressSchema,
           range: RangeSchema,
         })}
       >
@@ -67,7 +67,7 @@ export default function PreviousAddresses() {
         schema={z.object({
           residences: z.array(
             z.object({
-              address: AddressSchema,
+              address: FormAddressSchema,
               range: RangeSchema,
             })
           ),
@@ -97,7 +97,7 @@ export default function PreviousAddresses() {
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd
                 value={{
-                  address: DEFAULT_ADDRESS,
+                  address: DEFAULT_FORM_ADDRESS,
                   range: DEFAULT_RANGE,
                 }}
               />

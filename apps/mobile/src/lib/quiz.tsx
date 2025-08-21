@@ -1,5 +1,5 @@
 import { useSetAtom } from 'jotai';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
@@ -8,6 +8,10 @@ import {
   useRequiredContext,
 } from '@/hooks/use-required-context';
 import { useCurrentRouteUrl, useRouteUrls } from '@/providers/routes';
+
+export const QuizScreenKeyContext = createContext<string | undefined>(
+  undefined
+);
 
 type QuizState = {
   isNextPage: boolean;

@@ -228,12 +228,18 @@ importers:
       i18next:
         specifier: ^25.3.6
         version: 25.3.6(typescript@5.8.3)
+      immer:
+        specifier: ^10.1.1
+        version: 10.1.1
       intl-pluralrules:
         specifier: ^2.0.1
         version: 2.0.1
       jotai:
         specifier: ^2.13.1
         version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)
+      jotai-immer:
+        specifier: ^0.4.1
+        version: 0.4.1(immer@10.1.1)(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))
       jotai-optics:
         specifier: ^0.4.0
         version: 0.4.0(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(optics-ts@2.4.1)
@@ -350,7 +356,7 @@ importers:
         version: 3.25.74
       zustand:
         specifier: ^5.0.7
-        version: 5.0.7(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
+        version: 5.0.7(@types/react@19.0.14)(immer@10.1.1)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -690,7 +696,7 @@ importers:
         version: 9.29.0
       '@next/eslint-plugin-next':
         specifier: latest
-        version: 15.4.7
+        version: 15.5.0
       '@typescript-eslint/parser':
         specifier: latest
         version: 8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
@@ -699,7 +705,7 @@ importers:
         version: 9.2.0(eslint-plugin-import-x@4.15.2(@typescript-eslint/utils@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.30.1(jiti@2.5.1)))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
       eslint-config-next:
         specifier: latest
-        version: 15.4.7(eslint-plugin-import-x@4.15.2(@typescript-eslint/utils@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.30.1(jiti@2.5.1)))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
+        version: 15.5.0(eslint-plugin-import-x@4.15.2(@typescript-eslint/utils@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.30.1(jiti@2.5.1)))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
       eslint-config-prettier:
         specifier: latest
         version: 10.1.8(eslint@9.30.1(jiti@2.5.1))
@@ -1877,8 +1883,8 @@ packages:
   '@next/env@15.3.3':
     resolution: {integrity: sha512-OdiMrzCl2Xi0VTjiQQUK0Xh7bJHnOuET2s+3V+Y40WJBAXrJeGA3f+I8MZJ/YQ3mVGi5XGR1L66oFlgqXhQ4Vw==}
 
-  '@next/eslint-plugin-next@15.4.7':
-    resolution: {integrity: sha512-asj3RRiEruRLVr+k2ZC4hll9/XBzegMpFMr8IIRpNUYypG86m/a76339X2WETl1C53A512w2INOc2KZV769KPA==}
+  '@next/eslint-plugin-next@15.5.0':
+    resolution: {integrity: sha512-+k83U/fST66eQBjTltX2T9qUYd43ntAe+NZ5qeZVTQyTiFiHvTLtkpLKug4AnZAtuI/lwz5tl/4QDJymjVkybg==}
 
   '@next/swc-darwin-arm64@15.3.3':
     resolution: {integrity: sha512-WRJERLuH+O3oYB4yZNVahSVFmtxRNjNF1I1c34tYMoJb0Pve+7/RaLAJJizyYiFhjYNGHRAE1Ri2Fd23zgDqhg==}
@@ -4867,8 +4873,8 @@ packages:
     peerDependencies:
       eslint: '>=8.10'
 
-  eslint-config-next@15.4.7:
-    resolution: {integrity: sha512-tkKKNVJKI4zMIgTpvG2x6mmdhuOdgXUL3AaSPHwxLQkvzi4Yryqvk6B0R5Z4gkpe7FKopz3ZmlpePH3NTHy3gA==}
+  eslint-config-next@15.5.0:
+    resolution: {integrity: sha512-Yl4hlOdBqstAuHnlBfx2RimBzWQwysM2SJNu5EzYVa2qS2ItPs7lgxL0sJJDudEx5ZZHfWPZ/6U8+FtDFWs7/w==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0 || ^9.0.0
       typescript: '>=3.3.1'
@@ -5783,6 +5789,9 @@ packages:
     engines: {node: '>=16.x'}
     hasBin: true
 
+  immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
+
   import-fresh@2.0.0:
     resolution: {integrity: sha512-eZ5H8rcgYazHbKC3PG4ClHNykCSxtAhxSSEM+2mb+7evD2CKF5V7c0dNum7AdpDh0ZdICwZY9sRSn8f+KH96sg==}
     engines: {node: '>=4'}
@@ -6148,6 +6157,12 @@ packages:
 
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
+
+  jotai-immer@0.4.1:
+    resolution: {integrity: sha512-nQTt1HBKie/5OJDck1qLpV1PeBA6bjJLAczEYAx70PD8R4Mbu7gtexfBUCzJh6W6ecsOfwHksAYAesVth6SN9A==}
+    peerDependencies:
+      immer: '>=9.0.0'
+      jotai: '>=2.0.0'
 
   jotai-optics@0.4.0:
     resolution: {integrity: sha512-osbEt9AgS55hC4YTZDew2urXKZkaiLmLqkTS/wfW5/l0ib8bmmQ7kBXSFaosV6jDDWSp00IipITcJARFHdp42g==}
@@ -10630,7 +10645,7 @@ snapshots:
 
   '@next/env@15.3.3': {}
 
-  '@next/eslint-plugin-next@15.4.7':
+  '@next/eslint-plugin-next@15.5.0':
     dependencies:
       fast-glob: 3.3.1
 
@@ -13945,9 +13960,9 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-config-next@15.4.7(eslint-plugin-import-x@4.15.2(@typescript-eslint/utils@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.30.1(jiti@2.5.1)))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3):
+  eslint-config-next@15.5.0(eslint-plugin-import-x@4.15.2(@typescript-eslint/utils@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.30.1(jiti@2.5.1)))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3):
     dependencies:
-      '@next/eslint-plugin-next': 15.4.7
+      '@next/eslint-plugin-next': 15.5.0
       '@rushstack/eslint-patch': 1.11.0
       '@typescript-eslint/eslint-plugin': 8.34.0(@typescript-eslint/parser@8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3))(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
       '@typescript-eslint/parser': 8.40.0(eslint@9.30.1(jiti@2.5.1))(typescript@5.8.3)
@@ -15169,6 +15184,8 @@ snapshots:
     dependencies:
       queue: 6.0.2
 
+  immer@10.1.1: {}
+
   import-fresh@2.0.0:
     dependencies:
       caller-path: 2.0.0
@@ -15573,6 +15590,11 @@ snapshots:
   jiti@2.5.1: {}
 
   jose@5.9.6: {}
+
+  jotai-immer@0.4.1(immer@10.1.1)(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)):
+    dependencies:
+      immer: 10.1.1
+      jotai: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)
 
   jotai-optics@0.4.0(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(optics-ts@2.4.1):
     dependencies:
@@ -18704,8 +18726,9 @@ snapshots:
 
   zod@3.25.74: {}
 
-  zustand@5.0.7(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0)):
+  zustand@5.0.7(@types/react@19.0.14)(immer@10.1.1)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0)):
     optionalDependencies:
       '@types/react': 19.0.14
+      immer: 10.1.1
       react: 19.0.0
       use-sync-external-store: 1.5.0(react@19.0.0)

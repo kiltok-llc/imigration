@@ -1,64 +1,84 @@
 import { isEqual } from '@ver0/deep-equal';
-import { useGlobalSearchParams } from 'expo-router';
 import { PrimitiveAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
+import { useContext } from 'react';
 import { FieldValues } from 'react-hook-form';
+import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useQuizScreenId } from '@/hooks/use-quiz-screen-id';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
+import { quizStorage } from '@/lib/mmkv';
+import { QuizScreenKeyContext } from '@/lib/quiz';
 import { clearMMKVKeys } from '@/lib/utils';
 
 type QuizValuesParam = {
   pageId: string;
-  params: Record<string, string>;
+  pageKey: string;
   quizId: string;
   screenId: string;
+  screenKey: string;
   serviceId: string;
 };
 
 const quizValuesKey = ({
   pageId,
-  params,
   quizId,
   screenId,
+  screenKey,
   serviceId,
 }: QuizValuesParam) =>
-  `services.${serviceId}.${quizId}.${screenId}.${pageId}.${JSON.stringify(params)}.values`;
+  `services.${serviceId}.${quizId}.${screenId}.${pageId}.${screenKey}.values`;
 
-export const quizValuesFamily = atomFamily(
+export const quizPageValues = atomFamily(
   (param: QuizValuesParam) =>
-    atomWithMmkvStorage<FieldValues>(quizValuesKey(param), {}),
+    atomWithMmkvStorage<FieldValues>(
+      quizValuesKey(param),
+      {},
+      z.any(),
+      quizStorage
+    ),
   isEqual
 );
 
-export const useQuizValuesAtom = <T>(pageId: string) => {
+export const useQuizValuesAtom = <T>(pageId: string, pageKey: string = '') => {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();
-  const params = useGlobalSearchParams<Record<string, string>>();
+  const screenKey = useContext(QuizScreenKeyContext) ?? '';
 
-  return quizValuesFamily({
+  return quizPageValues({
     pageId,
-    params,
+    pageKey,
     quizId,
     screenId,
+    screenKey,
     serviceId,
   }) as PrimitiveAtom<T>;
 };
 
 export function resetAllQuizValues() {
   console.log('Clearing ALL quiz values');
-  const exp = /^services\.([^.]+)\.([^.]+)\.(.+)\.([^.]+)\.([^.]+)\.values$/;
-  for (const [serviceId, quizId, screenId, pageId, params] of clearMMKVKeys<
-    [string, string, string, string, string]
-  >(exp)) {
-    quizValuesFamily.remove({
+  const exp =
+    /^services\.([^.]+)\.([^.]+)\.(.+)\.([^.]+)\.([^.]+).([^.]+)\.values$/;
+  for (const [
+    serviceId,
+    quizId,
+    screenId,
+    screenKey,
+    pageId,
+    pageKey,
+  ] of clearMMKVKeys<[string, string, string, string, string, string]>(
+    exp,
+    quizStorage
+  )) {
+    quizPageValues.remove({
       pageId,
-      params: JSON.parse(params),
+      pageKey,
       quizId,
       screenId,
+      screenKey,
       serviceId,
     });
   }
@@ -74,16 +94,17 @@ export function resetQuizValues({
   console.log(`Clearing quiz values for ${serviceId}.${quizId}`);
 
   const exp = new RegExp(
-    `^services\\.${serviceId}\\.${quizId}\\.(.+)\\.([^.]+)\\.([^.]+)\\.values$`
+    `^services:${serviceId}:${quizId}:(.+):([^.]+):([^.]+):([^.]+):values$`
   );
-  for (const [screenId, pageId, params] of clearMMKVKeys<
-    [string, string, string]
-  >(exp)) {
-    quizValuesFamily.remove({
+  for (const [screenId, screenKey, pageId, pageKey] of clearMMKVKeys<
+    [string, string, string, string]
+  >(exp, quizStorage)) {
+    quizPageValues.remove({
       pageId,
-      params: JSON.parse(params),
+      pageKey,
       quizId,
       screenId,
+      screenKey,
       serviceId,
     });
   }

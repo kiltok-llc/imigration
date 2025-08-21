@@ -1,9 +1,9 @@
 import z from 'zod/v4';
 
 import {
-  AddressSchema,
-  DEFAULT_ADDRESS,
+  DEFAULT_FORM_ADDRESS,
   FormAddressInput,
+  FormAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
@@ -32,7 +32,7 @@ export default function EmploymentHistory() {
         defaultValues={{
           jobs: [
             {
-              address: DEFAULT_ADDRESS,
+              address: DEFAULT_FORM_ADDRESS,
               employer: '',
               occupation: '',
               range: DEFAULT_RANGE,
@@ -44,7 +44,7 @@ export default function EmploymentHistory() {
         schema={z.object({
           jobs: z.array(
             z.object({
-              address: AddressSchema,
+              address: FormAddressSchema,
               employer: z.string().nonempty(),
               occupation: z.string().nonempty(),
               range: RangeSchemaWithOptionalEnd,
@@ -89,7 +89,7 @@ export default function EmploymentHistory() {
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd
                 value={{
-                  address: DEFAULT_ADDRESS,
+                  address: DEFAULT_FORM_ADDRESS,
                   name: '',
                   range: DEFAULT_RANGE,
                 }}

@@ -30,8 +30,9 @@ export default function Onboarding() {
           style={tw.style('w-full pb-2', { aspectRatio: 2 })}
         />
         <ScrollView
-          // alwaysBounceVertical={false}
+          alwaysBounceVertical={false}
           contentContainerStyle={tw`grow`}
+          scrollsToTop={false}
           style={tw`flex-1`}
         >
           <SafeAreaView

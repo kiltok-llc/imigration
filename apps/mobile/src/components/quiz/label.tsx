@@ -16,6 +16,25 @@ export function QuizFieldDescription({
   return <FormLabel i18nKey={i18nKey} {...props} variant='titleMedium' />;
 }
 
+export function QuizFieldTip({
+  name,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'> & {
+  name?: string;
+}) {
+  const i18nKey = useQuizFieldKey('tip', name);
+
+  return (
+    <FormLabel
+      i18nKey={i18nKey}
+      style={[tw`text-center`, style]}
+      variant='bodyMedium'
+      {...props}
+    />
+  );
+}
+
 export function QuizFieldTitle({
   name,
   style,

@@ -9,7 +9,12 @@ export function SavedQuizRouteRedirect() {
   const savedUrl = useAtomValue(useQuizRouteAtom());
   const route = savedUrl && routes.includes(savedUrl) ? savedUrl : routes[0];
 
-  console.log(`Redirecting to saved route: ${route}`);
+  if (route) {
+    console.log(`Redirecting to saved route: ${route}`);
 
-  return <Redirect href={`./${route}`} relativeToDirectory={true} />;
+    return <Redirect href={`./${route}`} relativeToDirectory={true} />;
+  }
+
+  console.warn(`No valid route found to redirect to.`);
+  return <Redirect href='/' />;
 }

@@ -7,8 +7,8 @@ import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
+import { useResetQuizValues } from '@/atoms/quiz-page-values';
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
-import { useResetQuizValues } from '@/atoms/quiz-values-family';
 import { TransButton, TransText } from '@/components/trans';
 
 export function QuizErrorFallback({

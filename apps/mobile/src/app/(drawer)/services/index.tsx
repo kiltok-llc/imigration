@@ -72,7 +72,11 @@ export default function Services() {
       <View style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />
 
-        <ScrollView contentContainerStyle={tw`grow-1`} style={tw`flex-1`}>
+        <ScrollView
+          contentContainerStyle={tw`grow-1`}
+          scrollsToTop={false}
+          style={tw`flex-1`}
+        >
           <SafeAreaView
             edges={{ bottom: 'maximum' }}
             style={tw`flex-1 gap-8 p-4`}

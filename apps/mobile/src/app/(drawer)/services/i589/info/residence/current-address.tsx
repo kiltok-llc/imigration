@@ -2,9 +2,9 @@ import { useRouter } from 'expo-router';
 import z from 'zod/v4';
 
 import {
-  AddressSchema,
-  DEFAULT_ADDRESS,
+  DEFAULT_FORM_ADDRESS,
   FormAddressInput,
+  FormAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
@@ -49,10 +49,10 @@ export default function CurrentAddress() {
       </QuizPage>
 
       <QuizPage
-        defaultValues={DEFAULT_ADDRESS}
+        defaultValues={DEFAULT_FORM_ADDRESS}
         onSubmit={() => true}
         pageId='address'
-        schema={AddressSchema}
+        schema={FormAddressSchema}
       >
         {({ lens }) => (
           <>
@@ -74,7 +74,7 @@ export default function CurrentAddress() {
         onSubmit={() => true}
         pageId='mailing-address'
         schema={z.object({
-          mailingAddress: AddressSchema.optional(),
+          mailingAddress: FormAddressSchema.optional(),
           receivesMail: required(z.boolean().nullable()),
         })}
       >
@@ -87,7 +87,7 @@ export default function CurrentAddress() {
 
             <ConditionalFormFieldBlock
               active={watch('receivesMail') === false}
-              activeValue={DEFAULT_ADDRESS}
+              activeValue={DEFAULT_FORM_ADDRESS}
               control={control}
               name={'mailingAddress'}
             >
