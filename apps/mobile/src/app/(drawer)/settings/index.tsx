@@ -17,7 +17,7 @@ import {
   useSettingsPath,
 } from '@/components/settings';
 import { Trans, TransButton, TransText } from '@/components/trans';
-import { defaultStorage } from '@/lib/mmkv';
+import { defaultStorage, quizStorage, userStorage } from '@/lib/mmkv';
 
 export default function Index() {
   const router = useRouter();
@@ -82,6 +82,8 @@ function ResetSettingsItem() {
                 i18nKey={`${path}.items.reset.dialog.confirm`}
                 onPress={() => {
                   defaultStorage.clearAll();
+                  quizStorage.clearAll();
+                  userStorage.clearAll();
                   void reloadAppAsync();
                 }}
                 textColor={theme.colors.onError}

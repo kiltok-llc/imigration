@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react';
 
 import { resetAllQuizValues } from '@/atoms/quiz-page-values';
 import { resetAllQuizPages } from '@/atoms/quiz-screen-page-family';
-import { defaultStorage } from '@/lib/mmkv';
+import { defaultStorage, quizStorage, userStorage } from '@/lib/mmkv';
 
 const devMenuItemAtom = (
   id: string,
@@ -15,7 +15,7 @@ const devMenuItemAtom = (
 
 const clearQuizStorageAtom = devMenuItemAtom(
   'clear-quiz-storage',
-  'Clear Quiz Storage',
+  'Clear Quiz Pages & Values',
   () => {
     resetAllQuizValues();
     resetAllQuizPages();
@@ -27,6 +27,8 @@ const clearStorageAtom = devMenuItemAtom(
   'Clear Storage',
   () => {
     defaultStorage.clearAll();
+    userStorage.clearAll();
+    quizStorage.clearAll();
   }
 );
 

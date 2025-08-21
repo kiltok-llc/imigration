@@ -131,7 +131,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           return true;
         }}
         pageId='child'
-        pageKey={index}
+        pageKey={id}
         ref={ref}
         schema={z.object({
           birthCertificate: required(z.string().nullable()).optional(),

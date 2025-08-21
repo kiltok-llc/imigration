@@ -60,12 +60,12 @@ function RootLayout() {
   useRegisterDevMenuItems();
 
   return (
-    <PaperProvider theme={theme}>
+    <QueryProvider>
       <ReducedMotionConfig mode={ReduceMotion.Never} />
-      <QueryProvider>
-        <TRPCProvider>
-          <GestureHandlerRootView style={tw`flex-1`}>
-            <KeyboardProvider>
+      <TRPCProvider>
+        <GestureHandlerRootView style={tw`flex-1`}>
+          <KeyboardProvider>
+            <PaperProvider theme={theme}>
               <SplashScreenBarrier>
                 <Stack
                   screenOptions={{
@@ -74,11 +74,11 @@ function RootLayout() {
                 />
                 <Toaster />
               </SplashScreenBarrier>
-            </KeyboardProvider>
-          </GestureHandlerRootView>
-        </TRPCProvider>
-      </QueryProvider>
-    </PaperProvider>
+            </PaperProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </TRPCProvider>
+    </QueryProvider>
   );
 }
 

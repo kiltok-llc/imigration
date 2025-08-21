@@ -1,7 +1,6 @@
 import { isEqual } from '@ver0/deep-equal';
 import { useLocalSearchParams } from 'expo-router';
 import { PrimitiveAtom, useAtomValue, useSetAtom } from 'jotai';
-import { withImmer } from 'jotai-immer';
 import { atomFamily } from 'jotai/utils';
 import { View } from 'react-native';
 import z from 'zod/v4';
@@ -113,9 +112,7 @@ export default function ImmigrationStatus() {
     )(param)
   );
   const setEntries = useSetAtom(
-    withImmer(
-      contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
-    )
+    contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
   );
   const setStatusExpiration = useSetAtom(
     contextFamily(
@@ -326,12 +323,9 @@ export default function ImmigrationStatus() {
               const { date, port, status, statusExpiration } = entry;
 
               setEntries((entries) => {
-                growTo(entries, 1, () => DEFAULT_USA_ENTRY);
-                entries[0] = {
-                  date,
-                  port,
-                  status,
-                };
+                const arr = growTo(entries, 1, () => DEFAULT_USA_ENTRY);
+                arr[0] = { date, port, status };
+                return arr;
               });
 
               setStatusExpiration(statusExpiration);

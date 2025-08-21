@@ -2,8 +2,6 @@ import { ComponentType, isValidElement, ReactElement, ReactNode } from 'react';
 import { MMKV } from 'react-native-mmkv';
 import z from 'zod/v4';
 
-import { defaultStorage } from '@/lib/mmkv';
-
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 export function arraysEqual<T>(a: T[], b: T[]) {
@@ -38,7 +36,7 @@ export function* clearMMKVKeys<T extends string[]>(exp: RegExp, storage: MMKV) {
     const [key, ...groups] = match;
     yield groups as T;
     console.debug(`Clearing storage key: ${key}`);
-    defaultStorage.delete(key);
+    storage.delete(key);
   }
 
   console.debug(`${matches.length} storage keys cleared`);

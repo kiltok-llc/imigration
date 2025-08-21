@@ -117,7 +117,6 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           },
           sex: null,
         }}
-        key={index}
         onSubmit={({ dob, livesInUsa, name, sex }) => {
           setDob(dob);
           setLivesInUsa(livesInUsa);
@@ -127,7 +126,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           return true;
         }}
         pageId='sibling'
-        pageKey={index}
+        pageKey={id}
         ref={ref}
         schema={z.object({
           birthLocation: required(FormShortAddressSchema),

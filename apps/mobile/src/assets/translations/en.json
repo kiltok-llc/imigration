@@ -919,10 +919,18 @@
       }
     },
     "data": {
+      "editor": {
+        "close": "Close",
+        "title": "Edit Data"
+      },
       "screenTitle": "Data",
       "sections": {
         "user": {
-          "title": "User Data"
+          "title": "User Data",
+          "menu": {
+            "edit": "Edit",
+            "delete": "Delete"
+          }
         }
       }
     },

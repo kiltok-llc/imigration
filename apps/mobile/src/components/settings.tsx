@@ -1,5 +1,3 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { Stack, useRouter } from 'expo-router';
 import * as React from 'react';
 import {
@@ -13,7 +11,6 @@ import { List } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { DrawerToggleButton } from '@/components/drawer';
 import { Trans } from '@/components/trans';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import { useT } from '@/hooks/use-t';
@@ -66,16 +63,12 @@ export function SettingsPage({ children }: PropsWithChildren) {
 
 export function SettingsScreen({ children }: PropsWithChildren) {
   const t = useT();
-  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
   const path = useSettingsPath();
 
   return (
     <>
       <Stack.Screen
         options={{
-          headerLeft: ({ tintColor }) => (
-            <DrawerToggleButton navigation={navigation} tintColor={tintColor} />
-          ),
           title: t(`${path}.screenTitle`),
         }}
       />

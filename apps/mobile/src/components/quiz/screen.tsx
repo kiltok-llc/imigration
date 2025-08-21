@@ -6,6 +6,7 @@ import {
   createRef,
   isValidElement,
   PropsWithChildren,
+  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -32,6 +33,8 @@ import {
   useIsFirstRoute,
   useIsLastRoute,
 } from '@/providers/routes';
+
+type QuizPageProps = { ref: RefObject<null | QuizPageHandle> };
 
 export function QuizScreen({
   children,
@@ -137,10 +140,10 @@ export function QuizScreen({
         >
           {Children.toArray(children).map((child, idx) => (
             <View key={idx} style={tw`flex-1`}>
-              {isValidElement(child)
+              {isValidElement<QuizPageProps>(child)
                 ? cloneElement(child, {
                     ref: childRefs[idx],
-                  } as any)
+                  })
                 : child}
             </View>
           ))}
