@@ -8,9 +8,16 @@ import tw from 'twrnc';
 import { stepAtom } from '@/atoms/step-atom';
 import { DebugPressable } from '@/components/debug-pressable';
 import { Trans } from '@/components/trans';
-import { useServiceId } from '@/hooks/use-service-id';
-import { Step } from '@/lib/services/types';
+import { useService } from '@/hooks/use-service';
 import { chunked } from '@/lib/utils';
+
+export type Step = {
+  Icon: FunctionComponent<{
+    color?: string;
+    size?: number;
+  }>;
+  id: string;
+};
 
 export function StepIcons({
   cols,
@@ -23,8 +30,8 @@ export function StepIcons({
   steps: Step[];
   style?: ViewStyle;
 }) {
-  const serviceId = useServiceId();
-  const setStepId = useSetAtom(stepAtom({ serviceId }));
+  const service = useService();
+  const setStep = useSetAtom(stepAtom({ service }));
   const theme = useTheme();
   const currentStepIdx = steps.findIndex(({ id }) => id === stepId);
 
@@ -36,7 +43,7 @@ export function StepIcons({
             .map((step, colIdx) => [step, rowIdx * cols + colIdx] as const)
             .map(([{ Icon, id }, stepIdx]) => (
               <View key={id} style={tw`flex-1 items-center gap-1`}>
-                <DebugPressable onPress={() => setStepId(id)}>
+                <DebugPressable onPress={() => setStep(id)}>
                   <View
                     style={tw.style(
                       'size-16 items-center justify-center rounded-full',
@@ -70,7 +77,7 @@ export function StepIcons({
                     currentStepIdx < stepIdx ? 'opacity-70' : 'font-semibold'
                   )}
                 >
-                  <Trans i18nKey={`services.${serviceId}.${id}.label`} />
+                  <Trans i18nKey={`services.${service}.${id}.label`} />
                 </Text>
               </View>
             ))}
@@ -86,10 +93,7 @@ export function Stepper({
   style,
 }: {
   stepId: string;
-  steps: {
-    Icon: FunctionComponent<{ color?: string; size?: number }>;
-    id: string;
-  }[];
+  steps: Step[];
   style?: ViewStyle;
 }) {
   const theme = useTheme();

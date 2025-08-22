@@ -9,8 +9,8 @@ import tw from 'twrnc';
 
 import { quizHeaderHeightAtom } from '@/atoms/quiz-header-height-atom';
 import { TransButton, TransText } from '@/components/trans';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
 import { useQuizActions } from '@/lib/quiz';
 import { toRouteId } from '@/lib/utils';
@@ -68,8 +68,8 @@ function QuizHeader() {
   const t = useT();
   const theme = useTheme();
   const setQuizHeaderHeight = useSetAtom(quizHeaderHeightAtom);
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const service = useService();
+  const step = useStep();
 
   const [currentRoute, currentParams] = useCurrentRoute();
   const [nextRoute, nextParams] = useNextRoute();
@@ -77,7 +77,7 @@ function QuizHeader() {
   const currentRouteIdx = useCurrentRouteIndex();
 
   const title = t(
-    `services.${serviceId}.${stepId}.${toRouteId(currentRoute)}.title`,
+    `services.${service}.${step}.${toRouteId(currentRoute)}.title`,
     {
       ...currentParams,
       count: Number(currentParams.count),
@@ -86,7 +86,7 @@ function QuizHeader() {
   );
 
   const nextTitle = nextRoute
-    ? t(`services.${serviceId}.${stepId}.${toRouteId(nextRoute)}.title`, {
+    ? t(`services.${service}.${step}.${toRouteId(nextRoute)}.title`, {
         ...nextParams,
         count: Number(nextParams.count),
         ordinal: true,

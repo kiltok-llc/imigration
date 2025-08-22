@@ -15,9 +15,9 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import { useScreenId } from '@/hooks/use-screen-id';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useScreen } from '@/hooks/use-screen';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import {
   useCurrentRouteUrl,
   useIncrementRoute,
@@ -45,11 +45,11 @@ const QuizActionsContext = createRequiredContext<QuizActions>();
 export const useQuizActions = () => useRequiredContext(QuizActionsContext);
 
 export const useQuizRoutePersistence = () => {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const service = useService();
+  const step = useStep();
   const routes = useRouteUrls();
   const currentRouteUrl = useCurrentRouteUrl();
-  const saveQuizRoute = useSetAtom(quizRouteAtom({ serviceId, stepId }));
+  const saveQuizRoute = useSetAtom(quizRouteAtom({ service, step }));
   useEffect(() => {
     if (routes.includes(currentRouteUrl)) {
       saveQuizRoute(currentRouteUrl);
@@ -81,11 +81,11 @@ export const useHandleQuizScreenNext = (
   pages: number,
   screenKey: string | undefined
 ) => {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
-  const screenId = useScreenId();
+  const service = useService();
+  const step = useStep();
+  const screenId = useScreen();
   const [page, setPage] = useAtom(
-    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+    quizPageAtom({ screenId, screenKey, service, step })
   );
   const isLastRoute = useIsLastRoute();
   const onComplete = useOnComplete();
@@ -103,11 +103,11 @@ export const useHandleQuizScreenNext = (
 };
 
 export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
-  const screenId = useScreenId();
+  const service = useService();
+  const step = useStep();
+  const screenId = useScreen();
   const [page, setPage] = useAtom(
-    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+    quizPageAtom({ screenId, screenKey, service, step })
   );
   const isFirstRoute = useIsFirstRoute();
   const router = useRouter();

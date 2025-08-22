@@ -1,3 +1,4 @@
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
@@ -10,23 +11,57 @@ import { stepAtom } from '@/atoms/step-atom';
 import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
-import { StepIcons, Stepper } from '@/components/ui/steps';
-import { useServiceId } from '@/hooks/use-service-id';
+import { Step, StepIcons, Stepper } from '@/components/ui/steps';
+import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
-import { STEPS } from '@/lib/services/i589/steps';
+
+export const steps: Step[] = [
+  {
+    Icon: (props) => <Entypo name='help' {...props} />,
+    id: 'eligibility',
+  },
+  {
+    Icon: (props) => <Entypo name='info' {...props} />,
+    id: 'info',
+  },
+  {
+    Icon: (props) => <Entypo name='modern-mic' {...props} />,
+    id: 'statement',
+  },
+  {
+    Icon: (props) => <Entypo name='eye' {...props} />,
+    id: 'review',
+  },
+  {
+    Icon: (props) => <Entypo name='clock' {...props} />,
+    id: 'waiting',
+  },
+  {
+    Icon: (props) => <Entypo name='users' {...props} />,
+    id: 'interview',
+  },
+  {
+    Icon: (props) => <FontAwesome name='gavel' {...props} />,
+    id: 'decision',
+  },
+  {
+    Icon: (props) => <Entypo name='documents' {...props} />,
+    id: 'appeal',
+  },
+];
 
 export default function I589() {
   const t = useT();
-  const serviceId = useServiceId();
+  const service = useService();
   const router = useRouter();
-  const stepId = useAtomValue(stepAtom({ serviceId }));
-  const stepState = useAtomValue(stepStateAtom({ serviceId, stepId }));
+  const step = useAtomValue(stepAtom({ service }));
+  const stepState = useAtomValue(stepStateAtom({ service, step }));
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: t(`services.${serviceId}.progress.screenTitle`),
+          title: t(`services.${service}.progress.screenTitle`),
         }}
       />
       <ConfettiOnDemand />
@@ -38,20 +73,20 @@ export default function I589() {
           style={tw`flex-1`}
         >
           <Surface style={tw`mx-4 gap-14 p-8`}>
-            <Stepper stepId={stepId} steps={STEPS} />
+            <Stepper stepId={step} steps={steps} />
             <View style={tw`gap-2`}>
               <TransText
-                i18nKey={`services.${serviceId}.${stepId}.title`}
+                i18nKey={`services.${service}.${step}.title`}
                 style={tw`text-center font-bold`}
                 variant='headlineMedium'
               />
               <TransText
-                i18nKey={`services.${serviceId}.${stepId}.description`}
+                i18nKey={`services.${service}.${step}.description`}
                 style={tw`text-center`}
                 variant='titleSmall'
               />
             </View>
-            <StepIcons cols={4} stepId={stepId} steps={STEPS} />
+            <StepIcons cols={4} stepId={step} steps={steps} />
           </Surface>
         </ScrollView>
         <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
@@ -61,7 +96,7 @@ export default function I589() {
             i18nKey={`services.progress.next`}
             icon='arrow-right'
             mode='contained'
-            onPress={() => router.navigate(`/services/${serviceId}/${stepId}`)}
+            onPress={() => router.navigate(`/services/${service}/${step}`)}
           />
         </SafeAreaView>
       </View>

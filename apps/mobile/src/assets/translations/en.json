@@ -150,7 +150,7 @@
     },
     "missing": "Please answer all questions before continuing.",
     "continue": "Continue",
-    "back": "Back",
+    "back": "Previous",
     "error": {
       "reset-route": "Reset saved route",
       "reset-values": "Reset saved answers"

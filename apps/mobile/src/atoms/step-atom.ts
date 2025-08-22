@@ -6,9 +6,9 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { defaultStorage } from '@/lib/mmkv';
 
 export const stepAtom = atomFamily(
-  ({ serviceId }: { serviceId: string }) =>
+  ({ service }: { service: string }) =>
     atomWithMmkvStorage(
-      `services:${serviceId}:step`,
+      `services:${service}:step`,
       '',
       z.string(),
       defaultStorage

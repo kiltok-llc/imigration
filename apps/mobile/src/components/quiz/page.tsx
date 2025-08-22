@@ -28,10 +28,10 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import { useScreenId } from '@/hooks/use-screen-id';
-import { useServiceId } from '@/hooks/use-service-id';
+import { useScreen } from '@/hooks/use-screen';
+import { useService } from '@/hooks/use-service';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
-import { useStepId } from '@/hooks/use-step-id';
+import { useStep } from '@/hooks/use-step';
 import { useQuizScreenKey } from '@/lib/quiz';
 
 export type QuizPageHandle = {
@@ -66,17 +66,17 @@ export function QuizPage<Input extends FieldValues, Output>({
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
-  const serviceId = useServiceId();
-  const screenId = useScreenId();
-  const stepId = useStepId();
+  const service = useService();
+  const screenId = useScreen();
+  const step = useStep();
   const screenKey = useQuizScreenKey();
   const valuesAtom = quizValuesAtom({
     pageId,
     pageKey,
     screenId,
     screenKey,
-    serviceId,
-    stepId,
+    service,
+    step,
   }) as PrimitiveAtom<Input>;
   const setPersistedValues = useSetAtom(valuesAtom);
 

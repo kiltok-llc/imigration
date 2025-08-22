@@ -6,9 +6,9 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { quizStorage } from '@/lib/mmkv';
 
 export const quizRouteAtom = atomFamily(
-  ({ serviceId, stepId }: { serviceId: string; stepId: string }) =>
+  ({ service, step }: { service: string; step: string }) =>
     atomWithMmkvStorage(
-      `services:${serviceId}:${stepId}:route`,
+      `services:${service}:${step}:route`,
       null,
       z.string().nullable(),
       quizStorage

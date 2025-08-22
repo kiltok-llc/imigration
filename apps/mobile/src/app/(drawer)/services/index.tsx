@@ -4,6 +4,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { Stack, useNavigation, useRouter } from 'expo-router';
 import * as React from 'react';
+import { ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,42 +15,10 @@ import { DrawerToggleButton } from '@/components/drawer';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { useT } from '@/hooks/use-t';
-import { IconProps } from '@/lib/icon-props';
-
-const popularServices = [
-  {
-    href: '/services/b2',
-    Icon: (props: IconProps) => <FontAwesome6 name='passport' {...props} />,
-    id: 'b2',
-  },
-  {
-    href: '/services/i589',
-    Icon: (props: IconProps) => (
-      <FontAwesome6 name='person-shelter' {...props} />
-    ),
-    id: 'i589',
-  },
-  {
-    href: '/services/i765',
-    Icon: (props: IconProps) => (
-      <FontAwesome6 name='clipboard-list' {...props} />
-    ),
-    id: 'i765',
-  },
-];
-
-// Define categories
-const categories = [
-  { href: '/services/categories/residency', id: 'residency' },
-  { href: '/services/categories/work', id: 'work' },
-  { href: '/services/categories/family', id: 'family' },
-  { href: '/services/categories/education', id: 'education' },
-];
 
 export default function Services() {
   const t = useT();
   const theme = useTheme();
-  const router = useRouter();
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
   return (
@@ -96,33 +65,22 @@ export default function Services() {
                 variant='headlineSmall'
               />
               <View style={tw`gap-2`}>
-                {popularServices.map(({ href, Icon, id }) => (
-                  <Button
-                    buttonColor={theme.colors.surface}
-                    contentStyle={tw`flex-row-reverse`}
-                    icon='chevron-right'
-                    key={id}
-                    labelStyle={tw`flex-1`}
-                    mode='outlined'
-                    onPress={() => router.navigate(href)}
-                  >
-                    <View style={tw`flex-row items-center justify-start gap-2`}>
-                      <View style={tw`w-9 items-center justify-center`}>
-                        <Icon color={theme.colors.primary} size={36} />
-                      </View>
-                      <View style={tw`flex-1`}>
-                        <TransText
-                          i18nKey={`services.${id}.title`}
-                          style={tw`font-semibold`}
-                        />
-                        <TransText
-                          i18nKey={`services.${id}.subtitle`}
-                          variant='bodySmall'
-                        />
-                      </View>
-                    </View>
-                  </Button>
-                ))}
+                <PopularServiceButton
+                  icon={(props) => (
+                    <FontAwesome6 name='person-shelter' {...props} />
+                  )}
+                  id='i589'
+                />
+                <PopularServiceButton
+                  icon={(props) => <FontAwesome6 name='passport' {...props} />}
+                  id='b2'
+                />
+                <PopularServiceButton
+                  icon={(props) => (
+                    <FontAwesome6 name='clipboard-list' {...props} />
+                  )}
+                  id='i765'
+                />
               </View>
             </View>
 
@@ -135,23 +93,66 @@ export default function Services() {
                 variant='headlineSmall'
               />
               <View style={tw`gap-2`}>
-                {categories.map(({ href, id }) => (
-                  <TransButton
-                    buttonColor={theme.colors.surface}
-                    contentStyle={tw`flex-row-reverse justify-between`}
-                    i18nKey={`services.categories.${id}.title`}
-                    icon='chevron-right'
-                    key={id}
-                    mode='outlined'
-                    onPress={() => router.navigate(href)}
-                    textColor={theme.colors.onSurface}
-                  />
-                ))}
+                <CategoryButton id='residency' />
+                <CategoryButton id='work' />
+                <CategoryButton id='family' />
+                <CategoryButton id='education' />
               </View>
             </View>
           </SafeAreaView>
         </ScrollView>
       </View>
     </>
+  );
+}
+
+function CategoryButton({ id }: { id: string }) {
+  const theme = useTheme();
+  const router = useRouter();
+  return (
+    <TransButton
+      buttonColor={theme.colors.surface}
+      contentStyle={tw`flex-row-reverse justify-between`}
+      i18nKey={`services.categories.${id}.title`}
+      icon='chevron-right'
+      key={id}
+      mode='outlined'
+      onPress={() => router.navigate(`/services/categories/${id}`)}
+      textColor={theme.colors.onSurface}
+    />
+  );
+}
+
+function PopularServiceButton({
+  icon,
+  id,
+}: {
+  icon: (props: { color: string; size: number }) => ReactNode;
+  id: string;
+}) {
+  const theme = useTheme();
+  const router = useRouter();
+  return (
+    <Button
+      buttonColor={theme.colors.surface}
+      contentStyle={tw`flex-row-reverse`}
+      icon='chevron-right'
+      labelStyle={tw`flex-1`}
+      mode='outlined'
+      onPress={() => router.navigate(`/services/${id}`)}
+    >
+      <View style={tw`flex-row items-center justify-start gap-2`}>
+        <View style={tw`w-9 items-center justify-center`}>
+          {icon({ color: theme.colors.primary, size: 36 })}
+        </View>
+        <View style={tw`flex-1`}>
+          <TransText
+            i18nKey={`services.${id}.title`}
+            style={tw`font-semibold`}
+          />
+          <TransText i18nKey={`services.${id}.subtitle`} variant='bodySmall' />
+        </View>
+      </View>
+    </Button>
   );
 }

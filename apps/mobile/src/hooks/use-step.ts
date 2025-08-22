@@ -1,16 +1,16 @@
 import { useLocalSegments } from '@/hooks/use-local-segments';
 
-export const useServiceId = () => {
-  const [services, serviceId] = useLocalSegments();
+export const useStep = () => {
+  const [services, _service, step] = useLocalSegments();
   if (services !== 'services') {
     console.log("The first segment must be 'services'.");
     return '';
   }
 
-  if (!serviceId) {
-    console.log('Service ID is not defined in the route segments.');
+  if (!step) {
+    console.log('Step ID is not defined in the route segments.');
     return '';
   }
 
-  return serviceId;
+  return step;
 };

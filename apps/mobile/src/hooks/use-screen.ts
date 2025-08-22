@@ -1,7 +1,7 @@
 import { useLocalSegments } from '@/hooks/use-local-segments';
 
-export const useScreenId = () => {
-  const [services, _serviceId, _stepId, ...screenId] = useLocalSegments();
+export const useScreen = () => {
+  const [services, _service, _step, ...screenId] = useLocalSegments();
   if (services !== 'services') {
     console.log("The first segment must be 'services'.");
     return '';

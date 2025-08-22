@@ -2,15 +2,15 @@ import { Redirect } from 'expo-router';
 import { useAtomValue } from 'jotai';
 
 import { quizRouteAtom } from '@/atoms/quiz-route-atom';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import { useRouteUrls } from '@/providers/routes';
 
 export function SavedQuizRouteRedirect() {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const service = useService();
+  const step = useStep();
   const routes = useRouteUrls();
-  const savedUrl = useAtomValue(quizRouteAtom({ serviceId, stepId }));
+  const savedUrl = useAtomValue(quizRouteAtom({ service, step }));
   const route = savedUrl && routes.includes(savedUrl) ? savedUrl : routes[0];
 
   if (route) {

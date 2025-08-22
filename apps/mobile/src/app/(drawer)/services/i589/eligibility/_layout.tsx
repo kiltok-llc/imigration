@@ -5,19 +5,17 @@ import { useTimeout } from 'usehooks-ts';
 import { stepStateAtom } from '@/atoms/step-state-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
 import { QuizProvider } from '@/lib/quiz';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function EligibilityLayout() {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const service = useService();
+  const step = useStep();
   const t = useT();
-  const [stepState, setStepState] = useAtom(
-    stepStateAtom({ serviceId, stepId })
-  );
+  const [stepState, setStepState] = useAtom(stepStateAtom({ service, step }));
 
   useTimeout(
     () => setStepState('active'),
@@ -28,12 +26,12 @@ export default function EligibilityLayout() {
     <>
       <Stack.Screen
         options={{
-          title: t(`services.${serviceId}.eligibility.screenTitle`),
+          title: t(`services.${service}.eligibility.screenTitle`),
         }}
       />
       <RoutesProvider
         onComplete={() =>
-          router.navigate(`/services/${serviceId}/eligible?confetti=true`)
+          router.navigate(`/services/${service}/eligible?confetti=true`)
         }
         routes={[
           'physical-presence',

@@ -1,20 +1,20 @@
 import { useFormField } from '@/components/form/field';
 import { useQuizPageId } from '@/components/quiz/page';
-import { useScreenId } from '@/hooks/use-screen-id';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useScreen } from '@/hooks/use-screen';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import { toI18nKey } from '@/lib/utils';
 
 export const useQuizFieldKey = (id: null | string, name?: string) => {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
-  const screenId = useScreenId();
+  const service = useService();
+  const step = useStep();
+  const screenId = useScreen();
   const pageId = useQuizPageId();
   const {
     field: { name: fieldName },
   } = useFormField();
 
-  const key = `services.${serviceId}.${stepId}.${screenId}.${pageId}.${name ?? toI18nKey(fieldName)}`;
+  const key = `services.${service}.${step}.${screenId}.${pageId}.${name ?? toI18nKey(fieldName)}`;
 
   if (id === null) {
     return key;
@@ -24,12 +24,12 @@ export const useQuizFieldKey = (id: null | string, name?: string) => {
 };
 
 export const useQuizPageKey = (id: null | string) => {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
-  const screenId = useScreenId();
+  const service = useService();
+  const step = useStep();
+  const screenId = useScreen();
   const pageId = useQuizPageId();
 
-  const key = `services.${serviceId}.${stepId}.${screenId}.${pageId}`;
+  const key = `services.${service}.${step}.${screenId}.${pageId}`;
 
   if (id === null) {
     return key;

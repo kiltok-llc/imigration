@@ -10,8 +10,8 @@ import tw from 'twrnc';
 import { quizRouteAtom } from '@/atoms/quiz-route-atom';
 import { resetQuizValues } from '@/atoms/quiz-values-atom';
 import { TransButton, TransText } from '@/components/trans';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 
 export function QuizErrorFallback({
   children,
@@ -19,9 +19,9 @@ export function QuizErrorFallback({
   retry,
 }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
-  const serviceId = useServiceId();
-  const stepId = useStepId();
-  const resetQuizRoute = useResetAtom(quizRouteAtom({ serviceId, stepId }));
+  const service = useService();
+  const step = useStep();
+  const resetQuizRoute = useResetAtom(quizRouteAtom({ service, step }));
   const router = useRouter();
 
   return (
@@ -60,7 +60,7 @@ export function QuizErrorFallback({
         i18nKey='quiz.error.reset-values'
         mode='text'
         onPress={() => {
-          resetQuizValues({ serviceId, stepId });
+          resetQuizValues({ service, step });
           void retry();
         }}
       />

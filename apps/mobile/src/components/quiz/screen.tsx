@@ -19,9 +19,9 @@ import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { QuizPageHandle } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
-import { useScreenId } from '@/hooks/use-screen-id';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useScreen } from '@/hooks/use-screen';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import {
   QuizScreenKeyContext,
   useHandleQuizScreenNext,
@@ -45,11 +45,11 @@ export function QuizScreen({
   children,
   screenKey,
 }: PropsWithChildren<{ screenKey?: string }>) {
-  const screenId = useScreenId();
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const screenId = useScreen();
+  const service = useService();
+  const step = useStep();
   const page = useAtomValue(
-    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+    quizPageAtom({ screenId, screenKey, service, step })
   );
   const keyboardVisible = useKeyboardVisible();
   const childRefs = useChildRefs(children);

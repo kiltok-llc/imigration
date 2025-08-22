@@ -10,8 +10,8 @@ import { stepAtom } from '@/atoms/step-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { Trans } from '@/components/trans';
-import { useServiceId } from '@/hooks/use-service-id';
-import { useStepId } from '@/hooks/use-step-id';
+import { useService } from '@/hooks/use-service';
+import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
@@ -19,13 +19,13 @@ import { QuizProvider } from '@/lib/quiz';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
-  const serviceId = useServiceId();
-  const stepId = useStepId();
+  const service = useService();
+  const step = useStep();
   const t = useT();
   const router = useRouter();
   const maritalStatus = useAtomValue(maritalStatusAtom);
   const childIds = useAtomValue(childIdsAtom);
-  const setStep = useSetAtom(stepAtom({ serviceId }));
+  const setStep = useSetAtom(stepAtom({ service }));
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -48,7 +48,7 @@ export default function InfoLayout() {
               <Menu.Item
                 leadingIcon='content-save'
                 onPress={() => {
-                  router.dismissTo(`/services/${serviceId}`);
+                  router.dismissTo(`/services/${service}`);
                   toast.success(t('quiz.toast.saved'));
                   setMenuOpen(false);
                 }}
@@ -56,14 +56,14 @@ export default function InfoLayout() {
               />
             </Menu>
           ),
-          title: t(`services.${serviceId}.${stepId}.screenTitle`),
+          title: t(`services.${service}.${step}.screenTitle`),
         }}
       />
       <RoutesProvider
         onComplete={() => {
           setStep('statement');
-          router.dismissTo(`/services/${serviceId}`);
-          router.replace(`/services/${serviceId}?confetti=true`);
+          router.dismissTo(`/services/${service}`);
+          router.replace(`/services/${service}?confetti=true`);
         }}
         routes={[
           'intro',

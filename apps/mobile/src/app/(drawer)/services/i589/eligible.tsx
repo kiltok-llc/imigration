@@ -10,22 +10,22 @@ import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
-import { useServiceId } from '@/hooks/use-service-id';
+import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
 
 export default function Eligible() {
-  const serviceId = useServiceId();
+  const service = useService();
   const t = useT();
-  const setStep = useSetAtom(stepAtom({ serviceId }));
+  const setStep = useSetAtom(stepAtom({ service }));
   const setEligibilityStepState = useSetAtom(
-    stepStateAtom({ serviceId, stepId: 'eligibility' })
+    stepStateAtom({ service, step: 'eligibility' })
   );
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: t(`services.${serviceId}.eligible.screenTitle`),
+          title: t(`services.${service}.eligible.screenTitle`),
         }}
       />
       <ConfettiOnDemand />
@@ -43,17 +43,17 @@ export default function Eligible() {
 
             <View style={tw`gap-4`}>
               <TransText
-                i18nKey={`services.${serviceId}.eligible.title`}
+                i18nKey={`services.${service}.eligible.title`}
                 style={tw`text-center font-bold`}
                 variant='headlineMedium'
               />
               <TransText
-                i18nKey={`services.${serviceId}.eligible.description`}
+                i18nKey={`services.${service}.eligible.description`}
                 style={tw`text-center`}
                 variant='bodyLarge'
               />
               <TransText
-                i18nKey={`services.${serviceId}.eligible.nextSteps`}
+                i18nKey={`services.${service}.eligible.nextSteps`}
                 style={tw`mt-4 text-center`}
                 variant='bodyMedium'
               />
@@ -61,13 +61,13 @@ export default function Eligible() {
           </Surface>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey={`services.${serviceId}.eligible.continue`}
+            i18nKey={`services.${service}.eligible.continue`}
             icon='arrow-right'
             onPress={() => {
               setStep('info');
               setEligibilityStepState('completed');
-              router.dismissTo(`/services/${serviceId}`);
-              router.replace(`/services/${serviceId}`);
+              router.dismissTo(`/services/${service}`);
+              router.replace(`/services/${service}`);
             }}
             style={tw`mt-auto`}
           />
