@@ -11,7 +11,7 @@ export default function ServicesLayout() {
           headerShown: false,
         }}
       />
-      <Stack/>
+      <Stack />
     </>
   );
 }
