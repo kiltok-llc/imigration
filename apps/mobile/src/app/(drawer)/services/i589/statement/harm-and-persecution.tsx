@@ -6,7 +6,11 @@ import { FormBlock } from '@/components/form/block';
 import { FormDocumentsInput } from '@/components/form/document';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
-import { QuizFieldTitle, QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
+import {
+  QuizFieldTitle,
+  QuizPageDescription,
+  QuizPageTitle,
+} from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
@@ -30,14 +34,14 @@ export default function HarmAndPersecution() {
           }
           return true;
         }}
-        pageId="has-been-harmed"
+        pageId='has-been-harmed'
         schema={z.object({
           hasBeenHarmed: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name="hasBeenHarmed">
+            <FormField control={control} name='hasBeenHarmed'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>
@@ -45,7 +49,7 @@ export default function HarmAndPersecution() {
         )}
       </QuizPage>
 
-      {(showDetails && (
+      {showDetails && (
         <QuizPage
           defaultValues={{
             details: '',
@@ -54,7 +58,7 @@ export default function HarmAndPersecution() {
             setHarmDetails(details);
             return true;
           }}
-          pageId="details"
+          pageId='details'
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -63,36 +67,36 @@ export default function HarmAndPersecution() {
             <FormBlock>
               <QuizPageTitle />
               <QuizPageDescription />
-              <FormField control={control} name="details">
+              <FormField control={control} name='details'>
                 <QuizLongTextInput />
               </FormField>
             </FormBlock>
           )}
         </QuizPage>
-      ))}
+      )}
 
-      {(showDetails && (
+      {showDetails && (
         <QuizPage
           defaultValues={{
             documents: [],
           }}
-          onSubmit={({ documents }) => true}
-          pageId="documents"
+          onSubmit={() => true}
+          pageId='documents'
           schema={z.object({
-            documents: z.array(z.string())
+            documents: z.array(z.string()),
           })}
         >
           {({ control }) => (
             <FormBlock>
               <QuizPageTitle />
               <QuizPageDescription />
-              <FormField control={control} name="documents">
+              <FormField control={control} name='documents'>
                 <FormDocumentsInput />
               </FormField>
             </FormBlock>
           )}
         </QuizPage>
-      ))}
+      )}
     </QuizScreen>
   );
 }

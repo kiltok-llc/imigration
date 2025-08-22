@@ -31,8 +31,8 @@ export default function InfoLayout() {
           headerRight: ({ tintColor }) => (
             <HeaderMenu tintColor={tintColor}>
               <HeaderMenuItem
-                i18nKey="quiz.menu.save-exit"
-                leadingIcon="content-save"
+                i18nKey='quiz.menu.save-exit'
+                leadingIcon='content-save'
                 onPress={() => {
                   router.dismissTo(`/services/${service}`);
                   toast.success(t('quiz.toast.saved'));
@@ -68,7 +68,7 @@ export default function InfoLayout() {
             : []),
           ...childIds.map(
             (id, index) =>
-              `immigration-status?context=child&id=${id}&count=${index + 1}`,
+              `immigration-status?context=child&id=${id}&count=${index + 1}`
           ),
         ]}
       >

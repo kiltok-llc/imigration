@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useRef } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
   type FieldPath,
   type FieldValues,
@@ -10,7 +10,6 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import { useLatestRef } from '@/hooks/use-latest-ref';
 import { WithRequired } from '@/lib/utils';
 
 export const FormFieldContext = createContext<UseControllerReturn>({
@@ -47,19 +46,17 @@ export const FormFieldContext = createContext<UseControllerReturn>({
   },
 });
 
-type NonUndefined<T> = T extends undefined ? never : T;
-
 export const ConditionalFormWrapper = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues,
 >({
-    active,
-    activeValue,
-    children,
-    name,
-    ...props
-  }: PropsWithChildren<
+  active,
+  activeValue,
+  children,
+  name,
+  ...props
+}: PropsWithChildren<
   WithRequired<
     UseControllerProps<TFieldValues, TName, TTransformedValues>,
     'control'
@@ -88,7 +85,11 @@ export const ConditionalFormWrapper = <
   }, [disabled, name, resetField]);
 
   useEffect(() => {
-    if (!disabled && value === get(defaultValues, name) && activeValue !== undefined) {
+    if (
+      !disabled &&
+      value === get(defaultValues, name) &&
+      activeValue !== undefined
+    ) {
       setValue(name, activeValue);
     }
   }, [activeValue, defaultValues, disabled, name, setValue, value]);
@@ -109,9 +110,9 @@ export const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues,
 >({
-    children,
-    ...props
-  }: PropsWithChildren<
+  children,
+  ...props
+}: PropsWithChildren<
   UseControllerProps<TFieldValues, TName, TTransformedValues>
 >) => {
   const controller = useController(props);

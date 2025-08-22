@@ -20,35 +20,35 @@ import { useT } from '@/hooks/use-t';
 
 export const steps: Step[] = [
   {
-    Icon: (props) => <Entypo name="help" {...props} />,
+    Icon: (props) => <Entypo name='help' {...props} />,
     id: 'eligibility',
   },
   {
-    Icon: (props) => <Entypo name="info" {...props} />,
+    Icon: (props) => <Entypo name='info' {...props} />,
     id: 'info',
   },
   {
-    Icon: (props) => <Entypo name="modern-mic" {...props} />,
+    Icon: (props) => <Entypo name='modern-mic' {...props} />,
     id: 'statement',
   },
   {
-    Icon: (props) => <Entypo name="eye" {...props} />,
+    Icon: (props) => <Entypo name='eye' {...props} />,
     id: 'review',
   },
   {
-    Icon: (props) => <Entypo name="clock" {...props} />,
+    Icon: (props) => <Entypo name='clock' {...props} />,
     id: 'waiting',
   },
   {
-    Icon: (props) => <Entypo name="users" {...props} />,
+    Icon: (props) => <Entypo name='users' {...props} />,
     id: 'interview',
   },
   {
-    Icon: (props) => <FontAwesome name="gavel" {...props} />,
+    Icon: (props) => <FontAwesome name='gavel' {...props} />,
     id: 'decision',
   },
   {
-    Icon: (props) => <Entypo name="documents" {...props} />,
+    Icon: (props) => <Entypo name='documents' {...props} />,
     id: 'appeal',
   },
 ];
@@ -82,12 +82,12 @@ export default function I589() {
               <TransText
                 i18nKey={`services.${service}.${step}.title`}
                 style={tw`text-center font-bold`}
-                variant="headlineMedium"
+                variant='headlineMedium'
               />
               <TransText
                 i18nKey={`services.${service}.${step}.description`}
                 style={tw`text-center`}
-                variant="titleSmall"
+                variant='titleSmall'
               />
             </View>
             <StepIcons cols={4} stepId={step} steps={steps} />
@@ -101,8 +101,8 @@ export default function I589() {
                 ? 'services.progress.continue'
                 : 'services.progress.start'
             }
-            icon="arrow-right"
-            mode="contained"
+            icon='arrow-right'
+            mode='contained'
             onPress={() => router.navigate(`/services/${service}/${step}`)}
           />
         </SafeAreaView>
@@ -120,7 +120,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
       {['review', 'statement'].includes(step) && (
         <HeaderMenuItem
           i18nKey={`services.${service}.menu.revise.info`}
-          leadingIcon="note-edit"
+          leadingIcon='note-edit'
           onPress={() => {
             resetQuizPages({ service, step: 'info' });
             resetQuizRoute({ service, step: 'info' });
@@ -131,7 +131,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
       {step === 'review' && (
         <HeaderMenuItem
           i18nKey={`services.${service}.menu.revise.statement`}
-          leadingIcon="account-edit"
+          leadingIcon='account-edit'
           onPress={() => {
             resetQuizPages({ service, step: 'statement' });
             resetQuizRoute({ service, step: 'statement' });

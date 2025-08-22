@@ -5,8 +5,8 @@ import { FormTextInput } from '@/components/form/text';
 import { useQuizFieldKey } from '@/components/quiz/hooks';
 
 export function QuizLongTextInput({
-                                    ...props
-                                  }: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
+  ...props
+}: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
   const i18nKey = useQuizFieldKey('label');
 
   return (
@@ -21,15 +21,9 @@ export function QuizLongTextInput({
 }
 
 export function QuizTextInput({
-                                ...props
-                              }: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
+  ...props
+}: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
   const i18nKey = useQuizFieldKey('label');
 
-  return (
-    <FormTextInput
-      i18nKey={i18nKey}
-      scrollEnabled={false}
-      {...props}
-    />
-  );
+  return <FormTextInput i18nKey={i18nKey} scrollEnabled={false} {...props} />;
 }

@@ -18,16 +18,18 @@ const now = new Date();
 const oneYear = 365 * 24 * 60 * 60 * 1000; // One year in milliseconds
 const cuttoffDate = new Date(now.getTime() - oneYear);
 
-const entryIsRecentAtom = atom(
-  (get) => {
-    const mostRecentEntry = get(entriesAtom)
-      .map(({ date }) => date)
-      .filter((date) => date !== null)
-      .sort((a, b) => b.getTime() - a.getTime())[0];
+const entryIsRecentAtom = atom((get) => {
+  const [mostRecentEntry] = get(entriesAtom)
+    .map(({ date }) => date)
+    .filter((date) => date !== null)
+    .sort((a, b) => b.getTime() - a.getTime());
 
-    return mostRecentEntry ? mostRecentEntry.getTime() >= cuttoffDate.getTime() : false;
+  if (!mostRecentEntry) {
+    return false;
   }
-);
+
+  return mostRecentEntry.getTime() >= cuttoffDate.getTime();
+});
 
 export default function StatementLayout() {
   const service = useService();
@@ -44,8 +46,8 @@ export default function StatementLayout() {
           headerRight: ({ tintColor }) => (
             <HeaderMenu tintColor={tintColor}>
               <HeaderMenuItem
-                i18nKey="quiz.menu.save-exit"
-                leadingIcon="content-save"
+                i18nKey='quiz.menu.save-exit'
+                leadingIcon='content-save'
                 onPress={() => {
                   router.dismissTo(`/services/${service}`);
                   toast.success(t('quiz.toast.saved'));

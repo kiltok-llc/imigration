@@ -23,11 +23,11 @@ export default function Intro() {
           agreed: false,
         }}
         onSubmit={() => {
-          setIsStepStarted(true)
+          setIsStepStarted(true);
 
           return true;
         }}
-        pageId="intro"
+        pageId='intro'
         schema={z.object({
           agreed: z.literal<boolean>(true),
         })}
@@ -37,7 +37,7 @@ export default function Intro() {
             <FormBlock>
               <QuizPageTitle />
               <QuizPageDescription />
-              <FormField control={control} name="agreed">
+              <FormField control={control} name='agreed'>
                 <QuizConfirmBox />
               </FormField>
             </FormBlock>

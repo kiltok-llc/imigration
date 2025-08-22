@@ -22,7 +22,7 @@ export default function LateApplication() {
           setLateApplicationDetails(details);
           return true;
         }}
-        pageId="details"
+        pageId='details'
         schema={z.object({
           details: z.string().nonempty(),
         })}
@@ -33,7 +33,7 @@ export default function LateApplication() {
               <QuizPageTitle />
               <QuizPageDescription />
 
-              <FormField control={control} name="details">
+              <FormField control={control} name='details'>
                 <QuizLongTextInput />
               </FormField>
             </FormBlock>

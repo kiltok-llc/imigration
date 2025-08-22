@@ -7,10 +7,7 @@ import {
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
-import {
-  FormArray,
-  FormArrayItems,
-} from '@/components/form/fieldarray';
+import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import { FormRadioGroup } from '@/components/form/radio';
 import {
   DEFAULT_RANGE,

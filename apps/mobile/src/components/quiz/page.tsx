@@ -2,7 +2,14 @@ import { Lens, useLens } from '@hookform/lenses';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { PrimitiveAtom, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { ComponentProps, ReactNode, Ref, useCallback, useEffect, useImperativeHandle } from 'react';
+import {
+  ComponentProps,
+  ReactNode,
+  Ref,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+} from 'react';
 import {
   Control,
   DefaultValues,
@@ -19,7 +26,10 @@ import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { quizValuesAtom } from '@/atoms/quiz-values-atom';
-import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
@@ -35,20 +45,20 @@ const QuizPageIdContext = createRequiredContext<string>();
 export const useQuizPageId = () => useRequiredContext(QuizPageIdContext);
 
 export function QuizPage<Input extends FieldValues, Output>({
-                                                              children,
-                                                              contentContainerStyle,
-                                                              defaultValues,
-                                                              formOptions = {},
-                                                              onSubmit,
-                                                              pageId,
-                                                              pageKey,
-                                                              ref = null,
-                                                              schema,
-                                                              style,
-                                                              ...props
-                                                            }: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
+  children,
+  contentContainerStyle,
+  defaultValues,
+  formOptions = {},
+  onSubmit,
+  pageId,
+  pageKey,
+  ref = null,
+  schema,
+  style,
+  ...props
+}: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
   children: (
-    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> },
+    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
   ) => ReactNode;
   defaultValues: Input;
   formOptions?: UseFormProps<Input, any, Output>;
@@ -84,7 +94,8 @@ export function QuizPage<Input extends FieldValues, Output>({
   });
 
   const loadQuizValues = useAtomCallback(
-    useCallback((get) => {
+    useCallback(
+      (get) => {
         const persistedValues = get(valuesAtom);
         // console.debug(
         //   `Loaded quiz values for ${pageId}:${pageKey}`,
@@ -97,8 +108,8 @@ export function QuizPage<Input extends FieldValues, Output>({
           });
         }
       },
-      [reset, valuesAtom],
-    ),
+      [reset, valuesAtom]
+    )
   );
 
   useEffect(() => {
@@ -119,7 +130,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         (errors) => {
           console.debug('Failed validation!', errors);
           result = false;
-        },
+        }
       )();
       return result;
     },
@@ -135,7 +146,7 @@ export function QuizPage<Input extends FieldValues, Output>({
           values: true,
         },
       }),
-    [subscribe, setPersistedValues],
+    [subscribe, setPersistedValues]
   );
 
   return (

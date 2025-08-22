@@ -3,7 +3,6 @@ import { mergeRefs } from 'react-merge-refs';
 import { Text as RNText, TextInput as RNTextInput, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { HelperText, TextInput, useTheme } from 'react-native-paper';
-import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
 import { useFormField } from '@/components/form/field';

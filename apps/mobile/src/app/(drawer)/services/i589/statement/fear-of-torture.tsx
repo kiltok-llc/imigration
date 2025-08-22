@@ -3,7 +3,12 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
-import {QuizFieldDescription, QuizFieldTitle, QuizPageDescription, QuizPageTitle} from '@/components/quiz/label';
+import {
+  QuizFieldDescription,
+  QuizFieldTitle,
+  QuizPageDescription,
+  QuizPageTitle,
+} from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
@@ -17,7 +22,7 @@ export default function FearOfTorture() {
           hasFearOfTorture: false,
         }}
         onSubmit={() => true}
-        pageId="torture"
+        pageId='torture'
         schema={z.object({
           details: z.string().nonempty().optional(),
           hasFearOfTorture: required(z.boolean().nullable()),
@@ -26,7 +31,7 @@ export default function FearOfTorture() {
         {({ control, watch }) => (
           <>
             <FormBlock>
-              <FormField control={control} name="hasFearOfTorture">
+              <FormField control={control} name='hasFearOfTorture'>
                 <QuizFieldTitle />
                 <QuizFieldDescription />
                 <FormBooleanInput />
@@ -35,15 +40,15 @@ export default function FearOfTorture() {
 
             <ConditionalFormWrapper
               active={!!watch('hasFearOfTorture')}
-              activeValue=""
+              activeValue=''
               control={control}
-              name="details"
+              name='details'
             >
               <FormBlock>
                 <QuizPageTitle />
                 <QuizPageDescription />
 
-                <FormField control={control} name="details">
+                <FormField control={control} name='details'>
                   <QuizLongTextInput />
                 </FormField>
               </FormBlock>

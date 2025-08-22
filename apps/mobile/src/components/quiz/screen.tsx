@@ -7,7 +7,8 @@ import {
   isValidElement,
   PropsWithChildren,
   ReactNode,
-  RefObject, useCallback,
+  RefObject,
+  useCallback,
   useEffect,
   useMemo,
 } from 'react';
@@ -61,13 +62,18 @@ export function QuizScreen({
   const handleQuizScreenPrev = useHandleQuizScreenPrev(screenKey);
   const { setHandleBack, setHandleContinue } = useQuizActions();
 
-  useDevMenuItem(useCallback(() => ({
-    callback: () => {
-      childRefs[page]?.current?.reset()
-    },
-    name: 'Reset Quiz Page Values',
-    shouldCollapse: true
-  }), [childRefs, page]));
+  useDevMenuItem(
+    useCallback(
+      () => ({
+        callback: () => {
+          childRefs[page]?.current?.reset();
+        },
+        name: 'Reset Quiz Page Values',
+        shouldCollapse: true,
+      }),
+      [childRefs, page]
+    )
+  );
 
   const {
     data: submissionResult,

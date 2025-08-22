@@ -8,13 +8,13 @@ import { clearMMKVKeys } from '@/lib/utils';
 
 export const quizValuesAtom = atomFamily(
   ({
-     pageId,
-     pageKey = '',
-     screenId,
-     screenKey = '',
-     service,
-     step,
-   }: {
+    pageId,
+    pageKey = '',
+    screenId,
+    screenKey = '',
+    service,
+    step,
+  }: {
     pageId: string;
     pageKey: string | undefined;
     screenId: string;
@@ -26,9 +26,9 @@ export const quizValuesAtom = atomFamily(
       `services:${service}:${step}:${screenId}:${screenKey}:${pageId}:${pageKey}:values`,
       null,
       z.looseObject({}).nullable(),
-      quizStorage,
+      quizStorage
     ),
-  isEqual,
+  isEqual
 );
 
 export function resetAllQuizValues() {
@@ -45,7 +45,7 @@ export function resetAllQuizValues() {
     pageKey,
   ] of clearMMKVKeys<[string, string, string, string, string, string]>(
     exp,
-    quizStorage,
+    quizStorage
   )) {
     quizValuesAtom.remove({
       pageId,
@@ -59,15 +59,15 @@ export function resetAllQuizValues() {
 }
 
 export function resetQuizValues({
-                                  service,
-                                  step,
-                                }: {
+  service,
+  step,
+}: {
   service: string;
   step: string;
 }) {
   console.log(`Clearing quiz values for ${service}.${step}`);
   const exp = new RegExp(
-    `^services:${service}:${step}:([^:]+):([^:]+):([^:]+):([^:]+):values$`,
+    `^services:${service}:${step}:([^:]+):([^:]+):([^:]+):([^:]+):values$`
   );
 
   for (const [screenId, screenKey, pageId, pageKey] of clearMMKVKeys<

@@ -5,7 +5,11 @@ import tw from 'twrnc';
 
 import { useIsFirstRender } from '@/hooks/use-is-first-render';
 
-export function FormBlock({ animated, style, ...props }: ComponentProps<typeof View> & { animated?: boolean }) {
+export function FormBlock({
+  animated,
+  style,
+  ...props
+}: ComponentProps<typeof View> & { animated?: boolean }) {
   const isFirstRender = useIsFirstRender();
 
   if (animated) {

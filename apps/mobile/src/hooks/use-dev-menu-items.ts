@@ -1,4 +1,8 @@
-import { ExpoDevMenuItem, isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
+import {
+  ExpoDevMenuItem,
+  isDevelopmentBuild,
+  registerDevMenuItems,
+} from 'expo-dev-client';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { PropsWithChildren, useEffect } from 'react';
 
