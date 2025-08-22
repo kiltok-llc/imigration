@@ -1,7 +1,7 @@
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
   DEFAULT_NAME,
   FormNameInput,
@@ -86,14 +86,16 @@ export default function NameAndAliases() {
                 <FormBooleanInput />
               </FormField>
 
-              <ConditionalFormFieldBlock
+              <ConditionalFormWrapper
                 active={!!watch('hasAlias')}
                 activeValue=''
                 control={control}
                 name='aliasName'
               >
-                <QuizTextInput />
-              </ConditionalFormFieldBlock>
+                <FormBlock animated>
+                  <QuizTextInput />
+                </FormBlock>
+              </ConditionalFormWrapper>
             </FormBlock>
           </>
         )}

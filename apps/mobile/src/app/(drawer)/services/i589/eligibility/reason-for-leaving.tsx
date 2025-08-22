@@ -4,7 +4,7 @@ import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { FormCheckboxGroup } from '@/components/form/checkbox';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizCheckboxItem } from '@/components/quiz/checkbox';
 import { QuizFieldTitle } from '@/components/quiz/label';
@@ -82,14 +82,16 @@ export default function ReasonForLeaving() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={watch('harmReasons').includes('other')}
               activeValue=''
               control={control}
               name='customHarmReason'
             >
-              <QuizTextInput />
-            </ConditionalFormFieldBlock>
+              <FormBlock>
+                <QuizTextInput />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </>
         )}
       </QuizPage>

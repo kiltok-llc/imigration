@@ -84,7 +84,7 @@ export const useIncrementRoute = () => {
         return;
       }
 
-      console.debug(`Navigating to ${route} from ${routeUrl}`);
+      console.debug(`Changing route: ${routeUrl} -> ${route}`);
 
       const level = routeUrl.split('/').length - 1;
       const nesting = '../'.repeat(level);

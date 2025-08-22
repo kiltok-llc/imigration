@@ -1,12 +1,11 @@
 import { Entypo } from '@expo/vector-icons';
 import { useSetAtom } from 'jotai';
 import { Fragment, FunctionComponent } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { stepAtom } from '@/atoms/step-atom';
-import { DebugPressable } from '@/components/debug-pressable';
 import { Trans } from '@/components/trans';
 import { useService } from '@/hooks/use-service';
 import { chunked } from '@/lib/utils';
@@ -20,11 +19,11 @@ export type Step = {
 };
 
 export function StepIcons({
-  cols,
-  stepId,
-  steps,
-  style,
-}: {
+                            cols,
+                            stepId,
+                            steps,
+                            style,
+                          }: {
   cols: number;
   stepId: string;
   steps: Step[];
@@ -43,7 +42,7 @@ export function StepIcons({
             .map((step, colIdx) => [step, rowIdx * cols + colIdx] as const)
             .map(([{ Icon, id }, stepIdx]) => (
               <View key={id} style={tw`flex-1 items-center gap-1`}>
-                <DebugPressable onPress={() => setStep(id)}>
+                <Pressable onPress={__DEV__ ? () => setStep(id) : undefined}>
                   <View
                     style={tw.style(
                       'size-16 items-center justify-center rounded-full',
@@ -55,7 +54,7 @@ export function StepIcons({
                             : currentStepIdx < stepIdx
                               ? theme.colors.onSurfaceDisabled
                               : theme.colors.primary,
-                      }
+                      },
                     )}
                   >
                     <Icon
@@ -69,12 +68,12 @@ export function StepIcons({
                       size={36}
                     />
                   </View>
-                </DebugPressable>
+                </Pressable>
                 <Text
                   numberOfLines={2}
                   style={tw.style(
                     'text-center',
-                    currentStepIdx < stepIdx ? 'opacity-70' : 'font-semibold'
+                    currentStepIdx < stepIdx ? 'opacity-70' : 'font-semibold',
                   )}
                 >
                   <Trans i18nKey={`services.${service}.${id}.label`} />
@@ -88,10 +87,10 @@ export function StepIcons({
 }
 
 export function Stepper({
-  stepId,
-  steps,
-  style,
-}: {
+                          stepId,
+                          steps,
+                          style,
+                        }: {
   stepId: string;
   steps: Step[];
   style?: ViewStyle;
@@ -111,14 +110,14 @@ export function Stepper({
               {
                 backgroundColor:
                   stepIdx < index ? theme.colors.outline : theme.colors.primary,
-              }
+              },
             )}
           >
             {stepIdx === index && (
               <Icon color={theme.colors.onPrimary} size={20} />
             )}
             {stepIdx > index && (
-              <Entypo color={theme.colors.onPrimary} name='check' size={16} />
+              <Entypo color={theme.colors.onPrimary} name="check" size={16} />
             )}
           </View>
           {index < steps.length - 1 && (
@@ -131,7 +130,7 @@ export function Stepper({
                     stepIdx <= index
                       ? theme.colors.outline
                       : theme.colors.primary,
-                }
+                },
               )}
             />
           )}

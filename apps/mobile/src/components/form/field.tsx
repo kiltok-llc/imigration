@@ -1,10 +1,4 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useRef } from 'react';
 import {
   type FieldPath,
   type FieldValues,
@@ -15,10 +9,8 @@ import {
   UseControllerReturn,
   useFormContext,
 } from 'react-hook-form';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import tw from 'twrnc';
 
-import { useIsFirstRender } from '@/hooks/use-is-first-render';
+import { useLatestRef } from '@/hooks/use-latest-ref';
 import { WithRequired } from '@/lib/utils';
 
 export const FormFieldContext = createContext<UseControllerReturn>({
@@ -55,32 +47,32 @@ export const FormFieldContext = createContext<UseControllerReturn>({
   },
 });
 
-export const ConditionalFormFieldBlock = <
+type NonUndefined<T> = T extends undefined ? never : T;
+
+export const ConditionalFormWrapper = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues,
 >({
-  active,
-  activeValue,
-  children,
-  name,
-  ...props
-}: PropsWithChildren<
+    active,
+    activeValue,
+    children,
+    name,
+    ...props
+  }: PropsWithChildren<
   WithRequired<
     UseControllerProps<TFieldValues, TName, TTransformedValues>,
     'control'
   >
 > & {
   active: boolean;
-  activeValue?: PathValue<TFieldValues, TName>;
+  activeValue: PathValue<TFieldValues, TName>;
 }) => {
   const controller = useController({
     disabled: !active,
     name,
     ...props,
   });
-
-  const isFirstRender = useIsFirstRender();
 
   const {
     field: { disabled, value },
@@ -89,46 +81,26 @@ export const ConditionalFormFieldBlock = <
 
   const { resetField, setValue } = useFormContext();
 
-  const currentValueRef = useRef(value);
-  currentValueRef.current = value;
-
-  const activeValueRef = useRef<PathValue<TFieldValues, TName>>(activeValue);
-  activeValueRef.current = activeValue;
-
-  const defaultValueRef = useRef(get(defaultValues, name));
-  defaultValueRef.current = get(defaultValues, name);
-
   useEffect(() => {
     if (disabled) {
-      // console.debug(
-      //   `Resetting field "${name}" to default value because it field was disabled.`
-      // );
       resetField(name);
-    } else if (
-      defaultValueRef.current === currentValueRef.current &&
-      activeValueRef.current !== undefined
-    ) {
-      // console.debug(
-      //   `Setting field "${name}" to active value: '${activeValueRef.current}' because field was enabled and current value is default.`
-      // );
-      setValue(name, activeValueRef.current);
     }
-  }, [disabled, name, resetField, setValue]);
+  }, [disabled, name, resetField]);
 
-  if (!active) {
+  useEffect(() => {
+    if (!disabled && value === get(defaultValues, name) && activeValue !== undefined) {
+      setValue(name, activeValue);
+    }
+  }, [activeValue, defaultValues, disabled, name, setValue, value]);
+
+  if (disabled || value === get(defaultValues, name)) {
     return null;
   }
 
   return (
-    <Animated.View
-      entering={isFirstRender ? undefined : FadeIn}
-      exiting={FadeOut}
-      style={tw`gap-4`}
-    >
-      <FormFieldContext.Provider value={controller as UseControllerReturn}>
-        {children}
-      </FormFieldContext.Provider>
-    </Animated.View>
+    <FormFieldContext.Provider value={controller as UseControllerReturn}>
+      {children}
+    </FormFieldContext.Provider>
   );
 };
 
@@ -137,9 +109,9 @@ export const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues,
 >({
-  children,
-  ...props
-}: PropsWithChildren<
+    children,
+    ...props
+  }: PropsWithChildren<
   UseControllerProps<TFieldValues, TName, TTransformedValues>
 >) => {
   const controller = useController(props);

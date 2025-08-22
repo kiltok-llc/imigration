@@ -2,9 +2,8 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { router, Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
-import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Menu, Surface } from 'react-native-paper';
+import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
@@ -13,43 +12,43 @@ import { resetQuizPages } from '@/atoms/quiz-page-atom';
 import { resetQuizRoute } from '@/atoms/quiz-route-atom';
 import { stepAtom } from '@/atoms/step-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
-import { Trans, TransButton, TransText } from '@/components/trans';
-import { HeaderMenu } from '@/components/ui/header-menu';
+import { TransButton, TransText } from '@/components/trans';
+import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
 
 export const steps: Step[] = [
   {
-    Icon: (props) => <Entypo name='help' {...props} />,
+    Icon: (props) => <Entypo name="help" {...props} />,
     id: 'eligibility',
   },
   {
-    Icon: (props) => <Entypo name='info' {...props} />,
+    Icon: (props) => <Entypo name="info" {...props} />,
     id: 'info',
   },
   {
-    Icon: (props) => <Entypo name='modern-mic' {...props} />,
+    Icon: (props) => <Entypo name="modern-mic" {...props} />,
     id: 'statement',
   },
   {
-    Icon: (props) => <Entypo name='eye' {...props} />,
+    Icon: (props) => <Entypo name="eye" {...props} />,
     id: 'review',
   },
   {
-    Icon: (props) => <Entypo name='clock' {...props} />,
+    Icon: (props) => <Entypo name="clock" {...props} />,
     id: 'waiting',
   },
   {
-    Icon: (props) => <Entypo name='users' {...props} />,
+    Icon: (props) => <Entypo name="users" {...props} />,
     id: 'interview',
   },
   {
-    Icon: (props) => <FontAwesome name='gavel' {...props} />,
+    Icon: (props) => <FontAwesome name="gavel" {...props} />,
     id: 'decision',
   },
   {
-    Icon: (props) => <Entypo name='documents' {...props} />,
+    Icon: (props) => <Entypo name="documents" {...props} />,
     id: 'appeal',
   },
 ];
@@ -83,12 +82,12 @@ export default function I589() {
               <TransText
                 i18nKey={`services.${service}.${step}.title`}
                 style={tw`text-center font-bold`}
-                variant='headlineMedium'
+                variant="headlineMedium"
               />
               <TransText
                 i18nKey={`services.${service}.${step}.description`}
                 style={tw`text-center`}
-                variant='titleSmall'
+                variant="titleSmall"
               />
             </View>
             <StepIcons cols={4} stepId={step} steps={steps} />
@@ -102,8 +101,8 @@ export default function I589() {
                 ? 'services.progress.continue'
                 : 'services.progress.start'
             }
-            icon='arrow-right'
-            mode='contained'
+            icon="arrow-right"
+            mode="contained"
             onPress={() => router.navigate(`/services/${service}/${step}`)}
           />
         </SafeAreaView>
@@ -115,36 +114,29 @@ export default function I589() {
 function I589Menu({ tintColor }: { tintColor?: string }) {
   const service = useService();
   const step = useAtomValue(stepAtom({ service }));
-  const [open, setOpen] = useState(false);
-
-  if (!['review', 'statement'].includes(step)) {
-    return null;
-  }
 
   return (
-    <HeaderMenu open={open} setOpen={setOpen} tintColor={tintColor}>
-      <Menu.Item
-        leadingIcon='note-edit'
-        onPress={() => {
-          resetQuizPages({ service, step: 'info' });
-          resetQuizRoute({ service, step: 'info' });
-          router.navigate(`/services/${service}/info`);
-          setOpen(false);
-        }}
-        title={<Trans i18nKey={`services.${service}.menu.revise.info`} />}
-      />
+    <HeaderMenu tintColor={tintColor}>
+      {['review', 'statement'].includes(step) && (
+        <HeaderMenuItem
+          i18nKey={`services.${service}.menu.revise.info`}
+          leadingIcon="note-edit"
+          onPress={() => {
+            resetQuizPages({ service, step: 'info' });
+            resetQuizRoute({ service, step: 'info' });
+            router.navigate(`/services/${service}/info`);
+          }}
+        />
+      )}
       {step === 'review' && (
-        <Menu.Item
-          leadingIcon='account-edit'
+        <HeaderMenuItem
+          i18nKey={`services.${service}.menu.revise.statement`}
+          leadingIcon="account-edit"
           onPress={() => {
             resetQuizPages({ service, step: 'statement' });
             resetQuizRoute({ service, step: 'statement' });
             router.navigate(`/services/${service}/statement`);
-            setOpen(false);
           }}
-          title={
-            <Trans i18nKey={`services.${service}.menu.revise.statement`} />
-          }
         />
       )}
     </HeaderMenu>

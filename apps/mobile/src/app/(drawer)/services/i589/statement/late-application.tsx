@@ -1,35 +1,30 @@
 import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
-import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
-import { QuizConfirmBox } from '@/components/quiz/checkbox';
 import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { QuizLongTextInput } from '@/components/quiz/text';
+import { lateApplicationDetailsAtom } from '@/lib/data/asylum';
 
-export default function Intro() {
-  const service = useService();
-  const step = useStep();
-  const setIsStepStarted = useSetAtom(isStepStartedAtom({ service, step }));
+export default function LateApplication() {
+  const setLateApplicationDetails = useSetAtom(lateApplicationDetailsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          agreed: false,
+          details: '',
         }}
-        onSubmit={() => {
-          setIsStepStarted(true)
-
+        onSubmit={({ details }) => {
+          setLateApplicationDetails(details);
           return true;
         }}
-        pageId="intro"
+        pageId="details"
         schema={z.object({
-          agreed: z.literal<boolean>(true),
+          details: z.string().nonempty(),
         })}
       >
         {({ control }) => (
@@ -37,8 +32,9 @@ export default function Intro() {
             <FormBlock>
               <QuizPageTitle />
               <QuizPageDescription />
-              <FormField control={control} name="agreed">
-                <QuizConfirmBox />
+
+              <FormField control={control} name="details">
+                <QuizLongTextInput />
               </FormField>
             </FormBlock>
           </>

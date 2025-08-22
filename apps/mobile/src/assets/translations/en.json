@@ -11,6 +11,9 @@
   },
   "or": "or",
   "form": {
+    "documents": {
+      "cancelled": "Document selection was cancelled."
+    },
     "fieldarray": {
       "add": "Add item",
       "remove": "Remove item"
@@ -195,9 +198,92 @@
         "label": "Decision"
       },
       "statement": {
+        "screenTitle": "Personal Statement",
         "description": "Provide a detailed personal statement describing your background, experiences, and reasons for seeking asylum. This statement will be an important part of your application.",
         "title": "Personal Statement",
-        "label": "Statement"
+        "label": "Statement",
+        "intro": {
+          "title": "Your Statement",
+          "intro": {
+            "title": "Personal Statement",
+            "description": "We are going to ask you some specific questions about your situation and your asylum request. You will need to provide detailed answers to these questions. Remember that you can correct and change anything you need before finishing. If you don't have or don't remember something, continue and come back later. It is important to remember that everything you write or say and the documents, photos, or any other information you include or send is your responsibility to be true to the best of your knowledge and belief.",
+            "agreed": {
+              "label": "I understand"
+            }
+          }
+        },
+        "fear": {
+          "title": "Fear of Return",
+          "has-fear": {
+            "has-fear": {
+              "title": "Are you afraid to return to your country? If you have to return, are you afraid that you or your family might suffer harm or mistreatment?"
+            }
+          },
+          "details": {
+            "title": "Fear of returning to your country",
+            "description": "Please explain in detail why you are afraid to return to your country. In your explanation, try to include the following information:\n\nWhat harm or mistreatment you fear may happen if you return.\n\nWho you believe might harm or mistreat you.\n\nWhether anything has changed since you left that might affect the risk of harm or mistreatment. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you could be harmed or mistreated if you return.\n\nAny additional information that may help explain your fear of returning.",
+            "details": {
+              "label": "Fear explanation"
+            }
+          }
+        },
+        "criminal-history": {
+          "title": "Torture",
+          "torture": {
+            "title": "Torture",
+            "has-fear-of-torture": {
+              "title": "Are you afraid of being tortured in your country or in any other country to which you may be returned?",
+              "description": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
+            },
+            "description": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning.",
+            "details": {
+              "label": "Explanation of fear of torture"
+            }
+          }
+        },
+        "torture": {
+          "title": "Torture",
+          "torture": {
+            "title": "Torture",
+            "has-fear-of-torture": {
+              "title": "Are you afraid of being tortured in your country or in any other country to which you may be returned?",
+              "description": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
+            },
+            "description": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning.",
+            "details": {
+              "label": "Explanation of fear of torture"
+            }
+          }
+        },
+        "harm-and-persecution": {
+          "title": "Harm and Persecution",
+          "has-been-harmed": {
+            "has-been-harmed": {
+              "title": "Have you, your family, close friends, or co-workers suffered any harm, mistreatment, or threats?"
+            }
+          },
+          "documents": {
+            "title": "Documents related to your Harm and/or Persecution",
+            "description": "Please submit any documents that may help confirm the information you have provided about your harm and/or persecution. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents.",
+          },
+          "details": {
+            "title": "Details of your Harm and/or Persecution",
+            "description": "Please describe in detail any incidents when you or your family suffered harm, were threatened, or were mistreated.\n\nWhen describing your experience, please include as much detail as possible. In your explanation, try to address the following:\n\nWhat happened and how it happened.\n\nWhen it happened. Indicate whether it was a single incident or if it happened many times.\n\nWho was responsible. If you do not know their names, explain whether they belonged to a group, gang, cartel, political group, or were part of the government.\n\nWhy you believe you or your family were harmed, mistreated, or threatened.\n\nAny additional information. Include anything else you can share that may help us better understand what happened.",
+            "details": {
+              "label": "Details of harm"
+            }
+          }
+        },
+        "late-application": {
+          "title": "Late Application",
+          "details": {
+            "title": "Late Application Explanation",
+            "description": "It has already been more than a year since you entered the United States. The U.S. government requires that this application be submitted within one year. Please explain in great detail why you were not able to submit this application within one year of your entry into the United States.\n\nIt is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)",
+            "details": {
+              "label": "Explanation"
+            }
+          }
+        }
       },
       "eligibility": {
         "arrival-date": {
@@ -565,9 +651,18 @@
         },
         "immigration-status": {
           "other-entries": {
-            "title": "Starting with the most recent, please provide the following information about all the times you have entered the United States in the past five years.",
+            "has-other-entries": {
+              "title": "Has {{ name }} entered the United States any other times in the past five years?",
+              "title_client": "Have you entered the United States any other times in the past five years?",
+              "description_client": "If you have only entered the United States once, you can select 'No'.",
+              "description": "If {{ name }} has only entered the United States once, you can select 'No'."
+            },
+            "other-entries": {
+              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States in the past five years.",
+              "title": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times {{ name }} has entered the United States in the past five years."
+            },
             "entries": {
-              "title_ordinal_one": "{{ count }}st Entry (most recent)",
+              "title_ordinal_one": "{{ count }}st Entry",
               "title_ordinal_two": "{{ count }}nd Entry",
               "title_ordinal_few": "{{ count }}rd Entry",
               "title_ordinal_other": "{{ count }}th Entry",
@@ -663,7 +758,7 @@
               "title": "What is {{ name }}'s Alien Registration Number?"
             }
           },
-          "title": "Client Immigration Status",
+          "title": "Your Immigration Status",
           "title_spouse": "Spouse Immigration Status",
           "title_child_ordinal_one": "{{ count }}st Child Immigration Status",
           "title_child_ordinal_two": "{{ count }}nd Child Immigration Status",
@@ -872,7 +967,7 @@
             "title": "Asylum Application",
             "description": "Before you start, remember that you can correct and change anything you need before finishing. If you don't have or don't remember something, continue and come back later. It is important to remember that everything you write or say and the documents, photos, or any other information you include or send is your responsibility to be true to the best of your knowledge and belief.",
             "agreed": {
-              "label": "I agree"
+              "label": "I understand"
             }
           }
         }

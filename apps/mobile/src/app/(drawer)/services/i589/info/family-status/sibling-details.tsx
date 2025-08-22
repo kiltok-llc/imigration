@@ -12,7 +12,7 @@ import {
   FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
   DEFAULT_NAME,
   FormNameInput,
@@ -76,15 +76,17 @@ export default function SiblingsDetails() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={!!watch('hasSiblings')}
               activeValue={'0'}
               control={control}
               name='numSiblings'
             >
-              <QuizFieldTitle />
-              <QuizTextInput inputMode='numeric' />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <QuizTextInput inputMode='numeric' />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </>
         )}
       </QuizPage>
@@ -182,15 +184,17 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={!!watch('livesInUsa')}
               activeValue={DEFAULT_FORM_ADDRESS}
               control={control}
               name='currentLocation'
             >
-              <QuizFieldTitle variant='titleLarge' />
-              <FormAddressInput lens={lens.focus('currentLocation')} />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormAddressInput lens={lens.focus('currentLocation')} />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </TranslationContextProvider>
         )}
       </QuizPage>

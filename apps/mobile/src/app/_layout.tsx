@@ -16,7 +16,7 @@ import tw from 'twrnc';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { Stack } from '@/components/stack';
 import { env } from '@/env';
-import { useRegisterDevMenuItems } from '@/hooks/use-dev-menu-items';
+import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
 import { theme } from '@/lib/theme';
 import { QueryProvider } from '@/providers/query';
 import { TRPCProvider } from '@/providers/trpc';
@@ -57,28 +57,28 @@ Sentry.init({
 void SystemUI.setBackgroundColorAsync(theme.colors.background);
 
 function RootLayout() {
-  useRegisterDevMenuItems();
-
   return (
-    <QueryProvider>
-      <ReducedMotionConfig mode={ReduceMotion.Never} />
-      <TRPCProvider>
-        <GestureHandlerRootView style={tw`flex-1`}>
-          <KeyboardProvider>
-            <PaperProvider theme={theme}>
-              <SplashScreenBarrier>
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}
-                />
-                <Toaster />
-              </SplashScreenBarrier>
-            </PaperProvider>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
-      </TRPCProvider>
-    </QueryProvider>
+    <DevMenuProvider>
+      <QueryProvider>
+        <ReducedMotionConfig mode={ReduceMotion.Never} />
+        <TRPCProvider>
+          <GestureHandlerRootView style={tw`flex-1`}>
+            <KeyboardProvider>
+              <PaperProvider theme={theme}>
+                <SplashScreenBarrier>
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  />
+                  <Toaster />
+                </SplashScreenBarrier>
+              </PaperProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
+        </TRPCProvider>
+      </QueryProvider>
+    </DevMenuProvider>
   );
 }
 

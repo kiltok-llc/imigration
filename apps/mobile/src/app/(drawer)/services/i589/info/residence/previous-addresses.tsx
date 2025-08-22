@@ -8,8 +8,8 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import {
-  FormFieldArray,
-  FormFieldArrayItemBlocks,
+  FormArray,
+  FormArrayItems,
 } from '@/components/form/fieldarray';
 import {
   DEFAULT_RANGE,
@@ -79,8 +79,8 @@ export default function PreviousAddresses() {
               <QuizPageTitle />
             </FormBlock>
 
-            <FormFieldArray control={control} name='residences'>
-              <FormFieldArrayItemBlocks>
+            <FormArray control={control} name='residences'>
+              <FormArrayItems>
                 {(idx) => (
                   <FormBlock>
                     <QuizFieldArrayItemHeader />
@@ -92,14 +92,14 @@ export default function PreviousAddresses() {
                     />
                   </FormBlock>
                 )}
-              </FormFieldArrayItemBlocks>
+              </FormArrayItems>
               <QuizFieldArrayAdd
                 value={{
                   address: DEFAULT_FORM_ADDRESS,
                   range: DEFAULT_RANGE,
                 }}
               />
-            </FormFieldArray>
+            </FormArray>
           </>
         )}
       </QuizPage>

@@ -10,19 +10,12 @@ import {
   UseFieldArrayProps,
   UseFieldArrayReturn,
 } from 'react-hook-form';
+import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { FormBlock } from '@/components/form/block';
-import {
-  FormField,
-  FormFieldContext,
-  useFormField,
-} from '@/components/form/field';
+import { FormField, FormFieldContext, useFormField } from '@/components/form/field';
 import { TransButton } from '@/components/trans';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
+import { createRequiredContext, useRequiredContext } from '@/hooks/use-required-context';
 import { WithRequired } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
@@ -43,15 +36,15 @@ const FormFieldArrayContext = createContext<UseFieldArrayReturn>({
   update: () => {},
 });
 
-export const FormFieldArray = <
+export const FormArray = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends ArrayPath<TFieldValues> = ArrayPath<TFieldValues>,
   TKeyName extends string = 'id',
   TTransformedValues = TFieldValues,
 >({
-  children,
-  ...props
-}: PropsWithChildren<
+    children,
+    ...props
+  }: PropsWithChildren<
   WithRequired<
     UseFieldArrayProps<TFieldValues, TName, TKeyName, TTransformedValues>,
     'control'
@@ -59,7 +52,7 @@ export const FormFieldArray = <
 >) => {
   const fieldArray = useFieldArray(props);
 
-  const { control, name } = props;
+  const {control, name} = props;
   const controller = useController({
     control,
     name: name as Path<TFieldValues>,
@@ -74,18 +67,18 @@ export const FormFieldArray = <
   );
 };
 
-export const useFormFieldArray = () => useContext(FormFieldArrayContext);
+export const useFormArray = () => useContext(FormFieldArrayContext);
 
-export function FormFieldArrayAdd({
-  i18nKey,
-  options,
-  value,
-}: {
+export function FormArrayAdd({
+                               i18nKey,
+                               options,
+                               value,
+                             }: {
   i18nKey?: string;
   options?: FieldArrayMethodProps;
   value: any;
 }) {
-  const { append } = useFormFieldArray() as UseFieldArrayReturn;
+  const { append } = useFormArray() as UseFieldArrayReturn;
   return (
     <TransButton
       contentStyle={tw`flex-row-reverse`}
@@ -96,27 +89,23 @@ export function FormFieldArrayAdd({
   );
 }
 
-export function FormFieldArrayItemBlocks({
-  children,
-}: {
-  children: (idx: number) => ReactNode;
+export function FormArrayItems({
+                                 children,
+                               }: {
+  children: (index: number) => ReactNode;
 }) {
-  const { fields } = useFormFieldArray() as UseFieldArrayReturn;
-  const {
-    field: { name },
-  } = useFormField();
+  const {fields} = useFormArray() as UseFieldArrayReturn;
+  const { field: {name} } = useFormField();
 
-  return fields.map(({ id }, index) => (
-    <FormBlock key={id}>
-      <FormField name={`${name}.${index}`}>
-        <FormFieldArrayItemContext.Provider value={index}>
-          <TranslationContextProvider
-            value={{ count: index + 1, values: { ordinal: true } }}
-          >
-            {children(index)}
-          </TranslationContextProvider>
-        </FormFieldArrayItemContext.Provider>
-      </FormField>
-    </FormBlock>
+  return fields.map(({id}, index) => (
+    <FormField key={id} name={`${name}.${index}`}>
+      <FormFieldArrayItemContext.Provider value={index}>
+        <TranslationContextProvider
+          value={{count: index + 1, values: {ordinal: true}}}
+        >
+          {children(index)}
+        </TranslationContextProvider>
+      </FormFieldArrayItemContext.Provider>
+    </FormField>
   ));
 }

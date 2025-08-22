@@ -79,19 +79,7 @@ export function FormDateInput({
           setOpen(true);
         }}
         ref={mergeRefs([inputRef, ref])}
-        right={
-          <TextInput.Icon
-            icon='calendar'
-            onPress={
-              __DEV__
-                ? () => {
-                    toast('Set date to null (Dev Only)');
-                    onChange(null);
-                  }
-                : undefined
-            }
-          />
-        }
+        right={<TextInput.Icon icon='calendar' />}
         showSoftInputOnFocus={false}
         value={value ? FORMAT.format(value) : ''}
         {...props}

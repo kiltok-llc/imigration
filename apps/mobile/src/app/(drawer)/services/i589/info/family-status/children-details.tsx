@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import {
   DEFAULT_NAME,
@@ -69,15 +69,17 @@ export default function ChildrenDetails() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={!!watch('hasChildren')}
               activeValue={'0'}
               control={control}
               name='numChildren'
             >
-              <QuizFieldTitle />
-              <QuizTextInput inputMode='numeric' />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <QuizTextInput inputMode='numeric' />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </>
         )}
       </QuizPage>
@@ -197,15 +199,17 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={!!watch('hasBirthCertificate')}
               activeValue={null}
               control={control}
               name='birthCertificate'
             >
-              <QuizFieldTitle />
-              <FormImageInput />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <FormImageInput />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </TranslationContextProvider>
         )}
       </QuizPage>

@@ -1,68 +1,48 @@
-import { isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
-import { atom, Getter, Setter, useAtomValue, useSetAtom } from 'jotai';
-import { useCallback, useEffect } from 'react';
+import { ExpoDevMenuItem, isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { PropsWithChildren, useEffect } from 'react';
 
-import { resetAllQuizPages } from '@/atoms/quiz-page-atom';
-import { resetAllQuizValues } from '@/atoms/quiz-values-atom';
 import { defaultStorage, quizStorage, userStorage } from '@/lib/mmkv';
 
-const devMenuItemAtom = (
-  id: string,
-  name: string,
-  callback: (get: Getter, set: Setter) => void,
-  { shouldCollapse = true }: { shouldCollapse?: boolean } = {}
-) => atom({ callback, id, name, shouldCollapse });
+const devMenuItemsAtom = atom<ExpoDevMenuItem[]>([
+  {
+    callback: () => {
+      defaultStorage.clearAll();
+      userStorage.clearAll();
+      quizStorage.clearAll();
+    },
+    name: 'Clear Storage',
+  },
+]);
 
-const clearQuizStorageAtom = devMenuItemAtom(
-  'clear-quiz-storage',
-  'Clear Quiz Pages & Values',
-  () => {
-    resetAllQuizValues();
-    resetAllQuizPages();
-  }
-);
-
-const clearStorageAtom = devMenuItemAtom(
-  'clear-storage',
-  'Clear Storage',
-  () => {
-    defaultStorage.clearAll();
-    userStorage.clearAll();
-    quizStorage.clearAll();
-  }
-);
-
-const devMenuItemsAtom = atom((get) =>
-  [clearQuizStorageAtom, clearStorageAtom].map((atom) => get(atom))
-);
-
-const invokeDevMenuItemAtom = atom(null, (get, set, id: string) => {
-  const { callback } = get(devMenuItemsAtom).find((item) => item.id === id)!;
-
-  callback(get, set);
-});
-
-export const useRegisterDevMenuItems = () => {
-  const devMenuItems = useAtomValue(devMenuItemsAtom);
-  const invokeDevMenuItem = useSetAtom(invokeDevMenuItemAtom);
-
-  const register = useCallback(
-    () =>
-      registerDevMenuItems(
-        devMenuItems.map(({ id, name, shouldCollapse }) => ({
-          callback: () => invokeDevMenuItem(id),
-          name,
-          shouldCollapse,
-        }))
-      ),
-    [devMenuItems, invokeDevMenuItem]
-  );
+export const useDevMenuItem = (itemCallback: () => ExpoDevMenuItem) => {
+  const setDevMenuItems = useSetAtom(devMenuItemsAtom);
 
   useEffect(() => {
     if (!isDevelopmentBuild()) {
       return;
     }
 
-    void register();
-  }, [register]);
+    const item = itemCallback();
+
+    setDevMenuItems((items) => [...items, item]);
+
+    return () => {
+      setDevMenuItems((items) => items.filter((i) => i !== item));
+    };
+  }, [itemCallback, setDevMenuItems]);
 };
+
+export function DevMenuProvider({ children }: PropsWithChildren) {
+  const items = useAtomValue(devMenuItemsAtom);
+
+  useEffect(() => {
+    if (!isDevelopmentBuild()) {
+      return;
+    }
+
+    void registerDevMenuItems(items);
+  }, [items]);
+
+  return children;
+}

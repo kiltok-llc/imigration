@@ -1,7 +1,7 @@
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
@@ -159,15 +159,17 @@ export default function DemographicsAndBirth() {
               </FormField>
             </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={!!watch('hasBirthCertificate')}
               activeValue={null}
               control={control}
               name='image'
             >
-              <QuizFieldTitle />
-              <FormImageInput />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <FormImageInput />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </>
         )}
       </QuizPage>

@@ -30,7 +30,7 @@ export default defineConfig([
       'react-hooks/exhaustive-deps': [
         'warn',
         {
-          additionalHooks: '^(useStable[A-Za-z]+Callback)$',
+          additionalHooks: '^(use[A-Za-z]+Ref)$',
         },
       ],
     },

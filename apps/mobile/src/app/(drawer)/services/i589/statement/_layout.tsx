@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
 import { toast } from 'sonner-native';
 
@@ -10,19 +10,32 @@ import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
-import { childIdsAtom } from '@/lib/data/child';
-import { maritalStatusAtom } from '@/lib/data/marriage';
+import { entriesAtom } from '@/lib/data/user';
 import { QuizProvider } from '@/lib/quiz';
 import { RoutesProvider } from '@/providers/routes';
 
-export default function InfoLayout() {
+const now = new Date();
+const oneYear = 365 * 24 * 60 * 60 * 1000; // One year in milliseconds
+const cuttoffDate = new Date(now.getTime() - oneYear);
+
+const entryIsRecentAtom = atom(
+  (get) => {
+    const mostRecentEntry = get(entriesAtom)
+      .map(({ date }) => date)
+      .filter((date) => date !== null)
+      .sort((a, b) => b.getTime() - a.getTime())[0];
+
+    return mostRecentEntry ? mostRecentEntry.getTime() >= cuttoffDate.getTime() : false;
+  }
+);
+
+export default function StatementLayout() {
   const service = useService();
   const step = useStep();
   const t = useT();
   const router = useRouter();
-  const maritalStatus = useAtomValue(maritalStatusAtom);
-  const childIds = useAtomValue(childIdsAtom);
   const setStep = useSetAtom(stepAtom({ service }));
+  const entryIsRecent = useAtomValue(entryIsRecentAtom);
 
   return (
     <>
@@ -45,31 +58,17 @@ export default function InfoLayout() {
       />
       <RoutesProvider
         onComplete={() => {
-          setStep('statement');
+          setStep('review');
           router.dismissTo(`/services/${service}`);
           router.replace(`/services/${service}?confetti=true`);
         }}
         routes={[
           'intro',
-          'personal-information/name-and-aliases',
-          'personal-information/demographics-and-birth',
-          'personal-information/language-proficiency',
-          'residence/current-address',
-          'residence/previous-addresses',
-          'school-information',
-          'employment-history',
-          'family-status/marital-status',
-          'family-status/children-details',
-          'family-status/parent-details',
-          'family-status/sibling-details',
-          'immigration-status?context=client',
-          ...(maritalStatus === 'married'
-            ? ['immigration-status?context=spouse']
-            : []),
-          ...childIds.map(
-            (id, index) =>
-              `immigration-status?context=child&id=${id}&count=${index + 1}`,
-          ),
+          ...(entryIsRecent ? [] : ['late-application']),
+          'harm-and-persecution',
+          'fear',
+          'fear-of-torture',
+          'criminal-history',
         ]}
       >
         <QuizProvider>

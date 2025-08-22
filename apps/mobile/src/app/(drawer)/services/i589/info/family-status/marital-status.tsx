@@ -7,7 +7,7 @@ import {
   FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import {
   DEFAULT_NAME,
@@ -97,15 +97,17 @@ export default function MaritalStatus() {
                 <FormBooleanInput />
               </FormField>
 
-              <ConditionalFormFieldBlock
+              <ConditionalFormWrapper
                 active={!!watch('hasCertificate')}
                 activeValue={null}
                 control={control}
                 name='certificate'
               >
-                <QuizFieldTitle />
-                <FormImageInput />
-              </ConditionalFormFieldBlock>
+                <FormBlock animated>
+                  <QuizFieldTitle />
+                  <FormImageInput />
+                </FormBlock>
+              </ConditionalFormWrapper>
             </>
           )}
         </QuizPage>

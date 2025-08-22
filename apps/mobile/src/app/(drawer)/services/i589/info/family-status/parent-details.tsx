@@ -11,7 +11,7 @@ import {
   FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
   DEFAULT_NAME,
   FormNameInput,
@@ -108,17 +108,19 @@ const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
                 </FormField>
               </FormBlock>
 
-              <ConditionalFormFieldBlock
+              <ConditionalFormWrapper
                 active={!!watch('alive')}
                 activeValue={DEFAULT_FORM_ADDRESS_WITH_COUNTRY}
                 control={control}
                 name='currentLocation'
               >
-                <QuizFieldTitle variant='titleLarge' />
-                <FormAddressWithCountryInput
-                  lens={lens.focus('currentLocation')}
-                />
-              </ConditionalFormFieldBlock>
+                <FormBlock animated>
+                  <QuizFieldTitle variant='titleLarge' />
+                  <FormAddressWithCountryInput
+                    lens={lens.focus('currentLocation')}
+                  />
+                </FormBlock>
+              </ConditionalFormWrapper>
             </>
           )}
         </QuizPage>

@@ -7,7 +7,7 @@ import {
   isValidElement,
   PropsWithChildren,
   ReactNode,
-  RefObject,
+  RefObject, useCallback,
   useEffect,
   useMemo,
 } from 'react';
@@ -18,6 +18,7 @@ import { quizPageAtom } from '@/atoms/quiz-page-atom';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { QuizPageHandle } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
+import { useDevMenuItem } from '@/hooks/use-dev-menu-items';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
@@ -59,6 +60,14 @@ export function QuizScreen({
   );
   const handleQuizScreenPrev = useHandleQuizScreenPrev(screenKey);
   const { setHandleBack, setHandleContinue } = useQuizActions();
+
+  useDevMenuItem(useCallback(() => ({
+    callback: () => {
+      childRefs[page]?.current?.reset()
+    },
+    name: 'Reset Quiz Page Values',
+    shouldCollapse: true
+  }), [childRefs, page]));
 
   const {
     data: submissionResult,

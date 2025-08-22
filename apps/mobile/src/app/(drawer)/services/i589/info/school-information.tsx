@@ -8,8 +8,8 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import {
-  FormFieldArray,
-  FormFieldArrayItemBlocks,
+  FormArray,
+  FormArrayItems,
 } from '@/components/form/fieldarray';
 import { FormRadioGroup } from '@/components/form/radio';
 import {
@@ -127,8 +127,8 @@ export default function SchoolInformation() {
               <QuizPageTitle />
             </FormBlock>
 
-            <FormFieldArray control={control} name='schools'>
-              <FormFieldArrayItemBlocks>
+            <FormArray control={control} name='schools'>
+              <FormArrayItems>
                 {(idx) => (
                   <FormBlock>
                     <QuizFieldArrayItemHeader />
@@ -144,7 +144,7 @@ export default function SchoolInformation() {
                     />
                   </FormBlock>
                 )}
-              </FormFieldArrayItemBlocks>
+              </FormArrayItems>
               <QuizFieldArrayAdd
                 value={{
                   address: DEFAULT_FORM_ADDRESS,
@@ -152,7 +152,7 @@ export default function SchoolInformation() {
                   range: DEFAULT_RANGE,
                 }}
               />
-            </FormFieldArray>
+            </FormArray>
           </>
         )}
       </QuizPage>

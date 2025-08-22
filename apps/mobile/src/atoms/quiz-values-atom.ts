@@ -1,6 +1,5 @@
 import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
-import { FieldValues } from 'react-hook-form';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
@@ -9,13 +8,13 @@ import { clearMMKVKeys } from '@/lib/utils';
 
 export const quizValuesAtom = atomFamily(
   ({
-    pageId,
-    pageKey = '',
-    screenId,
-    screenKey = '',
-    service,
-    step,
-  }: {
+     pageId,
+     pageKey = '',
+     screenId,
+     screenKey = '',
+     service,
+     step,
+   }: {
     pageId: string;
     pageKey: string | undefined;
     screenId: string;
@@ -23,13 +22,13 @@ export const quizValuesAtom = atomFamily(
     service: string;
     step: string;
   }) =>
-    atomWithMmkvStorage<FieldValues>(
+    atomWithMmkvStorage(
       `services:${service}:${step}:${screenId}:${screenKey}:${pageId}:${pageKey}:values`,
-      {},
-      z.any(),
-      quizStorage
+      null,
+      z.looseObject({}).nullable(),
+      quizStorage,
     ),
-  isEqual
+  isEqual,
 );
 
 export function resetAllQuizValues() {
@@ -46,7 +45,7 @@ export function resetAllQuizValues() {
     pageKey,
   ] of clearMMKVKeys<[string, string, string, string, string, string]>(
     exp,
-    quizStorage
+    quizStorage,
   )) {
     quizValuesAtom.remove({
       pageId,
@@ -60,15 +59,15 @@ export function resetAllQuizValues() {
 }
 
 export function resetQuizValues({
-  service,
-  step,
-}: {
+                                  service,
+                                  step,
+                                }: {
   service: string;
   step: string;
 }) {
   console.log(`Clearing quiz values for ${service}.${step}`);
   const exp = new RegExp(
-    `^services:${service}:${step}:([^:]+):([^:]+):([^:]+):([^:]+):values$`
+    `^services:${service}:${step}:([^:]+):([^:]+):([^:]+):([^:]+):values$`,
   );
 
   for (const [screenId, screenKey, pageId, pageKey] of clearMMKVKeys<

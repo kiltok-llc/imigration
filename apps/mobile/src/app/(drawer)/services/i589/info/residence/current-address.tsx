@@ -7,7 +7,7 @@ import {
   FormAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
-import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
@@ -82,20 +82,24 @@ export default function CurrentAddress() {
       >
         {({ control, lens, watch }) => (
           <>
-            <FormField control={control} name='receivesMail'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
+            <FormBlock>
+              <FormField control={control} name='receivesMail'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
 
-            <ConditionalFormFieldBlock
+            <ConditionalFormWrapper
               active={watch('receivesMail') === false}
               activeValue={DEFAULT_FORM_ADDRESS}
               control={control}
               name={'mailingAddress'}
             >
-              <QuizFieldTitle />
-              <FormAddressInput lens={lens.focus('mailingAddress')} />
-            </ConditionalFormFieldBlock>
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <FormAddressInput lens={lens.focus('mailingAddress')} />
+              </FormBlock>
+            </ConditionalFormWrapper>
           </>
         )}
       </QuizPage>

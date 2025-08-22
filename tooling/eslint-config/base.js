@@ -74,7 +74,7 @@ export default defineConfig([
       'unicorn/no-null': 'off',
       'unicorn/prefer-global-this': 'off',
       'unicorn/prefer-string-raw': 'off',
-      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/prevent-abbreviations': 'off'
     },
   },
   {
