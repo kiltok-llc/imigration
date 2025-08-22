@@ -105,13 +105,14 @@ function QuizHeader() {
         backgroundColor={theme.colors.surfaceDisabled}
         fill={(current / total) * 100}
         rotation={0}
-        size={80}
+        size={70}
         tintColor={theme.colors.primary}
-        width={6}
+        width={5}
       >
         {() => (
           <TransText
             i18nKey='quiz.header.progress'
+            style={tw`font-mono`}
             values={{ current, total }}
             variant='bodyMedium'
           />

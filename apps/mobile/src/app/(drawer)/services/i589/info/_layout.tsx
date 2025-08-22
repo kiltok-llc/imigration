@@ -1,11 +1,15 @@
 import { HeaderButton } from '@react-navigation/elements';
 import { Stack, useRouter } from 'expo-router';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { Icon } from 'react-native-paper';
+import * as React from 'react';
+import { useState } from 'react';
+import { Icon, Menu } from 'react-native-paper';
+import { toast } from 'sonner-native';
 
 import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
+import { Trans } from '@/components/trans';
 import { useT } from '@/hooks/use-t';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
@@ -18,18 +22,35 @@ export default function InfoLayout() {
   const maritalStatus = useAtomValue(maritalStatusAtom);
   const childIds = useAtomValue(childIdsAtom);
   const setStep = useSetAtom(useServiceStepAtom());
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
       <Stack.Screen
         options={{
           headerRight: ({ tintColor }) => (
-            <HeaderButton
-              accessibilityLabel='Show navigation enu'
-              onPress={() => console.log('hi')}
+            <Menu
+              anchor={
+                <HeaderButton
+                  accessibilityLabel='Show navigation enu'
+                  onPress={() => setMenuOpen(true)}
+                >
+                  <Icon color={tintColor} size={24} source='dots-horizontal' />
+                </HeaderButton>
+              }
+              onDismiss={() => setMenuOpen(false)}
+              visible={menuOpen}
             >
-              <Icon color={tintColor} size={24} source='dots-horizontal' />
-            </HeaderButton>
+              <Menu.Item
+                leadingIcon='content-save'
+                onPress={() => {
+                  router.dismissTo('/services/i589');
+                  toast.success(t('quiz.toast.saved'));
+                  setMenuOpen(false);
+                }}
+                title={<Trans i18nKey={`quiz.menu.save-exit`} />}
+              />
+            </Menu>
           ),
           title: t('services.i589.info.screenTitle'),
         }}

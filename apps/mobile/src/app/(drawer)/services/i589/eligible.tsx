@@ -55,7 +55,7 @@ export default function Eligible() {
           </Surface>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey='services.i589.eligible.continueButton'
+            i18nKey='services.i589.eligible.continue'
             icon='arrow-right'
             onPress={() => {
               setStep('info');

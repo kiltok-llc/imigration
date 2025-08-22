@@ -53,7 +53,7 @@ export default function I589() {
         <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey='next'
+            i18nKey={`services.i589.${stepId}.continue`}
             icon='arrow-right'
             mode='contained'
             onPress={() => router.navigate(`/services/i589/${stepId}`)}

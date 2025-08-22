@@ -137,9 +137,15 @@
   },
   "previous": "Back",
   "quiz": {
+    "menu": {
+      "save-exit": "Save and exit"
+    },
+    "toast": {
+      "saved": "Your answers have been saved."
+    },
     "header": {
       "nextTitle": "Next: {{ nextTitle }}",
-      "progress": "{{ current }} of {{ total }}",
+      "progress": "{{ current }}/{{ total }}",
       "title": "{{ title }}"
     },
     "missing": "Please answer all questions before continuing.",
@@ -257,7 +263,7 @@
         "label": "Eligibility"
       },
       "eligible": {
-        "continueButton": "Continue to Application",
+        "continue": "Continue to Application",
         "description": "Based on your answers, you appear to be eligible to apply for asylum in the United States.",
         "nextSteps": "You can now proceed with your I-589 application for asylum. The following steps will guide you through the process.",
         "screenTitle": "Eligibility Confirmed",
@@ -265,7 +271,7 @@
       },
       "ineligible": {
         "alternatives": "You may want to consult with an immigration attorney to explore other immigration options that might be available to you.",
-        "backButton": "Return to Services",
+        "back": "Return to Services",
         "description": "Based on your answers, you may not be eligible to apply for asylum in the United States at this time.",
         "screenTitle": "Eligibility Results",
         "title": "You May Not Be Eligible for Asylum"

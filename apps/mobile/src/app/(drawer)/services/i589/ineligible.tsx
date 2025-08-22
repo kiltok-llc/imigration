@@ -49,7 +49,7 @@ export default function Ineligible() {
             </View>
           </Surface>
           <TransButton
-            i18nKey='services.i589.ineligible.backButton'
+            i18nKey='services.i589.ineligible.back'
             icon='arrow-left'
             onPress={() => router.dismissTo('/services')}
             style={tw`mt-auto`}
