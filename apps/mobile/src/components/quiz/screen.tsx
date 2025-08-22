@@ -14,11 +14,14 @@ import {
 import { Keyboard, View } from 'react-native';
 import tw from 'twrnc';
 
-import { useQuizScreenPageAtom } from '@/atoms/quiz-screen-page-family';
+import { quizPageAtom } from '@/atoms/quiz-page-atom';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { QuizPageHandle } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
+import { useScreenId } from '@/hooks/use-screen-id';
+import { useServiceId } from '@/hooks/use-service-id';
+import { useStepId } from '@/hooks/use-step-id';
 import {
   QuizScreenKeyContext,
   useHandleQuizScreenNext,
@@ -42,7 +45,12 @@ export function QuizScreen({
   children,
   screenKey,
 }: PropsWithChildren<{ screenKey?: string }>) {
-  const page = useAtomValue(useQuizScreenPageAtom(screenKey));
+  const screenId = useScreenId();
+  const serviceId = useServiceId();
+  const stepId = useStepId();
+  const page = useAtomValue(
+    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+  );
   const keyboardVisible = useKeyboardVisible();
   const childRefs = useChildRefs(children);
   const handleQuizScreenNext = useHandleQuizScreenNext(

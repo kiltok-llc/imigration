@@ -7,9 +7,11 @@ import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { useResetQuizValues } from '@/atoms/quiz-page-values';
-import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
+import { quizRouteAtom } from '@/atoms/quiz-route-atom';
+import { resetQuizValues } from '@/atoms/quiz-values-atom';
 import { TransButton, TransText } from '@/components/trans';
+import { useServiceId } from '@/hooks/use-service-id';
+import { useStepId } from '@/hooks/use-step-id';
 
 export function QuizErrorFallback({
   children,
@@ -17,8 +19,9 @@ export function QuizErrorFallback({
   retry,
 }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
-  const resetQuizRoute = useResetAtom(useQuizRouteAtom());
-  const resetQuizValues = useResetQuizValues();
+  const serviceId = useServiceId();
+  const stepId = useStepId();
+  const resetQuizRoute = useResetAtom(quizRouteAtom({ serviceId, stepId }));
   const router = useRouter();
 
   return (
@@ -57,7 +60,7 @@ export function QuizErrorFallback({
         i18nKey='quiz.error.reset-values'
         mode='text'
         onPress={() => {
-          resetQuizValues();
+          resetQuizValues({ serviceId, stepId });
           void retry();
         }}
       />

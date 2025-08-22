@@ -157,7 +157,6 @@
     }
   },
   "services": {
-    "asylum": "Asylum",
     "b2": {
       "subtitle": "B-2 Visitor Visa Application",
       "title": "Visitor Visa"
@@ -899,7 +898,11 @@
     },
     "popular": "Popular Services",
     "screenTitle": "iMigration Services",
-    "searchPlaceholder": "Search services..."
+    "progress": {
+      "next_pending": "Start",
+      "next_active": "Continue",
+      "next_completed": "Revise"
+    }
   },
   "settings": {
     "drawerLabel": "Settings",

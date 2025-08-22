@@ -1,6 +1,6 @@
 import { Lens, useLens } from '@hookform/lenses';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { useSetAtom } from 'jotai';
+import { PrimitiveAtom, useSetAtom } from 'jotai';
 import {
   ComponentProps,
   ReactNode,
@@ -23,12 +23,16 @@ import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
-import { useQuizValuesAtom } from '@/atoms/quiz-page-values';
+import { quizValuesAtom } from '@/atoms/quiz-values-atom';
 import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
+import { useScreenId } from '@/hooks/use-screen-id';
+import { useServiceId } from '@/hooks/use-service-id';
 import { useStableAtomCallback } from '@/hooks/use-stable-atom-callback';
+import { useStepId } from '@/hooks/use-step-id';
+import { useQuizScreenKey } from '@/lib/quiz';
 
 export type QuizPageHandle = {
   submit: () => Promise<boolean>;
@@ -62,8 +66,19 @@ export function QuizPage<Input extends FieldValues, Output>({
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
 }) {
-  const quizValuesAtom = useQuizValuesAtom<Input>(pageId, pageKey);
-  const setPersistedValues = useSetAtom(quizValuesAtom);
+  const serviceId = useServiceId();
+  const screenId = useScreenId();
+  const stepId = useStepId();
+  const screenKey = useQuizScreenKey();
+  const valuesAtom = quizValuesAtom({
+    pageId,
+    pageKey,
+    screenId,
+    screenKey,
+    serviceId,
+    stepId,
+  }) as PrimitiveAtom<Input>;
+  const setPersistedValues = useSetAtom(valuesAtom);
 
   const context = useForm<Input, any, Output>({
     defaultValues: defaultValues as DefaultValues<Input>,
@@ -78,7 +93,7 @@ export function QuizPage<Input extends FieldValues, Output>({
 
   const loadQuizValues = useStableAtomCallback(
     (get) => {
-      const persistedValues = get(quizValuesAtom);
+      const persistedValues = get(valuesAtom);
       // console.debug(
       //   `Loaded quiz values for ${pageId}:${pageKey}`,
       //   persistedValues
@@ -90,7 +105,7 @@ export function QuizPage<Input extends FieldValues, Output>({
         });
       }
     },
-    [quizValuesAtom, reset]
+    [reset, valuesAtom]
   );
 
   useEffect(() => {

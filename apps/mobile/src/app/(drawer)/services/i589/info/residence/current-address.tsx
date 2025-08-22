@@ -12,9 +12,11 @@ import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
+import { useServiceId } from '@/hooks/use-service-id';
 import { required } from '@/lib/utils';
 
 export default function CurrentAddress() {
+  const serviceId = useServiceId();
   const router = useRouter();
 
   return (
@@ -25,7 +27,7 @@ export default function CurrentAddress() {
         }}
         onSubmit={({ resident }) => {
           if (!resident) {
-            router.navigate('/services/i589/ineligible');
+            router.navigate(`/services/${serviceId}/ineligible`);
             return false;
           }
 

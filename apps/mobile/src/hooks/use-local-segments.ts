@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useSegments } from 'expo-router';
-import { useLayoutEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export function useLocalSegments({
   groups = false,
@@ -9,11 +9,9 @@ export function useLocalSegments({
   const isFocused = useIsFocused(); // whether *this* screen is focused now
   const lastFocused = useRef<string[]>(segments);
 
-  useLayoutEffect(() => {
-    if (isFocused) {
-      lastFocused.current = segments;
-    }
-  }, [isFocused, segments]);
+  if (isFocused) {
+    lastFocused.current = segments;
+  }
 
   return lastFocused.current.filter((s) => groups || !s.startsWith('('));
 }

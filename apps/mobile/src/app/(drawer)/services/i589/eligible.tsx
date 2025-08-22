@@ -5,21 +5,27 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { stepAtom } from '@/atoms/step-atom';
+import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
+import { useServiceId } from '@/hooks/use-service-id';
 import { useT } from '@/hooks/use-t';
 
 export default function Eligible() {
+  const serviceId = useServiceId();
   const t = useT();
-  const setStep = useSetAtom(useServiceStepAtom());
+  const setStep = useSetAtom(stepAtom({ serviceId }));
+  const setEligibilityStepState = useSetAtom(
+    stepStateAtom({ serviceId, stepId: 'eligibility' })
+  );
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: t('services.i589.eligible.screenTitle'),
+          title: t(`services.${serviceId}.eligible.screenTitle`),
         }}
       />
       <ConfettiOnDemand />
@@ -37,17 +43,17 @@ export default function Eligible() {
 
             <View style={tw`gap-4`}>
               <TransText
-                i18nKey='services.i589.eligible.title'
+                i18nKey={`services.${serviceId}.eligible.title`}
                 style={tw`text-center font-bold`}
                 variant='headlineMedium'
               />
               <TransText
-                i18nKey='services.i589.eligible.description'
+                i18nKey={`services.${serviceId}.eligible.description`}
                 style={tw`text-center`}
                 variant='bodyLarge'
               />
               <TransText
-                i18nKey='services.i589.eligible.nextSteps'
+                i18nKey={`services.${serviceId}.eligible.nextSteps`}
                 style={tw`mt-4 text-center`}
                 variant='bodyMedium'
               />
@@ -55,12 +61,13 @@ export default function Eligible() {
           </Surface>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey='services.i589.eligible.continue'
+            i18nKey={`services.${serviceId}.eligible.continue`}
             icon='arrow-right'
             onPress={() => {
               setStep('info');
-              router.dismissTo('/services/i589');
-              router.replace('/services/i589');
+              setEligibilityStepState('completed');
+              router.dismissTo(`/services/${serviceId}`);
+              router.replace(`/services/${serviceId}`);
             }}
             style={tw`mt-auto`}
           />

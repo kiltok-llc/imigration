@@ -4,16 +4,20 @@ import {
   createContext,
   PropsWithChildren,
   useCallback,
+  useContext,
   useEffect,
   useState,
 } from 'react';
 
-import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
-import { useQuizScreenPageAtom } from '@/atoms/quiz-screen-page-family';
+import { quizPageAtom } from '@/atoms/quiz-page-atom';
+import { quizRouteAtom } from '@/atoms/quiz-route-atom';
 import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
+import { useScreenId } from '@/hooks/use-screen-id';
+import { useServiceId } from '@/hooks/use-service-id';
+import { useStepId } from '@/hooks/use-step-id';
 import {
   useCurrentRouteUrl,
   useIncrementRoute,
@@ -27,6 +31,8 @@ export const QuizScreenKeyContext = createContext<string | undefined>(
   undefined
 );
 
+export const useQuizScreenKey = () => useContext(QuizScreenKeyContext);
+
 type QuizActions = {
   handleBack?: () => void;
   handleContinue?: () => void;
@@ -39,10 +45,11 @@ const QuizActionsContext = createRequiredContext<QuizActions>();
 export const useQuizActions = () => useRequiredContext(QuizActionsContext);
 
 export const useQuizRoutePersistence = () => {
-  // Persist valid route
+  const serviceId = useServiceId();
+  const stepId = useStepId();
   const routes = useRouteUrls();
   const currentRouteUrl = useCurrentRouteUrl();
-  const saveQuizRoute = useSetAtom(useQuizRouteAtom());
+  const saveQuizRoute = useSetAtom(quizRouteAtom({ serviceId, stepId }));
   useEffect(() => {
     if (routes.includes(currentRouteUrl)) {
       saveQuizRoute(currentRouteUrl);
@@ -74,7 +81,12 @@ export const useHandleQuizScreenNext = (
   pages: number,
   screenKey: string | undefined
 ) => {
-  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
+  const serviceId = useServiceId();
+  const stepId = useStepId();
+  const screenId = useScreenId();
+  const [page, setPage] = useAtom(
+    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+  );
   const isLastRoute = useIsLastRoute();
   const onComplete = useOnComplete();
   const incrementRoute = useIncrementRoute();
@@ -91,7 +103,12 @@ export const useHandleQuizScreenNext = (
 };
 
 export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
-  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
+  const serviceId = useServiceId();
+  const stepId = useStepId();
+  const screenId = useScreenId();
+  const [page, setPage] = useAtom(
+    quizPageAtom({ screenId, screenKey, serviceId, stepId })
+  );
   const isFirstRoute = useIsFirstRoute();
   const router = useRouter();
   const incrementRoute = useIncrementRoute();

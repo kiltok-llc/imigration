@@ -6,10 +6,12 @@ import { useState } from 'react';
 import { Icon, Menu } from 'react-native-paper';
 import { toast } from 'sonner-native';
 
-import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { stepAtom } from '@/atoms/step-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { Trans } from '@/components/trans';
+import { useServiceId } from '@/hooks/use-service-id';
+import { useStepId } from '@/hooks/use-step-id';
 import { useT } from '@/hooks/use-t';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
@@ -17,11 +19,13 @@ import { QuizProvider } from '@/lib/quiz';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
+  const serviceId = useServiceId();
+  const stepId = useStepId();
   const t = useT();
   const router = useRouter();
   const maritalStatus = useAtomValue(maritalStatusAtom);
   const childIds = useAtomValue(childIdsAtom);
-  const setStep = useSetAtom(useServiceStepAtom());
+  const setStep = useSetAtom(stepAtom({ serviceId }));
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -44,7 +48,7 @@ export default function InfoLayout() {
               <Menu.Item
                 leadingIcon='content-save'
                 onPress={() => {
-                  router.dismissTo('/services/i589');
+                  router.dismissTo(`/services/${serviceId}`);
                   toast.success(t('quiz.toast.saved'));
                   setMenuOpen(false);
                 }}
@@ -52,14 +56,14 @@ export default function InfoLayout() {
               />
             </Menu>
           ),
-          title: t('services.i589.info.screenTitle'),
+          title: t(`services.${serviceId}.${stepId}.screenTitle`),
         }}
       />
       <RoutesProvider
         onComplete={() => {
           setStep('statement');
-          router.dismissTo('/services/i589');
-          router.replace('/services/i589?confetti=true');
+          router.dismissTo(`/services/${serviceId}`);
+          router.replace(`/services/${serviceId}?confetti=true`);
         }}
         routes={[
           'intro',

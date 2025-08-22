@@ -1,10 +1,10 @@
 import { Redirect } from 'expo-router';
 import { useAtomValue } from 'jotai';
 
-import { isOnboardedAtom } from '@/atoms/is-onboarding-atom';
+import { isOnboardingCompleteAtom } from '@/atoms/is-onboarding-complete-atom';
 
 export default function Root() {
-  const isOnboarded = useAtomValue(isOnboardedAtom);
+  const isOnboarded = useAtomValue(isOnboardingCompleteAtom);
 
   if (!isOnboarded) {
     return <Redirect href='/onboarding' />;

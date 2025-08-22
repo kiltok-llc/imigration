@@ -5,7 +5,7 @@ import { View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { stepAtom } from '@/atoms/step-atom';
 import { DebugPressable } from '@/components/debug-pressable';
 import { Trans } from '@/components/trans';
 import { useServiceId } from '@/hooks/use-service-id';
@@ -24,9 +24,9 @@ export function StepIcons({
   style?: ViewStyle;
 }) {
   const serviceId = useServiceId();
-  const setStepId = useSetAtom(useServiceStepAtom());
+  const setStepId = useSetAtom(stepAtom({ serviceId }));
   const theme = useTheme();
-  const currentStepIdx = steps.findIndex((step) => step.id === stepId);
+  const currentStepIdx = steps.findIndex(({ id }) => id === stepId);
 
   return (
     <View style={[tw`gap-4`, style]}>

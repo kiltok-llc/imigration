@@ -2,8 +2,8 @@ import { isDevelopmentBuild, registerDevMenuItems } from 'expo-dev-client';
 import { atom, Getter, Setter, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useEffect } from 'react';
 
-import { resetAllQuizValues } from '@/atoms/quiz-page-values';
-import { resetAllQuizPages } from '@/atoms/quiz-screen-page-family';
+import { resetAllQuizPages } from '@/atoms/quiz-page-atom';
+import { resetAllQuizValues } from '@/atoms/quiz-values-atom';
 import { defaultStorage, quizStorage, userStorage } from '@/lib/mmkv';
 
 const devMenuItemAtom = (

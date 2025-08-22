@@ -6,23 +6,27 @@ import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { stepAtom } from '@/atoms/step-atom';
+import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { StepIcons, Stepper } from '@/components/ui/steps';
+import { useServiceId } from '@/hooks/use-service-id';
 import { useT } from '@/hooks/use-t';
 import { STEPS } from '@/lib/services/i589/steps';
 
 export default function I589() {
   const t = useT();
+  const serviceId = useServiceId();
   const router = useRouter();
-  const stepId = useAtomValue(useServiceStepAtom());
+  const stepId = useAtomValue(stepAtom({ serviceId }));
+  const stepState = useAtomValue(stepStateAtom({ serviceId, stepId }));
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: t('services.i589.progress.screenTitle'),
+          title: t(`services.${serviceId}.progress.screenTitle`),
         }}
       />
       <ConfettiOnDemand />
@@ -37,12 +41,12 @@ export default function I589() {
             <Stepper stepId={stepId} steps={STEPS} />
             <View style={tw`gap-2`}>
               <TransText
-                i18nKey={`services.i589.${stepId}.title`}
+                i18nKey={`services.${serviceId}.${stepId}.title`}
                 style={tw`text-center font-bold`}
                 variant='headlineMedium'
               />
               <TransText
-                i18nKey={`services.i589.${stepId}.description`}
+                i18nKey={`services.${serviceId}.${stepId}.description`}
                 style={tw`text-center`}
                 variant='titleSmall'
               />
@@ -53,10 +57,11 @@ export default function I589() {
         <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey={`services.i589.${stepId}.continue`}
+            context={stepState}
+            i18nKey={`services.progress.next`}
             icon='arrow-right'
             mode='contained'
-            onPress={() => router.navigate(`/services/i589/${stepId}`)}
+            onPress={() => router.navigate(`/services/${serviceId}/${stepId}`)}
           />
         </SafeAreaView>
       </View>

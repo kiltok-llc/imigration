@@ -8,14 +8,14 @@ import tw from 'twrnc';
 
 import personPassport from '@/assets/onboarding/person-passport.png';
 import banner from '@/assets/onboarding/usa-banner.png';
-import { isOnboardedAtom } from '@/atoms/is-onboarding-atom';
+import { isOnboardingCompleteAtom } from '@/atoms/is-onboarding-complete-atom';
 import { LanguageButton } from '@/components/language-button';
 import { TransButton, TransText } from '@/components/trans';
 
 export default function Onboarding() {
   const theme = useTheme();
   const router = useRouter();
-  const setIsOnboarded = useSetAtom(isOnboardedAtom);
+  const setIsOnboarded = useSetAtom(isOnboardingCompleteAtom);
 
   return (
     <>

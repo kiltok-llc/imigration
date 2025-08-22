@@ -69,7 +69,7 @@ function QuizHeader() {
   const theme = useTheme();
   const setQuizHeaderHeight = useSetAtom(quizHeaderHeightAtom);
   const serviceId = useServiceId();
-  const quizId = useStepId();
+  const stepId = useStepId();
 
   const [currentRoute, currentParams] = useCurrentRoute();
   const [nextRoute, nextParams] = useNextRoute();
@@ -77,7 +77,7 @@ function QuizHeader() {
   const currentRouteIdx = useCurrentRouteIndex();
 
   const title = t(
-    `services.${serviceId}.${quizId}.${toRouteId(currentRoute)}.title`,
+    `services.${serviceId}.${stepId}.${toRouteId(currentRoute)}.title`,
     {
       ...currentParams,
       count: Number(currentParams.count),
@@ -86,7 +86,7 @@ function QuizHeader() {
   );
 
   const nextTitle = nextRoute
-    ? t(`services.${serviceId}.${quizId}.${toRouteId(nextRoute)}.title`, {
+    ? t(`services.${serviceId}.${stepId}.${toRouteId(nextRoute)}.title`, {
         ...nextParams,
         count: Number(nextParams.count),
         ordinal: true,
