@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { useT } from '@/hooks/use-t';
@@ -21,6 +22,7 @@ export default function Eligible() {
           title: t('services.i589.eligible.screenTitle'),
         }}
       />
+      <ConfettiOnDemand />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
         <Container>
           <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>
@@ -58,6 +60,7 @@ export default function Eligible() {
             onPress={() => {
               setStep('info');
               router.dismissTo('/services/i589');
+              router.replace('/services/i589');
             }}
             style={tw`mt-auto`}
           />

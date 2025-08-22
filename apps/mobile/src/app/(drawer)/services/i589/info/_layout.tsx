@@ -1,6 +1,9 @@
-import { Stack } from 'expo-router';
-import { useAtomValue } from 'jotai';
+import { HeaderButton } from '@react-navigation/elements';
+import { Stack, useRouter } from 'expo-router';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { Icon } from 'react-native-paper';
 
+import { useServiceStepAtom } from '@/atoms/service-step-family';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useT } from '@/hooks/use-t';
@@ -11,18 +14,32 @@ import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
   const t = useT();
+  const router = useRouter();
   const maritalStatus = useAtomValue(maritalStatusAtom);
   const childIds = useAtomValue(childIdsAtom);
+  const setStep = useSetAtom(useServiceStepAtom());
 
   return (
     <>
       <Stack.Screen
         options={{
+          headerRight: ({ tintColor }) => (
+            <HeaderButton
+              accessibilityLabel='Show navigation enu'
+              onPress={() => console.log('hi')}
+            >
+              <Icon color={tintColor} size={24} source='dots-horizontal' />
+            </HeaderButton>
+          ),
           title: t('services.i589.info.screenTitle'),
         }}
       />
       <RoutesProvider
-        finalRoute='../complete'
+        onComplete={() => {
+          setStep('statement');
+          router.dismissTo('/services/i589');
+          router.replace('/services/i589?confetti=true');
+        }}
         routes={[
           'intro',
           'personal-information/name-and-aliases',

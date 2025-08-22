@@ -183,10 +183,10 @@
         "title": "Decision",
         "label": "Decision"
       },
-      "documents": {
-        "description": "Upload required identity documents (e.g., passport, birth certificate).",
-        "title": "Documents",
-        "label": "Documents"
+      "statement": {
+        "description": "Provide a detailed personal statement describing your background, experiences, and reasons for seeking asylum. This statement will be an important part of your application.",
+        "title": "Personal Statement",
+        "label": "Statement"
       },
       "eligibility": {
         "arrival-date": {
@@ -853,8 +853,8 @@
           }
         },
         "screenTitle": "Personal Information",
-        "title": "Personal Info",
-        "label": "Personal Info",
+        "title": "Personal Information",
+        "label": "Info",
         "intro": {
           "title": "Asylum Application",
           "intro": {

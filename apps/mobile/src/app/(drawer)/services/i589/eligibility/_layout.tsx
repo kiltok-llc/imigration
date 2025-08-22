@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
@@ -17,7 +17,9 @@ export default function EligibilityLayout() {
         }}
       />
       <RoutesProvider
-        finalRoute='../eligible'
+        onComplete={() =>
+          router.navigate('/services/i589/eligible?confetti=true')
+        }
         routes={[
           'physical-presence',
           'reason-for-leaving',

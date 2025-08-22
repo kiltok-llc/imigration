@@ -16,10 +16,10 @@ import {
 } from '@/hooks/use-required-context';
 import {
   useCurrentRouteUrl,
-  useFinalRouteUrl,
   useIncrementRoute,
   useIsFirstRoute,
   useIsLastRoute,
+  useOnComplete,
   useRouteUrls,
 } from '@/providers/routes';
 
@@ -76,27 +76,18 @@ export const useHandleQuizScreenNext = (
 ) => {
   const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
   const isLastRoute = useIsLastRoute();
-  const finalRouteUrl = useFinalRouteUrl();
+  const onComplete = useOnComplete();
   const incrementRoute = useIncrementRoute();
-  const router = useRouter();
 
   return useCallback(() => {
     if (page < pages - 1) {
       void setPage(page + 1);
     } else if (isLastRoute) {
-      router.replace(finalRouteUrl);
+      onComplete();
     } else {
       incrementRoute(1);
     }
-  }, [
-    finalRouteUrl,
-    incrementRoute,
-    isLastRoute,
-    page,
-    pages,
-    router,
-    setPage,
-  ]);
+  }, [onComplete, incrementRoute, isLastRoute, page, pages, setPage]);
 };
 
 export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {

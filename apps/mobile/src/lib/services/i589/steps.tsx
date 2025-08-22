@@ -12,8 +12,8 @@ export const STEPS: Step[] = [
     id: 'info',
   },
   {
-    Icon: (props) => <Entypo name='attachment' {...props} />,
-    id: 'documents',
+    Icon: (props) => <Entypo name='modern-mic' {...props} />,
+    id: 'statement',
   },
   {
     Icon: (props) => <Entypo name='eye' {...props} />,

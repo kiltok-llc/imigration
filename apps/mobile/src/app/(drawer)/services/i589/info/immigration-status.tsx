@@ -414,7 +414,7 @@ export default function ImmigrationStatus() {
           <QuizPage
             defaultValues={{ entries: [] }}
             onSubmit={({ entries }) => {
-              setEntries((value) => [...value, ...entries]);
+              setEntries(([first]) => [first!, ...entries]);
               return true;
             }}
             pageId='other-entries'

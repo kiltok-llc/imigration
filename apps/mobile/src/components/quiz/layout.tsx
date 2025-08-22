@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { KeyboardToolbar } from 'react-native-keyboard-controller';
-import { useTheme } from 'react-native-paper';
+import { Surface, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
@@ -38,25 +38,27 @@ export function QuizLayout({ children }: PropsWithChildren) {
       >
         {children}
       </TranslationContextProvider>
-      <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
-        <View style={tw`flex-1`}>
-          <TransButton
-            i18nKey='quiz.back'
-            icon='arrow-left'
-            mode='contained-tonal'
-            onPress={handleBack}
-          />
-        </View>
-        <View style={tw`flex-1`}>
-          <TransButton
-            contentStyle={tw`flex-row-reverse`}
-            i18nKey='quiz.continue'
-            icon='arrow-right'
-            mode='contained'
-            onPress={handleContinue}
-          />
-        </View>
-      </SafeAreaView>
+      <Surface>
+        <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
+          <View style={tw`flex-1`}>
+            <TransButton
+              i18nKey='quiz.back'
+              icon='arrow-left'
+              mode='contained-tonal'
+              onPress={handleBack}
+            />
+          </View>
+          <View style={tw`flex-1`}>
+            <TransButton
+              contentStyle={tw`flex-row-reverse`}
+              i18nKey='quiz.continue'
+              icon='arrow-right'
+              mode='contained'
+              onPress={handleContinue}
+            />
+          </View>
+        </SafeAreaView>
+      </Surface>
       <KeyboardToolbar doneText={t('keyboard.done')} />
     </View>
   );

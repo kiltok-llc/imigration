@@ -14,9 +14,9 @@ import {
 
 const RoutesContext = createContext<{
   allowedParameters: Set<string>;
-  finalRoute: string;
+  onComplete: () => void;
   routes: string[];
-}>({ allowedParameters: new Set(), finalRoute: '', routes: [] });
+}>({ allowedParameters: new Set(), onComplete: () => {}, routes: [] });
 const CurrentRouteContext = createContext<[string, Record<string, string>]>([
   '',
   {},
@@ -33,7 +33,7 @@ export const useIsFirstRoute = () => {
   const index = useCurrentRouteIndex();
   return index === 0;
 };
-export const useFinalRouteUrl = () => useContext(RoutesContext).finalRoute;
+export const useOnComplete = () => useContext(RoutesContext).onComplete;
 export const useCurrentRoute = () => useContext(CurrentRouteContext);
 export const useCurrentRouteUrl = () => {
   const [name, params] = useCurrentRoute();
@@ -121,10 +121,10 @@ const useCurrentRouteInternal = (allowedParameters: Set<string>) => {
 
 export function RoutesProvider({
   children,
-  finalRoute,
+  onComplete,
   routes,
 }: PropsWithChildren<{
-  finalRoute: string;
+  onComplete: () => void;
   routes: string[];
 }>) {
   const allowedParameters = useMemo(
@@ -142,7 +142,7 @@ export function RoutesProvider({
   );
 
   return (
-    <RoutesContext.Provider value={{ allowedParameters, finalRoute, routes }}>
+    <RoutesContext.Provider value={{ allowedParameters, onComplete, routes }}>
       <CurrentRouteContext value={useCurrentRouteInternal(allowedParameters)}>
         {children}
       </CurrentRouteContext>

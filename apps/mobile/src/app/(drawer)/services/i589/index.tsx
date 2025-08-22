@@ -1,11 +1,13 @@
 import { Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
+import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { useServiceStepAtom } from '@/atoms/service-step-family';
+import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { StepIcons, Stepper } from '@/components/ui/steps';
 import { useT } from '@/hooks/use-t';
@@ -23,6 +25,7 @@ export default function I589() {
           title: t('services.i589.progress.screenTitle'),
         }}
       />
+      <ConfettiOnDemand />
       <View style={tw`flex-1`}>
         <ScrollView
           alwaysBounceVertical={false}
@@ -53,9 +56,7 @@ export default function I589() {
             i18nKey='next'
             icon='arrow-right'
             mode='contained'
-            onPress={() => {
-              router.navigate(`/services/i589/${stepId}`);
-            }}
+            onPress={() => router.navigate(`/services/i589/${stepId}`)}
           />
         </SafeAreaView>
       </View>
