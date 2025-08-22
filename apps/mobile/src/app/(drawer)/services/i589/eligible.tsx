@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { stepAtom } from '@/atoms/step-atom';
-import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
@@ -17,9 +16,6 @@ export default function Eligible() {
   const service = useService();
   const t = useT();
   const setStep = useSetAtom(stepAtom({ service }));
-  const setEligibilityStepState = useSetAtom(
-    stepStateAtom({ service, step: 'eligibility' })
-  );
 
   return (
     <>
@@ -65,7 +61,6 @@ export default function Eligible() {
             icon='arrow-right'
             onPress={() => {
               setStep('info');
-              setEligibilityStepState('completed');
               router.dismissTo(`/services/${service}`);
               router.replace(`/services/${service}`);
             }}

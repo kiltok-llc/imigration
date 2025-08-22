@@ -15,3 +15,20 @@ export const quizRouteAtom = atomFamily(
     ),
   isEqual
 );
+
+export function resetQuizRoute({
+  service,
+  step,
+}: {
+  service: string;
+  step: string;
+}) {
+  console.log(`Clearing quiz route for ${service}.${step}`);
+  quizRouteAtom.remove({ service, step });
+
+  const key = `services:${service}:${step}:route`;
+  if (quizStorage.contains(key)) {
+    console.debug(`Clearing storage key: ${key}`);
+    quizStorage.delete(key);
+  }
+}

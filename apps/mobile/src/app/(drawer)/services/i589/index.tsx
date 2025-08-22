@@ -1,16 +1,20 @@
 import { Entypo, FontAwesome } from '@expo/vector-icons';
-import { Stack, useRouter } from 'expo-router';
+import { router, Stack, useRouter } from 'expo-router';
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Surface } from 'react-native-paper';
+import { Menu, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
+import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
+import { resetQuizPages } from '@/atoms/quiz-page-atom';
+import { resetQuizRoute } from '@/atoms/quiz-route-atom';
 import { stepAtom } from '@/atoms/step-atom';
-import { stepStateAtom } from '@/atoms/step-state-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
-import { TransButton, TransText } from '@/components/trans';
+import { Trans, TransButton, TransText } from '@/components/trans';
+import { HeaderMenu } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
@@ -55,12 +59,13 @@ export default function I589() {
   const service = useService();
   const router = useRouter();
   const step = useAtomValue(stepAtom({ service }));
-  const stepState = useAtomValue(stepStateAtom({ service, step }));
+  const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
 
   return (
     <>
       <Stack.Screen
         options={{
+          headerRight: (props) => <I589Menu {...props} />,
           title: t(`services.${service}.progress.screenTitle`),
         }}
       />
@@ -92,8 +97,11 @@ export default function I589() {
         <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            context={stepState}
-            i18nKey={`services.progress.next`}
+            i18nKey={
+              isStarted
+                ? 'services.progress.continue'
+                : 'services.progress.start'
+            }
             icon='arrow-right'
             mode='contained'
             onPress={() => router.navigate(`/services/${service}/${step}`)}
@@ -101,5 +109,44 @@ export default function I589() {
         </SafeAreaView>
       </View>
     </>
+  );
+}
+
+function I589Menu({ tintColor }: { tintColor?: string }) {
+  const service = useService();
+  const step = useAtomValue(stepAtom({ service }));
+  const [open, setOpen] = useState(false);
+
+  if (!['review', 'statement'].includes(step)) {
+    return null;
+  }
+
+  return (
+    <HeaderMenu open={open} setOpen={setOpen} tintColor={tintColor}>
+      <Menu.Item
+        leadingIcon='note-edit'
+        onPress={() => {
+          resetQuizPages({ service, step: 'info' });
+          resetQuizRoute({ service, step: 'info' });
+          router.navigate(`/services/${service}/info`);
+          setOpen(false);
+        }}
+        title={<Trans i18nKey={`services.${service}.menu.revise.info`} />}
+      />
+      {step === 'review' && (
+        <Menu.Item
+          leadingIcon='account-edit'
+          onPress={() => {
+            resetQuizPages({ service, step: 'statement' });
+            resetQuizRoute({ service, step: 'statement' });
+            router.navigate(`/services/${service}/statement`);
+            setOpen(false);
+          }}
+          title={
+            <Trans i18nKey={`services.${service}.menu.revise.statement`} />
+          }
+        />
+      )}
+    </HeaderMenu>
   );
 }

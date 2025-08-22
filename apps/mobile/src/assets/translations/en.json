@@ -178,6 +178,12 @@
     },
     "drawerLabel": "Services",
     "i589": {
+      "menu": {
+        "revise": {
+          "info": "Revise Information",
+          "statement": "Revise Statement"
+        }
+      },
       "appeal": {
         "description": "Submit an appeal to reopen or review your case if your application is denied.",
         "title": "Appeal",
@@ -899,9 +905,8 @@
     "popular": "Popular Services",
     "screenTitle": "iMigration Services",
     "progress": {
-      "next_pending": "Start",
-      "next_active": "Continue",
-      "next_completed": "Revise"
+      "start": "Start",
+      "continue": "Continue"
     }
   },
   "settings": {

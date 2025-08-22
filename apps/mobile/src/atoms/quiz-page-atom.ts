@@ -43,7 +43,7 @@ export function resetAllQuizPages() {
   }
 }
 
-export function resetQuizPage({
+export function resetQuizPages({
   service,
   step,
 }: {

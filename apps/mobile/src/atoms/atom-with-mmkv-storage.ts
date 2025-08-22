@@ -15,7 +15,7 @@ export const atomWithMmkvStorage = <T>(
     initialValue,
     createMMKVStorage(storage, schema),
     {
-      getOnInit: __DEV__,
+      getOnInit: true,
     }
   );
 };

@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { useTimeout } from 'usehooks-ts';
 
-import { stepStateAtom } from '@/atoms/step-state-atom';
+import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useService } from '@/hooks/use-service';
@@ -15,12 +15,9 @@ export default function EligibilityLayout() {
   const service = useService();
   const step = useStep();
   const t = useT();
-  const [stepState, setStepState] = useAtom(stepStateAtom({ service, step }));
+  const setStarted = useSetAtom(isStepStartedAtom({ service, step }));
 
-  useTimeout(
-    () => setStepState('active'),
-    stepState === 'pending' ? 5000 : null
-  );
+  useTimeout(() => setStarted(true), 5000);
 
   return (
     <>
