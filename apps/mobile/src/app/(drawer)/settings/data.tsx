@@ -26,7 +26,6 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import { useStable } from '@/hooks/use-stable';
 import { userStorage } from '@/lib/mmkv';
 
 const EditorPopupContext = createRequiredContext<{
@@ -48,8 +47,7 @@ type Tree = {
 };
 
 export default function Data() {
-  const keys = useStable(userStorage.getAllKeys());
-  const tree = useMemo(() => asTree(keys), [keys]);
+  const tree = useMemo(() => asTree(userStorage.getAllKeys()), []);
 
   return (
     <DataEditorProvider>

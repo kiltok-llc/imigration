@@ -82,17 +82,15 @@ export default function PreviousAddresses() {
             <FormFieldArray control={control} name='residences'>
               <FormFieldArrayItemBlocks>
                 {(idx) => (
-                  <>
-                    <FormBlock>
-                      <QuizFieldArrayItemHeader />
-                      <FormAddressInput
-                        lens={lens.focus(`residences.${idx}.address`)}
-                      />
-                      <FormRangeInput
-                        lens={lens.focus(`residences.${idx}.range`)}
-                      />
-                    </FormBlock>
-                  </>
+                  <FormBlock>
+                    <QuizFieldArrayItemHeader />
+                    <FormAddressInput
+                      lens={lens.focus(`residences.${idx}.address`)}
+                    />
+                    <FormRangeInput
+                      lens={lens.focus(`residences.${idx}.range`)}
+                    />
+                  </FormBlock>
                 )}
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd

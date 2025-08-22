@@ -1,18 +1,17 @@
-import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
+import { useMutation } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
 import {
   Children,
   cloneElement,
   createRef,
   isValidElement,
   PropsWithChildren,
+  ReactNode,
   RefObject,
-  useCallback,
   useEffect,
   useMemo,
-  useState,
 } from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import tw from 'twrnc';
 
 import { useQuizScreenPageAtom } from '@/atoms/quiz-screen-page-family';
@@ -22,38 +21,15 @@ import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
 import {
   QuizScreenKeyContext,
-  useIsNextPage,
-  useIsPrevPage,
-  useSetIsNextPage,
-  useSetIsPrevPage,
+  useHandleQuizScreenNext,
+  useHandleQuizScreenPrev,
+  useQuizActions,
 } from '@/lib/quiz';
-import {
-  useFinalRouteUrl,
-  useIncrementRoute,
-  useIsFirstRoute,
-  useIsLastRoute,
-} from '@/providers/routes';
 
 type QuizPageProps = { ref: RefObject<null | QuizPageHandle> };
 
-export function QuizScreen({
-  children,
-  screenKey,
-}: PropsWithChildren<{ screenKey?: string }>) {
-  const router = useRouter();
-  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
-  const keyboardVisible = useKeyboardVisible();
-  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
-  const isNextPage = useIsNextPage();
-  const isPrevPage = useIsPrevPage();
-  const setIsNextPage = useSetIsNextPage();
-  const setIsPrevPage = useSetIsPrevPage();
-  const isLastRoute = useIsLastRoute();
-  const isFirstRoute = useIsFirstRoute();
-  const finalRouteUrl = useFinalRouteUrl();
-  const incrementRoute = useIncrementRoute();
-
-  const childRefs = useMemo(
+export const useChildRefs = (children: ReactNode) =>
+  useMemo(
     () =>
       Array.from(
         { length: Children.toArray(children).length },
@@ -62,73 +38,71 @@ export function QuizScreen({
     [children]
   );
 
-  const handleNext = useCallback(async () => {
-    const activeChild = childRefs[page]?.current;
-    if (!activeChild) {
-      console.warn('No active child found for submission.');
-      return;
-    }
-
-    const result = await activeChild.submit();
-    if (!result) {
-      return;
-    }
-
-    // Need an extra render cycle before submitting, in case the submission
-    // logic updates the form.
-    setIsSubmitSuccessful(true);
-  }, [childRefs, page]);
-
-  const handleSubmit = useCallback(() => {
-    if (page < childRefs.length - 1) {
-      void setPage(page + 1);
-    } else if (isLastRoute) {
-      router.replace(finalRouteUrl);
-    } else {
-      incrementRoute(1);
-    }
-  }, [
+export function QuizScreen({
+  children,
+  screenKey,
+}: PropsWithChildren<{ screenKey?: string }>) {
+  const page = useAtomValue(useQuizScreenPageAtom(screenKey));
+  const keyboardVisible = useKeyboardVisible();
+  const childRefs = useChildRefs(children);
+  const handleQuizScreenNext = useHandleQuizScreenNext(
     childRefs.length,
-    finalRouteUrl,
-    isLastRoute,
-    incrementRoute,
-    page,
-    router,
-    setPage,
-  ]);
+    screenKey
+  );
+  const handleQuizScreenPrev = useHandleQuizScreenPrev(screenKey);
+  const { setHandleBack, setHandleContinue } = useQuizActions();
+
+  const {
+    data: submissionResult,
+    mutate: handleSubmit,
+    reset: resetSubmit,
+  } = useMutation({
+    async mutationFn() {
+      Keyboard.dismiss();
+
+      const activeChild = childRefs[page]?.current;
+      if (!activeChild) {
+        console.warn('No active child found for submission.');
+        return false;
+      }
+
+      return await activeChild.submit();
+    },
+  });
+
+  const {
+    isSuccess: isBackSuccess,
+    mutate: handleBack,
+    reset: resetBack,
+  } = useMutation({
+    async mutationFn() {
+      Keyboard.dismiss();
+    },
+  });
 
   useEffect(() => {
-    if (isSubmitSuccessful && !keyboardVisible) {
-      handleSubmit();
-      setIsSubmitSuccessful(false);
-    }
-  }, [handleSubmit, keyboardVisible, isSubmitSuccessful]);
+    setHandleBack(handleBack);
+    setHandleContinue(handleSubmit);
 
-  // Since `handleNext` behavior could depend on state in the page, we want to
-  // render the component before calling it.
-  useEffect(() => {
-    if (isNextPage) {
-      void handleNext();
-      setIsNextPage(false);
-    }
-  }, [isNextPage, setIsNextPage, handleNext]);
-
-  const handlePrev = useCallback(() => {
-    if (page > 0) {
-      void setPage(page - 1);
-    } else if (isFirstRoute) {
-      router.back();
-    } else {
-      incrementRoute(-1);
-    }
-  }, [isFirstRoute, page, incrementRoute, router, setPage]);
+    return () => {
+      setHandleBack();
+      setHandleContinue();
+    };
+  }, [handleBack, handleSubmit, setHandleBack, setHandleContinue]);
 
   useEffect(() => {
-    if (isPrevPage && !keyboardVisible) {
-      handlePrev();
-      setIsPrevPage(false);
+    if (submissionResult === true && !keyboardVisible) {
+      resetSubmit();
+      handleQuizScreenNext();
     }
-  }, [handlePrev, isPrevPage, keyboardVisible, setIsPrevPage]);
+  }, [handleQuizScreenNext, keyboardVisible, submissionResult, resetSubmit]);
+
+  useEffect(() => {
+    if (isBackSuccess && !keyboardVisible) {
+      resetBack();
+      handleQuizScreenPrev();
+    }
+  }, [handleQuizScreenPrev, keyboardVisible, isBackSuccess, resetBack]);
 
   return (
     <QuizScreenKeyContext.Provider value={screenKey}>

@@ -1,18 +1,27 @@
 import { isEqual } from '@ver0/deep-equal';
 import { useLocalSearchParams } from 'expo-router';
-import { PrimitiveAtom, useAtomValue, useSetAtom } from 'jotai';
+import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { View } from 'react-native';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormFieldBlock, FormField } from '@/components/form/field';
+import {
+  FormFieldArray,
+  FormFieldArrayItemBlocks,
+} from '@/components/form/fieldarray';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import {
+  QuizFieldArrayAdd,
+  QuizFieldArrayItemHeader,
+} from '@/components/quiz/fieldarray';
 import {
   QuizFieldDescription,
   QuizFieldTip,
   QuizFieldTitle,
+  QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
@@ -28,7 +37,7 @@ import {
   childStatusExpirationAtom,
   childUscisNumberAtom,
 } from '@/lib/data/child';
-import { DEFAULT_PASSPORT, DEFAULT_USA_ENTRY } from '@/lib/data/schema';
+import { DEFAULT_PASSPORT } from '@/lib/data/schema';
 import {
   spouseAlienNumberAtom,
   spouseEntriesAtom,
@@ -50,7 +59,7 @@ import {
   uscisNumberAtom,
 } from '@/lib/data/user';
 import { ImmigrationCourtStatusEnum } from '@/lib/schema/common';
-import { growTo, required } from '@/lib/utils';
+import { required } from '@/lib/utils';
 import { TranslationContextProvider } from '@/providers/translation';
 
 const contextFamily = <T,>(
@@ -111,7 +120,7 @@ export default function ImmigrationStatus() {
       childImmigrationCourtStatusAtom
     )(param)
   );
-  const setEntries = useSetAtom(
+  const [entries, setEntries] = useAtom(
     contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
   );
   const setStatusExpiration = useSetAtom(
@@ -321,14 +330,11 @@ export default function ImmigrationStatus() {
           onSubmit={({ entry }) => {
             if (entry) {
               const { date, port, status, statusExpiration } = entry;
-
-              setEntries((entries) => {
-                const arr = growTo(entries, 1, () => DEFAULT_USA_ENTRY);
-                arr[0] = { date, port, status };
-                return arr;
-              });
-
+              setEntries([{ date, port, status }]);
               setStatusExpiration(statusExpiration);
+            } else {
+              setEntries([]);
+              setStatusExpiration(null);
             }
 
             return true;
@@ -343,18 +349,19 @@ export default function ImmigrationStatus() {
                 statusExpiration: z.date().nullable(),
               })
               .optional(),
-            isInUsa: required(z.boolean().nullable()),
+            isInUsa:
+              context === 'client'
+                ? z.boolean().nullable()
+                : required(z.boolean().nullable()),
           })}
         >
           {({ control, watch }) => (
             <>
               {context !== 'client' && (
-                <FormBlock>
-                  <FormField control={control} name='isInUsa'>
-                    <QuizFieldTitle />
-                    <FormBooleanInput />
-                  </FormField>
-                </FormBlock>
+                <FormField control={control} name='isInUsa'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
               )}
 
               <ConditionalFormFieldBlock
@@ -388,20 +395,83 @@ export default function ImmigrationStatus() {
                 <FormBlock>
                   <FormField control={control} name='entry.status'>
                     <QuizFieldTitle />
-                    <QuizTextInput />
+                    <QuizTextInput optional />
                   </FormField>
                 </FormBlock>
 
                 <FormBlock>
                   <FormField control={control} name='entry.statusExpiration'>
                     <QuizFieldTitle />
-                    <QuizDateInput />
+                    <QuizDateInput optional />
                   </FormField>
                 </FormBlock>
               </ConditionalFormFieldBlock>
             </>
           )}
         </QuizPage>
+
+        {entries.length > 0 && (
+          <QuizPage
+            defaultValues={{ entries: [] }}
+            onSubmit={({ entries }) => {
+              setEntries((value) => [...value, ...entries]);
+              return true;
+            }}
+            pageId='other-entries'
+            schema={z.object({
+              entries: z.array(
+                z.object({
+                  date: z.date().nullable(),
+                  port: z.string().nonempty(),
+                  status: z.string(),
+                })
+              ),
+            })}
+          >
+            {({ control }) => (
+              <>
+                <FormBlock>
+                  <QuizPageTitle />
+                </FormBlock>
+
+                <FormFieldArray control={control} name='entries'>
+                  <FormFieldArrayItemBlocks>
+                    {(idx) => (
+                      <FormBlock>
+                        <QuizFieldArrayItemHeader />
+                        <FormField
+                          control={control}
+                          name={`entries.${idx}.date`}
+                        >
+                          <QuizTextInput />
+                        </FormField>
+                        <FormField
+                          control={control}
+                          name={`entries.${idx}.port`}
+                        >
+                          <QuizTextInput />
+                        </FormField>
+                        <FormField
+                          control={control}
+                          name={`entries.${idx}.status`}
+                        >
+                          <QuizTextInput optional />
+                        </FormField>
+                      </FormBlock>
+                    )}
+                  </FormFieldArrayItemBlocks>
+                  <QuizFieldArrayAdd
+                    value={{
+                      date: null,
+                      port: '',
+                      status: '',
+                    }}
+                  />
+                </FormFieldArray>
+              </>
+            )}
+          </QuizPage>
+        )}
       </QuizScreen>
     </TranslationContextProvider>
   );

@@ -143,8 +143,8 @@
       "title": "{{ title }}"
     },
     "missing": "Please answer all questions before continuing.",
-    "next": "Continue",
-    "previous": "Back",
+    "continue": "Continue",
+    "back": "Back",
     "error": {
       "reset-route": "Reset saved route",
       "reset-values": "Reset saved answers"
@@ -378,7 +378,7 @@
               },
               "title": "Siblings Information"
             },
-            "add-sibling": "Add Sibling",
+            "add-sibling": "Add sibling",
             "additional-info-title": "Additional Information",
             "basic-info-title": "Basic Information",
             "birth-city": "City of Birth",
@@ -436,7 +436,7 @@
               },
               "title": "Children Information"
             },
-            "add-child": "Add Child",
+            "add-child": "Add child",
             "additional-info-title": "Additional Information",
             "basic-info-title": "Basic Information",
             "birth-city": "City of Birth",
@@ -553,6 +553,25 @@
           }
         },
         "immigration-status": {
+          "other-entries": {
+            "title": "Starting with the most recent, please provide the following information about all the times you have entered the United States in the past five years.",
+            "entries": {
+              "title_ordinal_one": "{{ count }}st Entry (most recent)",
+              "title_ordinal_two": "{{ count }}nd Entry",
+              "title_ordinal_few": "{{ count }}rd Entry",
+              "title_ordinal_other": "{{ count }}th Entry",
+              "add": "Add entry",
+              "date": {
+                "label": "Entry date"
+              },
+              "port": {
+                "label": "Port of entry"
+              },
+              "status": {
+                "label": "Immigration Status"
+              }
+            }
+          },
           "first-entry": {
             "is-in-usa": {
               "title": "Is {{ name }} currently in the United States?"
@@ -562,12 +581,12 @@
                 "title_client": "When did you enter the United States?",
                 "title": "When did {{ name }} enter the United States?",
                 "tip": "(the most recent date of entry)",
-                "label": "Entry Date"
+                "label": "Entry date"
               },
               "port": {
                 "title": "Where did {{ name }} enter the United States?",
                 "title_client": "Where did you enter the United States?",
-                "label": "Port of Entry"
+                "label": "Port of entry"
               },
               "status": {
                 "title": "What was {{ name }}'s immigration status at entry?",

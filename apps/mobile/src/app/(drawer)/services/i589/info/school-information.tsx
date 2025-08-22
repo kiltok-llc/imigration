@@ -130,21 +130,19 @@ export default function SchoolInformation() {
             <FormFieldArray control={control} name='schools'>
               <FormFieldArrayItemBlocks>
                 {(idx) => (
-                  <>
-                    <FormBlock>
-                      <QuizFieldArrayItemHeader />
-                      <FormField control={control} name={`schools.${idx}.name`}>
-                        <QuizTextInput />
-                      </FormField>
-                      <FormAddressInput
-                        lens={lens.focus(`schools.${idx}.address`)}
-                      />
-                      <FormRangeInput
-                        lens={lens.focus(`schools.${idx}.range`)}
-                        optionalEnd
-                      />
-                    </FormBlock>
-                  </>
+                  <FormBlock>
+                    <QuizFieldArrayItemHeader />
+                    <FormField control={control} name={`schools.${idx}.name`}>
+                      <QuizTextInput />
+                    </FormField>
+                    <FormAddressInput
+                      lens={lens.focus(`schools.${idx}.address`)}
+                    />
+                    <FormRangeInput
+                      lens={lens.focus(`schools.${idx}.range`)}
+                      optionalEnd
+                    />
+                  </FormBlock>
                 )}
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd

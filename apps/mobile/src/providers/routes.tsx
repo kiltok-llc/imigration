@@ -8,19 +8,22 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useMemo,
   useRef,
 } from 'react';
 
-import { useStable } from '@/hooks/use-stable';
-
-const RouteUrlsContext = createContext<string[]>([]);
-const FinalRouteContext = createContext<string>('/');
+const RoutesContext = createContext<{
+  allowedParameters: Set<string>;
+  finalRoute: string;
+  routes: string[];
+}>({ allowedParameters: new Set(), finalRoute: '', routes: [] });
 const CurrentRouteContext = createContext<[string, Record<string, string>]>([
   '',
   {},
 ]);
 
-export const useRouteUrls = () => useContext(RouteUrlsContext);
+const useAllowedParameters = () => useContext(RoutesContext).allowedParameters;
+export const useRouteUrls = () => useContext(RoutesContext).routes;
 export const useIsLastRoute = () => {
   const routes = useRouteUrls();
   const index = useCurrentRouteIndex();
@@ -30,7 +33,7 @@ export const useIsFirstRoute = () => {
   const index = useCurrentRouteIndex();
   return index === 0;
 };
-export const useFinalRouteUrl = () => useContext(FinalRouteContext);
+export const useFinalRouteUrl = () => useContext(RoutesContext).finalRoute;
 export const useCurrentRoute = () => useContext(CurrentRouteContext);
 export const useCurrentRouteUrl = () => {
   const [name, params] = useCurrentRoute();
@@ -47,8 +50,12 @@ export const useCurrentRouteIndex = () => {
 export const useNextRoute = () => {
   const nextRouteUrl = useNextRouteUrl();
   const [name, query] = nextRouteUrl?.split('?') ?? [];
+  const allowedParameters = useAllowedParameters();
   const params = Object.fromEntries(new URLSearchParams(query ?? ''));
-  return useStable([name, params] as const);
+  const filteredParmams = Object.fromEntries(
+    Object.entries(params).filter(([key]) => allowedParameters.has(key))
+  );
+  return [name, filteredParmams] as const;
 };
 export const useNextRouteUrl = () => {
   const routes = useRouteUrls();
@@ -64,7 +71,9 @@ export const useIncrementRoute = () => {
   return useCallback(
     (update: number) => {
       if (routeIdx === -1) {
-        console.warn(`Current route is not in the defined routes list.`);
+        console.warn(
+          `Current route is not in the defined routes list: ${routeUrl}`
+        );
         return;
       }
 
@@ -85,26 +94,29 @@ export const useIncrementRoute = () => {
   );
 };
 
-const useCurrentRouteInternal = () => {
+const useCurrentRouteInternal = (allowedParameters: Set<string>) => {
   const currentRouteName = useNavigationState((state) =>
     getFocusedRouteNameFromRoute(state.routes[state.index]!)
   );
 
   const currentParams = useGlobalSearchParams<Record<string, string>>();
+  const filteredParams = Object.fromEntries(
+    Object.entries(currentParams).filter(([key]) => allowedParameters.has(key))
+  );
 
   // When navigating away from this navigator, we want to keep the return value
   // of this hook the same, so we store it in a ref.
   const routeRef = useRef<[string, Record<string, string>]>(['', {}]);
 
   if (currentRouteName) {
-    routeRef.current = [currentRouteName, currentParams] as const;
+    routeRef.current = [currentRouteName, filteredParams] as const;
   } else {
     console.log(
       'No focused route name, likely navigating away from navigator.'
     );
   }
 
-  return useStable(routeRef.current);
+  return routeRef.current;
 };
 
 export function RoutesProvider({
@@ -115,13 +127,25 @@ export function RoutesProvider({
   finalRoute: string;
   routes: string[];
 }>) {
+  const allowedParameters = useMemo(
+    () =>
+      new Set(
+        routes.flatMap((route) => {
+          const paramIdx = route.indexOf('?');
+          if (paramIdx === -1) {
+            return [];
+          }
+          return [...new URLSearchParams(route.slice(paramIdx)).keys()];
+        })
+      ),
+    [routes]
+  );
+
   return (
-    <RouteUrlsContext.Provider value={useStable(routes)}>
-      <FinalRouteContext.Provider value={finalRoute}>
-        <CurrentRouteContext value={useCurrentRouteInternal()}>
-          {children}
-        </CurrentRouteContext>
-      </FinalRouteContext.Provider>
-    </RouteUrlsContext.Provider>
+    <RoutesContext.Provider value={{ allowedParameters, finalRoute, routes }}>
+      <CurrentRouteContext value={useCurrentRouteInternal(allowedParameters)}>
+        {children}
+      </CurrentRouteContext>
+    </RoutesContext.Provider>
   );
 }

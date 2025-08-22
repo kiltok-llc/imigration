@@ -26,7 +26,7 @@ export function QuizFieldArrayItemHeader() {
 
   return (
     <View style={tw`flex-row items-center justify-between gap-2`}>
-      <QuizFieldTitle />
+      <QuizFieldTitle style={tw`flex-1 text-left`} />
       <IconButton
         containerColor={theme.colors.errorContainer}
         icon='close'

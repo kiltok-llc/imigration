@@ -91,7 +91,7 @@ export function FormFieldArrayAdd({
       contentStyle={tw`flex-row-reverse`}
       i18nKey={i18nKey ?? 'form.fieldarray.add'}
       icon='plus'
-      onPress={() => append(value, options)}
+      onPress={() => append(value, { shouldFocus: false, ...options })}
     />
   );
 }

@@ -15,21 +15,22 @@ import { clearMMKVKeys } from '@/lib/utils';
 
 type QuizValuesParam = {
   pageId: string;
-  pageKey: string;
+  pageKey?: string;
   quizId: string;
   screenId: string;
-  screenKey: string;
+  screenKey?: string;
   serviceId: string;
 };
 
 const quizValuesKey = ({
   pageId,
+  pageKey,
   quizId,
   screenId,
   screenKey,
   serviceId,
 }: QuizValuesParam) =>
-  `services.${serviceId}.${quizId}.${screenId}.${pageId}.${screenKey}.values`;
+  `services:${serviceId}:${quizId}:${screenId}:${screenKey ?? ''}:${pageId}:${pageKey ?? ''}:values`;
 
 export const quizPageValues = atomFamily(
   (param: QuizValuesParam) =>
@@ -42,7 +43,10 @@ export const quizPageValues = atomFamily(
   isEqual
 );
 
-export const useQuizValuesAtom = <T>(pageId: string, pageKey: string = '') => {
+export const useQuizValuesAtom = <T>(
+  pageId: string,
+  pageKey: string | undefined
+) => {
   const serviceId = useServiceId();
   const quizId = useStepId();
   const screenId = useQuizScreenId();

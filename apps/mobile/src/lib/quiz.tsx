@@ -1,36 +1,42 @@
-import { useSetAtom } from 'jotai';
-import { createContext, PropsWithChildren, useEffect, useState } from 'react';
-import { createStore, StoreApi, useStore } from 'zustand';
+import { useRouter } from 'expo-router';
+import { useAtom, useSetAtom } from 'jotai';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useQuizRouteAtom } from '@/atoms/quiz-route-family';
+import { useQuizScreenPageAtom } from '@/atoms/quiz-screen-page-family';
 import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
-import { useCurrentRouteUrl, useRouteUrls } from '@/providers/routes';
+import {
+  useCurrentRouteUrl,
+  useFinalRouteUrl,
+  useIncrementRoute,
+  useIsFirstRoute,
+  useIsLastRoute,
+  useRouteUrls,
+} from '@/providers/routes';
 
 export const QuizScreenKeyContext = createContext<string | undefined>(
   undefined
 );
 
-type QuizState = {
-  isNextPage: boolean;
-  isPrevPage: boolean;
-  setIsNextPage: (value: boolean) => void;
-  setIsPrevPage: (value: boolean) => void;
+type QuizActions = {
+  handleBack?: () => void;
+  handleContinue?: () => void;
+  setHandleBack: (handleBack?: () => void) => void;
+  setHandleContinue: (handleContinue?: () => void) => void;
 };
 
-export const QuizContext = createRequiredContext<StoreApi<QuizState>>();
+const QuizActionsContext = createRequiredContext<QuizActions>();
 
-const useQuizStore = <T,>(selector: (state: QuizState) => T) =>
-  useStore(useRequiredContext(QuizContext), selector);
-
-export const useIsNextPage = () => useQuizStore((state) => state.isNextPage);
-export const useIsPrevPage = () => useQuizStore((state) => state.isPrevPage);
-export const useSetIsNextPage = () =>
-  useQuizStore((state) => state.setIsNextPage);
-export const useSetIsPrevPage = () =>
-  useQuizStore((state) => state.setIsPrevPage);
+export const useQuizActions = () => useRequiredContext(QuizActionsContext);
 
 export const useQuizRoutePersistence = () => {
   // Persist valid route
@@ -45,16 +51,67 @@ export const useQuizRoutePersistence = () => {
 };
 
 export function QuizProvider({ children }: PropsWithChildren) {
-  const [store] = useState(() =>
-    createStore<QuizState>()((set) => ({
-      isNextPage: false,
-      isPrevPage: false,
-      setIsNextPage: (isNextPage) => set({ isNextPage }),
-      setIsPrevPage: (isPrevPage) => set({ isPrevPage }),
-    }))
-  );
+  const [handleBack, setHandleBack] = useState<() => void>();
+  const [handleContinue, setHandleContinue] = useState<() => void>();
 
   useQuizRoutePersistence();
 
-  return <QuizContext.Provider value={store}>{children}</QuizContext.Provider>;
+  return (
+    <QuizActionsContext.Provider
+      value={{
+        handleBack,
+        handleContinue,
+        setHandleBack: (handler) => setHandleBack(() => handler),
+        setHandleContinue: (handler) => setHandleContinue(() => handler),
+      }}
+    >
+      {children}
+    </QuizActionsContext.Provider>
+  );
 }
+
+export const useHandleQuizScreenNext = (
+  pages: number,
+  screenKey: string | undefined
+) => {
+  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
+  const isLastRoute = useIsLastRoute();
+  const finalRouteUrl = useFinalRouteUrl();
+  const incrementRoute = useIncrementRoute();
+  const router = useRouter();
+
+  return useCallback(() => {
+    if (page < pages - 1) {
+      void setPage(page + 1);
+    } else if (isLastRoute) {
+      router.replace(finalRouteUrl);
+    } else {
+      incrementRoute(1);
+    }
+  }, [
+    finalRouteUrl,
+    incrementRoute,
+    isLastRoute,
+    page,
+    pages,
+    router,
+    setPage,
+  ]);
+};
+
+export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
+  const [page, setPage] = useAtom(useQuizScreenPageAtom(screenKey));
+  const isFirstRoute = useIsFirstRoute();
+  const router = useRouter();
+  const incrementRoute = useIncrementRoute();
+
+  return useCallback(() => {
+    if (page > 0) {
+      void setPage(page - 1);
+    } else if (isFirstRoute) {
+      router.back();
+    } else {
+      incrementRoute(-1);
+    }
+  }, [incrementRoute, isFirstRoute, page, router, setPage]);
+};

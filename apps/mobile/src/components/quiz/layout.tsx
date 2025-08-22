@@ -1,6 +1,6 @@
 import { useSetAtom } from 'jotai';
 import { PropsWithChildren } from 'react';
-import { Keyboard, View } from 'react-native';
+import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { KeyboardToolbar } from 'react-native-keyboard-controller';
 import { useTheme } from 'react-native-paper';
@@ -12,7 +12,7 @@ import { TransButton, TransText } from '@/components/trans';
 import { useServiceId } from '@/hooks/use-service-id';
 import { useStepId } from '@/hooks/use-step-id';
 import { useT } from '@/hooks/use-t';
-import { useSetIsNextPage, useSetIsPrevPage } from '@/lib/quiz';
+import { useQuizActions } from '@/lib/quiz';
 import { toRouteId } from '@/lib/utils';
 import {
   useCurrentRoute,
@@ -25,8 +25,7 @@ import { TranslationContextProvider } from '@/providers/translation';
 export function QuizLayout({ children }: PropsWithChildren) {
   const t = useT();
   const [_, currentParams] = useCurrentRoute();
-  const setIsNextPage = useSetIsNextPage();
-  const setIsPrevPage = useSetIsPrevPage();
+  const { handleBack, handleContinue } = useQuizActions();
 
   return (
     <View style={tw`flex-1`}>
@@ -42,25 +41,19 @@ export function QuizLayout({ children }: PropsWithChildren) {
       <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
         <View style={tw`flex-1`}>
           <TransButton
-            i18nKey='quiz.previous'
+            i18nKey='quiz.back'
             icon='arrow-left'
             mode='contained-tonal'
-            onPress={() => {
-              Keyboard.dismiss();
-              setIsPrevPage(true);
-            }}
+            onPress={handleBack}
           />
         </View>
         <View style={tw`flex-1`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey='quiz.next'
+            i18nKey='quiz.continue'
             icon='arrow-right'
             mode='contained'
-            onPress={() => {
-              Keyboard.dismiss();
-              setIsNextPage(true);
-            }}
+            onPress={handleContinue}
           />
         </View>
       </SafeAreaView>
@@ -89,8 +82,6 @@ function QuizHeader() {
       ordinal: true,
     }
   );
-
-  console.log(nextParams);
 
   const nextTitle = nextRoute
     ? t(`services.${serviceId}.${quizId}.${toRouteId(nextRoute)}.title`, {

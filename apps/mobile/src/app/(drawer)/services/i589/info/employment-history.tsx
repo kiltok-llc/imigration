@@ -61,30 +61,25 @@ export default function EmploymentHistory() {
             <FormFieldArray control={control} name='jobs'>
               <FormFieldArrayItemBlocks>
                 {(idx) => (
-                  <>
-                    <FormBlock>
-                      <QuizFieldArrayItemHeader />
-                      <FormField
-                        control={control}
-                        name={`jobs.${idx}.employer`}
-                      >
-                        <QuizTextInput />
-                      </FormField>
-                      <FormField
-                        control={control}
-                        name={`jobs.${idx}.occupation`}
-                      >
-                        <QuizTextInput />
-                      </FormField>
-                      <FormAddressInput
-                        lens={lens.focus(`jobs.${idx}.address`)}
-                      />
-                      <FormRangeInput
-                        lens={lens.focus(`jobs.${idx}.range`)}
-                        optionalEnd
-                      />
-                    </FormBlock>
-                  </>
+                  <FormBlock>
+                    <QuizFieldArrayItemHeader />
+                    <FormField control={control} name={`jobs.${idx}.employer`}>
+                      <QuizTextInput />
+                    </FormField>
+                    <FormField
+                      control={control}
+                      name={`jobs.${idx}.occupation`}
+                    >
+                      <QuizTextInput />
+                    </FormField>
+                    <FormAddressInput
+                      lens={lens.focus(`jobs.${idx}.address`)}
+                    />
+                    <FormRangeInput
+                      lens={lens.focus(`jobs.${idx}.range`)}
+                      optionalEnd
+                    />
+                  </FormBlock>
                 )}
               </FormFieldArrayItemBlocks>
               <QuizFieldArrayAdd

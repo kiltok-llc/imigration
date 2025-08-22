@@ -99,17 +99,15 @@ export const ConditionalFormFieldBlock = <
   defaultValueRef.current = get(defaultValues, name);
 
   useEffect(() => {
-    // No reset logic if there's no active value
-    if (activeValueRef.current === undefined) {
-      return;
-    }
-
     if (disabled) {
       // console.debug(
       //   `Resetting field "${name}" to default value because it field was disabled.`
       // );
       resetField(name);
-    } else if (defaultValueRef.current === currentValueRef.current) {
+    } else if (
+      defaultValueRef.current === currentValueRef.current &&
+      activeValueRef.current !== undefined
+    ) {
       // console.debug(
       //   `Setting field "${name}" to active value: '${activeValueRef.current}' because field was enabled and current value is default.`
       // );
