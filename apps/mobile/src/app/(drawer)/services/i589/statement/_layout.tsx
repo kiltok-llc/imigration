@@ -72,11 +72,11 @@ export default function StatementLayout() {
           'fear-of-torture',
           'international-criminal-history',
           'organizational-affiliations',
-          'reasons-for-seeking-asylum',
+          'reasons-for-asylum',
           'previous-applications',
           'international-immigration-history',
           'harm-participation',
-          'return-to-home-country',
+          'return-to-country',
           'criminal-history',
           'final-declaration',
         ]}

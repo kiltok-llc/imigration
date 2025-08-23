@@ -7,44 +7,42 @@ import { FormDocumentsInput } from '@/components/form/document';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import {
-  QuizFieldTitle,
+  QuizFieldDescription,
   QuizPageDescription,
   QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
-import { internationalCriminalHistoryDetailsAtom } from '@/lib/data/asylum';
+import { harmParticipationDetailsAtom } from '@/lib/data/asylum';
 import { required } from '@/lib/utils';
 
-export default function InternationalCriminalHistory() {
+export default function HarmParticipation() {
   const [showDetails, setShowDetails] = useState(true);
-  const setInternationalCriminalHistoryDetails = useSetAtom(
-    internationalCriminalHistoryDetailsAtom
-  );
+  const setHarmParticipationDetails = useSetAtom(harmParticipationDetailsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasInternationalCriminalHistory: false,
+          hasHarmParticipation: false,
         }}
-        onSubmit={({ hasInternationalCriminalHistory }) => {
-          setShowDetails(hasInternationalCriminalHistory);
-          if (!hasInternationalCriminalHistory) {
-            setInternationalCriminalHistoryDetails('');
+        onSubmit={({ hasHarmParticipation }) => {
+          setShowDetails(hasHarmParticipation);
+          if (!hasHarmParticipation) {
+            setHarmParticipationDetails('');
           }
           return true;
         }}
-        pageId='has-international-criminal-history'
+        pageId='has-harm-participation'
         schema={z.object({
-          hasInternationalCriminalHistory: required(z.boolean().nullable()),
+          hasHarmParticipation: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasInternationalCriminalHistory'>
-              <QuizFieldTitle />
+            <FormField control={control} name='hasHarmParticipation'>
+              <QuizFieldDescription />
               <FormBooleanInput />
             </FormField>
           </FormBlock>
@@ -57,7 +55,7 @@ export default function InternationalCriminalHistory() {
             details: '',
           }}
           onSubmit={({ details }) => {
-            setInternationalCriminalHistoryDetails(details);
+            setHarmParticipationDetails(details);
             return true;
           }}
           pageId='details'

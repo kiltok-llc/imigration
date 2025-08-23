@@ -7,44 +7,42 @@ import { FormDocumentsInput } from '@/components/form/document';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import {
-  QuizFieldTitle,
+  QuizFieldDescription,
   QuizPageDescription,
   QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
-import { internationalCriminalHistoryDetailsAtom } from '@/lib/data/asylum';
+import { criminalHistoryDetailsAtom } from '@/lib/data/asylum';
 import { required } from '@/lib/utils';
 
-export default function InternationalCriminalHistory() {
+export default function CriminalHistory() {
   const [showDetails, setShowDetails] = useState(true);
-  const setInternationalCriminalHistoryDetails = useSetAtom(
-    internationalCriminalHistoryDetailsAtom
-  );
+  const setCriminalHistoryDetails = useSetAtom(criminalHistoryDetailsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasInternationalCriminalHistory: false,
+          hasCriminalHistory: false,
         }}
-        onSubmit={({ hasInternationalCriminalHistory }) => {
-          setShowDetails(hasInternationalCriminalHistory);
-          if (!hasInternationalCriminalHistory) {
-            setInternationalCriminalHistoryDetails('');
+        onSubmit={({ hasCriminalHistory }) => {
+          setShowDetails(hasCriminalHistory);
+          if (!hasCriminalHistory) {
+            setCriminalHistoryDetails('');
           }
           return true;
         }}
-        pageId='has-international-criminal-history'
+        pageId='has-criminal-history'
         schema={z.object({
-          hasInternationalCriminalHistory: required(z.boolean().nullable()),
+          hasCriminalHistory: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasInternationalCriminalHistory'>
-              <QuizFieldTitle />
+            <FormField control={control} name='hasCriminalHistory'>
+              <QuizFieldDescription />
               <FormBooleanInput />
             </FormField>
           </FormBlock>
@@ -57,7 +55,7 @@ export default function InternationalCriminalHistory() {
             details: '',
           }}
           onSubmit={({ details }) => {
-            setInternationalCriminalHistoryDetails(details);
+            setCriminalHistoryDetails(details);
             return true;
           }}
           pageId='details'

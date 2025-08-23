@@ -3,48 +3,50 @@ import { useState } from 'react';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
-import { FormDocumentsInput } from '@/components/form/document';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import {
-  QuizFieldTitle,
+  QuizFieldDescription,
   QuizPageDescription,
   QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
-import { internationalCriminalHistoryDetailsAtom } from '@/lib/data/asylum';
+import { internationalImmigrationHistoryDetailsAtom } from '@/lib/data/asylum';
 import { required } from '@/lib/utils';
 
-export default function InternationalCriminalHistory() {
+export default function InternationalImmigrationHistory() {
   const [showDetails, setShowDetails] = useState(true);
-  const setInternationalCriminalHistoryDetails = useSetAtom(
-    internationalCriminalHistoryDetailsAtom
+  const setInternationalImmigrationHistoryDetails = useSetAtom(
+    internationalImmigrationHistoryDetailsAtom
   );
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasInternationalCriminalHistory: false,
+          hasInternationalImmigrationHistory: false,
         }}
-        onSubmit={({ hasInternationalCriminalHistory }) => {
-          setShowDetails(hasInternationalCriminalHistory);
-          if (!hasInternationalCriminalHistory) {
-            setInternationalCriminalHistoryDetails('');
+        onSubmit={({ hasInternationalImmigrationHistory }) => {
+          setShowDetails(hasInternationalImmigrationHistory);
+          if (!hasInternationalImmigrationHistory) {
+            setInternationalImmigrationHistoryDetails('');
           }
           return true;
         }}
-        pageId='has-international-criminal-history'
+        pageId='has-international-immigration-history'
         schema={z.object({
-          hasInternationalCriminalHistory: required(z.boolean().nullable()),
+          hasInternationalImmigrationHistory: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasInternationalCriminalHistory'>
-              <QuizFieldTitle />
+            <FormField
+              control={control}
+              name='hasInternationalImmigrationHistory'
+            >
+              <QuizFieldDescription />
               <FormBooleanInput />
             </FormField>
           </FormBlock>
@@ -57,7 +59,7 @@ export default function InternationalCriminalHistory() {
             details: '',
           }}
           onSubmit={({ details }) => {
-            setInternationalCriminalHistoryDetails(details);
+            setInternationalImmigrationHistoryDetails(details);
             return true;
           }}
           pageId='details'
@@ -72,31 +74,6 @@ export default function InternationalCriminalHistory() {
               <FormField control={control} name='details'>
                 <QuizLongTextInput />
               </FormField>
-            </FormBlock>
-          )}
-        </QuizPage>
-      )}
-
-      {showDetails && (
-        <QuizPage
-          defaultValues={{
-            documents: [],
-          }}
-          onSubmit={() => true}
-          pageId='documents'
-          schema={z.object({
-            documents: z.array(z.string()),
-          })}
-        >
-          {({ control }) => (
-            <FormBlock>
-              <FormBlock>
-                <QuizPageTitle />
-                <QuizPageDescription />
-                <FormField control={control} name='documents'>
-                  <FormDocumentsInput />
-                </FormField>
-              </FormBlock>
             </FormBlock>
           )}
         </QuizPage>

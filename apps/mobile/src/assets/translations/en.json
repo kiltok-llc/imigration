@@ -13,7 +13,7 @@
   "form": {
     "documents": {
       "cancelled": "Document selection was cancelled.",
-      "title": "Choose files, documents, or photos",
+      "title": "Submit files, documents, or photos",
       "description": "You can submit any number of files and images of any format.",
       "document": {
         "label": "Browse Documents"
@@ -240,16 +240,31 @@
           }
         },
         "criminal-history": {
-          "title": "Torture",
-          "torture": {
-            "title": "Torture",
-            "has-fear-of-torture": {
-              "title": "Are you afraid of being tortured in your country or in any other country to which you may be returned?",
-              "description": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
-            },
-            "description": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning.",
+          "title": "Criminal History",
+          "has-criminal-history": {
+            "has-criminal-history": {
+              "description": "Have you or any family member included in this application ever committed a crime or been arrested, charged, convicted, or sentenced for any offense in the United States (including violations of immigration laws)?"
+            }
+          },
+          "details": {
+            "title": "Details of criminal history",
+            "description": "Provide detailed information for each instance:\n\nWhat happened and under what circumstances?\nWhen did it occur?\nWhat was the sentence received, and what were the place and length of detention or imprisonment?\nWhat were the reasons for the detention or conviction?\nWhat formal charges were brought against you or your family members included in this application, and what were the reasons for your/their release?",
             "details": {
-              "label": "Explanation of fear of torture"
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Criminal history documents",
+            "description": "Please submit any documents related to your or your family's criminal history. This may include court records, police reports, or any other relevant documents."
+          }
+        },
+        "final-declaration": {
+          "title": "Final Declaration",
+          "final-declaration": {
+            "title": "Final Declaration",
+            "description": "I swear (affirm) that I know the contents of this application that I am signing, including all attached documents and supplements, and that they are all true to the best of my knowledge and belief. I also understand that if it is determined that I knowingly filed a frivolous asylum application, I will be permanently ineligible for any benefit under the Immigration and Nationality Act, and that I cannot avoid a finding of a frivolous application simply because someone advised me to provide false information in my asylum application.",
+            "agreed": {
+              "label": "I agree"
             }
           }
         },
@@ -343,6 +358,96 @@
           "past-affiliations-documents": {
             "title": "Past membership and group affiliation documents",
             "description": "Please submit any documents related to you or your family's <strong>past</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+          }
+        },
+        "previous-applications": {
+          "title": "Previous Applications",
+          "has-previous-applications": {
+            "has-previous-applications": {
+              "description": "Have you, your spouse, your child(ren), your father, your mother, or your siblings ever applied to the United States Government for refugee status, asylum, or withholding of removal?"
+            }
+          },
+          "details": {
+            "title": "Details of Prior Application",
+            "description": "What happened? Was there a decision, and if so, what was the decision?\n\nWhat happened to the status that you, your spouse, your child(ren), your father, your mother, or your sibling(s) received as a result of that decision?\n\nWere you included in the application of your father, mother, or spouse? If you were included, what was the A-Number of your father, mother, or spouse?\n\nIf an immigration judge or the Board of Immigration Appeals denied your asylum, please explain: what has changed in the conditions of your country or in your personal situation since your application was denied? Why is your case different now?",
+            "details": {
+              "label": "Details"
+            }
+          }
+        },
+        "return-to-country": {
+          "title": "Return to Country",
+          "has-returned-to-country": {
+            "has-returned-to-country": {
+              "description": "After you left your country to come to the United States (or the country where you suffered harm or fear harm), did you return to that country?"
+            }
+          },
+          "details": {
+            "title": "Explanation of travel to home country",
+            "description": "Explain in detail:\nWhy did you return?\nWhen did you return?\nHow long did you stay?",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to travel to home country",
+            "description": "Please submit any documents that may help confirm the information you have provided about your travel to your home country. This may include travel tickets, passport stamps, or any other relevant documents."
+          }
+        },
+        "harm-participation": {
+          "title": "Participation in Persecution",
+          "has-harm-participation": {
+            "has-harm-participation": {
+              "description": "Have you, your spouse, or your child(ren) ever ordered, incited, assisted, or otherwise participated in causing harm or suffering to any person because of their race, religion, nationality, membership in a particular social group, or belief in a particular political opinion?"
+            }
+          },
+          "details": {
+            "title": "Details of involvement",
+            "description": "Provide a detailed description of each incident, specifying your involvement and/or the involvement of your family members.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to involvement in harm or persecution",
+            "description": "Please submit any documents that may help confirm the information you have provided about your or your family's involvement. This may include court records, police reports, letters, or any other relevant documents."
+          }
+        },
+        "international-immigration-history": {
+          "title": "Legal Status in Other Countries",
+          "has-international-immigration-history": {
+            "has-international-immigration-history": {
+              "description": "Have you, your spouse, your child(ren), or other family members such as your father, mother, or siblings ever applied for or received any legal status in a country other than the one from which you are now requesting asylum?"
+            }
+          },
+          "details": {
+            "title": "Explanation of legal status in another country",
+            "description": "Provide a detailed explanation of what happened with that legal status, for you or any of your family members. Include the following:\n\nWhere — in which country did this occur?\nWhat was your status while you were in that country?\nWhat was the reason you left?\nDo you have the right to return with “legal residence”?\nDid you apply for refugee or asylum status while living in that country? Explain why or why not.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "Documents related to legal status in another country",
+            "description": "Please submit any documents that may help confirm the information you have provided about your or your family's legal status in another country. This may include visas, residence permits, asylum or refugee status documents, or any other relevant documents."
+          }
+        },
+        "reasons-for-asylum": {
+          "title": "Reasons for Asylum",
+          "reasons": {
+            "reasons": {
+              "title": "Reasons for seeking asylum",
+              "description": "Based on your previous answers and explanations, indicate the reasons you are requesting asylum. You may select one or more reasons.",
+              "options": {
+                "politics": "Political Opinion",
+                "religion": "Religion",
+                "nationality": "Nationality",
+                "race": "Race",
+                "political-opinion": "Political Opinion",
+                "social-group": "Membership in a Social Group",
+                "torture": "Fear of Torture"
+              }
+            }
           }
         },
         "late-application": {

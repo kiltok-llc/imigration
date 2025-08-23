@@ -7,44 +7,42 @@ import { FormDocumentsInput } from '@/components/form/document';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import {
-  QuizFieldTitle,
+  QuizFieldDescription,
   QuizPageDescription,
   QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizLongTextInput } from '@/components/quiz/text';
-import { internationalCriminalHistoryDetailsAtom } from '@/lib/data/asylum';
+import { returnToCountryDetailsAtom } from '@/lib/data/asylum';
 import { required } from '@/lib/utils';
 
-export default function InternationalCriminalHistory() {
+export default function ReturnToCountry() {
   const [showDetails, setShowDetails] = useState(true);
-  const setInternationalCriminalHistoryDetails = useSetAtom(
-    internationalCriminalHistoryDetailsAtom
-  );
+  const setReturnToCountryDetails = useSetAtom(returnToCountryDetailsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasInternationalCriminalHistory: false,
+          hasReturnedToCountry: false,
         }}
-        onSubmit={({ hasInternationalCriminalHistory }) => {
-          setShowDetails(hasInternationalCriminalHistory);
-          if (!hasInternationalCriminalHistory) {
-            setInternationalCriminalHistoryDetails('');
+        onSubmit={({ hasReturnedToCountry }) => {
+          setShowDetails(hasReturnedToCountry);
+          if (!hasReturnedToCountry) {
+            setReturnToCountryDetails('');
           }
           return true;
         }}
-        pageId='has-international-criminal-history'
+        pageId='has-returned-to-country'
         schema={z.object({
-          hasInternationalCriminalHistory: required(z.boolean().nullable()),
+          hasReturnedToCountry: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasInternationalCriminalHistory'>
-              <QuizFieldTitle />
+            <FormField control={control} name='hasReturnedToCountry'>
+              <QuizFieldDescription />
               <FormBooleanInput />
             </FormField>
           </FormBlock>
@@ -57,7 +55,7 @@ export default function InternationalCriminalHistory() {
             details: '',
           }}
           onSubmit={({ details }) => {
-            setInternationalCriminalHistoryDetails(details);
+            setReturnToCountryDetails(details);
             return true;
           }}
           pageId='details'
