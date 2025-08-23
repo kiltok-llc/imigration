@@ -70,7 +70,15 @@ export default function StatementLayout() {
           'harm-and-persecution',
           'fear',
           'fear-of-torture',
+          'international-criminal-history',
+          'organizational-affiliations',
+          'reasons-for-seeking-asylum',
+          'previous-applications',
+          'international-immigration-history',
+          'harm-participation',
+          'return-to-home-country',
           'criminal-history',
+          'final-declaration',
         ]}
       >
         <QuizProvider>

@@ -56,7 +56,7 @@ export function FormImageInput() {
 
   return (
     <View
-      style={tw.style('mx-4 rounded-lg border-2 border-dashed', {
+      style={tw.style('mt-2 rounded-lg border-2 border-dashed', {
         backgroundColor: theme.colors.surface,
         borderColor: invalid ? theme.colors.error : theme.colors.outlineVariant,
       })}

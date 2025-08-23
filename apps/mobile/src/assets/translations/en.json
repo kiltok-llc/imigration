@@ -12,7 +12,15 @@
   "or": "or",
   "form": {
     "documents": {
-      "cancelled": "Document selection was cancelled."
+      "cancelled": "Document selection was cancelled.",
+      "title": "Choose files, documents, or photos",
+      "description": "You can submit any number of files and images of any format.",
+      "document": {
+        "label": "Browse Documents"
+      },
+      "library": {
+        "label": "Browse Photos"
+      }
     },
     "fieldarray": {
       "add": "Add item",
@@ -225,6 +233,10 @@
             "details": {
               "label": "Fear explanation"
             }
+          },
+          "documents": {
+            "title": "Documents related to your fear of return",
+            "description": "Please submit any documents that may help confirm the information you have provided about your fear of returning. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
           }
         },
         "criminal-history": {
@@ -241,18 +253,23 @@
             }
           }
         },
-        "torture": {
+        "fear-of-torture": {
           "title": "Torture",
-          "torture": {
-            "title": "Torture",
+          "has-fear-of-torture": {
             "has-fear-of-torture": {
               "title": "Are you afraid of being tortured in your country or in any other country to which you may be returned?",
               "description": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
-            },
+            }
+          },
+          "details": {
             "description": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning.",
             "details": {
               "label": "Explanation of fear of torture"
             }
+          },
+          "documents": {
+            "title": "Documents related to your fear of torture",
+            "description": "Please submit any documents that may help confirm the information you have provided about your fear of torture. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
           }
         },
         "harm-and-persecution": {
@@ -263,15 +280,69 @@
             }
           },
           "documents": {
-            "title": "Documents related to your Harm and/or Persecution",
+            "title": "Documents related to your harm and/or persecution",
             "description": "Please submit any documents that may help confirm the information you have provided about your harm and/or persecution. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
           },
           "details": {
-            "title": "Details of your Harm and/or Persecution",
+            "title": "Details of your harm and/or persecution",
             "description": "Please describe in detail any incidents when you or your family suffered harm, were threatened, or were mistreated.\n\nWhen describing your experience, please include as much detail as possible. In your explanation, try to address the following:\n\nWhat happened and how it happened.\n\nWhen it happened. Indicate whether it was a single incident or if it happened many times.\n\nWho was responsible. If you do not know their names, explain whether they belonged to a group, gang, cartel, political group, or were part of the government.\n\nWhy you believe you or your family were harmed, mistreated, or threatened.\n\nAny additional information. Include anything else you can share that may help us better understand what happened.",
             "details": {
               "label": "Details of harm"
             }
+          }
+        },
+        "international-criminal-history": {
+          "title": "International Criminal History",
+          "has-international-criminal-history": {
+            "has-international-criminal-history": {
+              "title": "Have you ever been arrested, charged, or convicted for a crime in any country <strong>other</strong> than the United States?"
+            }
+          },
+          "details": {
+            "title": "International criminal history details",
+            "description": "Please provide details about your arrest, charge, or conviction. Include the following information:\n\nThe country where the incident occurred.\n\nThe date of the incident.\n\nThe nature of the crime.\n\nThe outcome (e.g., acquitted, convicted, case dismissed).\n\nAny additional relevant information.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "documents": {
+            "title": "International criminal history documents",
+            "description": "Please submit any documents related to your arrest, charge, or conviction. This may include court records, police reports, or any other relevant documents."
+          }
+        },
+        "organizational-affiliations": {
+          "title": "Memberships & Groups",
+          "has-current-organizational-affiliations": {
+            "has-current-organizational-affiliations": {
+              "description": "Do you or your family continue participating in these groups or organizations?"
+            }
+          },
+          "has-past-organizational-affiliations": {
+            "has-past-organizational-affiliations": {
+              "description": "Have you or any member of your family ever belonged to or been associated with any organization or group in your country of origin, such as, but not limited to, a political party, a student group, a labor union, a religious organization, a military or paramilitary group, a civil patrol, a guerrilla organization, an ethnic group, a human rights group, or the press or media?"
+            }
+          },
+          "current-affiliations-details": {
+            "title": "Current membership and group affiliation details",
+            "description": "Please describe in detail the current level of participation for each person who is involved:\n\nHow do they participate?\n\nWhat is your or your family member’s current level of participation?\n\nDo you or your family members currently hold leadership positions or important roles? If so, which position?\n\nHow long have you or your family member(s) participated in that organization or group?",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "past-affiliations-details": {
+            "title": "Past membership and group affiliation details",
+            "description": "Please provide details about your involvement with the gang or group. Include the following information:\n\nThe name of the gang or group.\n\nThe nature of your involvement.\n\nThe time period of your involvement.\n\nAny criminal activities you were involved in.\n\nAny additional relevant information.",
+            "details": {
+              "label": "Details"
+            }
+          },
+          "current-affiliations-documents": {
+            "title": "Current membership and group affiliation documents",
+            "description": "Please submit any documents related to you or your family's <strong>current</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+          },
+          "past-affiliations-documents": {
+            "title": "Past membership and group affiliation documents",
+            "description": "Please submit any documents related to you or your family's <strong>past</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
           }
         },
         "late-application": {

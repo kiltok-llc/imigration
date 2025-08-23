@@ -17,31 +17,31 @@ import { QuizLongTextInput } from '@/components/quiz/text';
 import { fearDetailsAtom } from '@/lib/data/asylum';
 import { required } from '@/lib/utils';
 
-export default function Fear() {
+export default function InternationalCriminalHistory() {
   const [showDetails, setShowDetails] = useState(true);
-  const setFearDetails = useSetAtom(fearDetailsAtom);
+  const setInternationalCriminalHistoryDetails = useSetAtom(fearDetailsAtom);
 
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          hasFear: false,
+          hasInternationalCriminalHistory: false,
         }}
-        onSubmit={({ hasFear }) => {
-          setShowDetails(hasFear);
-          if (!hasFear) {
-            setFearDetails('');
+        onSubmit={({ hasInternationalCriminalHistory }) => {
+          setShowDetails(hasInternationalCriminalHistory);
+          if (!hasInternationalCriminalHistory) {
+            setInternationalCriminalHistoryDetails('');
           }
           return true;
         }}
-        pageId='has-fear'
+        pageId='has-international-criminal-history'
         schema={z.object({
-          hasFear: required(z.boolean().nullable()),
+          hasInternationalCriminalHistory: required(z.boolean().nullable()),
         })}
       >
         {({ control }) => (
           <FormBlock>
-            <FormField control={control} name='hasFear'>
+            <FormField control={control} name='hasInternationalCriminalHistory'>
               <QuizFieldTitle />
               <FormBooleanInput />
             </FormField>
@@ -55,7 +55,7 @@ export default function Fear() {
             details: '',
           }}
           onSubmit={({ details }) => {
-            setFearDetails(details);
+            setInternationalCriminalHistoryDetails(details);
             return true;
           }}
           pageId='details'

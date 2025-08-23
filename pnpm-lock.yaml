@@ -252,6 +252,9 @@ importers:
       optics-ts:
         specifier: ^2.4.1
         version: 2.4.1
+      pretty-bytes:
+        specifier: ^7.0.1
+        version: 7.0.1
       react:
         specifier: catalog:react19
         version: 19.0.0
@@ -7449,6 +7452,10 @@ packages:
   pretty-bytes@5.6.0:
     resolution: {integrity: sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==}
     engines: {node: '>=6'}
+
+  pretty-bytes@7.0.1:
+    resolution: {integrity: sha512-285/jRCYIbMGDciDdrw0KPNC4LKEEwz/bwErcYNxSJOi4CpGUuLpb9gQpg3XJP0XYj9ldSRluXxih4lX2YN8Xw==}
+    engines: {node: '>=20'}
 
   pretty-format@29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
@@ -16829,6 +16836,8 @@ snapshots:
   prettier@3.5.3: {}
 
   pretty-bytes@5.6.0: {}
+
+  pretty-bytes@7.0.1: {}
 
   pretty-format@29.7.0:
     dependencies:

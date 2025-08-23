@@ -72,6 +72,7 @@
     "jsonata": "^2.1.0",
     "nuqs": "^2.4.3",
     "optics-ts": "^2.4.1",
+    "pretty-bytes": "^7.0.1",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-error-boundary": "^6.0.0",

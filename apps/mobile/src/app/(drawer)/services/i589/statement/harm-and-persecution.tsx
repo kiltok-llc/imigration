@@ -88,11 +88,13 @@ export default function HarmAndPersecution() {
         >
           {({ control }) => (
             <FormBlock>
-              <QuizPageTitle />
-              <QuizPageDescription />
-              <FormField control={control} name='documents'>
-                <FormDocumentsInput />
-              </FormField>
+              <FormBlock>
+                <QuizPageTitle />
+                <QuizPageDescription />
+                <FormField control={control} name='documents'>
+                  <FormDocumentsInput />
+                </FormField>
+              </FormBlock>
             </FormBlock>
           )}
         </QuizPage>

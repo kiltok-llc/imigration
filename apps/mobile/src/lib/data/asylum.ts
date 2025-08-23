@@ -32,17 +32,18 @@ export const internationalCriminalHistoryDetailsAtom = userDataDocumentAtom(
   z.string()
 );
 
-export const pastGangParticipationDetailsAtom = userDataDocumentAtom(
-  'past-gang-participation-details',
+export const pastOrganizationalAffiliationsDetailsAtom = userDataDocumentAtom(
+  'past-organizational-affiliations-details',
   '',
   z.string()
 );
 
-export const currentGangParticipationDetailsAtom = userDataDocumentAtom(
-  'current-gang-participation-details',
-  '',
-  z.string()
-);
+export const currentOrganizationalAffiliationsDetailsAtom =
+  userDataDocumentAtom(
+    'current-organizational-affiliations-details',
+    '',
+    z.string()
+  );
 
 export const AsylumReasonEnum = z.enum([
   'political',
@@ -72,8 +73,8 @@ export const previousApplicationDetailsAtom = userDataDocumentAtom(
   z.string()
 );
 
-export const internationalImmigrationStatusDetailsAtom = userDataDocumentAtom(
-  'international-immigration-status-details',
+export const internationalImmigrationHistoryDetailsAtom = userDataDocumentAtom(
+  'international-immigration-history-details',
   '',
   z.string()
 );
