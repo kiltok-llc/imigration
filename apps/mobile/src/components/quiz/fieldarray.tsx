@@ -22,7 +22,7 @@ export function QuizFieldArrayAdd({
 export function QuizFieldArrayItemHeader({
   removeButton = true,
 }: {
-  removeButton: boolean;
+  removeButton?: boolean;
 }) {
   const theme = useTheme();
   const index = useFormFieldArrayItem();
