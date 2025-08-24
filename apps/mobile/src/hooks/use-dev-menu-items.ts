@@ -6,12 +6,12 @@ import {
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { PropsWithChildren, useEffect } from 'react';
 
-import { defaultStorage, quizStorage, userStorage } from '@/lib/mmkv';
+import { appStorage, quizStorage, userStorage } from '@/lib/mmkv';
 
 const devMenuItemsAtom = atom<ExpoDevMenuItem[]>([
   {
     callback: () => {
-      defaultStorage.clearAll();
+      appStorage.clearAll();
       userStorage.clearAll();
       quizStorage.clearAll();
     },

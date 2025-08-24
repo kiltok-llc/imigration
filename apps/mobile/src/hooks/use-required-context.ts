@@ -18,3 +18,12 @@ export const useRequiredContext = <T>(context: RequiredContext<T>) => {
 
   return value;
 };
+
+export const usePreventDuplicateContext = <T>(context: RequiredContext<T>) => {
+  const value = useContext(context);
+  if (value !== DEFAULT_VALUE) {
+    throw new Error(
+      'Duplicate context provider detected. Make sure you are not nesting providers of the same context.'
+    );
+  }
+};

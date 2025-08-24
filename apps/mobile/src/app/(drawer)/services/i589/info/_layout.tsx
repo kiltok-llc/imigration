@@ -12,7 +12,7 @@ import { useT } from '@/hooks/use-t';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
 import { QuizProvider } from '@/lib/quiz';
-import { i589StepAtom } from '@/lib/services/i589';
+import { i589StepAtom } from '@/lib/services/i589/step';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {

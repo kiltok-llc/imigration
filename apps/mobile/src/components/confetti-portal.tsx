@@ -2,12 +2,13 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useWindowDimensions } from 'react-native';
 import { Confetti } from 'react-native-fast-confetti';
 
-export function ConfettiOnDemand() {
+export function ConfettiPortal() {
   const { height, width } = useWindowDimensions();
   const { confetti } = useLocalSearchParams<{ confetti?: string }>();
+  const show = confetti === 'true';
   const router = useRouter();
 
-  if (confetti !== 'true') {
+  if (!show) {
     return null;
   }
 

@@ -18,21 +18,21 @@ import {
   currentOrganizationalAffiliationsDetailsAtom,
   pastOrganizationalAffiliationsDetailsAtom,
 } from '@/lib/data/asylum';
-import { defaultStorage } from '@/lib/mmkv';
+import { appStorage } from '@/lib/mmkv';
 import { required } from '@/lib/utils';
 
 const showPastDetailsAtom = atomWithMmkvStorage(
   'organizational-affiliations.show-past-details',
   false,
   z.boolean(),
-  defaultStorage
+  appStorage
 );
 
 const showCurrentDetailsAtom = atomWithMmkvStorage(
   'organizational-affiliations.show-current-details',
   false,
   z.boolean(),
-  defaultStorage
+  appStorage
 );
 
 export default function OrganizationalAffiliations() {

@@ -3,7 +3,7 @@ import { MMKV } from 'react-native-mmkv';
 import superjson from 'superjson';
 import z from 'zod/v4';
 
-export const defaultStorage = new MMKV({ id: 'mmkv.default' });
+export const appStorage = new MMKV({ id: 'mmkv.default' });
 
 export const quizStorage = new MMKV({ id: 'mmkv.quiz' });
 

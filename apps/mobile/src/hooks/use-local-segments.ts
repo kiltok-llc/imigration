@@ -7,7 +7,7 @@ export function useLocalSegments({
 }: { groups?: boolean } = {}): string[] {
   const segments = useSegments(); // current global/focused segments
   const isFocused = useIsFocused(); // whether *this* screen is focused now
-  const lastFocused = useRef<string[]>(segments);
+  const lastFocused = useRef<string[]>([]);
 
   if (isFocused) {
     lastFocused.current = segments;

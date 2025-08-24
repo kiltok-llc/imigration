@@ -16,8 +16,8 @@ import { Image } from 'react-native';
 import { Drawer as PaperDrawer, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
+import stars from '@/assets/drawer/stars.png';
 import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
-import stars from '@/assets/stars.png';
 
 export function Drawer({
   screenOptions,
@@ -39,7 +39,6 @@ export function Drawer({
         );
       }}
       screenOptions={{
-        drawerHideStatusBarOnOpen: true,
         headerStyle: {
           backgroundColor: theme.colors.surface,
         },

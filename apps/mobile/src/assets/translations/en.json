@@ -167,6 +167,18 @@
       "reset-values": "Reset saved answers"
     }
   },
+  "migri": {
+    "i589": {
+      "welcome": [
+        "Welcome to the i589 application for asylum!",
+        "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
+        "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
+        "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
+        "Please take your time to read each question carefully and provide accurate and honest answers.",
+        "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+      ]
+    }
+  },
   "services": {
     "b2": {
       "subtitle": "B-2 Visitor Visa Application",
@@ -193,6 +205,12 @@
         "revise": {
           "info": "Revise Information",
           "statement": "Revise Statement"
+        },
+        "migri": {
+          "welcome": "Help with Asylum Application",
+          "info": "Help with Personal Info",
+          "statement": "Help with Personal Statement",
+          "review": "Help with Review"
         }
       },
       "appeal": {

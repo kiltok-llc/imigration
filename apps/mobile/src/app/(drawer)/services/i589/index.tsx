@@ -10,13 +10,18 @@ import tw from 'twrnc';
 import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { resetQuizPages } from '@/atoms/quiz-page-atom';
 import { resetQuizRoute } from '@/atoms/quiz-route-atom';
-import { ConfettiOnDemand } from '@/components/confetti-on-demand';
+import { ConfettiPortal } from '@/components/confetti-portal';
+import { MigriPortal } from '@/components/migri/migri-portal';
+import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
+import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
+import { useIsTransitioning } from '@/hooks/use-is-transitioning';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
-import { I589Step, i589StepAtom } from '@/lib/services/i589';
+import { completedMigriEncounterIds, useTriggerMigri } from '@/lib/migri';
+import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
 
 export const steps: Step[] = [
   {
@@ -59,6 +64,7 @@ export default function I589() {
   const router = useRouter();
   const [step, setStep] = useAtom(i589StepAtom);
   const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
+  const isTransitioning = useIsTransitioning();
 
   return (
     <>
@@ -68,8 +74,10 @@ export default function I589() {
           title: t(`services.${service}.progress.screenTitle`),
         }}
       />
-      <ConfettiOnDemand />
+      <ConfettiPortal />
       <View style={tw`flex-1`}>
+        <MigriPortal ready={!isTransitioning} />
+        <MigriTrigger id='i589.welcome' once={true} type='talk' />
         <ScrollView
           alwaysBounceVertical={false}
           contentContainerStyle={tw`grow justify-center`}
@@ -144,6 +152,27 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
           }}
         />
       )}
+      {['info', 'statement'].includes(step) && <Divider />}
+      <MigriHeaderIcons />
     </HeaderMenu>
   );
+}
+
+function MigriHeaderIcons() {
+  const service = useService();
+  const ids = ['welcome', 'info', 'statement', 'review'] as const;
+  const completedIds = useAtomValue(completedMigriEncounterIds);
+  const triggerMigri = useTriggerMigri();
+
+  return ids
+    .filter((id) => completedIds.has(`${service}.${id}`))
+    .map((id) => (
+      <HeaderMenuItem
+        i18nKey={`services.${service}.menu.migri.${id}`}
+        key={id}
+        onPress={() => {
+          triggerMigri({ id: `i589.${id}`, once: false, type: 'talk' });
+        }}
+      />
+    ));
 }

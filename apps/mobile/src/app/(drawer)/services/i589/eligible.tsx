@@ -5,12 +5,12 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { ConfettiOnDemand } from '@/components/confetti-on-demand';
+import { ConfettiPortal } from '@/components/confetti-portal';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
-import { i589StepAtom } from '@/lib/services/i589';
+import { i589StepAtom } from '@/lib/services/i589/step';
 
 export default function Eligible() {
   const service = useService();
@@ -24,7 +24,7 @@ export default function Eligible() {
           title: t(`services.${service}.eligible.screenTitle`),
         }}
       />
-      <ConfettiOnDemand />
+      <ConfettiPortal />
       <SafeAreaView edges={['right', 'bottom', 'left']} style={tw`flex-1`}>
         <Container>
           <Surface style={tw`my-20 h-full w-full flex-1 gap-10 p-8 pt-10`}>

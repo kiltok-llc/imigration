@@ -5,14 +5,14 @@ import z from 'zod/v4';
 import { en, es } from 'zod/v4/locales';
 
 import resources from '@/assets/locale';
-import { defaultStorage } from '@/lib/mmkv';
+import { appStorage } from '@/lib/mmkv';
 
 const languageDetector: LanguageDetectorModule = {
   cacheUserLanguage: (lng: string) => {
-    defaultStorage.set('language', lng);
+    appStorage.set('language', lng);
   },
   detect: () => {
-    const cachedLanguage = defaultStorage.getString('language');
+    const cachedLanguage = appStorage.getString('language');
     const deviceLanguage = getLocales()[0]?.languageCode;
     return cachedLanguage ?? deviceLanguage ?? undefined;
   },
