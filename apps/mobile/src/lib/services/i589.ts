@@ -1,3 +1,4 @@
+import { atom } from 'jotai';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
@@ -21,4 +22,9 @@ export const i589StepAtom = atomWithMmkvStorage(
   'eligibility',
   I589StepEnum,
   defaultStorage
+);
+
+export const i589StepIdxAtom = atom(
+  (get) => I589StepEnum.options.indexOf(get(i589StepAtom)),
+  (_get, set, idx: number) => set(i589StepAtom, I589StepEnum.options[idx]!)
 );
