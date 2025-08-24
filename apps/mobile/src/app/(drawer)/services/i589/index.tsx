@@ -16,7 +16,7 @@ import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
-import { i589StepAtom } from '@/lib/services/i589';
+import { I589Step, i589StepAtom } from '@/lib/services/i589';
 
 export const steps: Step[] = [
   {
@@ -92,7 +92,7 @@ export default function I589() {
             </View>
             <StepIcons
               cols={4}
-              onPress={__DEV__ ? setStep : undefined}
+              onPress={__DEV__ ? (id) => setStep(id as I589Step) : undefined}
               stepId={step}
               steps={steps}
             />
