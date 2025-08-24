@@ -3,7 +3,6 @@ import { atom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
 import { toast } from 'sonner-native';
 
-import { stepAtom } from '@/atoms/step-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
@@ -12,6 +11,7 @@ import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
 import { entriesAtom } from '@/lib/data/user';
 import { QuizProvider } from '@/lib/quiz';
+import { i589StepAtom } from '@/lib/services/i589';
 import { RoutesProvider } from '@/providers/routes';
 
 const now = new Date();
@@ -36,7 +36,7 @@ export default function StatementLayout() {
   const step = useStep();
   const t = useT();
   const router = useRouter();
-  const setStep = useSetAtom(stepAtom({ service }));
+  const setStep = useSetAtom(i589StepAtom);
   const entryIsRecent = useAtomValue(entryIsRecentAtom);
 
   return (

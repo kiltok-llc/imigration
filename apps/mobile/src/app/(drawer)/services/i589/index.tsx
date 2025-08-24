@@ -1,6 +1,6 @@
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { router, Stack, useRouter } from 'expo-router';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Surface } from 'react-native-paper';
@@ -10,13 +10,13 @@ import tw from 'twrnc';
 import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { resetQuizPages } from '@/atoms/quiz-page-atom';
 import { resetQuizRoute } from '@/atoms/quiz-route-atom';
-import { stepAtom } from '@/atoms/step-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
+import { i589StepAtom } from '@/lib/services/i589';
 
 export const steps: Step[] = [
   {
@@ -57,7 +57,7 @@ export default function I589() {
   const t = useT();
   const service = useService();
   const router = useRouter();
-  const step = useAtomValue(stepAtom({ service }));
+  const [step, setStep] = useAtom(useI589StepAtom());
   const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
 
   return (
@@ -90,7 +90,12 @@ export default function I589() {
                 variant='titleSmall'
               />
             </View>
-            <StepIcons cols={4} stepId={step} steps={steps} />
+            <StepIcons
+              cols={4}
+              onPress={__DEV__ ? setStep : undefined}
+              stepId={step}
+              steps={steps}
+            />
           </Surface>
         </ScrollView>
         <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
@@ -113,7 +118,7 @@ export default function I589() {
 
 function I589Menu({ tintColor }: { tintColor?: string }) {
   const service = useService();
-  const step = useAtomValue(stepAtom({ service }));
+  const step = useAtomValue(i589StepAtom);
 
   return (
     <HeaderMenu tintColor={tintColor}>

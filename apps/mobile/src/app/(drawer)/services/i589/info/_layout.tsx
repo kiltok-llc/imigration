@@ -3,7 +3,6 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
 import { toast } from 'sonner-native';
 
-import { stepAtom } from '@/atoms/step-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
@@ -13,6 +12,7 @@ import { useT } from '@/hooks/use-t';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
 import { QuizProvider } from '@/lib/quiz';
+import { i589StepAtom } from '@/lib/services/i589';
 import { RoutesProvider } from '@/providers/routes';
 
 export default function InfoLayout() {
@@ -22,7 +22,7 @@ export default function InfoLayout() {
   const router = useRouter();
   const maritalStatus = useAtomValue(maritalStatusAtom);
   const childIds = useAtomValue(childIdsAtom);
-  const setStep = useSetAtom(stepAtom({ service }));
+  const setStep = useSetAtom(i589StepAtom);
 
   return (
     <>

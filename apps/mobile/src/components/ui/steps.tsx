@@ -1,11 +1,9 @@
 import { Entypo } from '@expo/vector-icons';
-import { useSetAtom } from 'jotai';
 import { Fragment, FunctionComponent } from 'react';
 import { Pressable, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { stepAtom } from '@/atoms/step-atom';
 import { Trans } from '@/components/trans';
 import { useService } from '@/hooks/use-service';
 import { chunked } from '@/lib/utils';
@@ -20,17 +18,18 @@ export type Step = {
 
 export function StepIcons({
   cols,
+  onPress,
   stepId,
   steps,
   style,
 }: {
   cols: number;
+  onPress?: (stepId: string) => void;
   stepId: string;
   steps: Step[];
   style?: ViewStyle;
 }) {
   const service = useService();
-  const setStep = useSetAtom(stepAtom({ service }));
   const theme = useTheme();
   const currentStepIdx = steps.findIndex(({ id }) => id === stepId);
 
@@ -42,7 +41,7 @@ export function StepIcons({
             .map((step, colIdx) => [step, rowIdx * cols + colIdx] as const)
             .map(([{ Icon, id }, stepIdx]) => (
               <View key={id} style={tw`flex-1 items-center gap-1`}>
-                <Pressable onPress={__DEV__ ? () => setStep(id) : undefined}>
+                <Pressable onPress={onPress ? () => onPress(id) : onPress}>
                   <View
                     style={tw.style(
                       'size-16 items-center justify-center rounded-full',

@@ -5,17 +5,17 @@ import { Surface, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { stepAtom } from '@/atoms/step-atom';
 import { ConfettiOnDemand } from '@/components/confetti-on-demand';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
+import { i589StepAtom } from '@/lib/services/i589';
 
 export default function Eligible() {
   const service = useService();
   const t = useT();
-  const setStep = useSetAtom(stepAtom({ service }));
+  const setStep = useSetAtom(i589StepAtom);
 
   return (
     <>

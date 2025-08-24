@@ -29,15 +29,15 @@ export default function Onboarding() {
           source={banner}
           style={tw.style('w-full pb-2', { aspectRatio: 2 })}
         />
-        <ScrollView
-          alwaysBounceVertical={false}
-          contentContainerStyle={tw`grow`}
-          scrollsToTop={false}
-          style={tw`flex-1`}
+        <SafeAreaView
+          edges={{ bottom: 'maximum' }}
+          style={tw`flex-1 items-center gap-4 p-4`}
         >
-          <SafeAreaView
-            edges={{ bottom: 'maximum' }}
-            style={tw`flex-1 items-center gap-4 p-4`}
+          <ScrollView
+            alwaysBounceVertical={false}
+            contentContainerStyle={tw`grow gap-4`}
+            scrollsToTop={false}
+            style={tw`flex-1`}
           >
             <TransText
               i18nKey='onboarding.title'
@@ -61,18 +61,18 @@ export default function Onboarding() {
                 <LanguageButton language='es' />
               </View>
             </View>
-            <TransButton
-              contentStyle={tw`flex-row-reverse`}
-              i18nKey='next'
-              icon='arrow-right'
-              labelStyle={tw`text-2xl`}
-              onPress={() => {
-                setIsOnboarded(true);
-                router.replace('/services');
-              }}
-            />
-          </SafeAreaView>
-        </ScrollView>
+          </ScrollView>
+          <TransButton
+            contentStyle={tw`flex-row-reverse`}
+            i18nKey='next'
+            icon='arrow-right'
+            labelStyle={tw`text-2xl`}
+            onPress={() => {
+              setIsOnboarded(true);
+              router.replace('/services');
+            }}
+          />
+        </SafeAreaView>
       </View>
     </>
   );
