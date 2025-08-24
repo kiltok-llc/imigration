@@ -57,7 +57,7 @@ export default function I589() {
   const t = useT();
   const service = useService();
   const router = useRouter();
-  const [step, setStep] = useAtom(useI589StepAtom());
+  const [step, setStep] = useAtom(i589StepAtom);
   const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
 
   return (
