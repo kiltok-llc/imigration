@@ -1,13 +1,7 @@
 import { useRouter } from 'expo-router';
-import { useAtom, useSetAtom } from 'jotai';
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atomWithReset, useResetAtom } from 'jotai/utils';
+import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import { quizPageAtom } from '@/atoms/quiz-page-atom';
 import { quizRouteAtom } from '@/atoms/quiz-route-atom';
@@ -27,11 +21,16 @@ import {
   useRouteUrls,
 } from '@/providers/routes';
 
-export const QuizScreenKeyContext = createContext<string | undefined>(
-  undefined
-);
-
-export const useQuizScreenKey = () => useContext(QuizScreenKeyContext);
+const quizScreenKeyAtom = atomWithReset('');
+export const useQuizScreenKey = () => useAtomValue(quizScreenKeyAtom);
+export const useSyncScreenKey = (screenKey: string | undefined) => {
+  const setScreenKey = useSetAtom(quizScreenKeyAtom);
+  const resetScreenKey = useResetAtom(quizScreenKeyAtom);
+  useEffect(() => {
+    setScreenKey(screenKey ?? '');
+    return resetScreenKey;
+  }, [resetScreenKey, screenKey, setScreenKey]);
+};
 
 type QuizActions = {
   handleBack?: () => void;
@@ -83,9 +82,9 @@ export const useHandleQuizScreenNext = (
 ) => {
   const service = useService();
   const step = useStep();
-  const screenId = useScreen();
+  const screen = useScreen();
   const [page, setPage] = useAtom(
-    quizPageAtom({ screenId, screenKey, service, step })
+    quizPageAtom({ screen, screenKey, service, step })
   );
   const isLastRoute = useIsLastRoute();
   const onComplete = useOnComplete();
@@ -105,9 +104,9 @@ export const useHandleQuizScreenNext = (
 export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
   const service = useService();
   const step = useStep();
-  const screenId = useScreen();
+  const screen = useScreen();
   const [page, setPage] = useAtom(
-    quizPageAtom({ screenId, screenKey, service, step })
+    quizPageAtom({ screen, screenKey, service, step })
   );
   const isFirstRoute = useIsFirstRoute();
   const router = useRouter();

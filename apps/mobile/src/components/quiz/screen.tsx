@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { atomWithReset, useResetAtom } from 'jotai/utils';
 import {
   Children,
   cloneElement,
@@ -7,7 +8,6 @@ import {
   isValidElement,
   PropsWithChildren,
   ReactNode,
-  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -17,7 +17,7 @@ import tw from 'twrnc';
 
 import { quizPageAtom } from '@/atoms/quiz-page-atom';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
-import { QuizPageHandle } from '@/components/quiz/page';
+import { QuizPageHandle, QuizPageProps } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useDevMenuItem } from '@/hooks/use-dev-menu-items';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
@@ -25,13 +25,14 @@ import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
 import {
-  QuizScreenKeyContext,
   useHandleQuizScreenNext,
   useHandleQuizScreenPrev,
   useQuizActions,
+  useSyncScreenKey,
 } from '@/lib/quiz';
 
-type QuizPageProps = { ref: RefObject<null | QuizPageHandle> };
+const quizPageIdAtom = atomWithReset('');
+export const useQuizPageId = () => useAtomValue(quizPageIdAtom);
 
 export const useChildRefs = (children: ReactNode) =>
   useMemo(
@@ -43,16 +44,30 @@ export const useChildRefs = (children: ReactNode) =>
     [children]
   );
 
+const useSyncQuizPageId = (children: ReactNode, page: number) => {
+  const pages = Children.toArray(children).filter((child) =>
+    isValidElement<QuizPageProps>(child)
+  );
+  const pageId = pages[page]?.props?.pageId;
+
+  const setPageId = useSetAtom(quizPageIdAtom);
+  const resetPageId = useResetAtom(quizPageIdAtom);
+  useEffect(() => {
+    setPageId(pageId ?? '');
+    return resetPageId;
+  }, [pageId, resetPageId, setPageId]);
+};
+
 export function QuizScreen({
   children,
   screenKey,
 }: PropsWithChildren<{ screenKey?: string }>) {
-  const screenId = useScreen();
+  useSyncScreenKey(screenKey);
+
+  const screen = useScreen();
   const service = useService();
   const step = useStep();
-  const page = useAtomValue(
-    quizPageAtom({ screenId, screenKey, service, step })
-  );
+  const page = useAtomValue(quizPageAtom({ screen, screenKey, service, step }));
   const keyboardVisible = useKeyboardVisible();
   const childRefs = useChildRefs(children);
   const handleQuizScreenNext = useHandleQuizScreenNext(
@@ -74,6 +89,8 @@ export function QuizScreen({
       [childRefs, page]
     )
   );
+
+  useSyncQuizPageId(children, page);
 
   const {
     data: submissionResult,
@@ -128,24 +145,18 @@ export function QuizScreen({
   }, [handleQuizScreenPrev, keyboardVisible, isBackSuccess, resetBack]);
 
   return (
-    <QuizScreenKeyContext.Provider value={screenKey}>
-      <FadeSlotPageWrapper>
-        <ReactivePagerView
-          orientation='vertical'
-          page={page}
-          style={tw`flex-1`}
-        >
-          {Children.toArray(children).map((child, idx) => (
-            <View key={idx} style={tw`flex-1`}>
-              {isValidElement<QuizPageProps>(child)
-                ? cloneElement(child, {
-                    ref: childRefs[idx],
-                  })
-                : child}
-            </View>
-          ))}
-        </ReactivePagerView>
-      </FadeSlotPageWrapper>
-    </QuizScreenKeyContext.Provider>
+    <FadeSlotPageWrapper>
+      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
+        {Children.toArray(children).map((child, idx) => (
+          <View key={idx} style={tw`flex-1`}>
+            {isValidElement<QuizPageProps>(child)
+              ? cloneElement(child, {
+                  ref: childRefs[idx],
+                })
+              : child}
+          </View>
+        ))}
+      </ReactivePagerView>
+    </FadeSlotPageWrapper>
   );
 }

@@ -4,11 +4,11 @@ import { MigriEncounterType, useTriggerMigri } from '@/lib/migri';
 
 export function MigriTrigger({
   id,
-  once,
+  once = true,
   type,
 }: {
   id: string;
-  once: boolean;
+  once?: boolean;
   type: MigriEncounterType;
 }) {
   const triggerMigri = useTriggerMigri();
@@ -17,7 +17,7 @@ export function MigriTrigger({
   useEffect(() => {
     if (!triggeredRef.current) {
       triggeredRef.current = true;
-      triggerMigri({ id, once, type });
+      triggerMigri({ id, once, skipMissing: true, type });
     }
   }, [id, once, triggerMigri, type]);
 

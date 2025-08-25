@@ -8,18 +8,18 @@ import { clearMMKVKeys } from '@/lib/utils';
 
 export const quizPageAtom = atomFamily(
   ({
-    screenId,
+    screen,
     screenKey = '',
     service,
     step,
   }: {
-    screenId: string;
+    screen: string;
     screenKey: string | undefined;
     service: string;
     step: string;
   }) =>
     atomWithMmkvStorage(
-      `services:${service}:${step}:${screenId}:${screenKey}:page`,
+      `services:${service}:${step}:${screen}:${screenKey}:page`,
       0,
       z.number(),
       quizStorage
@@ -31,11 +31,11 @@ export function resetAllQuizPages() {
   console.log('Clearing ALL quiz pages');
 
   const exp = /^services:([^:]+):([^:]+):([^:]+):([^:]+):page$/;
-  for (const [service, step, screenId, screenKey] of clearMMKVKeys<
+  for (const [service, step, screen, screenKey] of clearMMKVKeys<
     [string, string, string, string]
   >(exp, quizStorage)) {
     quizPageAtom.remove({
-      screenId,
+      screen,
       screenKey,
       service,
       step,
@@ -53,12 +53,12 @@ export function resetQuizPages({
   console.log(`Clearing quiz pages for ${service}.${step}`);
 
   const exp = new RegExp(`^services:${service}:${step}:([^:]+):([^:]+):page$`);
-  for (const [screenId, screenKey] of clearMMKVKeys<[string, string]>(
+  for (const [screen, screenKey] of clearMMKVKeys<[string, string]>(
     exp,
     quizStorage
   )) {
     quizPageAtom.remove({
-      screenId,
+      screen,
       screenKey,
       service,
       step,

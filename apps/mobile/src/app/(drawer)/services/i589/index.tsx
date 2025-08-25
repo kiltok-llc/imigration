@@ -11,13 +11,13 @@ import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { resetQuizPages } from '@/atoms/quiz-page-atom';
 import { resetQuizRoute } from '@/atoms/quiz-route-atom';
 import { ConfettiPortal } from '@/components/confetti-portal';
+import { MigriButton } from '@/components/migri/migri-button';
 import { MigriPortal } from '@/components/migri/migri-portal';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
-import { useIsTransitioning } from '@/hooks/use-is-transitioning';
 import { useService } from '@/hooks/use-service';
 import { useT } from '@/hooks/use-t';
 import { completedMigriEncounterIds, useTriggerMigri } from '@/lib/migri';
@@ -64,7 +64,6 @@ export default function I589() {
   const router = useRouter();
   const [step, setStep] = useAtom(i589StepAtom);
   const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
-  const isTransitioning = useIsTransitioning();
 
   return (
     <>
@@ -75,9 +74,9 @@ export default function I589() {
         }}
       />
       <ConfettiPortal />
+      <MigriPortal />
+      <MigriTrigger id={`services.${service}.${step}`} type='talk' />
       <View style={tw`flex-1`}>
-        <MigriPortal ready={!isTransitioning} />
-        <MigriTrigger id='i589.welcome' once={true} type='talk' />
         <ScrollView
           alwaysBounceVertical={false}
           contentContainerStyle={tw`grow justify-center`}
@@ -106,18 +105,24 @@ export default function I589() {
             />
           </Surface>
         </ScrollView>
-        <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
-          <TransButton
-            contentStyle={tw`flex-row-reverse`}
-            i18nKey={
-              isStarted
-                ? 'services.progress.continue'
-                : 'services.progress.start'
-            }
-            icon='arrow-right'
-            mode='contained'
-            onPress={() => router.navigate(`/services/${service}/${step}`)}
-          />
+        <SafeAreaView
+          edges={{ bottom: 'maximum' }}
+          style={tw`flex-row gap-4 p-4`}
+        >
+          <View style={tw`flex-1`}>
+            <TransButton
+              contentStyle={tw`flex-row-reverse`}
+              i18nKey={
+                isStarted
+                  ? 'services.progress.continue'
+                  : 'services.progress.start'
+              }
+              icon='arrow-right'
+              mode='contained'
+              onPress={() => router.navigate(`/services/${service}/${step}`)}
+            />
+          </View>
+          <MigriButton id={`services.${service}.${step}`} />
         </SafeAreaView>
       </View>
     </>
@@ -171,7 +176,12 @@ function MigriHeaderIcons() {
         i18nKey={`services.${service}.menu.migri.${id}`}
         key={id}
         onPress={() => {
-          triggerMigri({ id: `i589.${id}`, once: false, type: 'talk' });
+          triggerMigri({
+            id: `services.i589.${id}`,
+            once: false,
+            skipMissing: false,
+            type: 'talk',
+          });
         }}
       />
     ));

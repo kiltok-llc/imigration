@@ -2,6 +2,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { useT } from '@/hooks/use-t';
 import { appStorage } from '@/lib/mmkv';
 
 export const completedMigriEncounterIds = atomWithMmkvStorage<Set<string>>(
@@ -23,9 +24,11 @@ export type MigriAction =
     };
 
 export type MigriEncounter = {
+  callback?: () => void;
   id: string;
   key?: string;
   once: boolean;
+  skipMissing: boolean;
   type: MigriEncounterType;
 };
 
@@ -45,11 +48,23 @@ export const useDismissMigri = () => {
 
 export const useTriggerMigri = () => {
   const setMigriState = useSetAtom(migriEncounterQueueAtom);
+  const t = useT();
   const [completedEncounterIds, setCompletedEncounterIds] = useAtom(
     completedMigriEncounterIds
   );
   return (encounter: MigriEncounter) => {
     if (encounter.once && completedEncounterIds.has(encounter.id)) {
+      return;
+    }
+
+    if (
+      encounter.skipMissing &&
+      !Array.isArray(t(`migri.${encounter.id}`, { returnObjects: true }))
+    ) {
+      console.debug(
+        'Skipping migri encounter because translation is missing for id:',
+        encounter.id
+      );
       return;
     }
 

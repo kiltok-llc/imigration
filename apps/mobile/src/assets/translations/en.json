@@ -143,8 +143,16 @@
   },
   "next": "Next",
   "onboarding": {
-    "choose-language": "Touch your preferred language below to get started.",
-    "title": "Welcome to iMigration"
+    "language": {
+      "choose-language": "Touch your preferred language below to get started.",
+      "title": "Welcome to iMigration"
+    },
+    "migri": {
+      "title": "Hello, I'm Migri!",
+      "description": "My name is Migri, your virtual assistant. I'm here to help you with using the iMigration app.",
+      "chat": "Chat with Migri",
+      "start": "Get Started!"
+    }
   },
   "previous": "Back",
   "quiz": {
@@ -168,15 +176,43 @@
     }
   },
   "migri": {
-    "i589": {
-      "welcome": [
-        "Welcome to the i589 application for asylum!",
-        "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
-        "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
-        "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
-        "Please take your time to read each question carefully and provide accurate and honest answers.",
-        "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+    "modal": {
+      "next": "Tap to keep reading"
+    },
+    "fab": {
+      "label": "Chat with Migri"
+    },
+    "fallback": [
+      "Oh no! I don't know how to help with this yet.",
+      "Please let us know what you were looking for so we can improve Migri."
+    ],
+    "onboarding": {
+      "migri": [
+        "Welcome to the iMigration app!",
+        "My name is Migri, your virtual assistant.",
+        "I'm here to help you with using the iMigration app.",
+        "This app is designed to help you navigate the complex world of immigration services!",
+        "Whether you're looking to apply for a visa, understand your rights, or find resources, I'm here to assist you every step of the way.",
+        "Let's get started!"
       ]
+    },
+    "services": {
+      "welcome": [
+        "This is the home screen where you can find all the services we offer.",
+        "You can browse through different categories such as visas, citizenship, and legal assistance.",
+        "Tap on any service to learn more about it and see if it fits your needs.",
+        "If you need help or have questions, just tap the 'Lightbulb' icon in the bottom right corner to chat with me!"
+      ],
+      "i589": {
+        "welcome": [
+          "Welcome to the i589 application for asylum!",
+          "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
+          "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
+          "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
+          "Please take your time to read each question carefully and provide accurate and honest answers.",
+          "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+        ]
+      }
     }
   },
   "services": {

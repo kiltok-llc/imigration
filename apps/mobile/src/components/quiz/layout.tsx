@@ -8,7 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { quizHeaderHeightAtom } from '@/atoms/quiz-header-height-atom';
+import { MigriButton } from '@/components/migri/migri-button';
+import { useQuizPageId } from '@/components/quiz/screen';
 import { TransButton, TransText } from '@/components/trans';
+import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
 import { useT } from '@/hooks/use-t';
@@ -26,20 +29,34 @@ export function QuizLayout({ children }: PropsWithChildren) {
   const t = useT();
   const [_, currentParams] = useCurrentRoute();
   const { handleBack, handleContinue } = useQuizActions();
+  const service = useService();
+  const screen = useScreen();
+  const step = useStep();
+  const pageId = useQuizPageId();
 
   return (
     <View style={tw`flex-1`}>
       <QuizHeader />
-      <TranslationContextProvider
-        value={{
-          ...currentParams,
-          count: Number(currentParams.index) + 1,
-        }}
-      >
-        {children}
-      </TranslationContextProvider>
+      <View style={tw`flex-1`}>
+        <TranslationContextProvider
+          value={{
+            ...currentParams,
+            count: Number(currentParams.index) + 1,
+          }}
+        >
+          {children}
+        </TranslationContextProvider>
+        <MigriButton
+          float
+          id={`services.${service}.${step}.${screen}.${pageId}`}
+          style={tw`right-4 bottom-4`}
+        />
+      </View>
       <Surface>
-        <SafeAreaView edges={['bottom']} style={tw`mt-auto flex-row gap-4 p-4`}>
+        <SafeAreaView
+          edges={{ bottom: 'maximum' }}
+          style={tw`mt-auto flex-row gap-4 p-4`}
+        >
           <View style={tw`flex-1`}>
             <TransButton
               i18nKey='quiz.back'

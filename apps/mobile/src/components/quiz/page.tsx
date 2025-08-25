@@ -3,7 +3,6 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { PrimitiveAtom, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import {
-  ComponentProps,
   ReactNode,
   Ref,
   useCallback,
@@ -19,17 +18,12 @@ import {
   UseFormProps,
   UseFormReturn,
 } from 'react-hook-form';
-import { ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { quizValuesAtom } from '@/atoms/quiz-values-atom';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
@@ -40,23 +34,10 @@ export type QuizPageHandle = {
   submit: () => Promise<boolean>;
 };
 
-const QuizPageIdContext = createRequiredContext<string>();
-
-export const useQuizPageId = () => useRequiredContext(QuizPageIdContext);
-
-export function QuizPage<Input extends FieldValues, Output>({
-  children,
-  contentContainerStyle,
-  defaultValues,
-  formOptions = {},
-  onSubmit,
-  pageId,
-  pageKey,
-  ref = null,
-  schema,
-  style,
-  ...props
-}: Omit<ComponentProps<typeof ScrollView>, 'children'> & {
+export type QuizPageProps<
+  Input extends FieldValues = FieldValues,
+  Output = any,
+> = {
   children: (
     context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
   ) => ReactNode;
@@ -67,15 +48,27 @@ export function QuizPage<Input extends FieldValues, Output>({
   pageKey?: string;
   ref?: Ref<QuizPageHandle>;
   schema: z.ZodType<Output, Input>;
-}) {
+};
+
+export function QuizPage<Input extends FieldValues, Output>({
+  children,
+  defaultValues,
+  formOptions = {},
+  onSubmit,
+  pageId,
+  pageKey,
+  ref = null,
+  schema,
+  ...props
+}: QuizPageProps<Input, Output>) {
   const service = useService();
-  const screenId = useScreen();
+  const screen = useScreen();
   const step = useStep();
   const screenKey = useQuizScreenKey();
   const valuesAtom = quizValuesAtom({
     pageId,
     pageKey,
-    screenId,
+    screen,
     screenKey,
     service,
     step,
@@ -152,18 +145,16 @@ export function QuizPage<Input extends FieldValues, Output>({
   return (
     <KeyboardAwareScrollView
       bottomOffset={80}
-      contentContainerStyle={[tw`grow justify-center`, contentContainerStyle]}
+      contentContainerStyle={tw`grow justify-center`}
       disableScrollOnKeyboardHide={true}
       scrollsToTop={false}
-      style={[tw`flex-1 px-4 pt-4`, style]}
+      style={tw`flex-1 px-4 pt-4`}
       {...props}
     >
-      <Animated.View layout={LinearTransition} style={tw`gap-16 py-4`}>
-        <QuizPageIdContext.Provider value={pageId}>
-          <FormProvider {...context}>
-            {children({ ...context, lens })}
-          </FormProvider>
-        </QuizPageIdContext.Provider>
+      <Animated.View layout={LinearTransition} style={tw`gap-16 py-16`}>
+        <FormProvider {...context}>
+          {children({ ...context, lens })}
+        </FormProvider>
       </Animated.View>
     </KeyboardAwareScrollView>
   );

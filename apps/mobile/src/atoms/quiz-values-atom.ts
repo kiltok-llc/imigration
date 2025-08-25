@@ -10,20 +10,20 @@ export const quizValuesAtom = atomFamily(
   ({
     pageId,
     pageKey = '',
-    screenId,
+    screen,
     screenKey = '',
     service,
     step,
   }: {
     pageId: string;
     pageKey: string | undefined;
-    screenId: string;
+    screen: string;
     screenKey: string | undefined;
     service: string;
     step: string;
   }) =>
     atomWithMmkvStorage(
-      `services:${service}:${step}:${screenId}:${screenKey}:${pageId}:${pageKey}:values`,
+      `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:values`,
       null,
       z.looseObject({}).nullable(),
       quizStorage
@@ -39,7 +39,7 @@ export function resetAllQuizValues() {
   for (const [
     service,
     step,
-    screenId,
+    screen,
     screenKey,
     pageId,
     pageKey,
@@ -50,7 +50,7 @@ export function resetAllQuizValues() {
     quizValuesAtom.remove({
       pageId,
       pageKey,
-      screenId,
+      screen,
       screenKey,
       service,
       step,
@@ -70,13 +70,13 @@ export function resetQuizValues({
     `^services:${service}:${step}:([^:]+):([^:]+):([^:]+):([^:]+):values$`
   );
 
-  for (const [screenId, screenKey, pageId, pageKey] of clearMMKVKeys<
+  for (const [screen, screenKey, pageId, pageKey] of clearMMKVKeys<
     [string, string, string, string]
   >(exp, quizStorage)) {
     quizValuesAtom.remove({
       pageId,
       pageKey,
-      screenId,
+      screen,
       screenKey,
       service,
       step,

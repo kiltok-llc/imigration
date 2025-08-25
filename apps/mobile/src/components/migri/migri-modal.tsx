@@ -1,24 +1,32 @@
+import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, View } from 'react-native';
-import { Modal, Text } from 'react-native-paper';
+import { Pressable, View, ViewStyle } from 'react-native';
+import { Icon, Modal, Text, useTheme } from 'react-native-paper';
 import Animated, {
   BounceInRight,
+  Easing,
   FadeIn,
   FadeOut,
   SlideOutRight,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
   ZoomIn,
 } from 'react-native-reanimated';
 import tw from 'twrnc';
 
 import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
+import { TransText } from '@/components/trans';
 import { MigriEncounter, useCurrentMigri, useDismissMigri } from '@/lib/migri';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
-export function MigriModal({ ready }: { ready: boolean }) {
+export function MigriModal() {
   const onDismiss = useDismissMigri();
   const current = useCurrentMigri();
 
@@ -30,34 +38,41 @@ export function MigriModal({ ready }: { ready: boolean }) {
       style={tw`m-0`}
       visible={!!current}
     >
-      {ready && current && <MigriModalContent {...current} key={current.key} />}
+      {current && <MigriModalContent {...current} key={current.key} />}
     </Modal>
   );
 }
 
-function MigriModalContent({ id }: MigriEncounter) {
+function MigriModalContent({ callback, id }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
-  const messages = t(`migri.${id}`, { returnObjects: true }) as string[];
+  const preferredMessages = t(`migri.${id}`, {
+    returnObjects: true,
+  }) as string[];
+  const fallbackMessages = t(`migri.fallback`, {
+    returnObjects: true,
+  }) as string[];
+  const messages = Array.isArray(preferredMessages)
+    ? preferredMessages
+    : fallbackMessages;
   const [index, setIndex] = useState(0);
 
-  // const prev = () => {
-  //   if (index > 0) {
-  //     setIndex(index - 1);
-  //   } else {
-  //     dismiss();
-  //   }
-  // }
+  const informedRef = useRef(false);
+  if (!informedRef.current && !Array.isArray(preferredMessages)) {
+    console.log('Missing migri messages for id:', id);
+    informedRef.current = true;
+  }
 
   const next = () => {
     if (index < messages.length - 1) {
       setIndex(index + 1);
     } else {
       dismiss();
+      callback?.();
     }
   };
 
-  // const hasNext = index < messages.length - 1;
+  const hasNext = index < messages.length - 1;
 
   return (
     <Pressable onPress={next} style={tw`flex-1`}>
@@ -71,10 +86,15 @@ function MigriModalContent({ id }: MigriEncounter) {
           source={speechBubble}
           style={tw`absolute inset-0`}
         />
-        <View style={tw`absolute inset-0 mt-11 mr-5 mb-19 ml-7 justify-center`}>
+        <View
+          style={tw`absolute top-10 right-7 bottom-28 left-8 justify-center`}
+        >
           <Animated.Text entering={ZoomIn} key={index}>
             <Text variant='bodyLarge'>{messages[index]}</Text>
           </Animated.Text>
+        </View>
+        <View style={tw`absolute right-7 bottom-20 left-8 h-6`}>
+          {hasNext && <NextIndicator />}
         </View>
       </Animated.View>
 
@@ -93,5 +113,46 @@ function MigriModalContent({ id }: MigriEncounter) {
         />
       </View>
     </Pressable>
+  );
+}
+
+function NextIndicator({ style }: { style?: ViewStyle }) {
+  const theme = useTheme();
+  const bounce = useSharedValue(0);
+  useEffect(() => {
+    bounce.value = withRepeat(
+      withSequence(
+        withTiming(1, { easing: Easing.out(Easing.quad) }),
+        withTiming(0, { easing: Easing.in(Easing.quad) })
+      ),
+      0,
+      true
+    );
+
+    return () => {
+      bounce.value = 0;
+    };
+  }, [bounce]);
+
+  const PADDING_DISTANCE = 2;
+  const BOUNCE_DISTANCE = 3;
+  const animatedStyle = useAnimatedStyle(() => ({
+    paddingLeft: bounce.value * BOUNCE_DISTANCE + PADDING_DISTANCE,
+    paddingRight: BOUNCE_DISTANCE - bounce.value * BOUNCE_DISTANCE,
+  }));
+
+  return (
+    <Text style={tw`flex-1 font-light`} variant='bodyMedium'>
+      <TransText i18nKey='migri.modal.next' />
+      <Animated.View style={[tw`translate-y-0.6`, style, animatedStyle]}>
+        <Icon
+          color={theme.colors.onSurface}
+          size={12}
+          source={(props: any) => (
+            <Entypo name='chevron-thin-right' {...props} />
+          )}
+        />
+      </Animated.View>
+    </Text>
   );
 }

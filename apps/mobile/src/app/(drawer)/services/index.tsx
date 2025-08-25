@@ -12,6 +12,9 @@ import tw from 'twrnc';
 
 import banner from '@/assets/onboarding/usa-banner-2.png';
 import { DrawerToggleButton } from '@/components/drawer';
+import { MigriButton } from '@/components/migri/migri-button';
+import { MigriPortal } from '@/components/migri/migri-portal';
+import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
 import { useT } from '@/hooks/use-t';
@@ -38,9 +41,12 @@ export default function Services() {
           title: t('services.screenTitle'),
         }}
       />
+
+      <MigriPortal />
+      <MigriTrigger id='services.welcome' type='talk' />
+
       <View style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />
-
         <ScrollView
           contentContainerStyle={tw`grow-1`}
           scrollsToTop={false}
@@ -101,6 +107,8 @@ export default function Services() {
             </View>
           </SafeAreaView>
         </ScrollView>
+
+        <MigriButton float id='services.welcome' />
       </View>
     </>
   );

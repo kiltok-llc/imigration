@@ -1,16 +1,16 @@
 import { useLocalSegments } from '@/hooks/use-local-segments';
 
 export const useScreen = () => {
-  const [services, _service, _step, ...screenId] = useLocalSegments();
+  const [services, _service, _step, ...screen] = useLocalSegments();
   if (services !== 'services') {
     console.log("The first segment must be 'services'.");
     return '';
   }
 
-  if (screenId.length === 0) {
-    console.log('Screen ID is not defined in the route segments:', screenId);
+  if (screen.length === 0) {
+    console.log('Screen ID is not defined in the route segments:', screen);
     return '';
   }
 
-  return screenId.join('.');
+  return screen.join('.');
 };
