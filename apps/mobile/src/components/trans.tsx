@@ -1,11 +1,11 @@
 import { ComponentProps } from 'react';
 import { Trans as I18NTrans } from 'react-i18next';
-import { Text as RNText } from 'react-native';
+import { Text as NativeText } from 'react-native';
 import { Text } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Button } from '@/components/ui/button';
-import { useTranslationContext } from '@/providers/translation';
+import { useTranslationContext } from '@/lib/translation';
 
 // TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
 export function Trans({
@@ -16,11 +16,11 @@ export function Trans({
   return (
     <I18NTrans
       components={{
-        italic: <RNText style={tw`italic`} />,
-        pre: <RNText style={tw`font-mono`} />,
-        strong: <RNText style={tw`font-bold`} />,
+        italic: <NativeText style={tw`italic`} />,
+        pre: <NativeText style={tw`font-mono`} />,
+        strong: <NativeText style={tw`font-bold`} />,
       }}
-      parent={RNText}
+      parent={NativeText}
       {...props}
       {...ctx}
     />

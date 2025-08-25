@@ -28,9 +28,9 @@ import {
   marriageLocationAtom,
 } from '@/lib/data/marriage';
 import { spouseNameAtom } from '@/lib/data/spouse';
-import { MaritalStatusEnum } from '@/lib/schema/common';
+import { MaritalStatusEnum } from '@/lib/schemas';
+import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 export default function MaritalStatus() {
   const [maritalStatus, setMaritalStatus] = useAtom(maritalStatusAtom);

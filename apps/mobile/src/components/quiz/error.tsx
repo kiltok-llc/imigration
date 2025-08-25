@@ -7,11 +7,11 @@ import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { quizRouteAtom } from '@/atoms/quiz-route-atom';
-import { resetQuizValues } from '@/atoms/quiz-values-atom';
 import { TransButton, TransText } from '@/components/trans';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
+import { quizRouteAtom } from '@/lib/quiz/route';
+import { resetQuizValues } from '@/lib/quiz/values';
 
 export function QuizErrorFallback({
   children,

@@ -32,9 +32,9 @@ import {
   siblingSexAtom,
 } from '@/lib/data/sibling';
 import { nameAtom } from '@/lib/data/user';
-import { SexEnum } from '@/lib/schema/common';
+import { SexEnum } from '@/lib/schemas';
+import { TranslationContextProvider } from '@/lib/translation';
 import { required, stretchTo } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 type SiblingQuizPageProps = {
   id: string;

@@ -13,8 +13,8 @@ import tw from 'twrnc';
 import { useFormField } from '@/components/form/field';
 import { TransButton } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
-import { useT } from '@/hooks/use-t';
 import { Theme } from '@/lib/theme';
+import { useT } from '@/lib/translation';
 
 export function FormImageInput() {
   const t = useT();
@@ -27,7 +27,7 @@ export function FormImageInput() {
   const { isPending, mutate: handlePickImage } = useMutation({
     async mutationFn(type: 'camera' | 'library') {
       if (type === 'camera') {
-        const granted = await requestCameraPermissions();
+        const { granted } = await ImagePicker.requestCameraPermissionsAsync();
         if (!granted) {
           toast.error(t('permission.camera.denied'));
           return;
@@ -130,20 +130,4 @@ export function FormImageInput() {
       </View>
     </View>
   );
-}
-
-async function requestCameraPermissions() {
-  const { status } = await ImagePicker.getCameraPermissionsAsync();
-  if (status === 'denied') {
-    return false;
-  }
-
-  if (status !== 'granted') {
-    const { granted } = await ImagePicker.requestCameraPermissionsAsync();
-    if (!granted) {
-      return false;
-    }
-  }
-
-  return true;
 }

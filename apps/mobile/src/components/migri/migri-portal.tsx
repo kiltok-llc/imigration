@@ -1,6 +1,6 @@
 import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View, ViewStyle } from 'react-native';
 import { Icon, Modal, Portal, Text, useTheme } from 'react-native-paper';
@@ -48,22 +48,10 @@ export function MigriPortal() {
 function MigriModalContent({ callback, id }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
-  const preferredMessages = t(`migri.${id}`, {
+  const messages = t([`migri.${id}`, 'migri.fallback'], {
     returnObjects: true,
   }) as string[];
-  const fallbackMessages = t(`migri.fallback`, {
-    returnObjects: true,
-  }) as string[];
-  const messages = Array.isArray(preferredMessages)
-    ? preferredMessages
-    : fallbackMessages;
   const [index, setIndex] = useState(0);
-
-  const informedRef = useRef(false);
-  if (!informedRef.current && !Array.isArray(preferredMessages)) {
-    console.log('Missing migri messages for id:', id);
-    informedRef.current = true;
-  }
 
   const next = () => {
     if (index < messages.length - 1) {

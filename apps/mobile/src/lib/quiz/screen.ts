@@ -1,28 +1,24 @@
 import { useRouter } from 'expo-router';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { atomWithReset, useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { quizPageAtom } from '@/atoms/quiz-page-atom';
-import { quizRouteAtom } from '@/atoms/quiz-route-atom';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
+import { quizPageAtom } from '@/lib/quiz/page';
 import {
-  useCurrentRouteUrl,
   useIncrementRoute,
   useIsFirstRoute,
   useIsLastRoute,
   useOnComplete,
-  useRouteUrls,
-} from '@/providers/routes';
+} from '@/lib/routes';
 
 const quizScreenKeyAtom = atomWithReset('');
+
 export const useQuizScreenKey = () => useAtomValue(quizScreenKeyAtom);
+
 export const useSyncScreenKey = (screenKey: string | undefined) => {
   const setScreenKey = useSetAtom(quizScreenKeyAtom);
   const resetScreenKey = useResetAtom(quizScreenKeyAtom);
@@ -31,51 +27,6 @@ export const useSyncScreenKey = (screenKey: string | undefined) => {
     return resetScreenKey;
   }, [resetScreenKey, screenKey, setScreenKey]);
 };
-
-type QuizActions = {
-  handleBack?: () => void;
-  handleContinue?: () => void;
-  setHandleBack: (handleBack?: () => void) => void;
-  setHandleContinue: (handleContinue?: () => void) => void;
-};
-
-const QuizActionsContext = createRequiredContext<QuizActions>();
-
-export const useQuizActions = () => useRequiredContext(QuizActionsContext);
-
-export const useQuizRoutePersistence = () => {
-  const service = useService();
-  const step = useStep();
-  const routes = useRouteUrls();
-  const currentRouteUrl = useCurrentRouteUrl();
-  const saveQuizRoute = useSetAtom(quizRouteAtom({ service, step }));
-  useEffect(() => {
-    if (routes.includes(currentRouteUrl)) {
-      saveQuizRoute(currentRouteUrl);
-    }
-  }, [currentRouteUrl, routes, saveQuizRoute]);
-};
-
-export function QuizProvider({ children }: PropsWithChildren) {
-  const [handleBack, setHandleBack] = useState<() => void>();
-  const [handleContinue, setHandleContinue] = useState<() => void>();
-
-  useQuizRoutePersistence();
-
-  return (
-    <QuizActionsContext.Provider
-      value={{
-        handleBack,
-        handleContinue,
-        setHandleBack: (handler) => setHandleBack(() => handler),
-        setHandleContinue: (handler) => setHandleContinue(() => handler),
-      }}
-    >
-      {children}
-    </QuizActionsContext.Provider>
-  );
-}
-
 export const useHandleQuizScreenNext = (
   pages: number,
   screenKey: string | undefined
@@ -100,7 +51,6 @@ export const useHandleQuizScreenNext = (
     }
   }, [onComplete, incrementRoute, isLastRoute, page, pages, setPage]);
 };
-
 export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
   const service = useService();
   const step = useStep();

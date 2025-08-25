@@ -18,9 +18,9 @@ import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { Stack } from '@/components/stack';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
+import { QueryProvider } from '@/lib/query';
 import { theme } from '@/lib/theme';
-import { QueryProvider } from '@/providers/query';
-import { TRPCProvider } from '@/providers/trpc';
+import { TRPCProvider } from '@/lib/trpc';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),

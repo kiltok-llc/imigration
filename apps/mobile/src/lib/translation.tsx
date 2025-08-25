@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TranslationContextContext = createContext<Record<string, any>>({});
 
@@ -17,3 +18,16 @@ export function TranslationContextProvider({
 
 export const useTranslationContext = () =>
   useContext(TranslationContextContext);
+export const useT = (optionsHookParam?: Record<string, any>) => {
+  const { t } = useTranslation();
+  const optionsContext = useTranslationContext();
+
+  return (key: string | string[], optionsFuncParam?: Record<string, any>) => {
+    const combined = {
+      ...optionsContext,
+      ...optionsHookParam,
+      ...optionsFuncParam,
+    };
+    return t(key, { ...combined.values, ...combined }) as string;
+  };
+};

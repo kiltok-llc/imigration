@@ -7,9 +7,9 @@ import { ReactNode } from 'react';
 
 import { BrandFont, CodeFont, PrimaryFont } from '@/components/brand/font';
 import { Toaster } from '@/components/ui/sonner';
+import { TrpcProvider } from '@/lib/trpc';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/query-provider';
-import { TrpcProvider } from '@/providers/trpc-provider';
 
 export const metadata: Metadata = {
   description: 'iMigration Admin Dashboard',

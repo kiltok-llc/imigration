@@ -1234,9 +1234,39 @@
       "continue": "Continue"
     }
   },
+  "speech": {
+    "error": {
+      "no-speech": "No speech detected. Make sure the speech language is correct and your microphone is working.",
+      "unknown": "An unknown error occurred. Please try again.",
+      "audio-capture": "Audio capture failed. Please ensure your microphone is working.",
+      "bad-grammar": "There was a problem with the speech recognition grammar.",
+      "language-not-supported": "The selected language is not supported for speech recognition.",
+      "network": "A network error occurred during speech recognition. Please check your internet connection.",
+      "not-allowed": "Permission to use speech recognition was denied.",
+      "service-not-allowed": "The speech recognition service is not allowed.",
+      "busy": "The speech recognition service is currently busy. Please try again later.",
+      "client": "There was a client-side error with the speech recognition service.",
+      "speech-timeout": "No speech detected within the time limit. Please try again."
+    },
+    "locales": {
+      "en-US": "English (US)",
+      "es-US": "Spanish (US)"
+    }
+  },
   "settings": {
     "drawerLabel": "Settings",
     "screenTitle": "Settings",
+    "speech": {
+      "screenTitle": "Speech Recognition",
+      "sections": {
+        "speech-language-override": {
+          "title": "Speech Recognition Language",
+          "options": {
+            "default": "Use app language"
+          }
+        }
+      }
+    },
     "sections": {
       "advanced": {
         "title": "Advanced",
@@ -1271,6 +1301,10 @@
           "language": {
             "description": "Select your preferred language for the app.",
             "title": "Preferred language"
+          },
+          "speech": {
+            "title": "Speech recognition",
+            "description": "Configure in-app speech recognition."
           }
         },
         "title": "Language & Accessibility"

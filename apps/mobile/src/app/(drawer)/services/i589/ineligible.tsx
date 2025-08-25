@@ -6,7 +6,7 @@ import tw from 'twrnc';
 
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
-import { useT } from '@/hooks/use-t';
+import { useT } from '@/lib/translation';
 
 export default function Ineligible() {
   const t = useT();

@@ -2,8 +2,8 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { useT } from '@/hooks/use-t';
 import { appStorage } from '@/lib/mmkv';
+import { useT } from '@/lib/translation';
 
 export const completedMigriEncounterIds = atomWithMmkvStorage<Set<string>>(
   'completed-migri-encounter-ids',

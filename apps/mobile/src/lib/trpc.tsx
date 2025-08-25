@@ -1,12 +1,28 @@
-import { AppRouter } from '@repo/api';
+import type { AppRouter } from '@repo/api';
+
 import { useQueryClient } from '@tanstack/react-query';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import { createTRPCContext } from '@trpc/tanstack-react-query';
 import { PropsWithChildren } from 'react';
 import superjson from 'superjson';
 
 import { env } from '@/env';
 import { supabase } from '@/lib/supabase/client';
-import { TRPCClientProvider } from '@/lib/trpc';
+
+export const {
+  TRPCProvider: TRPCContextProvider,
+  useTRPC,
+  useTRPCClient,
+} = createTRPCContext<AppRouter>();
+
+export function TRPCProvider({ children }: PropsWithChildren) {
+  const queryClient = useQueryClient();
+  return (
+    <TRPCContextProvider queryClient={queryClient} trpcClient={trpcClient}>
+      {children}
+    </TRPCContextProvider>
+  );
+}
 
 const trpcClient = createTRPCClient<AppRouter>({
   links: [
@@ -17,15 +33,6 @@ const trpcClient = createTRPCClient<AppRouter>({
     }),
   ],
 });
-
-export function TRPCProvider({ children }: PropsWithChildren) {
-  const queryClient = useQueryClient();
-  return (
-    <TRPCClientProvider queryClient={queryClient} trpcClient={trpcClient}>
-      {children}
-    </TRPCClientProvider>
-  );
-}
 
 async function getHeaders() {
   const headers: Record<string, string> = {};

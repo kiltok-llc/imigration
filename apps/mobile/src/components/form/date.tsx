@@ -1,6 +1,10 @@
 import { ComponentProps, useRef, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
-import { Text as RNText, TextInput as RNTextInput, View } from 'react-native';
+import {
+  Text as NativeText,
+  TextInput as NativeTextInput,
+  View,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { HelperText, TextInput, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
@@ -27,7 +31,7 @@ export function FormDateInput({
     fieldState: { error, invalid },
   } = useFormField();
 
-  const inputRef = useRef<RNTextInput>(null);
+  const inputRef = useRef<NativeTextInput>(null);
   const [open, setOpen] = useState(false);
 
   return (
@@ -53,22 +57,22 @@ export function FormDateInput({
         error={invalid}
         label={
           <>
-            <RNText>
+            <NativeText>
               <Trans i18nKey={i18nKey} />
-            </RNText>
+            </NativeText>
             {required && (
-              <RNText style={{ color: theme.colors.error }}>
+              <NativeText style={{ color: theme.colors.error }}>
                 <Trans i18nKey='form.required' />
-              </RNText>
+              </NativeText>
             )}
             {optional && (
-              <RNText
+              <NativeText
                 style={tw.style('font-normal normal-case', {
                   color: theme.colors.onSurfaceDisabled,
                 })}
               >
                 <Trans i18nKey='form.optional' />
-              </RNText>
+              </NativeText>
             )}
           </>
         }

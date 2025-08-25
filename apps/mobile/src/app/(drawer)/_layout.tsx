@@ -3,7 +3,7 @@ import { useSegments } from 'expo-router';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
 
 import { Drawer } from '@/components/drawer';
-import { useT } from '@/hooks/use-t';
+import { useT } from '@/lib/translation';
 
 export default function DrawerLayout() {
   const t = useT();

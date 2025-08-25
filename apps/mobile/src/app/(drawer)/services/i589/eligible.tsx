@@ -9,8 +9,8 @@ import { ConfettiPortal } from '@/components/confetti-portal';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
 import { useService } from '@/hooks/use-service';
-import { useT } from '@/hooks/use-t';
 import { i589StepAtom } from '@/lib/services/i589/step';
+import { useT } from '@/lib/translation';
 
 export default function Eligible() {
   const service = useService();

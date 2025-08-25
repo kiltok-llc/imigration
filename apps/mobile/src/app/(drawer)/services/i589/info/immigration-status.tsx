@@ -54,9 +54,9 @@ import {
   statusExpirationAtom,
   uscisNumberAtom,
 } from '@/lib/data/user';
-import { ImmigrationCourtStatusEnum } from '@/lib/schema/common';
+import { ImmigrationCourtStatusEnum } from '@/lib/schemas';
+import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 const contextFamily = <T,>(
   clientAtom: PrimitiveAtom<T>,

@@ -14,10 +14,10 @@ import {
   SettingsPage,
   SettingsScreen,
   SettingsSection,
-  useSettingsPath,
 } from '@/components/settings';
 import { Trans, TransButton, TransText } from '@/components/trans';
 import { appStorage, quizStorage, userStorage } from '@/lib/mmkv';
+import { useSettingsPath } from '@/lib/settings';
 
 export default function Index() {
   const router = useRouter();
@@ -36,6 +36,7 @@ export default function Index() {
         <SettingsPage>
           <SettingsSection id='language-and-accessibility'>
             <SettingsItem icon='chevron-right' id='language' />
+            <SettingsItem icon='chevron-right' id='speech' />
           </SettingsSection>
           <SettingsSection id='support'>
             <SettingsItem

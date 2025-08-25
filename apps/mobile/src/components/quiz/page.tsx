@@ -23,11 +23,11 @@ import Animated, { LinearTransition } from 'react-native-reanimated';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
-import { quizValuesAtom } from '@/atoms/quiz-values-atom';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { useQuizScreenKey } from '@/lib/quiz';
+import { useQuizScreenKey } from '@/lib/quiz/screen';
+import { quizValuesAtom } from '@/lib/quiz/values';
 
 export type QuizPageHandle = {
   reset: () => void;

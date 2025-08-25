@@ -7,7 +7,7 @@ import {
 } from 'react-native-paper';
 
 import { useFormField } from '@/components/form/field';
-import { useT } from '@/hooks/use-t';
+import { useT } from '@/lib/translation';
 import { arraysEqual } from '@/lib/utils';
 
 export function FormCheckboxGroup({ ...props }: ComponentProps<typeof View>) {

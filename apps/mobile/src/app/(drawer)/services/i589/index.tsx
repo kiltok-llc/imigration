@@ -7,9 +7,6 @@ import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
-import { resetQuizPages } from '@/atoms/quiz-page-atom';
-import { resetQuizRoute } from '@/atoms/quiz-route-atom';
 import { ConfettiPortal } from '@/components/confetti-portal';
 import { MigriButton } from '@/components/migri/migri-button';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
@@ -18,9 +15,12 @@ import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
-import { useT } from '@/hooks/use-t';
 import { completedMigriEncounterIds, useTriggerMigri } from '@/lib/migri';
+import { resetQuizPages } from '@/lib/quiz/page';
+import { resetQuizRoute } from '@/lib/quiz/route';
 import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
+import { isStepStartedAtom } from '@/lib/step.ts/is-step-started-atom';
+import { useT } from '@/lib/translation';
 
 export const steps: Step[] = [
   {

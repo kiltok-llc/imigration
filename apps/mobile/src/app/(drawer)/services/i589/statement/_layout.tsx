@@ -8,11 +8,11 @@ import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { useT } from '@/hooks/use-t';
 import { entriesAtom } from '@/lib/data/user';
-import { QuizProvider } from '@/lib/quiz';
+import { QuizProvider } from '@/lib/quiz/provider';
+import { RoutesProvider } from '@/lib/routes';
 import { i589StepAtom } from '@/lib/services/i589/step';
-import { RoutesProvider } from '@/providers/routes';
+import { useT } from '@/lib/translation';
 
 const now = new Date();
 const oneYear = 365 * 24 * 60 * 60 * 1000; // One year in milliseconds

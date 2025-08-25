@@ -1,10 +1,10 @@
 import { Redirect } from 'expo-router';
 import { useAtomValue } from 'jotai';
 
-import { quizRouteAtom } from '@/atoms/quiz-route-atom';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { useRouteUrls } from '@/providers/routes';
+import { quizRouteAtom } from '@/lib/quiz/route';
+import { useRouteUrls } from '@/lib/routes';
 
 export function SavedQuizRouteRedirect() {
   const service = useService();

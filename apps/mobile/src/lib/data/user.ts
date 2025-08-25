@@ -13,7 +13,7 @@ import {
   UscisNumberSchema,
 } from '@/lib/data/schema';
 import { userDataDocumentAtom } from '@/lib/data/utils';
-import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schema/common';
+import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schemas';
 
 export const alienNumberAtom = userDataDocumentAtom(
   'alien-number',

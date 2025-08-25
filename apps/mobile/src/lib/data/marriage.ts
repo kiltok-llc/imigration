@@ -2,7 +2,7 @@ import z from 'zod/v4';
 
 import { DEFAULT_LOCATION, LocationSchema } from '@/lib/data/schema';
 import { userDataDocumentAtom } from '@/lib/data/utils';
-import { MaritalStatusEnum } from '@/lib/schema/common';
+import { MaritalStatusEnum } from '@/lib/schemas';
 
 export const maritalStatusAtom = userDataDocumentAtom(
   'marital-status',

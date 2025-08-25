@@ -14,7 +14,7 @@ import {
   UscisNumberSchema,
 } from '@/lib/data/schema';
 import { userDataDocumentAtom } from '@/lib/data/utils';
-import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schema/common';
+import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schemas';
 
 export const spouseAlienNumberAtom = userDataDocumentAtom(
   'spouse:alienNumber',

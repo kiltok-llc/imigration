@@ -11,8 +11,17 @@ import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { HarmReasonEnum } from '@/lib/schema/services/i589/eligibility';
 import { required } from '@/lib/utils';
+
+const HarmReasonEnum = z.enum([
+  'nationality',
+  'other',
+  'political-opinion',
+  'race',
+  'religion',
+  'social-group',
+  'none',
+]);
 
 export default function ReasonForLeaving() {
   const router = useRouter();

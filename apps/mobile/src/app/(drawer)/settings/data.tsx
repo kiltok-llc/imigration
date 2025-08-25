@@ -19,7 +19,6 @@ import {
   SettingsPage,
   SettingsScreen,
   SettingsSection,
-  useSettingsPath,
 } from '@/components/settings';
 import { Trans, TransButton } from '@/components/trans';
 import {
@@ -27,6 +26,7 @@ import {
   useRequiredContext,
 } from '@/hooks/use-required-context';
 import { userStorage } from '@/lib/mmkv';
+import { useSettingsPath } from '@/lib/settings';
 
 const EditorPopupContext = createRequiredContext<{
   key: string;

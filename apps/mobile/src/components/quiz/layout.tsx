@@ -7,23 +7,22 @@ import { Surface, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { quizHeaderHeightAtom } from '@/atoms/quiz-header-height-atom';
 import { MigriButton } from '@/components/migri/migri-button';
 import { useQuizPageId } from '@/components/quiz/screen';
 import { TransButton, TransText } from '@/components/trans';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { useT } from '@/hooks/use-t';
-import { useQuizActions } from '@/lib/quiz';
-import { toRouteId } from '@/lib/utils';
+import { useQuizActions } from '@/lib/quiz/actions';
+import { quizHeaderHeightAtom } from '@/lib/quiz/header';
 import {
   useCurrentRoute,
   useCurrentRouteIndex,
   useNextRoute,
   useRouteUrls,
-} from '@/providers/routes';
-import { TranslationContextProvider } from '@/providers/translation';
+} from '@/lib/routes';
+import { TranslationContextProvider, useT } from '@/lib/translation';
+import { toRouteId } from '@/lib/utils';
 
 export function QuizLayout({ children }: PropsWithChildren) {
   const t = useT();

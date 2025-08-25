@@ -27,9 +27,9 @@ import {
   childSexAtom,
 } from '@/lib/data/child';
 import { nameAtom } from '@/lib/data/user';
-import { SexEnum } from '@/lib/schema/common';
+import { SexEnum } from '@/lib/schemas';
+import { TranslationContextProvider } from '@/lib/translation';
 import { required, stretchTo } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 type ChildQuizPageProps = {
   id: string;

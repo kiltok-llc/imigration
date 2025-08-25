@@ -2,8 +2,8 @@ import { ComponentProps } from 'react';
 import { FAB } from 'react-native-paper';
 import tw from 'twrnc';
 
-import { useT } from '@/hooks/use-t';
 import { MigriEncounterType, useTriggerMigri } from '@/lib/migri';
+import { useT } from '@/lib/translation';
 
 export function MigriButton({
   callback,

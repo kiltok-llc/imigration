@@ -5,8 +5,8 @@ import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { useFormField } from '@/components/form/field';
-import { useT } from '@/hooks/use-t';
-import { SexEnum } from '@/lib/schema/common';
+import { SexEnum } from '@/lib/schemas';
+import { useT } from '@/lib/translation';
 
 export function FormBooleanInput() {
   return (

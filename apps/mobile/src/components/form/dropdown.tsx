@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import { Dropdown, MultiSelectDropdown } from 'react-native-paper-dropdown';
 
 import { useFormField } from '@/components/form/field';
-import { useT } from '@/hooks/use-t';
+import { useT } from '@/lib/translation';
 
 export const LANGUAGE_OPTIONS = [
   'en',

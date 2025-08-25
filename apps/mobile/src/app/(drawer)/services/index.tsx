@@ -16,7 +16,7 @@ import { MigriButton } from '@/components/migri/migri-button';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
-import { useT } from '@/hooks/use-t';
+import { useT } from '@/lib/translation';
 
 export default function Services() {
   const t = useT();

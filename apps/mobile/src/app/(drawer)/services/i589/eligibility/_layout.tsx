@@ -2,14 +2,14 @@ import { router, Stack } from 'expo-router';
 import { useSetAtom } from 'jotai';
 import { useTimeout } from 'usehooks-ts';
 
-import { isStepStartedAtom } from '@/atoms/is-step-started-atom';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { useT } from '@/hooks/use-t';
-import { QuizProvider } from '@/lib/quiz';
-import { RoutesProvider } from '@/providers/routes';
+import { QuizProvider } from '@/lib/quiz/provider';
+import { RoutesProvider } from '@/lib/routes';
+import { isStepStartedAtom } from '@/lib/step.ts/is-step-started-atom';
+import { useT } from '@/lib/translation';
 
 export default function EligibilityLayout() {
   const service = useService();

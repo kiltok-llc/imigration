@@ -15,7 +15,6 @@ import {
 import { Keyboard, View } from 'react-native';
 import tw from 'twrnc';
 
-import { quizPageAtom } from '@/atoms/quiz-page-atom';
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
 import { QuizPageHandle, QuizPageProps } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
@@ -24,12 +23,13 @@ import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
+import { useQuizActions } from '@/lib/quiz/actions';
+import { quizPageAtom } from '@/lib/quiz/page';
 import {
   useHandleQuizScreenNext,
   useHandleQuizScreenPrev,
-  useQuizActions,
   useSyncScreenKey,
-} from '@/lib/quiz';
+} from '@/lib/quiz/screen';
 
 const quizPageIdAtom = atomWithReset('');
 export const useQuizPageId = () => useAtomValue(quizPageIdAtom);

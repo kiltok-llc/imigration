@@ -22,8 +22,8 @@ import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
+import { TranslationContextProvider } from '@/lib/translation';
 import { WithRequired } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 const FormFieldArrayItemContext = createRequiredContext<number>();
 

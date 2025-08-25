@@ -12,9 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import migri from '@/assets/migri/migri.png';
-import { isOnboardingCompleteAtom } from '@/atoms/is-onboarding-complete-atom';
 import { MigriButton } from '@/components/migri/migri-button';
 import { TransText } from '@/components/trans';
+import { isOnboardingCompleteAtom } from '@/lib/onboarding';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 

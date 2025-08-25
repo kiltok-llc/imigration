@@ -1,6 +1,6 @@
 import { Redirect } from 'expo-router';
 
-import { useRouteUrls } from '@/providers/routes';
+import { useRouteUrls } from '@/lib/routes';
 
 export function QuizRouteNotFound() {
   const routes = useRouteUrls();

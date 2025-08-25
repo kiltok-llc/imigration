@@ -23,7 +23,7 @@ import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { SchoolLevelEnum } from '@/lib/schema/common';
+import { SchoolLevelEnum } from '@/lib/schemas';
 import { required } from '@/lib/utils';
 
 export default function SchoolInformation() {

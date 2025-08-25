@@ -29,8 +29,8 @@ import {
 } from '@/lib/data/parent';
 import { DEFAULT_ADDRESS } from '@/lib/data/schema';
 import { nameAtom } from '@/lib/data/user';
+import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
-import { TranslationContextProvider } from '@/providers/translation';
 
 type ParentPageProps = {
   parent: string;

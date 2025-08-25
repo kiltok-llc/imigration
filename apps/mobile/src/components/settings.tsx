@@ -1,30 +1,14 @@
 import { Stack, useRouter } from 'expo-router';
 import * as React from 'react';
-import {
-  ComponentProps,
-  createContext,
-  PropsWithChildren,
-  useContext,
-} from 'react';
+import { ComponentProps, PropsWithChildren } from 'react';
 import { ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
-import { useLocalSegments } from '@/hooks/use-local-segments';
-import { useT } from '@/hooks/use-t';
-
-const SectionContext = createContext<string | undefined>(undefined);
-export const useSettingsSection = () => useContext(SectionContext);
-export const useSettingsPath = () => {
-  const path = useLocalSegments().join('.');
-  const section = useSettingsSection();
-  if (!section) {
-    return path;
-  }
-  return `${path}.sections.${section}`;
-};
+import { SectionContext, useSettingsPath } from '@/lib/settings';
+import { useT } from '@/lib/translation';
 
 export function SettingsItem({
   icon,

@@ -17,8 +17,8 @@ import z from 'zod/v4';
 
 import { useFormField } from '@/components/form/field';
 import { TransButton, TransText } from '@/components/trans';
-import { useT } from '@/hooks/use-t';
 import { Theme } from '@/lib/theme';
+import { useT } from '@/lib/translation';
 
 export const FormDocumentSchema = z.object({
   name: z.string().nullable(),
