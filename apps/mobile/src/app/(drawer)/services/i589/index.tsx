@@ -12,7 +12,6 @@ import { resetQuizPages } from '@/atoms/quiz-page-atom';
 import { resetQuizRoute } from '@/atoms/quiz-route-atom';
 import { ConfettiPortal } from '@/components/confetti-portal';
 import { MigriButton } from '@/components/migri/migri-button';
-import { MigriPortal } from '@/components/migri/migri-portal';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
@@ -74,7 +73,6 @@ export default function I589() {
         }}
       />
       <ConfettiPortal />
-      <MigriPortal />
       <MigriTrigger id={`services.${service}.${step}`} type='talk' />
       <View style={tw`flex-1`}>
         <ScrollView

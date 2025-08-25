@@ -13,6 +13,7 @@ import { ReducedMotionConfig, ReduceMotion } from 'react-native-reanimated';
 import { Toaster } from 'sonner-native';
 import tw from 'twrnc';
 
+import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { Stack } from '@/components/stack';
 import { env } from '@/env';
@@ -66,6 +67,7 @@ function RootLayout() {
             <KeyboardProvider>
               <PaperProvider theme={theme}>
                 <SplashScreenBarrier>
+                  <MigriPortal />
                   <Stack
                     screenOptions={{
                       headerShown: false,

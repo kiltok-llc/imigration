@@ -14,7 +14,6 @@ import tw from 'twrnc';
 import migri from '@/assets/migri/migri.png';
 import { isOnboardingCompleteAtom } from '@/atoms/is-onboarding-complete-atom';
 import { MigriButton } from '@/components/migri/migri-button';
-import { MigriPortal } from '@/components/migri/migri-portal';
 import { TransText } from '@/components/trans';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
@@ -39,7 +38,6 @@ export default function Migri() {
   return (
     <>
       <Stack.Screen options={{}} />
-      <MigriPortal />
       <View
         style={tw.style('flex-1', {
           backgroundColor: theme.colors.secondaryContainer,

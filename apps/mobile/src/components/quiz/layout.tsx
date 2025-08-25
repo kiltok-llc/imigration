@@ -35,49 +35,51 @@ export function QuizLayout({ children }: PropsWithChildren) {
   const pageId = useQuizPageId();
 
   return (
-    <View style={tw`flex-1`}>
-      <QuizHeader />
+    <>
       <View style={tw`flex-1`}>
-        <TranslationContextProvider
-          value={{
-            ...currentParams,
-            count: Number(currentParams.index) + 1,
-          }}
-        >
-          {children}
-        </TranslationContextProvider>
-        <MigriButton
-          float
-          id={`services.${service}.${step}.${screen}.${pageId}`}
-          style={tw`right-4 bottom-4`}
-        />
+        <QuizHeader />
+        <View style={tw`flex-1`}>
+          <TranslationContextProvider
+            value={{
+              ...currentParams,
+              count: Number(currentParams.index) + 1,
+            }}
+          >
+            {children}
+          </TranslationContextProvider>
+          <MigriButton
+            float
+            id={`services.${service}.${step}.${screen}.${pageId}`}
+            style={tw`right-4 bottom-4`}
+          />
+        </View>
+        <Surface>
+          <SafeAreaView
+            edges={{ bottom: 'maximum' }}
+            style={tw`mt-auto flex-row gap-4 p-4`}
+          >
+            <View style={tw`flex-1`}>
+              <TransButton
+                i18nKey='quiz.back'
+                icon='arrow-left'
+                mode='contained-tonal'
+                onPress={handleBack}
+              />
+            </View>
+            <View style={tw`flex-1`}>
+              <TransButton
+                contentStyle={tw`flex-row-reverse`}
+                i18nKey='quiz.continue'
+                icon='arrow-right'
+                mode='contained'
+                onPress={handleContinue}
+              />
+            </View>
+          </SafeAreaView>
+        </Surface>
+        <KeyboardToolbar doneText={t('keyboard.done')} />
       </View>
-      <Surface>
-        <SafeAreaView
-          edges={{ bottom: 'maximum' }}
-          style={tw`mt-auto flex-row gap-4 p-4`}
-        >
-          <View style={tw`flex-1`}>
-            <TransButton
-              i18nKey='quiz.back'
-              icon='arrow-left'
-              mode='contained-tonal'
-              onPress={handleBack}
-            />
-          </View>
-          <View style={tw`flex-1`}>
-            <TransButton
-              contentStyle={tw`flex-row-reverse`}
-              i18nKey='quiz.continue'
-              icon='arrow-right'
-              mode='contained'
-              onPress={handleContinue}
-            />
-          </View>
-        </SafeAreaView>
-      </Surface>
-      <KeyboardToolbar doneText={t('keyboard.done')} />
-    </View>
+    </>
   );
 }
 

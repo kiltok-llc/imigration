@@ -11,7 +11,7 @@ export default function Root() {
   }
 
   if (__DEV__) {
-    return <Redirect href='/services/i589/statement' />;
+    return <Redirect href='/services/i589' />;
   }
 
   return <Redirect href='/services' />;

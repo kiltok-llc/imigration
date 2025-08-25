@@ -8,7 +8,6 @@ import tw from 'twrnc';
 import personPassport from '@/assets/onboarding/person-passport.png';
 import banner from '@/assets/onboarding/usa-banner.png';
 import { LanguageButton } from '@/components/language-button';
-import { MigriPortal } from '@/components/migri/migri-portal';
 import { TransButton, TransText } from '@/components/trans';
 
 export default function Language() {
@@ -22,7 +21,6 @@ export default function Language() {
           headerShown: false,
         }}
       />
-      <MigriPortal />
       <View style={tw`flex-1`}>
         <Image
           source={banner}
