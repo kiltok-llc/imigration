@@ -1,11 +1,13 @@
-import * as Sentry from '@sentry/react-native';
+import { ThemeProvider } from '@react-navigation/native';
 
 import '@/i18n';
+import * as Sentry from '@sentry/react-native';
 import { isRunningInExpoGo } from 'expo';
-import * as SystemUI from 'expo-system-ui';
-import React from 'react';
+import { Stack } from 'expo-router';
 
 import '@/polyfill';
+import * as SystemUI from 'expo-system-ui';
+import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { PaperProvider } from 'react-native-paper';
@@ -15,11 +17,10 @@ import tw from 'twrnc';
 
 import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
-import { Stack } from '@/components/stack';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
 import { QueryProvider } from '@/lib/query';
-import { theme } from '@/lib/theme';
+import { navigationTheme, theme } from '@/lib/theme';
 import { TRPCProvider } from '@/lib/trpc';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
@@ -66,15 +67,17 @@ function RootLayout() {
           <GestureHandlerRootView style={tw`flex-1`}>
             <KeyboardProvider>
               <PaperProvider theme={theme}>
-                <SplashScreenBarrier>
-                  <MigriPortal />
-                  <Stack
-                    screenOptions={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Toaster />
-                </SplashScreenBarrier>
+                <ThemeProvider value={navigationTheme}>
+                  <SplashScreenBarrier>
+                    <MigriPortal />
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Toaster />
+                  </SplashScreenBarrier>
+                </ThemeProvider>
               </PaperProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>

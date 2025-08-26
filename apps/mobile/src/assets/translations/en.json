@@ -182,6 +182,9 @@
     "fab": {
       "label": "Chat with Migri"
     },
+    "fallback_dev": [
+      "Oh no! I don't know how to help with this yet.\n\n<pre>{{ id }}</pre>"
+    ],
     "fallback": [
       "Oh no! I don't know how to help with this yet.",
       "Please let us know what you were looking for so we can improve Migri."
@@ -1211,6 +1214,7 @@
         "screenTitle": "Application Progress"
       },
       "review": {
+        "screenTitle": "Application Review",
         "description": "Verify that all your answers and uploads are complete and accurate.",
         "title": "Review",
         "label": "Review"

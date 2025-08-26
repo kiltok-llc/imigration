@@ -1,7 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Pressable, View, ViewStyle } from 'react-native';
 import { Icon, Modal, Portal, Text, useTheme } from 'react-native-paper';
 import Animated, {
@@ -21,7 +21,7 @@ import tw from 'twrnc';
 
 import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
-import { TransText } from '@/components/trans';
+import { transComponents, TransText } from '@/components/trans';
 import { MigriEncounter, useCurrentMigri, useDismissMigri } from '@/lib/migri';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
@@ -49,6 +49,8 @@ function MigriModalContent({ callback, id }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
   const messages = t([`migri.${id}`, 'migri.fallback'], {
+    context: __DEV__ ? 'dev' : undefined,
+    id,
     returnObjects: true,
   }) as string[];
   const [index, setIndex] = useState(0);
@@ -80,7 +82,9 @@ function MigriModalContent({ callback, id }: MigriEncounter) {
           style={tw`absolute top-10 right-7 bottom-28 left-8 justify-center`}
         >
           <Animated.Text entering={ZoomIn} key={index}>
-            <Text variant='bodyLarge'>{messages[index]}</Text>
+            <Text variant='bodyLarge'>
+              <Trans components={transComponents}>{messages[index]}</Trans>
+            </Text>
           </Animated.Text>
         </View>
         <View style={tw`absolute right-7 bottom-20 left-8 h-6`}>
@@ -90,7 +94,7 @@ function MigriModalContent({ callback, id }: MigriEncounter) {
 
       <View
         style={tw.style(
-          'absolute right-0 bottom-0 h-96 translate-x-3 translate-y-15 -rotate-15',
+          'absolute right-0 bottom-0 h-96 translate-x-5 translate-y-15 -rotate-12',
           { aspectRatio: 1 / 2 }
         )}
       >

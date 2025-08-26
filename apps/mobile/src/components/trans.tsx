@@ -7,6 +7,12 @@ import tw from 'twrnc';
 import { Button } from '@/components/ui/button';
 import { useTranslationContext } from '@/lib/translation';
 
+export const transComponents = {
+  italic: <NativeText style={tw`italic`} />,
+  pre: <NativeText style={tw`font-mono`} />,
+  strong: <NativeText style={tw`font-bold`} />,
+};
+
 // TODO this might not update when we change the language: https://react.i18next.com/latest/trans-component#important-note
 export function Trans({
   ...props
@@ -15,11 +21,7 @@ export function Trans({
 
   return (
     <I18NTrans
-      components={{
-        italic: <NativeText style={tw`italic`} />,
-        pre: <NativeText style={tw`font-mono`} />,
-        strong: <NativeText style={tw`font-bold`} />,
-      }}
+      components={transComponents}
       parent={NativeText}
       {...props}
       {...ctx}

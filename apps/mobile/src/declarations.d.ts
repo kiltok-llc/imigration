@@ -18,3 +18,8 @@ declare module '*.gif' {
   const value: ImageSourcePropType;
   export default value;
 }
+
+declare module '*.pdf' {
+  const value: number;
+  export default value;
+}

@@ -32,6 +32,7 @@ export function QuizLayout({ children }: PropsWithChildren) {
   const screen = useScreen();
   const step = useStep();
   const pageId = useQuizPageId();
+  const theme = useTheme();
 
   return (
     <>
@@ -52,7 +53,11 @@ export function QuizLayout({ children }: PropsWithChildren) {
             style={tw`right-4 bottom-4`}
           />
         </View>
-        <Surface>
+        <Surface
+          style={tw.style({
+            backgroundColor: theme.colors.surface,
+          })}
+        >
           <SafeAreaView
             edges={{ bottom: 'maximum' }}
             style={tw`mt-auto flex-row gap-4 p-4`}

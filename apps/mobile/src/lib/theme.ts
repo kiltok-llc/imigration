@@ -1,3 +1,4 @@
+import { DefaultTheme } from '@react-navigation/native';
 import { MD3LightTheme } from 'react-native-paper';
 
 export const theme = {
@@ -24,3 +25,16 @@ export const theme = {
 } as const;
 
 export type Theme = typeof theme;
+
+export const navigationTheme = {
+  ...DefaultTheme,
+  colors: {
+    background: theme.colors.background,
+    border: theme.colors.outline,
+    card: theme.colors.surface,
+    notification: theme.colors.error,
+    primary: theme.colors.primary,
+    text: theme.colors.onSurface,
+  },
+  dark: false,
+} as const;
