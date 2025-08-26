@@ -15,11 +15,13 @@ import {
   NameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
+import { FormTextInput } from '@/components/form/text';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
+import { QuizTextInput } from '@/components/quiz/text';
 import {
   divorceDateAtom,
   maritalStatusAtom,
@@ -27,7 +29,8 @@ import {
   marriageDateAtom,
   marriageLocationAtom,
 } from '@/lib/data/marriage';
-import { spouseNameAtom } from '@/lib/data/spouse';
+import { DEFAULT_LOCATION } from '@/lib/data/schema';
+import { spouseIsInUsaAtom, spouseLocationAtom, spouseNameAtom } from '@/lib/data/spouse';
 import { MaritalStatusEnum } from '@/lib/schemas';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
@@ -39,6 +42,8 @@ export default function MaritalStatus() {
   const setMarriageDate = useSetAtom(marriageDateAtom);
   const setDivorceDate = useSetAtom(divorceDateAtom);
   const setSpouseName = useSetAtom(spouseNameAtom);
+  const setSpouseIsInUsa = useSetAtom(spouseIsInUsaAtom);
+  const setSpouseLocation = useSetAtom(spouseLocationAtom);
 
   return (
     <QuizScreen>
@@ -161,7 +166,7 @@ export default function MaritalStatus() {
         </QuizPage>
       )}
 
-      {maritalStatus !== 'single' && (
+      {maritalStatus === 'married' && (
         <QuizPage
           defaultValues={DEFAULT_NAME}
           onSubmit={(name) => {
@@ -173,12 +178,52 @@ export default function MaritalStatus() {
           schema={NameSchema}
         >
           {({ lens }) => (
-            <TranslationContextProvider value={{ context: maritalStatus }}>
+            <FormBlock>
+              <QuizPageTitle />
+              <FormNameInput lens={lens} />
+            </FormBlock>
+          )}
+        </QuizPage>
+      )}
+
+      {maritalStatus === 'married' && (
+        <QuizPage
+          defaultValues={{
+            isInUsa: null,
+          }}
+          onSubmit={({ isInUsa, location }) => {
+            setSpouseIsInUsa(isInUsa);
+            setSpouseLocation(location ?? DEFAULT_LOCATION);
+
+            return true;
+          }}
+          pageId='spouse-location'
+          schema={z.object({
+            isInUsa: required(z.boolean().nullable()),
+            location: FormShortAddressSchema.optional(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
               <FormBlock>
-                <QuizPageTitle />
-                <FormNameInput lens={lens} />
+                <FormField control={control} name='isInUsa'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
               </FormBlock>
-            </TranslationContextProvider>
+
+              <ConditionalFormWrapper
+                active={!!watch('isInUsa')}
+                activeValue={DEFAULT_LOCATION}
+                control={control}
+                name='location'
+              >
+                <FormBlock animated>
+                  <QuizFieldTitle />
+                  <QuizTextInput />
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
           )}
         </QuizPage>
       )}

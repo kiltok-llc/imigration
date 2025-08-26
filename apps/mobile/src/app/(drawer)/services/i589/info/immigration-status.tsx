@@ -1,6 +1,6 @@
 import { isEqual } from '@ver0/deep-equal';
 import { useLocalSearchParams } from 'expo-router';
-import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { View } from 'react-native';
 import z from 'zod/v4';
@@ -10,15 +10,8 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
-import {
-  QuizFieldArrayAdd,
-  QuizFieldArrayItemHeader,
-} from '@/components/quiz/fieldarray';
-import {
-  QuizFieldDescription,
-  QuizFieldTip,
-  QuizFieldTitle,
-} from '@/components/quiz/label';
+import { QuizFieldArrayAdd, QuizFieldArrayItemHeader } from '@/components/quiz/fieldarray';
+import { QuizFieldDescription, QuizFieldTip, QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
@@ -27,17 +20,19 @@ import {
   childAlienNumberAtom,
   childEntriesAtom,
   childImmigrationCourtStatusAtom,
+  childIsInUsaAtom,
   childNameAtom,
   childPassportAtom,
   childSsnAtom,
   childStatusExpirationAtom,
   childUscisNumberAtom,
 } from '@/lib/data/child';
-import { DEFAULT_PASSPORT } from '@/lib/data/schema';
+import { DEFAULT_PASSPORT, DEFAULT_USA_ENTRY } from '@/lib/data/schema';
 import {
   spouseAlienNumberAtom,
   spouseEntriesAtom,
   spouseImmigrationCourtStatusAtom,
+  spouseIsInUsaAtom,
   spouseNameAtom,
   spousePassportAtom,
   spouseSsnAtom,
@@ -58,10 +53,10 @@ import { ImmigrationCourtStatusEnum } from '@/lib/schemas';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
 
-const contextFamily = <T,>(
+const contextFamily = <T, >(
   clientAtom: PrimitiveAtom<T>,
   spouseAtom: PrimitiveAtom<T>,
-  childAtom: (id: string) => PrimitiveAtom<T>
+  childAtom: (id: string) => PrimitiveAtom<T>,
 ) =>
   atomFamily(
     ({ context, id }: Param) =>
@@ -70,7 +65,7 @@ const contextFamily = <T,>(
         client: clientAtom,
         spouse: spouseAtom,
       })[context],
-    isEqual
+    isEqual,
   );
 
 type Context = 'child' | 'client' | 'spouse';
@@ -87,44 +82,51 @@ export default function ImmigrationStatus() {
   const { context, id } = param;
 
   const name = useAtomValue(
-    contextFamily(nameAtom, spouseNameAtom, childNameAtom)(param)
+    contextFamily(nameAtom, spouseNameAtom, childNameAtom)(param),
   ).first;
   const setPassport = useSetAtom(
-    contextFamily(passportAtom, spousePassportAtom, childPassportAtom)(param)
+    contextFamily(passportAtom, spousePassportAtom, childPassportAtom)(param),
   );
   const setAlienNumber = useSetAtom(
     contextFamily(
       alienNumberAtom,
       spouseAlienNumberAtom,
-      childAlienNumberAtom
-    )(param)
+      childAlienNumberAtom,
+    )(param),
   );
   const setSsn = useSetAtom(
-    contextFamily(ssnAtom, spouseSsnAtom, childSsnAtom)(param)
+    contextFamily(ssnAtom, spouseSsnAtom, childSsnAtom)(param),
   );
   const setUscisNumber = useSetAtom(
     contextFamily(
       uscisNumberAtom,
       spouseUscisNumberAtom,
-      childUscisNumberAtom
-    )(param)
+      childUscisNumberAtom,
+    )(param),
   );
   const setImmigrationCourtStatus = useSetAtom(
     contextFamily(
       immigrationCourtStatusAtom,
       spouseImmigrationCourtStatusAtom,
-      childImmigrationCourtStatusAtom
-    )(param)
+      childImmigrationCourtStatusAtom,
+    )(param),
   );
-  const [entries, setEntries] = useAtom(
-    contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
+  const setEntries = useSetAtom(
+    contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param),
   );
   const setStatusExpiration = useSetAtom(
     contextFamily(
       statusExpirationAtom,
       spouseStatusExpirationAtom,
-      childStatusExpirationAtom
-    )(param)
+      childStatusExpirationAtom,
+    )(param),
+  );
+  const [isInUsa, setIsInUsa] = useAtom(
+    contextFamily(
+      atom<boolean | null>(true),
+      spouseIsInUsaAtom,
+      childIsInUsaAtom,
+    )(param),
   );
 
   return (
@@ -143,7 +145,7 @@ export default function ImmigrationStatus() {
 
             return true;
           }}
-          pageId='passport'
+          pageId="passport"
           schema={z.object({
             hasPassport: required(z.boolean().nullable()),
             passport: z
@@ -157,7 +159,7 @@ export default function ImmigrationStatus() {
           {({ control, watch }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='hasPassport'>
+                <FormField control={control} name="hasPassport">
                   <QuizFieldTitle />
                   <FormBooleanInput />
                 </FormField>
@@ -167,15 +169,15 @@ export default function ImmigrationStatus() {
                 active={!!watch('hasPassport')}
                 activeValue={{ country: '', number: '' }}
                 control={control}
-                name='passport'
+                name="passport"
               >
                 <FormBlock>
-                  <FormField control={control} name='passport.country'>
+                  <FormField control={control} name="passport.country">
                     <QuizFieldTitle />
                     <QuizTextInput />
                   </FormField>
 
-                  <FormField control={control} name='passport.number'>
+                  <FormField control={control} name="passport.number">
                     <QuizFieldTitle />
                     <QuizTextInput />
                   </FormField>
@@ -191,7 +193,7 @@ export default function ImmigrationStatus() {
             setAlienNumber(number ?? '');
             return true;
           }}
-          pageId='alien-number'
+          pageId="alien-number"
           schema={z.object({
             hasAlienNumber: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -200,7 +202,7 @@ export default function ImmigrationStatus() {
           {({ control, watch }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='hasAlienNumber'>
+                <FormField control={control} name="hasAlienNumber">
                   <QuizFieldTitle />
                   <QuizFieldDescription />
                   <FormBooleanInput />
@@ -211,7 +213,7 @@ export default function ImmigrationStatus() {
                 active={!!watch('hasAlienNumber')}
                 activeValue={''}
                 control={control}
-                name='number'
+                name="number"
               >
                 <FormBlock>
                   <QuizFieldTitle />
@@ -230,7 +232,7 @@ export default function ImmigrationStatus() {
             setSsn(number ?? '');
             return true;
           }}
-          pageId='ssn'
+          pageId="ssn"
           schema={z.object({
             hasSsn: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -239,7 +241,7 @@ export default function ImmigrationStatus() {
           {({ control, watch }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='hasSsn'>
+                <FormField control={control} name="hasSsn">
                   <QuizFieldTitle />
                   <FormBooleanInput />
                 </FormField>
@@ -249,7 +251,7 @@ export default function ImmigrationStatus() {
                 active={!!watch('hasSsn')}
                 activeValue={''}
                 control={control}
-                name='number'
+                name="number"
               >
                 <FormBlock>
                   <QuizFieldTitle />
@@ -268,7 +270,7 @@ export default function ImmigrationStatus() {
             setUscisNumber(number ?? '');
             return true;
           }}
-          pageId='uscis'
+          pageId="uscis"
           schema={z.object({
             hasUscis: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -277,7 +279,7 @@ export default function ImmigrationStatus() {
           {({ control, watch }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='hasUscis'>
+                <FormField control={control} name="hasUscis">
                   <QuizFieldTitle />
                   <FormBooleanInput />
                 </FormField>
@@ -287,7 +289,7 @@ export default function ImmigrationStatus() {
                 active={!!watch('hasUscis')}
                 activeValue={''}
                 control={control}
-                name='number'
+                name="number"
               >
                 <FormBlock>
                   <QuizFieldTitle />
@@ -306,7 +308,7 @@ export default function ImmigrationStatus() {
             setImmigrationCourtStatus(status);
             return true;
           }}
-          pageId='court'
+          pageId="court"
           schema={z.object({
             status: required(ImmigrationCourtStatusEnum.nullable()),
           })}
@@ -314,7 +316,7 @@ export default function ImmigrationStatus() {
           {({ control }) => (
             <>
               <FormBlock>
-                <FormField control={control} name='status'>
+                <FormField control={control} name="status">
                   <QuizFieldTitle />
                   <FormRadioGroup>
                     {ImmigrationCourtStatusEnum.options.map((status) => (
@@ -327,62 +329,56 @@ export default function ImmigrationStatus() {
           )}
         </QuizPage>
 
-        <QuizPage
-          defaultValues={{
-            isInUsa: null,
-          }}
-          onSubmit={({ entry }) => {
-            if (entry) {
-              const { date, port, status, statusExpiration } = entry;
-              setEntries([{ date, port, status }]);
+        {context === 'child' && (
+          <QuizPage
+            defaultValues={{
+              isInUsa: null,
+            }}
+            onSubmit={({ isInUsa }) => {
+              setIsInUsa(isInUsa);
+              return true;
+            }}
+            pageId="is-in-usa"
+            schema={z.object({
+              isInUsa: required(z.boolean().nullable()),
+            })}
+          >
+            {({ control }) => (
+              <FormBlock>
+                <FormField control={control} name="isInUsa">
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
+              </FormBlock>
+            )}
+          </QuizPage>
+        )}
+
+        {isInUsa && (
+          <QuizPage
+            defaultValues={{ ...DEFAULT_USA_ENTRY, statusExpiration: null }}
+            onSubmit={({ date, port, status, statusExpiration }) => {
+              setEntries(([_first, ...others]) => [{ date, port, status }, ...others]);
               setStatusExpiration(statusExpiration);
-            } else {
-              setEntries([]);
-              setStatusExpiration(null);
-            }
 
-            return true;
-          }}
-          pageId='first-entry'
-          schema={z.object({
-            entry: z
-              .object({
-                date: required(z.date().nullable()),
-                port: z.string().nonempty(),
-                status: z.string(),
-                statusExpiration: z.date().nullable(),
-              })
-              .optional(),
-            isInUsa:
-              context === 'client'
-                ? z.boolean().nullable()
-                : required(z.boolean().nullable()),
-          })}
-        >
-          {({ control, watch }) => (
-            <>
-              {context !== 'client' && (
+              return true;
+            }}
+            pageId="first-entry"
+            schema={z.object({
+              date: required(z.date().nullable()),
+              port: z.string().nonempty(),
+              status: z.string(),
+              statusExpiration: z.date().nullable(),
+            })}
+          >
+            {({ control }) => (
+              <>
                 <FormBlock>
-                  <FormField control={control} name='isInUsa'>
-                    <QuizFieldTitle />
-                    <FormBooleanInput />
-                  </FormField>
+                  <QuizPageTitle />
                 </FormBlock>
-              )}
 
-              <ConditionalFormWrapper
-                active={context === 'client' || !!watch('isInUsa')}
-                activeValue={{
-                  date: null,
-                  port: '',
-                  status: '',
-                  statusExpiration: null,
-                }}
-                control={control}
-                name='entry'
-              >
                 <FormBlock>
-                  <FormField control={control} name='entry.date'>
+                  <FormField control={control} name="date">
                     <View>
                       <QuizFieldTitle />
                       <QuizFieldTip />
@@ -390,27 +386,27 @@ export default function ImmigrationStatus() {
                     <QuizDateInput />
                   </FormField>
 
-                  <FormField control={control} name='entry.port'>
+                  <FormField control={control} name="port">
                     <QuizFieldTitle />
                     <QuizTextInput />
                   </FormField>
 
-                  <FormField control={control} name='entry.status'>
+                  <FormField control={control} name="status">
                     <QuizFieldTitle />
                     <QuizTextInput optional />
                   </FormField>
 
-                  <FormField control={control} name='entry.statusExpiration'>
+                  <FormField control={control} name="statusExpiration">
                     <QuizFieldTitle />
                     <QuizDateInput optional />
                   </FormField>
                 </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizPage>
+              </>
+            )}
+          </QuizPage>
+        )}
 
-        {entries.length > 0 && (
+        {context === 'client' && (
           <QuizPage
             defaultValues={{
               hasOtherEntries: null,
@@ -421,7 +417,7 @@ export default function ImmigrationStatus() {
               }
               return true;
             }}
-            pageId='other-entries'
+            pageId="other-entries"
             schema={z.object({
               entries: z
                 .array(
@@ -429,7 +425,7 @@ export default function ImmigrationStatus() {
                     date: z.date().nullable(),
                     port: z.string().nonempty(),
                     status: z.string(),
-                  })
+                  }),
                 )
                 .nonempty()
                 .optional(),
@@ -439,7 +435,7 @@ export default function ImmigrationStatus() {
             {({ control, watch }) => (
               <>
                 <FormBlock>
-                  <FormField control={control} name='hasOtherEntries'>
+                  <FormField control={control} name="hasOtherEntries">
                     <QuizFieldTitle />
                     <QuizFieldDescription />
                     <FormBooleanInput />
@@ -450,9 +446,9 @@ export default function ImmigrationStatus() {
                   active={!!watch('hasOtherEntries')}
                   activeValue={[{ date: null, port: '', status: '' }]}
                   control={control}
-                  name='entries'
+                  name="entries"
                 >
-                  <FormArray control={control} name='entries'>
+                  <FormArray control={control} name="entries">
                     <FormArrayItems>
                       {(idx) => (
                         <TranslationContextProvider value={{ count: idx + 2 }}>
@@ -480,15 +476,18 @@ export default function ImmigrationStatus() {
                         </TranslationContextProvider>
                       )}
                     </FormArrayItems>
-                    <FormBlock animated>
-                      <QuizFieldArrayAdd
-                        value={{
-                          date: null,
-                          port: '',
-                          status: '',
-                        }}
-                      />
-                    </FormBlock>
+
+                    {(watch('entries')?.length ?? 0) < 2 && (
+                      <FormBlock animated>
+                        <QuizFieldArrayAdd
+                          value={{
+                            date: null,
+                            port: '',
+                            status: '',
+                          }}
+                        />
+                      </FormBlock>
+                    )}
                   </FormArray>
                 </ConditionalFormWrapper>
               </>

@@ -81,7 +81,7 @@ function MigriModalContent({ callback, id }: MigriEncounter) {
         <View
           style={tw`absolute top-10 right-7 bottom-28 left-8 justify-center`}
         >
-          <Animated.Text entering={ZoomIn} key={index}>
+          <Animated.Text entering={ZoomIn} key={index} numberOfLines={4}>
             <Text variant='bodyLarge'>
               <Trans components={transComponents}>{messages[index]}</Trans>
             </Text>

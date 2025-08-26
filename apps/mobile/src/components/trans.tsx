@@ -10,6 +10,7 @@ import { useTranslationContext } from '@/lib/translation';
 export const transComponents = {
   italic: <NativeText style={tw`italic`} />,
   pre: <NativeText style={tw`font-mono`} />,
+  small: <NativeText style={tw`text-xs`} />,
   strong: <NativeText style={tw`font-bold`} />,
 };
 

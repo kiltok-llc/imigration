@@ -52,6 +52,12 @@ export const childStatusExpirationAtom = userDataDocumentFamily(
   z.date().nullable()
 );
 
+export const childIsInUsaAtom = userDataDocumentFamily(
+  (id) => `child:${id}:is-in-usa`,
+  null,
+  z.boolean().nullable()
+);
+
 export const childImmigrationCourtStatusAtom = userDataDocumentFamily(
   (id) => `child:${id}:immigration-court-status`,
   null,

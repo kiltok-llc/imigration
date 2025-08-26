@@ -3,10 +3,10 @@ import z from 'zod/v4';
 import { DEFAULT_NAME } from '@/components/form/name';
 import {
   AlienNumberSchema,
-  DEFAULT_ALIEN_NUMBER,
+  DEFAULT_ALIEN_NUMBER, DEFAULT_LOCATION,
   DEFAULT_PASSPORT,
   DEFAULT_SSN,
-  DEFAULT_USCIS_NUMBER,
+  DEFAULT_USCIS_NUMBER, LocationSchema,
   NameSchema,
   PassportSchema,
   SsnSchema,
@@ -50,6 +50,18 @@ export const spousePassportAtom = userDataDocumentAtom(
   'spouse:passport',
   DEFAULT_PASSPORT,
   PassportSchema
+);
+
+export const spouseIsInUsaAtom = userDataDocumentAtom(
+  'spouse:is-in-usa',
+  null,
+  z.boolean().nullable()
+);
+
+export const spouseLocationAtom = userDataDocumentAtom(
+  'spouse:location',
+  DEFAULT_LOCATION,
+  LocationSchema
 );
 
 export const spouseSexAtom = userDataDocumentAtom(

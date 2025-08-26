@@ -163,19 +163,19 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
 
 function MigriHeaderIcons() {
   const service = useService();
-  const ids = ['welcome', 'info', 'statement', 'review'] as const;
+  const steps = ['eligibility', 'info', 'statement', 'review'] as const;
   const completedIds = useAtomValue(completedMigriEncounterIds);
   const triggerMigri = useTriggerMigri();
 
-  return ids
-    .filter((id) => completedIds.has(`${service}.${id}`))
-    .map((id) => (
+  return steps
+    .filter((step) => completedIds.has(`${service}.${step}`))
+    .map((step) => (
       <HeaderMenuItem
-        i18nKey={`services.${service}.menu.migri.${id}`}
-        key={id}
+        i18nKey={`services.${service}.menu.migri.${step}`}
+        key={step}
         onPress={() => {
           triggerMigri({
-            id: `services.i589.${id}`,
+            id: `services.${service}.${step}`,
             once: false,
             skipMissing: false,
             type: 'talk',

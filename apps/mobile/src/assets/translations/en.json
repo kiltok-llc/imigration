@@ -183,7 +183,7 @@
       "label": "Chat with Migri"
     },
     "fallback_dev": [
-      "Oh no! I don't know how to help with this yet.\n\n<pre>{{ id }}</pre>"
+      "Missing translation!\n\n<pre><small>{{ id }}</small></pre>"
     ],
     "fallback": [
       "Oh no! I don't know how to help with this yet.",
@@ -207,7 +207,7 @@
         "If you need help or have questions, just tap the 'Lightbulb' icon in the bottom right corner to chat with me!"
       ],
       "i589": {
-        "welcome": [
+        "eligibility": [
           "Welcome to the i589 application for asylum!",
           "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
           "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
@@ -246,7 +246,7 @@
           "statement": "Revise Statement"
         },
         "migri": {
-          "welcome": "Help with Asylum Application",
+          "eligibility": "Help with Asylum Application",
           "info": "Help with Personal Info",
           "statement": "Help with Personal Statement",
           "review": "Help with Review"
@@ -838,9 +838,16 @@
               }
             },
             "spouse-info": {
-              "title": "What is your spouse's name?",
-              "title_divorced": "What was your ex-spouse's name?",
-              "title_widowed": "What was your late spouse's name?"
+              "title": "What is your spouse's name?"
+            },
+            "spouse-location": {
+              "is-in-usa": {
+                "title": "Is your spouse currently in the United States?"
+              },
+              "location": {
+                "title": "Where is your spouse right now?",
+                "label": "Current Location"
+              }
             },
             "marriage-certificate": {
               "has-certificate": {
@@ -885,14 +892,11 @@
         "immigration-status": {
           "other-entries": {
             "has-other-entries": {
-              "title": "Has {{ name }} entered the United States any other times in the past five years?",
               "title_client": "Have you entered the United States any other times in the past five years?",
-              "description_client": "If you have only entered the United States once, you can select 'No'.",
-              "description": "If {{ name }} has only entered the United States once, you can select 'No'."
+              "description_client": "If you have only entered the United States once, you can select 'No'."
             },
             "other-entries": {
-              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States in the past five years.",
-              "title": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times {{ name }} has entered the United States in the past five years."
+              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States.",
             },
             "entries": {
               "title_ordinal_one": "{{ count }}st Entry",
@@ -911,15 +915,18 @@
               }
             }
           },
-          "first-entry": {
+          "is-in-usa": {
             "is-in-usa": {
-              "title": "Is {{ name }} currently in the United States?"
-            },
+              "title_child": "Is {{ name }} currently in the United States?"
+            }
+          },
+          "first-entry": {
+            "title": "Please provide the following information about {{ name }}'s most recent entry into the United States.",
+            "title_client": "Please provide the following information about your most recent entry into the United States.",
             "entry": {
               "date": {
                 "title_client": "When did you enter the United States?",
                 "title": "When did {{ name }} enter the United States?",
-                "tip": "(the most recent date of entry)",
                 "label": "Entry date"
               },
               "port": {
