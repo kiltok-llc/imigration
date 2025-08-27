@@ -1369,6 +1369,15 @@
               "title_child": "Is {{ name }} currently in the United States?"
             }
           },
+          "previous-entry": {
+            "has-previous-entry": {
+              "title_spouse": "Has {{ name }} ever entered the United States before the most recent time?",
+            },
+            "entry-date": {
+              "title_spouse": "Please provide the date of {{ name }}'s previous entry into the United States.",
+              "label": "Date of Previous Entry"
+            }
+          },
           "first-entry": {
             "title": "Please provide the following information about {{ name }}'s most recent entry into the United States.",
             "title_client": "Please provide the following information about your most recent entry into the United States.",

@@ -10,7 +10,7 @@ import tw from 'twrnc';
 import { MigriButton } from '@/components/migri/migri-button';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { i589PdfAtom } from '@/lib/services/i589/pdf';
+import { i589PdfAtom } from '@/lib/services/i589/form/pdf';
 import { useT } from '@/lib/translation';
 
 export function I589PDF() {
