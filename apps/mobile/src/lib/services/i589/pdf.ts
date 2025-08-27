@@ -100,8 +100,9 @@ const textFieldsAtom = atom<Record<string, string>>((get) => ({
           get(spouseNameAtom).middle,
         '[1].NotMarried[0].TextField10[3]': 'spouse alias',
 
-        '[1].NotMarried[0].DateTimeField8[0]':
-          get(marriageDateAtom)?.toDateString(),
+        '[1].NotMarried[0].DateTimeField8[0]': prettifyDate(
+          get(marriageDateAtom)
+        ),
         '[1].NotMarried[0].TextField10[4]': 'marriage place',
 
         '[1].NotMarried[0].TextField10[5]': 'spouse birth location',
