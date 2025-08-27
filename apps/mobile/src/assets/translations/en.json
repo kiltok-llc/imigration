@@ -1371,7 +1371,7 @@
           },
           "previous-entry": {
             "has-previous-entry": {
-              "title_spouse": "Has {{ name }} ever entered the United States before the most recent time?",
+              "title_spouse": "Has {{ name }} ever entered the United States before the most recent time?"
             },
             "entry-date": {
               "title_spouse": "Please provide the date of {{ name }}'s previous entry into the United States.",
