@@ -72,6 +72,7 @@
     "jotai": "^2.13.1",
     "jotai-optics": "^0.4.0",
     "jotai-ssr": "^0.2.0",
+    "jotai-tanstack-query": "^0.11.0",
     "jsonata": "^2.1.0",
     "nuqs": "^2.4.3",
     "optics-ts": "^2.4.1",

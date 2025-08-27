@@ -19,6 +19,7 @@ import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
+import { JotaiProvider } from '@/lib/jotai';
 import { QueryProvider } from '@/lib/query';
 import { navigationTheme, theme } from '@/lib/theme';
 import { TRPCProvider } from '@/lib/trpc';
@@ -62,26 +63,28 @@ function RootLayout() {
   return (
     <DevMenuProvider>
       <QueryProvider>
-        <ReducedMotionConfig mode={ReduceMotion.Never} />
-        <TRPCProvider>
-          <GestureHandlerRootView style={tw`flex-1`}>
-            <KeyboardProvider>
-              <PaperProvider theme={theme}>
-                <ThemeProvider value={navigationTheme}>
-                  <SplashScreenBarrier>
-                    <MigriPortal />
-                    <Stack
-                      screenOptions={{
-                        headerShown: false,
-                      }}
-                    />
-                    <Toaster />
-                  </SplashScreenBarrier>
-                </ThemeProvider>
-              </PaperProvider>
-            </KeyboardProvider>
-          </GestureHandlerRootView>
-        </TRPCProvider>
+        <JotaiProvider>
+          <ReducedMotionConfig mode={ReduceMotion.Never} />
+          <TRPCProvider>
+            <GestureHandlerRootView style={tw`flex-1`}>
+              <KeyboardProvider>
+                <PaperProvider theme={theme}>
+                  <ThemeProvider value={navigationTheme}>
+                    <SplashScreenBarrier>
+                      <MigriPortal />
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                        }}
+                      />
+                      <Toaster />
+                    </SplashScreenBarrier>
+                  </ThemeProvider>
+                </PaperProvider>
+              </KeyboardProvider>
+            </GestureHandlerRootView>
+          </TRPCProvider>
+        </JotaiProvider>
       </QueryProvider>
     </DevMenuProvider>
   );

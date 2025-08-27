@@ -9,7 +9,7 @@ import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
-import { isStepStartedAtom } from '@/lib/step.ts/is-step-started-atom';
+import { isStepStartedAtom } from '@/lib/step';
 
 export default function Intro() {
   const service = useService();

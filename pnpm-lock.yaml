@@ -252,6 +252,9 @@ importers:
       jotai-ssr:
         specifier: ^0.2.0
         version: 0.2.0(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      jotai-tanstack-query:
+        specifier: ^0.11.0
+        version: 0.11.0(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@19.0.0))(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       jsonata:
         specifier: ^2.1.0
         version: 2.1.0
@@ -6169,6 +6172,19 @@ packages:
     peerDependencies:
       jotai: '>=2.0.0'
       react: '>=18.0.0'
+
+  jotai-tanstack-query@0.11.0:
+    resolution: {integrity: sha512-Ys0u0IuuS6/okUJOulFTdCVfVaeKbm1+lKVSN9zHhIxtrAXl9FM4yu7fNvxM6fSz/NCE9tZOKR0MQ3hvplaH8A==}
+    peerDependencies:
+      '@tanstack/query-core': '*'
+      '@tanstack/react-query': '*'
+      jotai: '>=2.0.0'
+      react: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@tanstack/react-query':
+        optional: true
+      react:
+        optional: true
 
   jotai@2.13.1:
     resolution: {integrity: sha512-cRsw6kFeGC9Z/D3egVKrTXRweycZ4z/k7i2MrfCzPYsL9SIWcPXTyqv258/+Ay8VUEcihNiE/coBLE6Kic6b8A==}
@@ -15555,6 +15571,14 @@ snapshots:
   jotai-ssr@0.2.0(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       jotai: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)
+      react: 19.0.0
+
+  jotai-tanstack-query@0.11.0(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@19.0.0))(jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      '@tanstack/query-core': 5.80.7
+      jotai: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0)
+    optionalDependencies:
+      '@tanstack/react-query': 5.80.7(react@19.0.0)
       react: 19.0.0
 
   jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@19.0.14)(react@19.0.0):

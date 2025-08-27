@@ -19,7 +19,7 @@ import { migriCompletedEncounterIds, useTriggerMigri } from '@/lib/migri';
 import { resetQuizPages } from '@/lib/quiz/page';
 import { resetQuizRoute } from '@/lib/quiz/route';
 import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
-import { isStepStartedAtom } from '@/lib/step.ts/is-step-started-atom';
+import { isStepStartedAtom } from '@/lib/step';
 import { useT } from '@/lib/translation';
 
 export const steps: Step[] = [

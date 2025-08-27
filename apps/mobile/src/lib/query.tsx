@@ -19,7 +19,6 @@ import { env } from '@/env';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval: env.NODE_ENV === 'development' ? 3000 : false,
       retry: env.NODE_ENV === 'development' ? false : 2,
     },
   },
@@ -58,6 +57,11 @@ const queryClient = new QueryClient({
 
       if (query.meta?.errorToast) {
         toast.error(query.meta.errorToast as string);
+      }
+    },
+    onSuccess(_data, query) {
+      if (query.meta?.successToast) {
+        toast.success(query.meta.successToast as string);
       }
     },
   }),

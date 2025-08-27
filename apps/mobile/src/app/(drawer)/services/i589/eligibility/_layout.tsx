@@ -8,7 +8,7 @@ import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
 import { QuizProvider } from '@/lib/quiz/provider';
 import { RoutesProvider } from '@/lib/routes';
-import { isStepStartedAtom } from '@/lib/step.ts/is-step-started-atom';
+import { isStepStartedAtom } from '@/lib/step';
 import { useT } from '@/lib/translation';
 
 export default function EligibilityLayout() {
