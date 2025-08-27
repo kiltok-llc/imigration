@@ -12,6 +12,13 @@ export const migriVoiceAtom = atomWithMmkvStorage<null | string>(
   appStorage
 );
 
+export const isMigriSpeechEnabledAtom = atomWithMmkvStorage(
+  'migri:speech-enabled',
+  true,
+  z.boolean(),
+  appStorage
+);
+
 export const migriCompletedEncounterIds = atomWithMmkvStorage<Set<string>>(
   'migri:completed-encounter-ids',
   new Set(),

@@ -1,11 +1,18 @@
 import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import * as Speech from 'expo-speech';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View, ViewStyle } from 'react-native';
-import { Icon, Modal, Portal, Text, useTheme } from 'react-native-paper';
+import {
+  Icon,
+  IconButton,
+  Modal,
+  Portal,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import Animated, {
   BounceInRight,
   Easing,
@@ -26,6 +33,7 @@ import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
 import { transComponents, TransText } from '@/components/trans';
 import {
+  isMigriSpeechEnabledAtom,
   MigriEncounter,
   migriVoiceAtom,
   useCurrentMigri,
@@ -89,19 +97,27 @@ const useSpeakMessage = (message: string) => {
     i18n: { language },
   } = useTranslation();
   const voice = useAtomValue(migriVoiceAtom) ?? undefined;
+  const isSpeechEnabled = useAtomValue(isMigriSpeechEnabledAtom);
 
   useEffect(() => {
+    if (!isSpeechEnabled) {
+      return;
+    }
+
     Speech.speak(message, { language, voice });
 
     return () => {
       void Speech.stop();
     };
-  }, [language, message, voice]);
+  }, [language, message, voice, isSpeechEnabled]);
 };
 
 function MigriModalContent({ callback, id, type }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
+  const [isSpeechEnabled, setIsSpeechEnabled] = useAtom(
+    isMigriSpeechEnabledAtom
+  );
   const [index, setIndex] = useState(0);
   const messages = t([`migri.${id}.${type}`, `migri.fallback.${type}`], {
     context: __DEV__ ? 'dev' : undefined,
@@ -127,9 +143,23 @@ function MigriModalContent({ callback, id, type }: MigriEncounter) {
       <Animated.View
         entering={FadeIn}
         exiting={FadeOut.delay(200)}
+        style={tw.style(`absolute bottom-6 left-6`)}
+      >
+        <IconButton
+          icon={isSpeechEnabled ? 'volume-high' : 'volume-off'}
+          mode='contained'
+          onPress={() => setIsSpeechEnabled(!isSpeechEnabled)}
+          size={36}
+        />
+      </Animated.View>
+
+      <Animated.View
+        entering={FadeIn}
+        exiting={FadeOut.delay(200)}
         style={tw.style(`absolute inset-x-5 bottom-50`, { aspectRatio: 3 / 2 })}
       >
         <Image
+          alt='mute'
           contentFit='contain'
           source={speechBubble}
           style={tw`absolute inset-0`}
