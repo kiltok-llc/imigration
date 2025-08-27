@@ -34,6 +34,9 @@ export default function Index() {
       />
       <SettingsScreen>
         <SettingsPage>
+          <SettingsSection id='general'>
+            <SettingsItem icon='chevron-right' id='migri' />
+          </SettingsSection>
           <SettingsSection id='language-and-accessibility'>
             <SettingsItem icon='chevron-right' id='language' />
             <SettingsItem icon='chevron-right' id='speech' />

@@ -15,7 +15,7 @@ import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
-import { completedMigriEncounterIds, useTriggerMigri } from '@/lib/migri';
+import { migriCompletedEncounterIds, useTriggerMigri } from '@/lib/migri';
 import { resetQuizPages } from '@/lib/quiz/page';
 import { resetQuizRoute } from '@/lib/quiz/route';
 import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
@@ -164,7 +164,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
 function MigriHeaderIcons() {
   const service = useService();
   const steps = ['eligibility', 'info', 'statement', 'review'] as const;
-  const completedIds = useAtomValue(completedMigriEncounterIds);
+  const completedIds = useAtomValue(migriCompletedEncounterIds);
   const triggerMigri = useTriggerMigri();
 
   return steps

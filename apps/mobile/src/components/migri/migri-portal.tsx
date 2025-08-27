@@ -1,5 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
+import * as Speech from 'expo-speech';
+import { useAtomValue } from 'jotai';
 import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View, ViewStyle } from 'react-native';
@@ -23,7 +25,12 @@ import { useInterval } from 'usehooks-ts';
 import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
 import { transComponents, TransText } from '@/components/trans';
-import { MigriEncounter, useCurrentMigri, useDismissMigri } from '@/lib/migri';
+import {
+  MigriEncounter,
+  migriVoiceAtom,
+  useCurrentMigri,
+  useDismissMigri,
+} from '@/lib/migri';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
@@ -77,15 +84,32 @@ function AutoScrollView({ ...props }: ComponentProps<typeof ScrollView>) {
   );
 }
 
+const useSpeakMessage = (message: string) => {
+  const {
+    i18n: { language },
+  } = useTranslation();
+  const voice = useAtomValue(migriVoiceAtom) ?? undefined;
+
+  useEffect(() => {
+    Speech.speak(message, { language, voice });
+
+    return () => {
+      void Speech.stop();
+    };
+  }, [language, message, voice]);
+};
+
 function MigriModalContent({ callback, id, type }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
+  const [index, setIndex] = useState(0);
   const messages = t([`migri.${id}.${type}`, `migri.fallback.${type}`], {
     context: __DEV__ ? 'dev' : undefined,
     id,
     returnObjects: true,
   }) as string[];
-  const [index, setIndex] = useState(0);
+  const message = messages[index] ?? '';
+  useSpeakMessage(message);
 
   const next = () => {
     if (index < messages.length - 1) {
@@ -118,7 +142,7 @@ function MigriModalContent({ callback, id, type }: MigriEncounter) {
           >
             <Animated.Text entering={ZoomIn}>
               <Text variant='bodyLarge'>
-                <Trans components={transComponents}>{messages[index]}</Trans>
+                <Trans components={transComponents}>{message}</Trans>
               </Text>
             </Animated.Text>
           </AutoScrollView>

@@ -5,8 +5,15 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { appStorage } from '@/lib/mmkv';
 import { useT } from '@/lib/translation';
 
-export const completedMigriEncounterIds = atomWithMmkvStorage<Set<string>>(
-  'completed-migri-encounter-ids',
+export const migriVoiceAtom = atomWithMmkvStorage<null | string>(
+  'migri:voice',
+  null,
+  z.string().nullable(),
+  appStorage
+);
+
+export const migriCompletedEncounterIds = atomWithMmkvStorage<Set<string>>(
+  'migri:completed-encounter-ids',
   new Set(),
   z.set(z.string()),
   appStorage
@@ -50,7 +57,7 @@ export const useTriggerMigri = () => {
   const setMigriState = useSetAtom(migriEncounterQueueAtom);
   const t = useT();
   const [completedEncounterIds, setCompletedEncounterIds] = useAtom(
-    completedMigriEncounterIds
+    migriCompletedEncounterIds
   );
   return (encounter: MigriEncounter) => {
     if (encounter.once && completedEncounterIds.has(encounter.id)) {

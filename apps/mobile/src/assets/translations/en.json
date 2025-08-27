@@ -1736,7 +1736,32 @@
         }
       }
     },
+    "migri": {
+      "screenTitle": "Migri",
+      "sections": {
+        "migri-voice": {
+          "title": "Migri's Voice",
+          "options": {
+            "title": "{{ name }}",
+            "title_default": "System Default",
+            "title_en-GB": "{{ name }} (British English)",
+            "title_en-AU": "{{ name }} (Australian English)",
+            "title_en-ZA": "{{ name }} (South African English)"
+          },
+          "utterance": "Hello! I am Migri, your virtual assistant. I can help you navigate the iMigration app!"
+        }
+      }
+    },
     "sections": {
+      "general": {
+        "title": "General",
+        "items": {
+          "migri": {
+            "title": "Migri",
+            "description": "Configure Migri, the virtual assistant that can help you navigate the app."
+          }
+        }
+      },
       "advanced": {
         "title": "Advanced",
         "items": {
