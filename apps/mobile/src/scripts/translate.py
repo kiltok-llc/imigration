@@ -22,7 +22,7 @@ LANGUAGE_CODES = {
 
 TRANSLATIONS_DIR = Path(__file__, "../../assets/translations").resolve()
 
-EXCLUDED_KEYS = ["language"]
+EXCLUDED_KEYS = ["language."]
 
 
 def flatten(data, sep=".", parent=""):
@@ -76,20 +76,26 @@ def main(from_path: Path, to_path: Path):
     missing_translations = {
         key: value
         for key, value in flat_from_translations.items()
-        if key not in flat_to_translations and key not in EXCLUDED_KEYS
+        if key not in flat_to_translations
+        and not any(key.startswith(prefix) for prefix in EXCLUDED_KEYS)
     }
 
     print(f"{len(missing_translations)} missing translations found.")
 
     for chunk in tqdm(
-        chunks(list(missing_translations.items()), 15), desc="Translating"
+        chunks(list(missing_translations.items()), 8), desc="Translating"
     ):
         translation = client.responses.create(
-            model="gpt-3.5-turbo",
-            instructions=f"You are a translation assistant. Translate the following i18n file {from_language} to {to_language}. Keep the translation concise and accurate.",
+            model="gpt-4o-mini",
+            instructions=f"You are a translation assistant for a self-service immigration app. Translate the following i18n file {from_language} to {to_language}. Keep the translation concise and accurate. Do not output anything except a single valid JSON object. The keys must match the input exactly.",
             input=json.dumps(dict(chunk)),
         ).output_text
-        translated_items = json.loads(translation)
+        try:
+            translated_items = json.loads(translation)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            print(f"Response was: {translation}")
+            continue
 
         from_keys = set(dict(chunk).keys())
         to_keys = set(translated_items.keys())

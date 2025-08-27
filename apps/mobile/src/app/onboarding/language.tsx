@@ -1,5 +1,7 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Stack, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,12 +9,13 @@ import tw from 'twrnc';
 
 import personPassport from '@/assets/onboarding/person-passport.png';
 import banner from '@/assets/onboarding/usa-banner.png';
-import { LanguageButton } from '@/components/language-button';
 import { TransButton, TransText } from '@/components/trans';
 
 export default function Language() {
   const theme = useTheme();
   const router = useRouter();
+
+  useTranslation(); // re render on language change
 
   return (
     <>
@@ -71,5 +74,35 @@ export default function Language() {
         </SafeAreaView>
       </View>
     </>
+  );
+}
+
+function LanguageButton({ language }: { language: string }) {
+  const { i18n } = useTranslation();
+  const theme = useTheme();
+  const active = language === i18n.language;
+
+  return (
+    <TransButton
+      buttonColor={theme.colors.surface}
+      contentStyle={tw`flex-row-reverse justify-between gap-2`}
+      i18nKey={`language.${language}`}
+      icon={({ size }) => (
+        <MaterialCommunityIcons
+          color={active ? theme.colors.secondary : theme.colors.outline}
+          name={active ? 'checkbox-marked-circle-outline' : 'circle-outline'}
+          size={size * 1.2}
+        />
+      )}
+      labelStyle={tw.style('text-2xl', active && 'font-semibold')}
+      mode='outlined'
+      onPress={() => void i18n.changeLanguage(language)}
+      style={tw.style(
+        'border-2',
+        active && {
+          borderColor: theme.colors.secondary,
+        }
+      )}
+    />
   );
 }

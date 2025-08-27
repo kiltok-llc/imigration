@@ -1,8 +1,8 @@
 import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Pressable, View, ViewStyle } from 'react-native';
+import { Pressable, ScrollView, View, ViewStyle } from 'react-native';
 import { Icon, Modal, Portal, Text, useTheme } from 'react-native-paper';
 import Animated, {
   BounceInRight,
@@ -18,6 +18,7 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 import tw from 'twrnc';
+import { useInterval } from 'usehooks-ts';
 
 import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
@@ -42,6 +43,37 @@ export function MigriPortal() {
         {current && <MigriModalContent {...current} key={current.key} />}
       </Modal>
     </Portal>
+  );
+}
+
+function AutoScrollView({ ...props }: ComponentProps<typeof ScrollView>) {
+  const ref = useRef<ScrollView>(null);
+  const heightRef = useRef(0);
+  const contentHeightRef = useRef(0);
+  const scrollRef = useRef(0);
+  const SCROLL_RATIO = 0.5;
+  const SCROLL_INTERVAL = 6000;
+
+  useInterval(() => {
+    const height = heightRef.current;
+    const contentHeight = contentHeightRef.current;
+    const scroll = scrollRef.current;
+
+    if (scroll + height >= contentHeight - 1) {
+      ref.current?.scrollTo({ y: 0 });
+    } else {
+      ref.current?.scrollTo({ y: scroll + height * SCROLL_RATIO });
+    }
+  }, SCROLL_INTERVAL);
+
+  return (
+    <ScrollView
+      onContentSizeChange={(_w, h) => (contentHeightRef.current = h)}
+      onLayout={(e) => (heightRef.current = e.nativeEvent.layout.height)}
+      onScroll={(e) => (scrollRef.current = e.nativeEvent.contentOffset.y)}
+      ref={ref}
+      {...props}
+    />
   );
 }
 
@@ -78,14 +110,18 @@ function MigriModalContent({ callback, id, type }: MigriEncounter) {
           source={speechBubble}
           style={tw`absolute inset-0`}
         />
-        <View
-          style={tw`absolute top-10 right-7 bottom-28 left-8 justify-center`}
-        >
-          <Animated.Text entering={ZoomIn} key={index} numberOfLines={4}>
-            <Text variant='bodyLarge'>
-              <Trans components={transComponents}>{messages[index]}</Trans>
-            </Text>
-          </Animated.Text>
+        <View style={tw`absolute top-11 right-7 bottom-28 left-8`}>
+          <AutoScrollView
+            contentContainerStyle={tw`grow justify-center`}
+            key={index}
+            scrollEnabled={false}
+          >
+            <Animated.Text entering={ZoomIn}>
+              <Text variant='bodyLarge'>
+                <Trans components={transComponents}>{messages[index]}</Trans>
+              </Text>
+            </Animated.Text>
+          </AutoScrollView>
         </View>
         <View style={tw`absolute right-7 bottom-20 left-8 h-6`}>
           {hasNext && <NextIndicator />}

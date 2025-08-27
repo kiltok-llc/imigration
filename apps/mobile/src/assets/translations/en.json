@@ -187,7 +187,7 @@
         "Oh no! I don't know how to help with this yet.",
         "Please let us know what you were looking for so we can improve Migri."
       ],
-      "talk_dev": ["Missing translation!\n\n<pre><small>{{ id }}</small></pre>"]
+      "talk_dev": ["Missing translation!\n<pre><small>{{ id }}</small></pre>"]
     },
     "onboarding": {
       "migri": {
@@ -219,10 +219,449 @@
             "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
             "Please take your time to read each question carefully and provide accurate and honest answers.",
             "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+          ],
+          "arrival-date": {
+            "is-recent-arrival": {
+              "talk": [
+                "Here you need to indicate if you arrived in the U.S. in the last year.",
+                "This is important for your asylum application.",
+                "Just select \"Yes\" or \"No.\" Click Confirm when you're done."
+              ]
+            }
+          },
+          "country-of-origin": {
+            "is-from-safe-country": {
+              "talk": [
+                "Here you need to indicate if you are from a country considered \"safe\" by the U.S.",
+                "This is important to know if you could have sought protection there.",
+                "Select \"Yes\" or \"No\" as applicable.",
+                "Click Confirm when you're ready."
+              ]
+            }
+          },
+          "physical-presence": {
+            "is-in-usa": {
+              "talk": [
+                "Indicate if you are currently in the United States. This is important for your application. Use \"Yes\" or \"No.\" Once you're ready, click Confirm."
+              ]
+            }
+          },
+          "previous-applications": {
+            "has-previous-app": {
+              "talk": [
+                "Please indicate if you have applied for asylum in the United States before.",
+                "This information is important for your application.",
+                "Select \"Yes\" or \"No\" and click Confirm when you're ready."
+              ]
+            }
+          },
+          "reason-for-leaving": {
+            "is-escaping-harm": {
+              "talk": [
+                "Please indicate if you left your country because you feared harm or persecution.",
+                "This is important for your asylum application.",
+                "Select \"Yes\" or \"No\" based on your situation.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "harm-reasons": {
+              "talk": [
+                "Here you need to indicate if the harm you suffered was for any of these reasons.",
+                "Choose all that apply: nationality, political opinion, race, religion, or social group.",
+                "If your reason is not on the list, select \"Other\" and specify.",
+                "This is important for your asylum application."
+              ]
+            },
+            "is-harmed-by-gov": {
+              "talk": [
+                "Here you need to indicate if the harm you suffered was caused by your government or by people they could not control. This is important for your asylum application. Select \"Yes\" or \"No\" based on your situation. Click Confirm when you're done."
+              ]
+            }
+          }
+        },
+        "info": {
+          "talk": [
+            "Woohoo! You qualify to apply for asylum!",
+            "Now, let's get started with your application.",
+            "First, we will gather some personal information about you.",
+            "Remember, you can change and correct the information at any time.",
+            "Press the 'Start' button when you are ready to begin."
+          ],
+          "personal-information": {
+            "demographics-and-birth": {
+              "basic-demographics": {
+                "talk": [
+                  "Here, simply indicate your sex at birth as it appears on your birth certificate.",
+                  "You can scroll up and down on the calendar to change the month, day, and year. Click Confirm when you are ready."
+                ]
+              },
+              "birth-location": {
+                "talk": [
+                  "Enter the city where you were born. This is important for your asylum application.",
+                  "Then, write the country where you were born. Make sure the information is correct.",
+                  "Click Confirm when you have finished."
+                ]
+              },
+              "nationality": {
+                "talk": [
+                  "Here, you need to indicate your nationality at birth and your current nationality.",
+                  "The nationality at birth is what appears on your birth certificate.",
+                  "The current nationality is the citizenship you hold at this moment.",
+                  "Make sure to be accurate, as this information is important for your application."
+                ]
+              },
+              "additional-info": {
+                "talk": [
+                  "Here you need to provide additional information about your ethnicity and religion.",
+                  "Indicate your race, ethnicity, or tribal group as you identify.",
+                  "Also, state what your religion is.",
+                  "This information will help better understand your situation and experiences.",
+                  "Click Confirm when you have finished."
+                ]
+              },
+              "birth-certificate": {
+                "talk": [
+                  "First, you must indicate whether you have a birth certificate.",
+                  "If you have one, upload a copy here.",
+                  "This is important for your application.",
+                  "Click 'Confirm' when you are done."
+                ]
+              }
+            },
+            "name-and-aliases": {
+              "alias-information": {
+                "talk": [
+                  "If you have other names or aliases that you use or have used, indicate them here."
+                ]
+              },
+              "additional-names": {
+                "talk": [
+                  "If you have other names or aliases that you use regularly, like a maiden name, a middle name, or a name in another language, indicate them here."
+                ]
+              },
+              "basic-names": {
+                "talk": [
+                  "Here you need to put your first and last name as they appear on your passport or ID document."
+                ]
+              }
+            },
+            "language-proficiency": {
+              "native-language": {
+                "talk": [
+                  "Indicate your native language in the \"Native language\" field.",
+                  "If you speak a specific dialect, mention it as well.",
+                  "This helps us better understand your communication and needs.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "english-proficiency": {
+                "talk": [
+                  "Here you should indicate if you can read and write in English and if you speak English fluently.",
+                  "Select \"Yes\" or \"No\" for each question.",
+                  "This is important to understand your language ability.",
+                  "Click Confirm when you are ready."
+                ]
+              },
+              "spanish-proficiency": {
+                "talk": [
+                  "Here you indicate if you can read and write in Spanish. Also, your ability to speak it fluently.",
+                  "Select \"Yes\" or \"No\" for each question. This will help understand your linguistic skills."
+                ]
+              },
+              "other-languages": {
+                "talk": [
+                  "Indicate which other languages you speak fluently. This is important for your application.",
+                  "Write the languages in the space provided. Make sure to be specific and clear.",
+                  "When you are finished, click Confirm."
+                ]
+              }
+            }
+          },
+          "intro": {
+            "intro": {
+              "talk": [
+                "We are ready to start your application. Remember that you can change and correct the information at any time.",
+                "asdlkfjas"
+              ]
+            }
+          },
+          "immigration-status": {
+            "passport": {
+              "talk": [
+                "In this section, tell us if you have a passport. This is important for your asylum application.",
+                "If you have a passport, provide the number and the country that issued it.",
+                "If you don't have one, select \"No\" and continue.",
+                "Remember that this information helps verify your identity. Thank you!"
+              ]
+            },
+            "alien-number": {
+              "talk": [
+                "In this section, indicate if you have an Alien Registration Number (A-Number).",
+                "This number starts with the letter \"A\" followed by 8 or 9 digits (example: A123456789).",
+                "You can find it in documents from immigration offices.",
+                "If you have one, write it in the corresponding field.",
+                "Click Confirm when you are ready."
+              ]
+            },
+            "ssn": {
+              "talk": [
+                "To continue, let us know if you have a Social Security Number (SSN).",
+                "This is important for your application.",
+                "If you have one, make sure to write it correctly.",
+                "If you do not have an SSN, simply select \"No.\"",
+                "Click Confirm when you are ready."
+              ]
+            },
+            "uscis": {
+              "talk": [
+                "Now we need to know if you have a USCIS online account number.",
+                "This number is given to you when you create an account on the USCIS website.",
+                "You can also find it in the notifications you received from the immigration office.",
+                "Remember, this number is different from your Alien Number (A-number).",
+                "If you have it, please write it in the following field.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "court": {
+              "talk": [
+                "In this section, let us know if you have been or are currently in an immigration court process.",
+                "There are three options to choose from:",
+                "1. You are currently in a process.\n2. You were in a process before.\n3. You have never been in a process.",
+                "Make sure to select the option that best describes your situation. This is important for your application. Click Confirm when you are ready!"
+              ]
+            },
+            "is-in-usa": {
+              "talk": [
+                "Here you indicate if you are currently in the United States. This is important for your application. Click 'Yes' or 'No' as applicable. Take your time!"
+              ]
+            },
+            "first-entry": {
+              "talk": [
+                "Please provide information about your most recent entry to the United States.",
+                "Indicate the exact date of your entry in the corresponding field.",
+                "Then, write the place where you entered the country.",
+                "Finally, select your immigration status at the time of entry and its expiration date.",
+                "Make sure all data is accurate. Thank you!"
+              ]
+            },
+            "other-entries": {
+              "talk": [
+                "Here you should indicate if you have entered the United States on other occasions in the last five years.",
+                "If you only entered once, select 'No'. If you have entered more than once, select 'Yes' and provide the information for each entry.",
+                "Start with the most recent. For each entry, enter the date, the port of entry, and your immigration status.",
+                "Click 'Add entry' if you need to include more. Make sure all information is correct!"
+              ]
+            }
+          },
+          "employment-history": {
+            "jobs": {
+              "talk": [
+                "Please list all the jobs you have had in the last five years.",
+                "Start with the most recent.",
+                "Include positions in the U.S. and in other countries.",
+                "Gather information such as the employer's name and your occupation.",
+                "Click 'Add job' to add more positions."
+              ]
+            }
+          },
+          "school-information": {
+            "basic-school-info": {
+              "talk": [
+                "Please indicate the name of the last school or college you attended.",
+                "Also select the highest educational level you completed.",
+                "Make sure to be accurate, as this information is important for your application.",
+                "Click Confirm when you're done."
+              ]
+            },
+            "school-location": {
+              "talk": [
+                "Here you need to indicate the location of your school.",
+                "Please enter:",
+                "- The city where the school is located.\n- The state where the school is.\n- The country of the school.",
+                "Make sure the information is correct. Click Confirm when you are ready."
+              ]
+            },
+            "attendance-period": {
+              "talk": [
+                "Here you should enter the period during which you attended school.",
+                "Indicate the start date and the end date.",
+                "It is important that these dates are accurate for your application.",
+                "Click Confirm when you are done."
+              ]
+            },
+            "other-schools": {
+              "talk": [
+                "Here you should list all the schools or colleges you have attended, starting with the most recent.",
+                "For each school, indicate its name in the corresponding field.",
+                "If you need to add more schools, simply click on 'Add school'.",
+                "Remember that this information is important for your asylum application. Keep going!"
+              ]
+            }
+          },
+          "residence": {
+            "previous-addresses": {
+              "previous-residence": {
+                "talk": [
+                  "Please indicate where you lived before arriving in the United States.",
+                  "This helps to understand your residency history.",
+                  "Then, select the period during which you lived there.",
+                  "Make sure all the information is correct before continuing."
+                ]
+              },
+              "past-residences": {
+                "talk": [
+                  "Please list all the places where you have lived in the last five years.",
+                  "Start with the most recent address and move backward.",
+                  "Click 'Add residence' to include more places if necessary.",
+                  "Remember that this information is important for your application."
+                ]
+              }
+            },
+            "current-address": {
+              "us-residence-status": {
+                "talk": [
+                  "Here indicate if you currently live in the United States. This information is important for your application. Click the option that best describes you and then confirm your selection."
+                ]
+              },
+              "address": {
+                "talk": [
+                  "Please enter your complete current address.",
+                  "This is important to keep you informed about your application.",
+                  "Make sure to include street, number, city, state, and ZIP code.",
+                  "Click Confirm when you are finished."
+                ]
+              },
+              "mailing-address": {
+                "talk": [
+                  "Hello, in this section, indicate if you receive mail at your current address.",
+                  "You will also need to write your mailing address or P.O. Box. It’s important to ensure you receive all correspondence related to your application.",
+                  "Then, click Confirm when you are done."
+                ]
+              }
+            }
+          },
+          "family-status": {
+            "marital-status": {
+              "marital-status": {
+                "talk": [
+                  "Indicate your current marital status. This is important for your application.",
+                  "Select an option: single, married, divorced, or widowed.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "marriage-certificate": {
+                "talk": [
+                  "Here you should indicate if you have your marriage certificate.",
+                  "If you have it, please upload a copy here.",
+                  "This document is important for your application."
+                ]
+              },
+              "marriage-info": {
+                "talk": [
+                  "Please indicate where you got married.",
+                  "Write the city or region and the country.",
+                  "You also need to provide the date of your marriage.",
+                  "If you are divorced, add the date of the divorce.",
+                  "Please double-check the information before confirming. Thank you!"
+                ]
+              },
+              "spouse-info": {
+                "talk": [
+                  "Please write your spouse's name as it appears on their documents.",
+                  "This is important for verifying your family situation.",
+                  "Click Confirm when you are done."
+                ]
+              },
+              "spouse-location": {
+                "talk": [
+                  "Here you need to indicate if your spouse is currently in the United States.",
+                  "If they are in the U.S., select \"Yes\". Otherwise, select \"No\".",
+                  "Then, provide your spouse's current location.",
+                  "This is important for your application. Click Confirm when you are done."
+                ]
+              }
+            },
+            "children-details": {
+              "children-information": {
+                "talk": [
+                  "Here you can indicate if you have children, regardless of their age or location.",
+                  "First, answer if you have children.",
+                  "Then, write how many children you have in total.",
+                  "This information is important for your application."
+                ]
+              },
+              "child": {
+                "talk": [
+                  "Hello! In this section, please provide your child's information.",
+                  "1. Indicate the child's name.",
+                  "2. Write their date of birth as it appears on their certificate.",
+                  "3. Select their sex at birth.",
+                  "4. Indicate their ethnicity.",
+                  "5. Answer if they currently live in the United States.",
+                  "6. Let us know if they have a birth certificate and upload a copy if necessary.",
+                  "This information is important for your asylum application. Thank you for your attention!"
+                ]
+              }
+            },
+            "parent-details": {
+              "parent": {
+                "talk": [
+                  "Here enter the information about your father or mother.",
+                  "Indicate if they are alive and their current place of residence.",
+                  "We also need their names and where they were born.",
+                  "This is important for your asylum application.",
+                  "Click Confirm when you have completed the information."
+                ]
+              }
+            },
+            "sibling-details": {
+              "sibling-information": {
+                "talk": [
+                  "Welcome to the section about your siblings' details!",
+                  "First, let us know if you have siblings.",
+                  "If the answer is yes, please write how many siblings you have.",
+                  "This information is important for your application.",
+                  "When you are done, click Confirm."
+                ]
+              },
+              "sibling": {
+                "talk": [
+                  "Hello! In this section, please fill in your sibling's information.",
+                  "Provide their name and then select their gender.",
+                  "Enter their date of birth as it appears on their certificate.",
+                  "Then, provide your sibling's place of birth.",
+                  "If they live in the United States, select \"Yes\" or \"No.\"",
+                  "If they live in the U.S., provide their current address.",
+                  "Remember that this information is important for your application. Thank you!"
+                ]
+              }
+            }
+          }
+        },
+        "statement": {
+          "talk": [
+            "Great work! You're all done with the personal information section.",
+            "Now we will work on your personal statement.",
+            "This is a very important part of your application.",
+            "You will need to provide detailed answers to specific questions about your situation and reasons for seeking asylum.",
+            "Take your time to think about your answers and be as detailed as possible.",
+            "Remember that you can change and correct anything before finishing.",
+            "If you don't have or don't remember something, continue and come back later.",
+            "It's important that everything you write or say, and the documents or other information you submit, must be true to the best of your knowledge and belief.",
+            "You can use the microphone button to record your answers, or type them out if you prefer.",
+            "When you're ready, press the 'Start' button to begin your statement."
           ]
         },
         "review": {
-          "talk": ["Hola soy migri", "1 2 3 4"]
+          "talk": [
+            "You're almost done! Now it's time to review your application.",
+            "Take your time to carefully read all the information you provided.",
+            "Make sure everything is accurate and complete.",
+            "If you find any mistakes or need to add something, you can go back and make changes.",
+            "Remember, this is your application, and it's important that it reflects your situation correctly.",
+            "Once you're satisfied with everything, you can proceed to submit your application.",
+            "Press the 'Start' button when you're ready to begin the review process."
+          ]
         }
       }
     }
