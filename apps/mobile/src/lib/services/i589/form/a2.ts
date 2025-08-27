@@ -5,13 +5,16 @@ import { atomFamily } from 'jotai/utils';
 import {
   childAlienNumberAtom,
   childDobAtom,
+  childEntriesAtom,
   childEthnicityAtom,
   childIdsAtom,
+  childImmigrationCourtStatusAtom,
   childIsInUsaAtom,
   childNameAtom,
   childPassportAtom,
   childSexAtom,
   childSsnAtom,
+  childStatusExpirationAtom,
 } from '@/lib/data/child';
 import { maritalStatusAtom, marriageDateAtom } from '@/lib/data/marriage';
 import {
@@ -87,8 +90,8 @@ const spouseInUsaFields = atom<PDFField[]>((get) => [
   ['PtAIILine16_PlaceofLastEntry[0]', get(spouseEntriesAtom)[0]?.port],
   ['PtAIILine17_DateofLastEntry[0]', get(spouseEntriesAtom)[0]?.date],
   ['PtAIILine18_I94Number[0]', ''], // spouse I-94
-  ['PtAIILine19_StatusofLastAdmission[0]', get(spouseEntriesAtom)[0]?.status], // status when last admitted
-  ['PtAIILine20_SpouseCurrentStatus[0]', get(spouseEntriesAtom)[0]?.status], // current status
+  ['PtAIILine19_StatusofLastAdmission[0]', get(spouseEntriesAtom)[0]?.status],
+  ['PtAIILine20_SpouseCurrentStatus[0]', ''], // current status
   ['PtAIILine21_ExpDateofAuthorizedStay[0]', get(spouseStatusExpirationAtom)],
   ['PtAIILine23_PreviousArrivalDate[0]', get(spouseEntriesAtom)[1]?.date],
 ]);
@@ -151,27 +154,39 @@ const childNotInUsaFields = childFieldFamily((_id, idx, _get) => [
   [`PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`, ''], // child location if outside us
 ]);
 
-const childInUsaFields = childFieldFamily((id, idx, _get) => [
+const childInUsaFields = childFieldFamily((id, idx, get) => [
   [`CheckBox${idx + 1}7[0]`, true], // is in USA
 
-  [`PtAIILine14_PlaceofLastEntry${idx ? idx + 1 : ''}[0]`, `entry port ${id}`],
+  [
+    `PtAIILine14_PlaceofLastEntry${idx ? idx + 1 : ''}[0]`,
+    get(childEntriesAtom(id))[0]?.port,
+  ],
   [
     `PtAIILine15_${idx ? `DateofLastEntry${idx + 1}` : 'ExpirationDate'}[0]`,
-    `entry date ${id}`,
+    get(childEntriesAtom(id))[0]?.date,
   ],
   [`PtAIILine16_I94Number${idx ? idx + 1 : ''}[0]`, `I-94 ${id}`],
-  [`PtAIILine17_StatusofLastAdmission${idx ? idx + 1 : ''}[0]`, `status ${id}`], // status when last admitted
+  [
+    `PtAIILine17_StatusofLastAdmission${idx ? idx + 1 : ''}[0]`,
+    get(childEntriesAtom(id))[0]?.status,
+  ],
 
   [
     `PtAIILine18_${idx ? `ChildCurrentStatus${idx + 1}` : 'CurrentStatusofChild'}[0]`,
-    `status ${id}`,
+    '',
   ], // current status
   [
     `PtAIILine19_ExpDateofAuthorizedStay${idx ? idx + 1 : ''}[0]`,
-    `status expiration ${id}`,
+    get(childStatusExpirationAtom(id)),
   ],
-  [`PtAIILine20_Yes${idx ? idx + 1 : ''}[0]`, true], // in court proceedings
-  [`PtAIILine20_No${idx ? idx + 1 : ''}[0]`, true], // not in court proceedings
+  [
+    `PtAIILine20_Yes${idx ? idx + 1 : ''}[0]`,
+    get(childImmigrationCourtStatusAtom(id)) === 'currently',
+  ],
+  [
+    `PtAIILine20_No${idx ? idx + 1 : ''}[0]`,
+    get(childImmigrationCourtStatusAtom(id)) !== 'currently',
+  ],
 
   [`PtAIILine21_Yes${idx ? idx + 1 : ''}[0]`, true], // include in application
   [`PtAIILine21_No${idx ? idx + 1 : ''}[0]`, true], // do not include in application
