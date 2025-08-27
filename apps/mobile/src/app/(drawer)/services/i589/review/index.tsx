@@ -43,7 +43,7 @@ export default function Review() {
         </Suspense>
         <MigriButton
           id={`services.${service}.review`}
-          style={tw`absolute bottom-6 right-6`}
+          style={tw`absolute right-6 bottom-6`}
         />
       </View>
     </>

@@ -45,10 +45,10 @@ export function MigriPortal() {
   );
 }
 
-function MigriModalContent({ callback, id }: MigriEncounter) {
+function MigriModalContent({ callback, id, type }: MigriEncounter) {
   const { t } = useTranslation();
   const dismiss = useDismissMigri();
-  const messages = t([`migri.${id}`, 'migri.fallback'], {
+  const messages = t([`migri.${id}.${type}`, `migri.fallback.${type}`], {
     context: __DEV__ ? 'dev' : undefined,
     id,
     returnObjects: true,

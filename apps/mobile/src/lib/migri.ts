@@ -32,7 +32,7 @@ export type MigriEncounter = {
   type: MigriEncounterType;
 };
 
-export type MigriEncounterType = 'spin' | 'talk';
+export type MigriEncounterType = 'talk';
 
 const randomKey = () => Math.random().toString(36).slice(2);
 

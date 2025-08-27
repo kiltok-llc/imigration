@@ -7,7 +7,10 @@ import uuid from 'react-native-uuid';
 import i589PdfTemplate from '@/assets/documents/i-589.pdf';
 import { maritalStatusAtom, marriageDateAtom } from '@/lib/data/marriage';
 import {
-  spouseAlienNumberAtom, spouseEntriesAtom, spouseIsInUsaAtom, spouseLocationAtom,
+  spouseAlienNumberAtom,
+  spouseEntriesAtom,
+  spouseIsInUsaAtom,
+  spouseLocationAtom,
   spouseNameAtom,
   spousePassportAtom,
   spouseSexAtom,
@@ -84,34 +87,46 @@ const textFieldsAtom = atom<Record<string, string>>((get) => ({
   '[0].TextField7[0]': 'language',
   '[0].TextField7[1]': 'other languages',
 
-  ...(get(maritalStatusAtom) === 'married' ? {
-    '[1].NotMarried[0].DateTimeField7[0]': 'spouse dob',
-    '[1].NotMarried[0].PtAIILine1_ANumber[0]': get(spouseAlienNumberAtom),
-    '[1].NotMarried[0].TextField10[1]': get(spousePassportAtom).number,
-    '[1].NotMarried[0].TextField10[2]': get(spouseSsnAtom),
+  ...(get(maritalStatusAtom) === 'married'
+    ? {
+        '[1].NotMarried[0].DateTimeField7[0]': 'spouse dob',
+        '[1].NotMarried[0].PtAIILine1_ANumber[0]': get(spouseAlienNumberAtom),
+        '[1].NotMarried[0].TextField10[1]': get(spousePassportAtom).number,
+        '[1].NotMarried[0].TextField10[2]': get(spouseSsnAtom),
 
-    '[1].NotMarried[0].PtAIILine5_LastName[0]': get(spouseNameAtom).last,
-    '[1].NotMarried[0].PtAIILine6_FirstName[0]': get(spouseNameAtom).first,
-    '[1].NotMarried[0].PtAIILine7_MiddleName[0]': get(spouseNameAtom).middle,
-    '[1].NotMarried[0].TextField10[3]': 'spouse alias',
+        '[1].NotMarried[0].PtAIILine5_LastName[0]': get(spouseNameAtom).last,
+        '[1].NotMarried[0].PtAIILine6_FirstName[0]': get(spouseNameAtom).first,
+        '[1].NotMarried[0].PtAIILine7_MiddleName[0]':
+          get(spouseNameAtom).middle,
+        '[1].NotMarried[0].TextField10[3]': 'spouse alias',
 
-    '[1].NotMarried[0].DateTimeField8[0]': get(marriageDateAtom)?.toDateString(),
-    '[1].NotMarried[0].TextField10[4]': 'marriage place',
+        '[1].NotMarried[0].DateTimeField8[0]':
+          get(marriageDateAtom)?.toDateString(),
+        '[1].NotMarried[0].TextField10[4]': 'marriage place',
 
-    '[1].NotMarried[0].TextField10[5]': 'spouse birth location',
+        '[1].NotMarried[0].TextField10[5]': 'spouse birth location',
 
-    '[1].NotMarried[0].TextField10[0]': 'spouse nationality',
-    '[1].NotMarried[0].TextField10[6]': 'spouse race',
+        '[1].NotMarried[0].TextField10[0]': 'spouse nationality',
+        '[1].NotMarried[0].TextField10[6]': 'spouse race',
 
-    ...(get(spouseIsInUsaAtom) ? {
-      '[1].NotMarried[0].PtAIILine15_Specify[0]': prettifyLocation(get(spouseLocationAtom)),
-    } : {
-      '[1].NotMarried[0].PtAIILine16_PlaceofLastEntry[0]': get(spouseEntriesAtom)[0]?.port ?? '',
-      '[1].NotMarried[0].PtAIILine17_DateofLastEntry[0]': prettifyDate(get(spouseEntriesAtom)[0]?.date ?? null),
-      '[1].NotMarried[0].PtAIILine18_I94Number[0]': '', // spouse I-94
-      '[1].NotMarried[0].PtAIILine19_StatusofLastAdmission[0]': get(spouseEntriesAtom)[0]?.status ?? '',
-    })
-  } : {})
+        ...(get(spouseIsInUsaAtom)
+          ? {
+              '[1].NotMarried[0].PtAIILine15_Specify[0]': prettifyLocation(
+                get(spouseLocationAtom)
+              ),
+            }
+          : {
+              '[1].NotMarried[0].PtAIILine16_PlaceofLastEntry[0]':
+                get(spouseEntriesAtom)[0]?.port ?? '',
+              '[1].NotMarried[0].PtAIILine17_DateofLastEntry[0]': prettifyDate(
+                get(spouseEntriesAtom)[0]?.date ?? null
+              ),
+              '[1].NotMarried[0].PtAIILine18_I94Number[0]': '', // spouse I-94
+              '[1].NotMarried[0].PtAIILine19_StatusofLastAdmission[0]':
+                get(spouseEntriesAtom)[0]?.status ?? '',
+            }),
+      }
+    : {}),
 }));
 
 const checkboxsAtom = atom<Record<string, boolean>>((get) => ({
@@ -134,16 +149,20 @@ const checkboxsAtom = atom<Record<string, boolean>>((get) => ({
 
   '[1].CheckBox5[0]': get(maritalStatusAtom) !== 'married',
 
-  ...(get(maritalStatusAtom) === 'married' ? {
-    '[1].NotMarried[0].CheckBox14_Sex[0]': get(spouseSexAtom) === 'male',
-    '[1].NotMarried[0].CheckBox14_Sex[1]': get(spouseSexAtom) === 'female',
+  ...(get(maritalStatusAtom) === 'married'
+    ? {
+        '[1].NotMarried[0].CheckBox14_Sex[0]': get(spouseSexAtom) === 'male',
+        '[1].NotMarried[0].CheckBox14_Sex[1]': get(spouseSexAtom) === 'female',
 
-    ...(get(spouseIsInUsaAtom) ? {
-      '[1].NotMarried[0].PtAIILine15_CheckBox15[1]': true, // spouse in US
-    } : {
-      '[1].NotMarried[0].PtAIILine15_CheckBox15[0]': true, // spouse outside US
-    })
-  } : {}),
+        ...(get(spouseIsInUsaAtom)
+          ? {
+              '[1].NotMarried[0].PtAIILine15_CheckBox15[1]': true, // spouse in US
+            }
+          : {
+              '[1].NotMarried[0].PtAIILine15_CheckBox15[0]': true, // spouse outside US
+            }),
+      }
+    : {}),
 }));
 
 export const i589PdfAtom = atom(async (get) => {

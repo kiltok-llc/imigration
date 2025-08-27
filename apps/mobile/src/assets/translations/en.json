@@ -182,39 +182,48 @@
     "fab": {
       "label": "Chat with Migri"
     },
-    "fallback_dev": [
-      "Missing translation!\n\n<pre><small>{{ id }}</small></pre>"
-    ],
-    "fallback": [
-      "Oh no! I don't know how to help with this yet.",
-      "Please let us know what you were looking for so we can improve Migri."
-    ],
+    "fallback": {
+      "talk": [
+        "Oh no! I don't know how to help with this yet.",
+        "Please let us know what you were looking for so we can improve Migri."
+      ],
+      "talk_dev": ["Missing translation!\n\n<pre><small>{{ id }}</small></pre>"]
+    },
     "onboarding": {
-      "migri": [
-        "Welcome to the iMigration app!",
-        "My name is Migri, your virtual assistant.",
-        "I'm here to help you with using the iMigration app.",
-        "This app is designed to help you navigate the complex world of immigration services!",
-        "Whether you're looking to apply for a visa, understand your rights, or find resources, I'm here to assist you every step of the way.",
-        "Let's get started!"
-      ]
+      "migri": {
+        "talk": [
+          "Welcome to the iMigration app!",
+          "My name is Migri, your virtual assistant.",
+          "I'm here to help you with using the iMigration app.",
+          "This app is designed to help you navigate the complex world of immigration services!",
+          "Whether you're looking to apply for a visa, understand your rights, or find resources, I'm here to assist you every step of the way.",
+          "Let's get started!"
+        ]
+      }
     },
     "services": {
-      "welcome": [
-        "This is the home screen where you can find all the services we offer.",
-        "You can browse through different categories such as visas, citizenship, and legal assistance.",
-        "Tap on any service to learn more about it and see if it fits your needs.",
-        "If you need help or have questions, just tap the 'Lightbulb' icon in the bottom right corner to chat with me!"
-      ],
-      "i589": {
-        "eligibility": [
-          "Welcome to the i589 application for asylum!",
-          "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
-          "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
-          "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
-          "Please take your time to read each question carefully and provide accurate and honest answers.",
-          "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+      "welcome": {
+        "talk": [
+          "This is the home screen where you can find all the services we offer.",
+          "You can browse through different categories such as visas, citizenship, and legal assistance.",
+          "Tap on any service to learn more about it and see if it fits your needs.",
+          "If you need help or have questions, just tap the 'Lightbulb' icon in the bottom right corner to chat with me!"
         ]
+      },
+      "i589": {
+        "eligibility": {
+          "talk": [
+            "Welcome to the i589 application for asylum!",
+            "This application will guide you through the process of completing and submitting your asylum application to the U.S. government.",
+            "The application is divided into several sections, each focusing on different aspects of your personal information, background, and reasons for seeking asylum.",
+            "You will be asked to provide detailed answers to various questions, as well as upload any supporting documents that may help strengthen your case.",
+            "Please take your time to read each question carefully and provide accurate and honest answers.",
+            "If you are unsure about any question or need assistance, consider consulting with one of our legal experts or support staff."
+          ]
+        },
+        "review": {
+          "talk": ["Hola soy migri", "1 2 3 4"]
+        }
       }
     }
   },
@@ -896,7 +905,7 @@
               "description_client": "If you have only entered the United States once, you can select 'No'."
             },
             "other-entries": {
-              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States.",
+              "title_client": "Starting with the most recent, please provide the following information about all the <strong>other</strong> times besides the first you have entered the United States."
             },
             "entries": {
               "title_ordinal_one": "{{ count }}st Entry",
