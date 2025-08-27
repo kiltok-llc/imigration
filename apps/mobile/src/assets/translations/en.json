@@ -145,7 +145,8 @@
   "onboarding": {
     "language": {
       "choose-language": "Touch your preferred language below to get started.",
-      "title": "Welcome to iMigration"
+      "title": "Welcome to iMigration",
+      "start": "Continue in english"
     },
     "migri": {
       "title": "Hello, I'm Migri!",

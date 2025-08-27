@@ -64,7 +64,7 @@ export default function Language() {
           </ScrollView>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
-            i18nKey='next'
+            i18nKey='onboarding.language.start'
             icon='arrow-right'
             labelStyle={tw`text-2xl`}
             onPress={() => {

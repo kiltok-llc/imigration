@@ -569,7 +569,8 @@
   "onboarding": {
     "language": {
       "choose-language": "Toque su idioma preferido a continuación para comenzar.",
-      "title": "Bienvenido a iMigration"
+      "title": "Bienvenido a iMigration",
+      "start": "Continuar en español"
     },
     "migri": {
       "title": "¡Hola, soy Migri!",
