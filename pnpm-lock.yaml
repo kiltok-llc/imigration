@@ -97,7 +97,7 @@ importers:
         specifier: 'catalog:'
         version: 5.8.3
       vercel:
-        specifier: ^44.7.0
+        specifier: ^44.7.3
         version: 44.7.3
 
   apps/mobile:
@@ -260,7 +260,7 @@ importers:
         version: 2.1.0
       nuqs:
         specifier: ^2.4.3
-        version: 2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        version: 2.4.3(next@15.3.3(@babel/core@7.28.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       optics-ts:
         specifier: ^2.4.1
         version: 2.4.1
@@ -519,7 +519,7 @@ importers:
         version: 0.6.2(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       nuqs:
         specifier: ^2.4.3
-        version: 2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        version: 2.4.3(next@15.3.3(@babel/core@7.28.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       react:
         specifier: catalog:react19
         version: 19.0.0
@@ -16371,7 +16371,7 @@ snapshots:
 
   nullthrows@1.1.1: {}
 
-  nuqs@2.4.3(next@15.3.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
+  nuqs@2.4.3(next@15.3.3(@babel/core@7.28.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
       mitt: 3.0.1
       react: 19.0.0
