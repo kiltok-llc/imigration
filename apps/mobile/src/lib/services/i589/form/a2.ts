@@ -31,7 +31,7 @@ import {
 import { prettifyLocation } from '@/lib/data/utils';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const childFieldFamily = (
+const childFieldsFamily = (
   read: (id: string, idx: number, get: Getter) => PDFField[]
 ) =>
   atomFamily(
@@ -119,7 +119,7 @@ const childrenFields = atom<PDFField[]>((get) => [
     .flatMap((id, idx) => get(childFields({ id, idx }))),
 ]);
 
-const childFields = childFieldFamily((id, idx, get) =>
+const childFields = childFieldsFamily((id, idx, get) =>
   [
     [`ChildAlien${idx + 1}[0]`, get(childAlienNumberAtom(id))],
     [`ChildPassport${idx + 1}[0]`, get(childPassportAtom(id)).number],
@@ -149,12 +149,12 @@ const childFields = childFieldFamily((id, idx, get) =>
   ].map(([k, v]) => [`form1[0].#subform[${idx ? 3 : 1}].${k}`, v])
 );
 
-const childNotInUsaFields = childFieldFamily((_id, idx, _get) => [
+const childNotInUsaFields = childFieldsFamily((_id, idx, _get) => [
   [`CheckBox${idx + 1}7[1]`, true],
   [`PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`, ''], // child location if outside us
 ]);
 
-const childInUsaFields = childFieldFamily((id, idx, get) => [
+const childInUsaFields = childFieldsFamily((id, idx, get) => [
   [`CheckBox${idx + 1}7[0]`, true], // is in USA
 
   [

@@ -9,11 +9,13 @@ import i589PdfTemplate from '@/assets/documents/i-589.pdf';
 import { prettifyDate } from '@/lib/data/utils';
 import { a1Fields } from '@/lib/services/i589/form/a1';
 import { a2Fields } from '@/lib/services/i589/form/a2';
+import { a3Fields } from '@/lib/services/i589/form/a3';
 import { PDFField } from '@/lib/services/i589/form/types';
 
 const pdfFieldsAtom = atom<PDFField[]>((get) => [
   ...get(a1Fields),
   ...get(a2Fields),
+  ...get(a3Fields),
 ]);
 
 export const i589PdfAtom = atomWithQuery((get) => ({
