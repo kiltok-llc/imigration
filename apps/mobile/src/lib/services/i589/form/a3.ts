@@ -1,5 +1,8 @@
-import { atom } from 'jotai';
+import { isEqual } from '@ver0/deep-equal';
+import { atom, Getter } from 'jotai';
+import { atomFamily } from 'jotai/utils';
 
+import { siblingIdsAtom } from '@/lib/data/sibling';
 import { PDFField } from '@/lib/services/i589/form/types';
 
 export const a3Fields = atom<PDFField[]>((get) =>
@@ -21,6 +24,18 @@ export const a3Fields = atom<PDFField[]>((get) =>
     ...get(residenceFields),
     ...get(schoolFields),
     ...get(employmentFields),
+
+    ['TextField13[46]', 'mother name'],
+    ['TextField13[49]', 'mother birth location'],
+    ['CheckBoxAIII5\\.m[0]', true], // mother deceased
+    ['TextField35[0]', 'mother current location'],
+
+    ['TextField13[47]', 'father name'],
+    ['TextField13[50]', 'father birth location'],
+    ['CheckBoxAIII5\\.f[0]', true], // father deceased
+    ['TextField35[1]', 'father current location'],
+
+    ...get(siblingsFields),
   ].map(([k, v]) => [`form1[0].#subform[4].${k}`, v])
 );
 
@@ -53,3 +68,25 @@ const employmentFields = atom<PDFField[]>((_get) =>
     [`DateTimeField${i < 2 ? i + 44 : i + 45}[0]`, `employer to ${i}`],
   ])
 );
+
+const siblingFieldsFamily = (
+  read: (id: string, idx: number, get: Getter) => PDFField[]
+) =>
+  atomFamily(
+    ({ id, idx }: { id: string; idx: number }) =>
+      atom<PDFField[]>((get) => read(id, idx, get)),
+    isEqual
+  );
+
+const siblingsFields = atom<PDFField[]>((get) =>
+  [...get(siblingIdsAtom), 'id1', 'id2', 'id3', 'id4']
+    .slice(0, 4)
+    .flatMap((id, idx) => get(siblingFields({ id, idx })))
+);
+
+const siblingFields = siblingFieldsFamily((_id, idx, _get) => [
+  [`TextField13[${idx === 0 ? 48 : idx * 2 + 50}]`, `sibling ${idx} name`],
+  [`TextField13[${idx * 2 + 51}]`, `sibling ${idx} birth location`],
+  [`CheckBoxAIII5\\.s${idx + 1}[0]`, true], // sibling deceased
+  [`TextField35[${idx + 2}]`, `sibling ${idx} current location`],
+]);
