@@ -5,13 +5,13 @@ import { FormField } from '@/components/form/field';
 import { FormTextInput } from '@/components/form/text';
 import { Trans } from '@/components/trans';
 
-export const DEFAULT_NAME = {
+export const DEFAULT_FORM_NAME = {
   first: '',
   last: '',
   middle: '',
 };
 
-export const NameSchema = z.object({
+export const FormNameSchema = z.object({
   first: z.string().nonempty(),
   last: z.string().nonempty(),
   middle: z.string(),
@@ -20,7 +20,7 @@ export const NameSchema = z.object({
 export function FormNameInput({
   lens,
 }: {
-  lens: Lens<z.input<typeof NameSchema>>;
+  lens: Lens<z.input<typeof FormNameSchema>>;
 }) {
   return (
     <>

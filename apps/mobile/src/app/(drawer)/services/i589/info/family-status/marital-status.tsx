@@ -10,9 +10,9 @@ import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import {
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   FormNameInput,
-  NameSchema,
+  FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
@@ -170,14 +170,14 @@ export default function MaritalStatus() {
 
       {maritalStatus === 'married' && (
         <QuizPage
-          defaultValues={DEFAULT_NAME}
+          defaultValues={DEFAULT_FORM_NAME}
           onSubmit={(name) => {
             setSpouseName(name);
 
             return true;
           }}
           pageId='spouse-info'
-          schema={NameSchema}
+          schema={FormNameSchema}
         >
           {({ lens }) => (
             <FormBlock>

@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-import { DEFAULT_NAME } from '@/components/form/name';
+import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
   AlienNumberSchema,
   DEFAULT_ALIEN_NUMBER,
@@ -44,7 +44,7 @@ export const spouseImmigrationCourtStatusAtom = userDataDocumentAtom(
 
 export const spouseNameAtom = userDataDocumentAtom(
   'spouse:name',
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   NameSchema
 );
 

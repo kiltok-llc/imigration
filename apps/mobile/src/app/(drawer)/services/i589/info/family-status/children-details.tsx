@@ -7,9 +7,9 @@ import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import {
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   FormNameInput,
-  NameSchema,
+  FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
@@ -110,7 +110,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           hasBirthCertificate: null,
           livesInUsa: null,
           name: {
-            ...DEFAULT_NAME,
+            ...DEFAULT_FORM_NAME,
             last: lastName,
           },
           sex: null,
@@ -141,7 +141,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           ethnicity: z.string(),
           hasBirthCertificate: required(z.boolean().nullable()),
           livesInUsa: required(z.boolean().nullable()),
-          name: NameSchema,
+          name: FormNameSchema,
           sex: required(SexEnum.nullable()),
         })}
       >

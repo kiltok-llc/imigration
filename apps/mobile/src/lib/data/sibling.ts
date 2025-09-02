@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-import { DEFAULT_NAME } from '@/components/form/name';
+import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import { NameSchema } from '@/lib/data/schema';
 import { userDataDocumentAtom, userDataDocumentFamily } from '@/lib/data/utils';
 import { SexEnum } from '@/lib/schemas';
@@ -13,7 +13,7 @@ export const siblingIdsAtom = userDataDocumentAtom(
 
 export const siblingNameAtom = userDataDocumentFamily(
   (id) => `sibling:${id}:name`,
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   NameSchema
 );
 

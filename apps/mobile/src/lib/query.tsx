@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
   },
   mutationCache: new MutationCache({
     onError(error, _variables, _context, mutation) {
-      console.error('Mutation Error', error);
+      console.error('Error running mutation:', error);
 
       if (mutation.meta?.errorToast) {
         toast.error(mutation.meta.errorToast as string, {
@@ -53,7 +53,7 @@ const queryClient = new QueryClient({
   }),
   queryCache: new QueryCache({
     onError(error, query) {
-      console.error('Query Error', error);
+      console.error('Error running query:', error);
 
       if (query.meta?.errorToast) {
         toast.error(query.meta.errorToast as string);

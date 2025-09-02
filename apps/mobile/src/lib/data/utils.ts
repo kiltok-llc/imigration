@@ -2,7 +2,7 @@ import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { LocationSchema } from '@/lib/data/schema';
+import { LocationSchema, NameSchema } from '@/lib/data/schema';
 import { userStorage } from '@/lib/mmkv';
 
 export const userDataDocumentAtom = <T>(
@@ -20,8 +20,11 @@ export const userDataDocumentFamily = <T>(
     atomWithMmkvStorage<T>(key(id), initialValue, schema, userStorage)
   );
 
-export const prettifyLocation = (location: z.infer<typeof LocationSchema>) =>
-  `${location.city}, ${location.country}`;
+export const prettifyLocation = ({
+  city,
+  country,
+}: z.infer<typeof LocationSchema>) =>
+  city && country ? `${city}, ${country}` : city || country || '';
 
 export const prettifyDate = (date: Date | null) =>
   date
@@ -31,3 +34,13 @@ export const prettifyDate = (date: Date | null) =>
         year: 'numeric',
       }).format(date)
     : '';
+
+export const prettifyName = ({
+  first,
+  last,
+  middle,
+}: z.infer<typeof NameSchema>) =>
+  [first, middle, last]
+    .map((n) => n.trim())
+    .filter(Boolean)
+    .join(' ');

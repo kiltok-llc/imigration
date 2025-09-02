@@ -13,9 +13,9 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   FormNameInput,
-  NameSchema,
+  FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
@@ -63,7 +63,7 @@ const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
             alive: null,
             birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
             name: {
-              ...DEFAULT_NAME,
+              ...DEFAULT_FORM_NAME,
               last: lastName,
             },
           }}
@@ -82,7 +82,7 @@ const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
             alive: required(z.boolean().nullable()),
             birthLocation: FormShortAddressSchema,
             currentLocation: FormAddressWithCountrySchema.optional(),
-            name: NameSchema,
+            name: FormNameSchema,
           })}
         >
           {({ control, lens, watch }) => (

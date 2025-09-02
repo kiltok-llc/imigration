@@ -1,6 +1,7 @@
 import { Stack, useRouter } from 'expo-router';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { toast } from 'sonner-native';
 
 import { FadeSlot } from '@/components/fade-slot';
@@ -8,6 +9,7 @@ import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
+import { lateApplicationDetailsAtom } from '@/lib/data/asylum';
 import { entriesAtom } from '@/lib/data/user';
 import { QuizProvider } from '@/lib/quiz/provider';
 import { RoutesProvider } from '@/lib/routes';
@@ -18,17 +20,17 @@ const now = new Date();
 const oneYear = 365 * 24 * 60 * 60 * 1000; // One year in milliseconds
 const cuttoffDate = new Date(now.getTime() - oneYear);
 
-const entryIsRecentAtom = atom((get) => {
+const submissionIsLateAtom = atom((get) => {
   const [mostRecentEntry] = get(entriesAtom)
     .map(({ date }) => date)
     .filter((date) => date !== null)
     .sort((a, b) => b.getTime() - a.getTime());
 
   if (!mostRecentEntry) {
-    return false;
+    return true;
   }
 
-  return mostRecentEntry.getTime() >= cuttoffDate.getTime();
+  return mostRecentEntry.getTime() < cuttoffDate.getTime();
 });
 
 export default function StatementLayout() {
@@ -37,7 +39,17 @@ export default function StatementLayout() {
   const t = useT();
   const router = useRouter();
   const setStep = useSetAtom(i589StepAtom);
-  const entryIsRecent = useAtomValue(entryIsRecentAtom);
+  const submissionIsLate = useAtomValue(submissionIsLateAtom);
+  const [lateApplicationDetails, setLateApplicationDetails] = useAtom(
+    lateApplicationDetailsAtom
+  );
+
+  // Need to reset late application details if entry date is changed
+  useEffect(() => {
+    if (!submissionIsLate && lateApplicationDetails) {
+      setLateApplicationDetails('');
+    }
+  }, [lateApplicationDetails, setLateApplicationDetails, submissionIsLate]);
 
   return (
     <>
@@ -66,7 +78,7 @@ export default function StatementLayout() {
         }}
         routes={[
           'intro',
-          ...(entryIsRecent ? [] : ['late-application']),
+          ...(submissionIsLate ? ['late-application'] : []),
           'harm-and-persecution',
           'fear',
           'fear-of-torture',

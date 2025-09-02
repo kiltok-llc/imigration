@@ -3,9 +3,9 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   FormNameInput,
-  NameSchema,
+  FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
@@ -18,10 +18,10 @@ export default function NameAndAliases() {
   return (
     <QuizScreen>
       <QuizPage
-        defaultValues={DEFAULT_NAME}
+        defaultValues={DEFAULT_FORM_NAME}
         onSubmit={() => true}
         pageId='basic-names'
-        schema={NameSchema}
+        schema={FormNameSchema}
       >
         {({ lens }) => (
           <>

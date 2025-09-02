@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-import { DEFAULT_NAME } from '@/components/form/name';
+import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
   AlienNumberSchema,
   DEFAULT_PASSPORT,
@@ -39,7 +39,11 @@ export const immigrationCourtStatusAtom = userDataDocumentAtom(
   ImmigrationCourtStatusEnum.nullable()
 );
 
-export const nameAtom = userDataDocumentAtom('name', DEFAULT_NAME, NameSchema);
+export const nameAtom = userDataDocumentAtom(
+  'name',
+  DEFAULT_FORM_NAME,
+  NameSchema
+);
 
 export const passportAtom = userDataDocumentAtom(
   'passport',

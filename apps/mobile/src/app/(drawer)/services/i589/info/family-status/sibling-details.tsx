@@ -14,9 +14,9 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import {
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   FormNameInput,
-  NameSchema,
+  FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
@@ -114,7 +114,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           dob: null,
           livesInUsa: null,
           name: {
-            ...DEFAULT_NAME,
+            ...DEFAULT_FORM_NAME,
             last: lastName,
           },
           sex: null,
@@ -135,7 +135,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           currentLocation: FormAddressSchema.optional(),
           dob: required(z.date().nullable()),
           livesInUsa: required(z.boolean().nullable()),
-          name: NameSchema,
+          name: FormNameSchema,
           sex: required(SexEnum.nullable()),
         })}
       >

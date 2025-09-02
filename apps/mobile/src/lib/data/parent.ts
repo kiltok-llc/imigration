@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-import { DEFAULT_NAME } from '@/components/form/name';
+import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
   AddressSchema,
   DEFAULT_ADDRESS,
@@ -18,7 +18,7 @@ export const parentAliveAtom = userDataDocumentFamily(
 
 export const parentNameAtom = userDataDocumentFamily(
   (id) => `parent:${id}:name`,
-  DEFAULT_NAME,
+  DEFAULT_FORM_NAME,
   NameSchema
 );
 

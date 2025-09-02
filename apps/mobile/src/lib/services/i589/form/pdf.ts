@@ -11,6 +11,9 @@ import { applicationFields } from '@/lib/services/i589/form/application-fields';
 import { backgroundFields } from '@/lib/services/i589/form/background-fields';
 import { childrenFields } from '@/lib/services/i589/form/children-fields';
 import { clientFields } from '@/lib/services/i589/form/client-fields';
+import { hearingFields } from '@/lib/services/i589/form/hearing-fields';
+import { interviewFields } from '@/lib/services/i589/form/interview-fields';
+import { signatureFields } from '@/lib/services/i589/form/signature-fields';
 import { spouseFields } from '@/lib/services/i589/form/spouse-fields';
 import { PDFField } from '@/lib/services/i589/form/types';
 
@@ -20,6 +23,9 @@ const pdfFieldsAtom = atom<PDFField[]>((get) => [
   ...get(childrenFields),
   ...get(backgroundFields),
   ...get(applicationFields),
+  ...get(signatureFields),
+  ...get(interviewFields),
+  ...get(hearingFields),
 ]);
 
 export const i589PdfAtom = atomWithQuery((get) => ({
