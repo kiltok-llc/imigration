@@ -20,6 +20,7 @@ export const a3Fields = atom<PDFField[]>((get) =>
 
     ...get(residenceFields),
     ...get(schoolFields),
+    ...get(employmentFields),
   ].map(([k, v]) => [`form1[0].#subform[4].${k}`, v])
 );
 
@@ -41,5 +42,14 @@ const schoolFields = atom<PDFField[]>((_get) =>
     [`TextField13[${i < 2 ? i + 32 : i * 3 + 30}]`, `school address ${i}`],
     [`DateTimeField${i < 2 ? 41 - i * 3 : 43 - i * 3}[0]`, `school from ${i}`],
     [`DateTimeField${i < 2 ? 40 - i : 38 - i}[0]`, `school to ${i}`],
+  ])
+);
+
+const employmentFields = atom<PDFField[]>((_get) =>
+  Array.from({ length: 3 }).flatMap((_, i) => [
+    [`TextField13[${i < 2 ? i + 40 : i + 42}]`, `employer name ${i}`],
+    [`TextField13[${i < 2 ? i + 42 : i + 43}]`, `employer type ${i}`],
+    [`DateTimeField${i < 2 ? i + 42 : i + 44}[0]`, `employer from ${i}`],
+    [`DateTimeField${i < 2 ? i + 44 : i + 45}[0]`, `employer to ${i}`],
   ])
 );
