@@ -881,8 +881,8 @@
                 "religion": "Religión",
                 "nationality": "Nacionalidad",
                 "race": "Raza",
-                "political-opinion": "Opinión Política",
-                "social-group": "Pertenencia a un Grupo Social",
+                "politics": "Opinión Política",
+                "social": "Pertenencia a un Grupo Social",
                 "torture": "Temor a la Tortura"
               }
             }
@@ -943,10 +943,10 @@
                 "nationality": "Nacionalidad",
                 "none": "Ninguno de los anteriores",
                 "other": "Otro",
-                "political-opinion": "Opinión Política",
+                "politics": "Opinión Política",
                 "race": "Raza",
                 "religion": "Religión",
-                "social-group": "Grupo Social"
+                "social": "Grupo Social"
               },
               "title": "¿Se basó ese daño en alguna de estas razones?\n(Selecciona todas las que apliquen)"
             }

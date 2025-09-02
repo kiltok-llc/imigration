@@ -46,19 +46,18 @@ export const currentOrganizationalAffiliationsDetailsAtom =
   );
 
 export const AsylumReasonEnum = z.enum([
-  'politics',
+  'race',
   'religion',
   'nationality',
-  'race',
-  'political-opinion',
-  'social-group',
+  'politics',
+  'social',
   'torture',
 ]);
 
 export const reasonsForAsylumAtom = userDataDocumentAtom(
   'reasons-for-asylum',
-  null,
-  z.array(AsylumReasonEnum).nullable()
+  [],
+  z.array(AsylumReasonEnum)
 );
 
 export const hasPreviousApplicationsAtom = userDataDocumentAtom(

@@ -948,8 +948,8 @@
                 "religion": "Religion",
                 "nationality": "Nationality",
                 "race": "Race",
-                "political-opinion": "Political Opinion",
-                "social-group": "Membership in a Social Group",
+                "politics": "Political Opinion",
+                "social": "Membership in a Social Group",
                 "torture": "Fear of Torture"
               }
             }
@@ -1010,10 +1010,10 @@
                 "nationality": "Nationality",
                 "none": "None of the above",
                 "other": "Other",
-                "political-opinion": "Political Opinion",
+                "politics": "Political Opinion",
                 "race": "Race",
                 "religion": "Religion",
-                "social-group": "Social Group"
+                "social": "Social Group"
               },
               "title": "Was that harm based on one of these reasons?\n(Select all that apply)"
             }

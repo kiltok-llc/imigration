@@ -5,7 +5,7 @@ import { atomFamily } from 'jotai/utils';
 import { siblingIdsAtom } from '@/lib/data/sibling';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const a3Fields = atom<PDFField[]>((get) =>
+export const backgroundFields = atom<PDFField[]>((get) =>
   [
     ['TextField13[0]', 'previous address'],
     ['TextField13[2]', 'previous city'],

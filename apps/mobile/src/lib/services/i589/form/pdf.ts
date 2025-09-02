@@ -7,15 +7,19 @@ import uuid from 'react-native-uuid';
 
 import i589PdfTemplate from '@/assets/documents/i-589.pdf';
 import { prettifyDate } from '@/lib/data/utils';
-import { a1Fields } from '@/lib/services/i589/form/a1';
-import { a2Fields } from '@/lib/services/i589/form/a2';
-import { a3Fields } from '@/lib/services/i589/form/a3';
+import { applicationFields } from '@/lib/services/i589/form/application-fields';
+import { backgroundFields } from '@/lib/services/i589/form/background-fields';
+import { childrenFields } from '@/lib/services/i589/form/children-fields';
+import { clientFields } from '@/lib/services/i589/form/client-fields';
+import { spouseFields } from '@/lib/services/i589/form/spouse-fields';
 import { PDFField } from '@/lib/services/i589/form/types';
 
 const pdfFieldsAtom = atom<PDFField[]>((get) => [
-  ...get(a1Fields),
-  ...get(a2Fields),
-  ...get(a3Fields),
+  ...get(clientFields),
+  ...get(spouseFields),
+  ...get(childrenFields),
+  ...get(backgroundFields),
+  ...get(applicationFields),
 ]);
 
 export const i589PdfAtom = atomWithQuery((get) => ({

@@ -16,10 +16,10 @@ import { required } from '@/lib/utils';
 const HarmReasonEnum = z.enum([
   'nationality',
   'other',
-  'political-opinion',
+  'politics',
   'race',
   'religion',
-  'social-group',
+  'social',
   'none',
 ]);
 
