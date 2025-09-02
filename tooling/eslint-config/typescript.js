@@ -16,9 +16,7 @@ export default defineConfig([
     },
   },
   eslintJs.configs.recommended,
-  // @ts-expect-error typescript-eslint types do not match eslint
   tseslint.configs.strictTypeChecked,
-  // @ts-expect-error typescript-eslint types do not match eslint
   tseslint.configs.stylisticTypeChecked,
   {
     rules: {
