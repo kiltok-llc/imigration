@@ -18,8 +18,8 @@
   "prettier": "@repo/prettier-config",
   "dependencies": {
     "@repo/supabase": "workspace:*",
-    "@supabase/storage-js": "^2.8.0",
-    "@supabase/supabase-js": "^2.50.0",
+    "@supabase/storage-js": "^2.11.0",
+    "@supabase/supabase-js": "^2.56.1",
     "@trpc/server": "catalog:",
     "superjson": "2.2.2",
     "zod": "catalog:"

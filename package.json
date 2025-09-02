@@ -19,16 +19,16 @@
     "@commitlint/config-conventional": "latest",
     "@commitlint/types": "latest",
     "@repo/prettier-config": "workspace:*",
-    "@turbo/gen": "^2.5.5",
+    "@turbo/gen": "^2.5.6",
     "conventional-changelog-conventionalcommits": "latest",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.4",
+    "lint-staged": "^16.1.6",
     "minimatch": "^10.0.3",
     "prettier": "catalog:",
     "sherif": "latest",
-    "turbo": "^2.5.5",
+    "turbo": "^2.5.6",
     "typescript": "catalog:",
-    "vercel": "^44.7.0"
+    "vercel": "^46.1.1"
   },
   "packageManager": "pnpm@10.12.1",
   "engines": {
