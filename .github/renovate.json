@@ -1,5 +1,5 @@
 {
-  "baseBranches": ["staging"],
+  "baseBranchPatterns": ["staging"],
   "extends": ["config:recommended"],
   "rangeStrategy": "bump"
 }
