@@ -25,7 +25,7 @@ export const supplementAFieldsAtom = atom<PDFField[][]>((get) =>
   chunked(get(childIdsAtom).slice(0, 4), 2).map((childIds) => [
     ...get(headerFieldsAtom),
 
-    ...(childIds.flatMap((id, idx) => get(childFields({ id, idx })))),
+    ...childIds.flatMap((id, idx) => get(childFields({ id, idx }))),
   ])
 );
 
@@ -61,8 +61,14 @@ const childFields = childFieldsFamily((id, idx, get) =>
     [`TextField12[${idx * 10 + 4}]`, 'child nationality'],
     [`TextField12[${idx * 10 + 5}]`, get(childEthnicityAtom(id))],
 
-    [idx === 0 ? 'CheckBox12_Sex[2]' : 'SuppAL12_CheckBox[0]', get(childSexAtom(id)) === 'male'],
-    [idx === 0 ? 'CheckBox12_Sex[3]' : 'SuppAL12_CheckBox[1]', get(childSexAtom(id)) === 'female'],
+    [
+      idx === 0 ? 'CheckBox12_Sex[2]' : 'SuppAL12_CheckBox[0]',
+      get(childSexAtom(id)) === 'male',
+    ],
+    [
+      idx === 0 ? 'CheckBox12_Sex[3]' : 'SuppAL12_CheckBox[1]',
+      get(childSexAtom(id)) === 'female',
+    ],
 
     ...(get(childIsInUsaAtom(id))
       ? get(childInUsaFields({ id, idx }))
@@ -72,7 +78,10 @@ const childFields = childFieldsFamily((id, idx, get) =>
 
 const childNotInUsaFields = childFieldsFamily((_id, idx, _get) => [
   [idx === 0 ? 'CheckBox57[1]' : 'SuppAL13_CheckBox[1]', true],
-  [`SuppLALine13_Specify${idx === 0 ? '' : '2'}[0]`, 'child location if outside us'],
+  [
+    `SuppLALine13_Specify${idx === 0 ? '' : '2'}[0]`,
+    'child location if outside us',
+  ],
 ]);
 
 const childInUsaFields = childFieldsFamily((id, idx, get) => [

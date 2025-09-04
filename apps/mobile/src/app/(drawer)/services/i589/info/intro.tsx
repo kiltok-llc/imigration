@@ -24,8 +24,6 @@ export default function Intro() {
         }}
         onSuccess={() => {
           setIsStepStarted(true);
-
-          
         }}
         pageId='intro'
         schema={z.object({

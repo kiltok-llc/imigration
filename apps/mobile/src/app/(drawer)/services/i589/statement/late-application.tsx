@@ -20,7 +20,6 @@ export default function LateApplication() {
         }}
         onSuccess={({ details }) => {
           setLateApplicationDetails(details);
-          
         }}
         pageId='details'
         schema={z.object({

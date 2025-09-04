@@ -33,7 +33,6 @@ export default function PreviousApplications() {
           if (!hasPreviousApplications) {
             setPreviousApplicationDetails('');
           }
-          
         }}
         pageId='has-previous-applications'
         schema={z.object({
@@ -57,7 +56,6 @@ export default function PreviousApplications() {
           }}
           onSuccess={({ details }) => {
             setPreviousApplicationDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

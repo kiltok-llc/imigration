@@ -47,8 +47,6 @@ export default function ChildrenDetails() {
         }}
         onSuccess={({ numChildren }) => {
           setChildIds(stretchTo(childIds, numChildren ?? 0, () => uuid.v4()));
-
-          
         }}
         pageId='children-information'
         schema={z.object({
@@ -129,8 +127,6 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           setLivesInUsa(livesInUsa);
           setName(name);
           setSex(sex);
-
-          
         }}
         pageId='child'
         pageKey={id}

@@ -8,7 +8,7 @@ import { encode } from '@supabase-cache-helpers/postgrest-react-query';
 import {
   PostgrestBuilder,
   PostgrestClientOptions,
-  PostgrestFilterBuilder
+  PostgrestFilterBuilder,
 } from '@supabase/postgrest-js';
 import {
   AuthTokenResponsePassword,
@@ -84,11 +84,18 @@ export const supabaseInfiniteQueryOptions = <
   getNextPageParam: GetNextPageParamFunction<TPageParam, TQueryFnData>;
   getPreviousPageParam?: GetPreviousPageParamFunction<TPageParam, TQueryFnData>;
   initialPageParam: TPageParam;
-  query: QueryBuilder<PostgrestFilterBuilder<ClientOptions, Schema, Row, SupabaseQueryData>>;
+  query: QueryBuilder<
+    PostgrestFilterBuilder<ClientOptions, Schema, Row, SupabaseQueryData>
+  >;
   transform?: (data: SupabaseQueryData, pageParam: TPageParam) => TQueryFnData;
   transformError?: (err: unknown) => TQueryFnData;
   transformQuery?: (
-    query: PostgrestFilterBuilder<ClientOptions, Schema, Row, SupabaseQueryData>,
+    query: PostgrestFilterBuilder<
+      ClientOptions,
+      Schema,
+      Row,
+      SupabaseQueryData
+    >,
     pageParam: TPageParam
   ) => unknown;
 }) =>

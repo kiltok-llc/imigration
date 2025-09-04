@@ -32,7 +32,6 @@ export default function FearOfTorture() {
           if (!hasFearOfTorture) {
             setFearOfTortureDetails('');
           }
-          
         }}
         pageId='has-fear-of-torture'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function FearOfTorture() {
           }}
           onSuccess={({ details }) => {
             setFearOfTortureDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

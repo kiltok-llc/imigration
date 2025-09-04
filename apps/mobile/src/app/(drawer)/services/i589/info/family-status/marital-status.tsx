@@ -55,8 +55,6 @@ export default function MaritalStatus() {
         }}
         onSuccess={({ status }) => {
           setMaritalStatus(status);
-
-          
         }}
         pageId='marital-status'
         schema={z.object({
@@ -88,8 +86,6 @@ export default function MaritalStatus() {
             if (certificate) {
               setMarriageCertificate(certificate);
             }
-
-            
           }}
           pageId='marriage-certificate'
           schema={z.object({
@@ -171,8 +167,6 @@ export default function MaritalStatus() {
           defaultValues={DEFAULT_FORM_NAME}
           onSuccess={(name) => {
             setSpouseName(name);
-
-            
           }}
           pageId='spouse-info'
           schema={FormNameSchema}
@@ -194,8 +188,6 @@ export default function MaritalStatus() {
           onSuccess={({ isInUsa, location }) => {
             setSpouseIsInUsa(isInUsa);
             setSpouseLocation(location ?? DEFAULT_LOCATION);
-
-            
           }}
           pageId='spouse-location'
           schema={z.object({

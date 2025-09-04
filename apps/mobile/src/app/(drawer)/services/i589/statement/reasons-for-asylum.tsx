@@ -21,7 +21,6 @@ export default function ReasonsForAsylum() {
         }}
         onSuccess={({ reasons }) => {
           setReasonsForAsylum(reasons);
-          
         }}
         pageId='reasons'
         schema={z.object({

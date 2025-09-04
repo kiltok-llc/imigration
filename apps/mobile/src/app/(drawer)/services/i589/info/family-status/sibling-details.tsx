@@ -54,8 +54,6 @@ export default function SiblingsDetails() {
           setSiblingIds(
             stretchTo(siblingIds, numSiblings ?? 0, () => uuid.v4())
           );
-
-          
         }}
         pageId='sibling-information'
         schema={z.object({
@@ -124,8 +122,6 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           setLivesInUsa(livesInUsa);
           setName(name);
           setSex(sex);
-
-          
         }}
         pageId='sibling'
         pageKey={id}

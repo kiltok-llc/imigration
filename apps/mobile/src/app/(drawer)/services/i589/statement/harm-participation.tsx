@@ -32,7 +32,6 @@ export default function HarmParticipation() {
           if (!hasHarmParticipation) {
             setHarmParticipationDetails('');
           }
-          
         }}
         pageId='has-harm-participation'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function HarmParticipation() {
           }}
           onSuccess={({ details }) => {
             setHarmParticipationDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

@@ -32,7 +32,6 @@ export default function CriminalHistory() {
           if (!hasCriminalHistory) {
             setCriminalHistoryDetails('');
           }
-          
         }}
         pageId='has-criminal-history'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function CriminalHistory() {
           }}
           onSuccess={({ details }) => {
             setCriminalHistoryDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

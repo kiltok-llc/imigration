@@ -32,7 +32,6 @@ export default function HarmAndPersecution() {
           if (!hasBeenHarmed) {
             setHarmDetails('');
           }
-          
         }}
         pageId='has-been-harmed'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function HarmAndPersecution() {
           }}
           onSuccess={({ details }) => {
             setHarmDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

@@ -150,8 +150,6 @@ export default function ImmigrationStatus() {
           }}
           onSuccess={({ passport }) => {
             setPassport(passport ?? DEFAULT_PASSPORT);
-
-            
           }}
           pageId='passport'
           schema={z.object({
@@ -199,7 +197,6 @@ export default function ImmigrationStatus() {
           defaultValues={{ hasAlienNumber: null }}
           onSuccess={({ number }) => {
             setAlienNumber(number ?? '');
-            
           }}
           pageId='alien-number'
           schema={z.object({
@@ -238,7 +235,6 @@ export default function ImmigrationStatus() {
           }}
           onSuccess={({ number }) => {
             setSsn(number ?? '');
-            
           }}
           pageId='ssn'
           schema={z.object({
@@ -276,7 +272,6 @@ export default function ImmigrationStatus() {
           }}
           onSuccess={({ number }) => {
             setUscisNumber(number ?? '');
-            
           }}
           pageId='uscis'
           schema={z.object({
@@ -314,7 +309,6 @@ export default function ImmigrationStatus() {
           }}
           onSuccess={({ status }) => {
             setImmigrationCourtStatus(status);
-            
           }}
           pageId='court'
           schema={z.object({
@@ -344,7 +338,6 @@ export default function ImmigrationStatus() {
             }}
             onSuccess={({ isInUsa }) => {
               setIsInUsa(isInUsa);
-              
             }}
             pageId='is-in-usa'
             schema={z.object({
@@ -371,8 +364,6 @@ export default function ImmigrationStatus() {
                 ...others,
               ]);
               setStatusExpiration(statusExpiration);
-
-              
             }}
             pageId='first-entry'
             schema={z.object({
@@ -429,7 +420,6 @@ export default function ImmigrationStatus() {
                   { ...DEFAULT_USA_ENTRY, date: entryDate },
                 ]);
               }
-              
             }}
             pageId='previous-entry'
             schema={z.object({
@@ -471,7 +461,6 @@ export default function ImmigrationStatus() {
               if (entries) {
                 setEntries(([first]) => [first!, ...entries]);
               }
-              
             }}
             pageId='other-entries'
             schema={z.object({

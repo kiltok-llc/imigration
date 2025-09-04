@@ -58,7 +58,6 @@ export default function OrganizationalAffiliations() {
           if (!hasPastOrganizationalAffiliations) {
             setPastOrganizationalAffiliationsDetails('');
           }
-          
         }}
         pageId='has-past-organizational-affiliations'
         schema={z.object({
@@ -85,7 +84,6 @@ export default function OrganizationalAffiliations() {
           }}
           onSuccess={({ details }) => {
             setPastOrganizationalAffiliationsDetails(details);
-            
           }}
           pageId='past-affiliations-details'
           schema={z.object({
@@ -166,7 +164,6 @@ export default function OrganizationalAffiliations() {
           }}
           onSuccess={({ details }) => {
             setCurrentOrganizationalAffiliationsDetails(details);
-            
           }}
           pageId='current-affiliations-details'
           schema={z.object({

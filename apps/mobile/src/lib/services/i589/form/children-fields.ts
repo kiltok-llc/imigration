@@ -82,7 +82,10 @@ const childFields = childFieldsFamily((id, idx, get) =>
 
 const childNotInUsaFields = childFieldsFamily((_id, idx, _get) => [
   [`CheckBox${idx + 1}7[1]`, true],
-  [`PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`, 'child location if outside us'],
+  [
+    `PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`,
+    'child location if outside us',
+  ],
 ]);
 
 const childInUsaFields = childFieldsFamily((id, idx, get) => [

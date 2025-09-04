@@ -34,7 +34,6 @@ export default function InternationalCriminalHistory() {
           if (!hasInternationalCriminalHistory) {
             setInternationalCriminalHistoryDetails('');
           }
-          
         }}
         pageId='has-international-criminal-history'
         schema={z.object({
@@ -58,7 +57,6 @@ export default function InternationalCriminalHistory() {
           }}
           onSuccess={({ details }) => {
             setInternationalCriminalHistoryDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

@@ -32,7 +32,6 @@ export default function ReturnToCountry() {
           if (!hasReturnedToCountry) {
             setReturnToCountryDetails('');
           }
-          
         }}
         pageId='has-returned-to-country'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function ReturnToCountry() {
           }}
           onSuccess={({ details }) => {
             setReturnToCountryDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

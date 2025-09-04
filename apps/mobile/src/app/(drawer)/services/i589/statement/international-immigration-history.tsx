@@ -33,7 +33,6 @@ export default function InternationalImmigrationHistory() {
           if (!hasInternationalImmigrationHistory) {
             setInternationalImmigrationHistoryDetails('');
           }
-          
         }}
         pageId='has-international-immigration-history'
         schema={z.object({
@@ -60,7 +59,6 @@ export default function InternationalImmigrationHistory() {
           }}
           onSuccess={({ details }) => {
             setInternationalImmigrationHistoryDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({

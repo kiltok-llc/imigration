@@ -32,7 +32,6 @@ export default function Fear() {
           if (!hasFear) {
             setFearDetails('');
           }
-          
         }}
         pageId='has-fear'
         schema={z.object({
@@ -56,7 +55,6 @@ export default function Fear() {
           }}
           onSuccess={({ details }) => {
             setFearDetails(details);
-            
           }}
           pageId='details'
           schema={z.object({
