@@ -45,10 +45,10 @@ export default function ChildrenDetails() {
         defaultValues={{
           hasChildren: null,
         }}
-        onSubmit={({ numChildren }) => {
+        onSuccess={({ numChildren }) => {
           setChildIds(stretchTo(childIds, numChildren ?? 0, () => uuid.v4()));
 
-          return true;
+          
         }}
         pageId='children-information'
         schema={z.object({
@@ -115,7 +115,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           },
           sex: null,
         }}
-        onSubmit={({
+        onSuccess={({
           birthCertificate,
           dob,
           ethnicity,
@@ -130,7 +130,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
           setName(name);
           setSex(sex);
 
-          return true;
+          
         }}
         pageId='child'
         pageKey={id}

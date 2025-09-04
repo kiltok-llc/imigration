@@ -4,7 +4,7 @@ import { nameAtom } from '@/lib/data/user';
 import { prettifyName } from '@/lib/data/utils';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const signatureFields = atom<PDFField[]>((get) =>
+export const signatureFieldsAtom = atom<PDFField[]>((get) =>
   [
     [`TextField20[0]`, prettifyName(get(nameAtom))],
     ['TextField20[1]', 'native alphabet name'], // Native alphabet name

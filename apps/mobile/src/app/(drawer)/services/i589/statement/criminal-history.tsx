@@ -27,12 +27,12 @@ export default function CriminalHistory() {
         defaultValues={{
           hasCriminalHistory: false,
         }}
-        onSubmit={({ hasCriminalHistory }) => {
+        onSuccess={({ hasCriminalHistory }) => {
           setShowDetails(hasCriminalHistory);
           if (!hasCriminalHistory) {
             setCriminalHistoryDetails('');
           }
-          return true;
+          
         }}
         pageId='has-criminal-history'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function CriminalHistory() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setCriminalHistoryDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

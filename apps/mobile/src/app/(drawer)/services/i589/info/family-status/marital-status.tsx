@@ -53,10 +53,10 @@ export default function MaritalStatus() {
         defaultValues={{
           status: null,
         }}
-        onSubmit={({ status }) => {
+        onSuccess={({ status }) => {
           setMaritalStatus(status);
 
-          return true;
+          
         }}
         pageId='marital-status'
         schema={z.object({
@@ -84,12 +84,12 @@ export default function MaritalStatus() {
           defaultValues={{
             hasCertificate: null,
           }}
-          onSubmit={({ certificate }) => {
+          onSuccess={({ certificate }) => {
             if (certificate) {
               setMarriageCertificate(certificate);
             }
 
-            return true;
+            
           }}
           pageId='marriage-certificate'
           schema={z.object({
@@ -127,12 +127,10 @@ export default function MaritalStatus() {
             divorceDate: null,
             location: DEFAULT_FORM_SHORT_ADDRESS,
           }}
-          onSubmit={({ date, divorceDate, location }) => {
+          onSuccess={({ date, divorceDate, location }) => {
             setMarriageLocation(location);
             setMarriageDate(date);
             setDivorceDate(divorceDate);
-
-            return true;
           }}
           pageId='marriage-info'
           schema={z.object({
@@ -171,10 +169,10 @@ export default function MaritalStatus() {
       {maritalStatus === 'married' && (
         <QuizPage
           defaultValues={DEFAULT_FORM_NAME}
-          onSubmit={(name) => {
+          onSuccess={(name) => {
             setSpouseName(name);
 
-            return true;
+            
           }}
           pageId='spouse-info'
           schema={FormNameSchema}
@@ -193,11 +191,11 @@ export default function MaritalStatus() {
           defaultValues={{
             isInUsa: null,
           }}
-          onSubmit={({ isInUsa, location }) => {
+          onSuccess={({ isInUsa, location }) => {
             setSpouseIsInUsa(isInUsa);
             setSpouseLocation(location ?? DEFAULT_LOCATION);
 
-            return true;
+            
           }}
           pageId='spouse-location'
           schema={z.object({

@@ -15,16 +15,16 @@ import {
 } from '@/lib/data/asylum';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const applicationFields = atom<PDFField[]>((get) => [
-  ...get(page1),
-  ...get(page2),
-  ...get(page3),
-  ...get(page4),
+export const applicationFieldsAtom = atom<PDFField[]>((get) => [
+  ...get(page1FieldsAtom),
+  ...get(page2FieldsAtom),
+  ...get(page3FieldsAtom),
+  ...get(page4FieldsAtom),
 ]);
 
-const page1 = atom<PDFField[]>((get) =>
+const page1FieldsAtom = atom<PDFField[]>((get) =>
   [
-    ...get(asylumReasonFields),
+    ...get(asylumReasonFieldsAtom),
 
     ['ckboxyn1a[1]', true], // No harm or persecution
     ['ckboxyn1a[0]', true], // Yes harm or persecution
@@ -36,11 +36,11 @@ const page1 = atom<PDFField[]>((get) =>
   ].map(([k, v]) => [`form1[0].#subform[5].#subform[6].${k}`, v])
 );
 
-const asylumReasonFields = atom<PDFField[]>((_get) =>
+const asylumReasonFieldsAtom = atom<PDFField[]>((_get) =>
   AsylumReasonEnum.options.map((reason) => [`CheckBox${reason}[0]`, true])
 );
 
-const page2 = atom<PDFField[]>((get) =>
+const page2FieldsAtom = atom<PDFField[]>((get) =>
   [
     ['ckboxyn2[1]', !get(internationalCriminalHistoryDetailsAtom)],
     ['ckboxyn2[0]', !!get(internationalCriminalHistoryDetailsAtom)],
@@ -60,7 +60,7 @@ const page2 = atom<PDFField[]>((get) =>
   ].map(([k, v]) => [`form1[0].#subform[7].${k}`, v])
 );
 
-const page3 = atom<PDFField[]>((get) =>
+const page3FieldsAtom = atom<PDFField[]>((get) =>
   [
     ['ckboxync1[1]', !get(previousApplicationDetailsAtom)],
     ['ckboxync1[0]', !!get(previousApplicationDetailsAtom)],
@@ -80,7 +80,7 @@ const page3 = atom<PDFField[]>((get) =>
   ].map(([k, v]) => [`form1[0].#subform[8].${k}`, v])
 );
 
-const page4 = atom<PDFField[]>((get) =>
+const page4FieldsAtom = atom<PDFField[]>((get) =>
   [
     ['PCckboxyn4[1]', !get(returnToCountryDetailsAtom)],
     ['PCckboxyn4[0]', !!get(returnToCountryDetailsAtom)],

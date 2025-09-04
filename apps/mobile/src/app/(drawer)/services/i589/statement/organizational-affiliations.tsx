@@ -53,12 +53,12 @@ export default function OrganizationalAffiliations() {
         defaultValues={{
           hasPastOrganizationalAffiliations: false,
         }}
-        onSubmit={({ hasPastOrganizationalAffiliations }) => {
+        onSuccess={({ hasPastOrganizationalAffiliations }) => {
           setShowPastDetails(hasPastOrganizationalAffiliations);
           if (!hasPastOrganizationalAffiliations) {
             setPastOrganizationalAffiliationsDetails('');
           }
-          return true;
+          
         }}
         pageId='has-past-organizational-affiliations'
         schema={z.object({
@@ -83,9 +83,9 @@ export default function OrganizationalAffiliations() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setPastOrganizationalAffiliationsDetails(details);
-            return true;
+            
           }}
           pageId='past-affiliations-details'
           schema={z.object({
@@ -109,7 +109,7 @@ export default function OrganizationalAffiliations() {
           defaultValues={{
             documents: [],
           }}
-          onSubmit={() => true}
+          onSuccess={() => true}
           pageId='past-affiliations-documents'
           schema={z.object({
             documents: z.array(z.string()),
@@ -133,12 +133,11 @@ export default function OrganizationalAffiliations() {
         defaultValues={{
           hasCurrentOrganizationalAffiliations: false,
         }}
-        onSubmit={({ hasCurrentOrganizationalAffiliations }) => {
+        onSuccess={({ hasCurrentOrganizationalAffiliations }) => {
           setShowCurrentDetails(hasCurrentOrganizationalAffiliations);
           if (!hasCurrentOrganizationalAffiliations) {
             setCurrentOrganizationalAffiliationsDetails('');
           }
-          return true;
         }}
         pageId='has-current-organizational-affiliations'
         schema={z.object({
@@ -165,9 +164,9 @@ export default function OrganizationalAffiliations() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setCurrentOrganizationalAffiliationsDetails(details);
-            return true;
+            
           }}
           pageId='current-affiliations-details'
           schema={z.object({

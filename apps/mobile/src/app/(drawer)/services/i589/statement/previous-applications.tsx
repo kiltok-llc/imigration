@@ -28,12 +28,12 @@ export default function PreviousApplications() {
         defaultValues={{
           hasPreviousApplications: false,
         }}
-        onSubmit={({ hasPreviousApplications }) => {
+        onSuccess={({ hasPreviousApplications }) => {
           setShowDetails(hasPreviousApplications);
           if (!hasPreviousApplications) {
             setPreviousApplicationDetails('');
           }
-          return true;
+          
         }}
         pageId='has-previous-applications'
         schema={z.object({
@@ -55,9 +55,9 @@ export default function PreviousApplications() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setPreviousApplicationDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

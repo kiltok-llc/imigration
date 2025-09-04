@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const hearingFields = atom<PDFField[]>((_get) =>
+export const hearingFieldsAtom = atom<PDFField[]>((_get) =>
   [
     ['PG_CheckBox[0]', true], // all true
     ['TextField27[5]', 'client signature'], // Client signature

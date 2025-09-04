@@ -27,12 +27,12 @@ export default function ReturnToCountry() {
         defaultValues={{
           hasReturnedToCountry: false,
         }}
-        onSubmit={({ hasReturnedToCountry }) => {
+        onSuccess={({ hasReturnedToCountry }) => {
           setShowDetails(hasReturnedToCountry);
           if (!hasReturnedToCountry) {
             setReturnToCountryDetails('');
           }
-          return true;
+          
         }}
         pageId='has-returned-to-country'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function ReturnToCountry() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setReturnToCountryDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

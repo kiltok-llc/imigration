@@ -19,7 +19,11 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage, QuizPageHandle } from '@/components/quiz/page';
+import {
+  QuizPage,
+  QuizPageHandle,
+  QuizPageProps,
+} from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import {
   parentAddressAtom,
@@ -32,99 +36,94 @@ import { nameAtom } from '@/lib/data/user';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
 
-type ParentPageProps = {
-  parent: string;
-};
-
 export default function ParentDetails() {
   return (
     <QuizScreen>
       {['father', 'mother'].map((parent) => (
-        <ParentPage key={parent} parent={parent} />
+        <ParentPage key={parent} pageId='parent' parent={parent} />
       ))}
     </QuizScreen>
   );
 }
 
-const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
-  function ParentPage({ parent }, ref) {
-    const setAlive = useSetAtom(parentAliveAtom(parent));
-    const setAddressAtom = useSetAtom(parentAddressAtom(parent));
-    const setBirthLocation = useSetAtom(parentBirthLocation(parent));
-    const setName = useSetAtom(parentNameAtom(parent));
-    const lastName = useAtomValue(nameAtom).last;
+const ParentPage = forwardRef<
+  QuizPageHandle,
+  QuizPageProps & { parent: string }
+>(function ParentPage({ pageId, parent }, ref) {
+  const setAlive = useSetAtom(parentAliveAtom(parent));
+  const setAddressAtom = useSetAtom(parentAddressAtom(parent));
+  const setBirthLocation = useSetAtom(parentBirthLocation(parent));
+  const setName = useSetAtom(parentNameAtom(parent));
+  const lastName = useAtomValue(nameAtom).last;
 
-    return (
-      <TranslationContextProvider
-        value={{ context: parent === 'mother' ? 'female' : 'male' }}
+  return (
+    <TranslationContextProvider
+      value={{ context: parent === 'mother' ? 'female' : 'male' }}
+    >
+      <QuizPage
+        defaultValues={{
+          alive: null,
+          birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
+          name: {
+            ...DEFAULT_FORM_NAME,
+            last: lastName,
+          },
+        }}
+        onSuccess={({ alive, birthLocation, currentLocation, name }) => {
+          setName(name);
+          setBirthLocation(birthLocation);
+          setAlive(alive);
+          setAddressAtom(currentLocation ?? DEFAULT_ADDRESS);
+        }}
+        pageId={pageId}
+        pageKey={parent}
+        ref={ref}
+        schema={z.object({
+          alive: required(z.boolean().nullable()),
+          birthLocation: FormShortAddressSchema,
+          currentLocation: FormAddressWithCountrySchema.optional(),
+          name: FormNameSchema,
+        })}
       >
-        <QuizPage
-          defaultValues={{
-            alive: null,
-            birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
-            name: {
-              ...DEFAULT_FORM_NAME,
-              last: lastName,
-            },
-          }}
-          onSubmit={({ alive, birthLocation, currentLocation, name }) => {
-            setName(name);
-            setBirthLocation(birthLocation);
-            setAlive(alive);
-            setAddressAtom(currentLocation ?? DEFAULT_ADDRESS);
+        {({ control, lens, watch }) => (
+          <>
+            <FormBlock>
+              <QuizPageTitle />
+            </FormBlock>
 
-            return true;
-          }}
-          pageId='parent'
-          pageKey={parent}
-          ref={ref}
-          schema={z.object({
-            alive: required(z.boolean().nullable()),
-            birthLocation: FormShortAddressSchema,
-            currentLocation: FormAddressWithCountrySchema.optional(),
-            name: FormNameSchema,
-          })}
-        >
-          {({ control, lens, watch }) => (
-            <>
-              <FormBlock>
-                <QuizPageTitle />
+            <FormBlock>
+              <QuizFieldTitle name='name' variant='titleLarge' />
+              <FormNameInput lens={lens.focus('name')} />
+            </FormBlock>
+
+            <FormBlock>
+              <QuizFieldTitle name='birth-location' variant='titleLarge' />
+              <FormShortAddressInput lens={lens.focus('birthLocation')} />
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='alive'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+
+            <ConditionalFormWrapper
+              active={!!watch('alive')}
+              activeValue={DEFAULT_FORM_ADDRESS_WITH_COUNTRY}
+              control={control}
+              name='currentLocation'
+            >
+              <FormBlock animated>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormAddressWithCountryInput
+                  lens={lens.focus('currentLocation')}
+                />
               </FormBlock>
-
-              <FormBlock>
-                <QuizFieldTitle name='name' variant='titleLarge' />
-                <FormNameInput lens={lens.focus('name')} />
-              </FormBlock>
-
-              <FormBlock>
-                <QuizFieldTitle name='birth-location' variant='titleLarge' />
-                <FormShortAddressInput lens={lens.focus('birthLocation')} />
-              </FormBlock>
-
-              <FormBlock>
-                <FormField control={control} name='alive'>
-                  <QuizFieldTitle />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-
-              <ConditionalFormWrapper
-                active={!!watch('alive')}
-                activeValue={DEFAULT_FORM_ADDRESS_WITH_COUNTRY}
-                control={control}
-                name='currentLocation'
-              >
-                <FormBlock animated>
-                  <QuizFieldTitle variant='titleLarge' />
-                  <FormAddressWithCountryInput
-                    lens={lens.focus('currentLocation')}
-                  />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizPage>
-      </TranslationContextProvider>
-    );
-  }
-);
+            </ConditionalFormWrapper>
+          </>
+        )}
+      </QuizPage>
+    </TranslationContextProvider>
+  );
+});

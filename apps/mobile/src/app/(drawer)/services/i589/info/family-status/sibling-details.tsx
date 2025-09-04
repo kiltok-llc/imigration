@@ -50,12 +50,12 @@ export default function SiblingsDetails() {
         defaultValues={{
           hasSiblings: null,
         }}
-        onSubmit={({ numSiblings }) => {
+        onSuccess={({ numSiblings }) => {
           setSiblingIds(
             stretchTo(siblingIds, numSiblings ?? 0, () => uuid.v4())
           );
 
-          return true;
+          
         }}
         pageId='sibling-information'
         schema={z.object({
@@ -119,13 +119,13 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
           },
           sex: null,
         }}
-        onSubmit={({ dob, livesInUsa, name, sex }) => {
+        onSuccess={({ dob, livesInUsa, name, sex }) => {
           setDob(dob);
           setLivesInUsa(livesInUsa);
           setName(name);
           setSex(sex);
 
-          return true;
+          
         }}
         pageId='sibling'
         pageKey={id}

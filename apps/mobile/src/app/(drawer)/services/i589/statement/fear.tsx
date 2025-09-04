@@ -27,12 +27,12 @@ export default function Fear() {
         defaultValues={{
           hasFear: false,
         }}
-        onSubmit={({ hasFear }) => {
+        onSuccess={({ hasFear }) => {
           setShowDetails(hasFear);
           if (!hasFear) {
             setFearDetails('');
           }
-          return true;
+          
         }}
         pageId='has-fear'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function Fear() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setFearDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

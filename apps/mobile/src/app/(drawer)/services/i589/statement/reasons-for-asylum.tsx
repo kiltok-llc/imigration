@@ -19,9 +19,9 @@ export default function ReasonsForAsylum() {
         defaultValues={{
           reasons: [],
         }}
-        onSubmit={({ reasons }) => {
+        onSuccess={({ reasons }) => {
           setReasonsForAsylum(reasons);
-          return true;
+          
         }}
         pageId='reasons'
         schema={z.object({

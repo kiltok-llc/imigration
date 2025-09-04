@@ -38,23 +38,25 @@ export type QuizPageProps<
   Input extends FieldValues = FieldValues,
   Output = any,
 > = {
-  children: (
+  children?: (
     context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
   ) => ReactNode;
-  defaultValues: Input;
+  defaultValues?: Input;
   formOptions?: UseFormProps<Input, any, Output>;
-  onSubmit: (data: Output) => boolean;
+  onSubmit?: (data: Output) => boolean;
+  onSuccess?: (data: Output) => void;
   pageId: string;
   pageKey?: string;
   ref?: Ref<QuizPageHandle>;
-  schema: z.ZodType<Output, Input>;
+  schema?: z.ZodType<Output, Input>;
 };
 
 export function QuizPage<Input extends FieldValues, Output>({
   children,
   defaultValues,
   formOptions = {},
-  onSubmit,
+  onSubmit = () => true,
+  onSuccess,
   pageId,
   pageKey,
   ref = null,
@@ -77,7 +79,7 @@ export function QuizPage<Input extends FieldValues, Output>({
 
   const context = useForm<Input, any, Output>({
     defaultValues: defaultValues as DefaultValues<Input>,
-    resolver: standardSchemaResolver<Input, any, Output>(schema),
+    resolver: standardSchemaResolver<Input, any, Output>(schema!),
     ...formOptions,
   });
   const { control, handleSubmit, reset, subscribe } = context;
@@ -119,6 +121,9 @@ export function QuizPage<Input extends FieldValues, Output>({
         (data) => {
           console.debug('Passed validation!', data);
           result = onSubmit(data);
+          if (result && onSuccess) {
+            onSuccess(data);
+          }
         },
         (errors) => {
           console.debug('Failed validation!', errors);
@@ -153,7 +158,7 @@ export function QuizPage<Input extends FieldValues, Output>({
     >
       <Animated.View layout={LinearTransition} style={tw`gap-16 py-16`}>
         <FormProvider {...context}>
-          {children({ ...context, lens })}
+          {children?.({ ...context, lens })}
         </FormProvider>
       </Animated.View>
     </KeyboardAwareScrollView>

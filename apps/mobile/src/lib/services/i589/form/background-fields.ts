@@ -5,7 +5,7 @@ import { atomFamily } from 'jotai/utils';
 import { siblingIdsAtom } from '@/lib/data/sibling';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const backgroundFields = atom<PDFField[]>((get) =>
+export const backgroundFieldsAtom = atom<PDFField[]>((get) =>
   [
     ['TextField13[0]', 'previous address'],
     ['TextField13[2]', 'previous city'],
@@ -21,9 +21,9 @@ export const backgroundFields = atom<PDFField[]>((get) =>
     ['DateTimeField22[0]', 'persecution from'],
     ['DateTimeField23[0]', 'persecution to'],
 
-    ...get(residenceFields),
-    ...get(schoolFields),
-    ...get(employmentFields),
+    ...get(residenceFieldsAtom),
+    ...get(schoolFieldsAtom),
+    ...get(employmentFieldsAtom),
 
     ['TextField13[46]', 'mother name'],
     ['TextField13[49]', 'mother birth location'],
@@ -35,11 +35,11 @@ export const backgroundFields = atom<PDFField[]>((get) =>
     ['CheckBoxAIII5\\.f[0]', true], // father deceased
     ['TextField35[1]', 'father current location'],
 
-    ...get(siblingsFields),
+    ...get(siblingsFieldsAtom),
   ].map(([k, v]) => [`form1[0].#subform[4].${k}`, v])
 );
 
-const residenceFields = atom<PDFField[]>((_get) =>
+const residenceFieldsAtom = atom<PDFField[]>((_get) =>
   Array.from({ length: 5 }).flatMap((_, i) => [
     [`TextField13[${i < 2 ? i + 8 : i * 4 + 8}]`, `previous address ${i}`],
     [`TextField13[${i < 2 ? i + 10 : i * 4 + 9}]`, `previous city ${i}`],
@@ -50,7 +50,7 @@ const residenceFields = atom<PDFField[]>((_get) =>
   ])
 );
 
-const schoolFields = atom<PDFField[]>((_get) =>
+const schoolFieldsAtom = atom<PDFField[]>((_get) =>
   Array.from({ length: 4 }).flatMap((_, i) => [
     [`TextField13[${i < 2 ? i + 28 : i * 3 + 28}]`, `school name ${i}`],
     [`TextField13[${i < 2 ? i + 30 : i * 3 + 29}]`, `school type ${i}`],
@@ -60,7 +60,7 @@ const schoolFields = atom<PDFField[]>((_get) =>
   ])
 );
 
-const employmentFields = atom<PDFField[]>((_get) =>
+const employmentFieldsAtom = atom<PDFField[]>((_get) =>
   Array.from({ length: 3 }).flatMap((_, i) => [
     [`TextField13[${i < 2 ? i + 40 : i + 42}]`, `employer name ${i}`],
     [`TextField13[${i < 2 ? i + 42 : i + 43}]`, `employer type ${i}`],
@@ -78,7 +78,7 @@ const siblingFieldsFamily = (
     isEqual
   );
 
-const siblingsFields = atom<PDFField[]>((get) =>
+const siblingsFieldsAtom = atom<PDFField[]>((get) =>
   [...get(siblingIdsAtom), 'id1', 'id2', 'id3', 'id4']
     .slice(0, 4)
     .flatMap((id, idx) => get(siblingFields({ id, idx })))

@@ -15,18 +15,18 @@ import {
 import { prettifyLocation } from '@/lib/data/utils';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const spouseFields = atom<PDFField[]>((get) =>
+export const spouseFieldsAtom = atom<PDFField[]>((get) =>
   (get(maritalStatusAtom) === 'married'
-    ? get(marriedFields)
-    : get(notMarriedFields)
+    ? get(marriedFieldsAtom)
+    : get(notMarriedFieldsAtom)
   ).map(([k, v]) => [`form1[0].#subform[1].${k}`, v])
 );
 
-const notMarriedFields = atom<PDFField[]>([
+const notMarriedFieldsAtom = atom<PDFField[]>([
   ['CheckBox5[0]', true], // Not married
 ]);
 
-const marriedFields = atom<PDFField[]>((get) =>
+const marriedFieldsAtom = atom<PDFField[]>((get) =>
   [
     ['PtAIILine1_ANumber[0]', get(spouseAlienNumberAtom)],
     ['TextField10[1]', get(spousePassportAtom).number],
@@ -50,23 +50,23 @@ const marriedFields = atom<PDFField[]>((get) =>
     ['CheckBox14_Sex[1]', get(spouseSexAtom) === 'female'],
 
     ...(get(spouseIsInUsaAtom)
-      ? get(spouseInUsaFields)
-      : get(spouseNotInUsaFields)),
+      ? get(spouseInUsaFieldsAtom)
+      : get(spouseNotInUsaFieldsAtom)),
   ].map(([k, v]) => [`NotMarried[0].${k}`, v])
 );
 
-const spouseNotInUsaFields = atom<PDFField[]>((get) => [
+const spouseNotInUsaFieldsAtom = atom<PDFField[]>((get) => [
   ['PtAIILine15_CheckBox15[0]', true], // spouse outside US
   ['PtAIILine15_Specify[0]', prettifyLocation(get(spouseLocationAtom))],
 ]);
 
-const spouseInUsaFields = atom<PDFField[]>((get) => [
+const spouseInUsaFieldsAtom = atom<PDFField[]>((get) => [
   ['PtAIILine15_CheckBox15[1]', true], // spouse in US
   ['PtAIILine16_PlaceofLastEntry[0]', get(spouseEntriesAtom)[0]?.port],
   ['PtAIILine17_DateofLastEntry[0]', get(spouseEntriesAtom)[0]?.date],
-  ['PtAIILine18_I94Number[0]', ''], // spouse I-94
+  ['PtAIILine18_I94Number[0]', 'spouse I-94'],
   ['PtAIILine19_StatusofLastAdmission[0]', get(spouseEntriesAtom)[0]?.status],
-  ['PtAIILine20_SpouseCurrentStatus[0]', ''], // current status
+  ['PtAIILine20_SpouseCurrentStatus[0]', 'current status'],
   ['PtAIILine21_ExpDateofAuthorizedStay[0]', get(spouseStatusExpirationAtom)],
   ['PtAIILine23_PreviousArrivalDate[0]', get(spouseEntriesAtom)[1]?.date],
 ]);

@@ -148,10 +148,10 @@ export default function ImmigrationStatus() {
           defaultValues={{
             hasPassport: null,
           }}
-          onSubmit={({ passport }) => {
+          onSuccess={({ passport }) => {
             setPassport(passport ?? DEFAULT_PASSPORT);
 
-            return true;
+            
           }}
           pageId='passport'
           schema={z.object({
@@ -197,9 +197,9 @@ export default function ImmigrationStatus() {
 
         <QuizPage
           defaultValues={{ hasAlienNumber: null }}
-          onSubmit={({ number }) => {
+          onSuccess={({ number }) => {
             setAlienNumber(number ?? '');
-            return true;
+            
           }}
           pageId='alien-number'
           schema={z.object({
@@ -236,9 +236,9 @@ export default function ImmigrationStatus() {
           defaultValues={{
             hasSsn: null,
           }}
-          onSubmit={({ number }) => {
+          onSuccess={({ number }) => {
             setSsn(number ?? '');
-            return true;
+            
           }}
           pageId='ssn'
           schema={z.object({
@@ -274,9 +274,9 @@ export default function ImmigrationStatus() {
           defaultValues={{
             hasUscis: null,
           }}
-          onSubmit={({ number }) => {
+          onSuccess={({ number }) => {
             setUscisNumber(number ?? '');
-            return true;
+            
           }}
           pageId='uscis'
           schema={z.object({
@@ -312,9 +312,9 @@ export default function ImmigrationStatus() {
           defaultValues={{
             status: null,
           }}
-          onSubmit={({ status }) => {
+          onSuccess={({ status }) => {
             setImmigrationCourtStatus(status);
-            return true;
+            
           }}
           pageId='court'
           schema={z.object({
@@ -342,9 +342,9 @@ export default function ImmigrationStatus() {
             defaultValues={{
               isInUsa: null,
             }}
-            onSubmit={({ isInUsa }) => {
+            onSuccess={({ isInUsa }) => {
               setIsInUsa(isInUsa);
-              return true;
+              
             }}
             pageId='is-in-usa'
             schema={z.object({
@@ -365,14 +365,14 @@ export default function ImmigrationStatus() {
         {isInUsa && (
           <QuizPage
             defaultValues={{ ...DEFAULT_USA_ENTRY, statusExpiration: null }}
-            onSubmit={({ date, port, status, statusExpiration }) => {
+            onSuccess={({ date, port, status, statusExpiration }) => {
               setEntries(([_first, ...others]) => [
                 { date, port, status },
                 ...others,
               ]);
               setStatusExpiration(statusExpiration);
 
-              return true;
+              
             }}
             pageId='first-entry'
             schema={z.object({
@@ -422,14 +422,14 @@ export default function ImmigrationStatus() {
             defaultValues={{
               hasPreviousEntry: null,
             }}
-            onSubmit={({ entryDate }) => {
+            onSuccess={({ entryDate }) => {
               if (entryDate) {
                 setEntries(([first]) => [
                   first!,
                   { ...DEFAULT_USA_ENTRY, date: entryDate },
                 ]);
               }
-              return true;
+              
             }}
             pageId='previous-entry'
             schema={z.object({
@@ -467,11 +467,11 @@ export default function ImmigrationStatus() {
             defaultValues={{
               hasOtherEntries: null,
             }}
-            onSubmit={({ entries }) => {
+            onSuccess={({ entries }) => {
               if (entries) {
                 setEntries(([first]) => [first!, ...entries]);
               }
-              return true;
+              
             }}
             pageId='other-entries'
             schema={z.object({

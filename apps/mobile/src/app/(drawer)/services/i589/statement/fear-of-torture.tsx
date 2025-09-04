@@ -27,12 +27,12 @@ export default function FearOfTorture() {
         defaultValues={{
           hasFearOfTorture: false,
         }}
-        onSubmit={({ hasFearOfTorture }) => {
+        onSuccess={({ hasFearOfTorture }) => {
           setShowDetails(hasFearOfTorture);
           if (!hasFearOfTorture) {
             setFearOfTortureDetails('');
           }
-          return true;
+          
         }}
         pageId='has-fear-of-torture'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function FearOfTorture() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setFearOfTortureDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

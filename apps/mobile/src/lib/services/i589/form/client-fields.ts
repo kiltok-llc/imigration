@@ -13,7 +13,7 @@ import {
 } from '@/lib/data/user';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const clientFields = atom<PDFField[]>((get) =>
+export const clientFieldsAtom = atom<PDFField[]>((get) =>
   [
     ['CheckBox31[0]', false], // withholding of removal under convention against torture
 

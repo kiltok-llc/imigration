@@ -27,12 +27,12 @@ export default function HarmParticipation() {
         defaultValues={{
           hasHarmParticipation: false,
         }}
-        onSubmit={({ hasHarmParticipation }) => {
+        onSuccess={({ hasHarmParticipation }) => {
           setShowDetails(hasHarmParticipation);
           if (!hasHarmParticipation) {
             setHarmParticipationDetails('');
           }
-          return true;
+          
         }}
         pageId='has-harm-participation'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function HarmParticipation() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setHarmParticipationDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

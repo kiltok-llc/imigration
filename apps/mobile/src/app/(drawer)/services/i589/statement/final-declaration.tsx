@@ -14,9 +14,7 @@ export default function Intro() {
         defaultValues={{
           agreed: false,
         }}
-        onSubmit={() => {
-          return true;
-        }}
+        onSuccess={() => {}}
         pageId='final-declaration'
         schema={z.object({
           agreed: z.literal<boolean>(true),

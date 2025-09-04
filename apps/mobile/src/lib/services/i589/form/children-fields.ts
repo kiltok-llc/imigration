@@ -18,23 +18,23 @@ import {
 } from '@/lib/data/child';
 import { PDFField } from '@/lib/services/i589/form/types';
 
-export const childrenFields = atom<PDFField[]>((get) => [
+export const childrenFieldsAtom = atom<PDFField[]>((get) => [
   ...(get(childIdsAtom).length === 0
-    ? get(noChildrenFields)
-    : get(hasChildrenFields)),
+    ? get(noChildrenFieldsAtom)
+    : get(hasChildrenFieldsAtom)),
 
   ...get(childIdsAtom)
     .slice(0, 4)
     .flatMap((id, idx) => get(childFields({ id, idx }))),
 ]);
 
-const noChildrenFields = atom<PDFField[]>(() =>
+const noChildrenFieldsAtom = atom<PDFField[]>(() =>
   [
     ['ChildrenCheckbox[1]', true], // Does not have children
   ].map(([k, v]) => [`form1[0].#subform[1].${k}`, v])
 );
 
-const hasChildrenFields = atom<PDFField[]>((get) =>
+const hasChildrenFieldsAtom = atom<PDFField[]>((get) =>
   [
     ['ChildrenCheckbox[0]', true], // Has children
     ['TotalChild[0]', get(childIdsAtom).length.toString()],
@@ -54,7 +54,7 @@ const childFields = childFieldsFamily((id, idx, get) =>
   [
     [`ChildAlien${idx + 1}[0]`, get(childAlienNumberAtom(id))],
     [`ChildPassport${idx + 1}[0]`, get(childPassportAtom(id)).number],
-    [`ChildMarital${idx + 1}[0]`, ''], // child marital status
+    [`ChildMarital${idx + 1}[0]`, 'child marital status'],
     [`ChildSSN${idx + 1}[0]`, get(childSsnAtom(id))],
 
     [`ChildLast${idx + 1}[0]`, get(childNameAtom(id)).last],
@@ -62,17 +62,17 @@ const childFields = childFieldsFamily((id, idx, get) =>
     [`ChildMiddle${idx + 1}[0]`, get(childNameAtom(id)).middle],
     [`ChildDOB${idx + 1}[0]`, get(childDobAtom(id))],
 
-    [`ChildCity${idx + 1}[0]`, ''], // child birth location
-    [`ChildNat${idx + 1}[0]`, ''], // child nationality
+    [`ChildCity${idx + 1}[0]`, 'child birth location'],
+    [`ChildNat${idx + 1}[0]`, 'child nationality'],
     [`ChildRace${idx + 1}[0]`, get(childEthnicityAtom(id))],
     [
       `CheckBox${idx + 1}${idx ? 6 : 2}_Sex[0]`,
       get(childSexAtom(id)) === 'male',
-    ], // male
+    ],
     [
       `CheckBox${idx + 1}${idx ? 6 : 2}_Sex[1]`,
       get(childSexAtom(id)) === 'female',
-    ], // female
+    ],
 
     ...(get(childIsInUsaAtom(id))
       ? get(childInUsaFields({ id, idx }))
@@ -82,7 +82,7 @@ const childFields = childFieldsFamily((id, idx, get) =>
 
 const childNotInUsaFields = childFieldsFamily((_id, idx, _get) => [
   [`CheckBox${idx + 1}7[1]`, true],
-  [`PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`, ''], // child location if outside us
+  [`PtAIILine13_Specify${idx ? idx + 1 : ''}[0]`, 'child location if outside us'],
 ]);
 
 const childInUsaFields = childFieldsFamily((id, idx, get) => [

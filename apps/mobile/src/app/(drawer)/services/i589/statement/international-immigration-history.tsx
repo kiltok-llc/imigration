@@ -28,12 +28,12 @@ export default function InternationalImmigrationHistory() {
         defaultValues={{
           hasInternationalImmigrationHistory: false,
         }}
-        onSubmit={({ hasInternationalImmigrationHistory }) => {
+        onSuccess={({ hasInternationalImmigrationHistory }) => {
           setShowDetails(hasInternationalImmigrationHistory);
           if (!hasInternationalImmigrationHistory) {
             setInternationalImmigrationHistoryDetails('');
           }
-          return true;
+          
         }}
         pageId='has-international-immigration-history'
         schema={z.object({
@@ -58,9 +58,9 @@ export default function InternationalImmigrationHistory() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setInternationalImmigrationHistoryDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

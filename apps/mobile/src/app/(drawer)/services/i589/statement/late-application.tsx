@@ -18,9 +18,9 @@ export default function LateApplication() {
         defaultValues={{
           details: '',
         }}
-        onSubmit={({ details }) => {
+        onSuccess={({ details }) => {
           setLateApplicationDetails(details);
-          return true;
+          
         }}
         pageId='details'
         schema={z.object({

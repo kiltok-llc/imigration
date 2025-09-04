@@ -29,12 +29,12 @@ export default function InternationalCriminalHistory() {
         defaultValues={{
           hasInternationalCriminalHistory: false,
         }}
-        onSubmit={({ hasInternationalCriminalHistory }) => {
+        onSuccess={({ hasInternationalCriminalHistory }) => {
           setShowDetails(hasInternationalCriminalHistory);
           if (!hasInternationalCriminalHistory) {
             setInternationalCriminalHistoryDetails('');
           }
-          return true;
+          
         }}
         pageId='has-international-criminal-history'
         schema={z.object({
@@ -56,9 +56,9 @@ export default function InternationalCriminalHistory() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setInternationalCriminalHistoryDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

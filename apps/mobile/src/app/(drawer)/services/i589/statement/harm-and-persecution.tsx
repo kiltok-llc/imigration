@@ -27,12 +27,12 @@ export default function HarmAndPersecution() {
         defaultValues={{
           hasBeenHarmed: false,
         }}
-        onSubmit={({ hasBeenHarmed }) => {
+        onSuccess={({ hasBeenHarmed }) => {
           setShowDetails(hasBeenHarmed);
           if (!hasBeenHarmed) {
             setHarmDetails('');
           }
-          return true;
+          
         }}
         pageId='has-been-harmed'
         schema={z.object({
@@ -54,9 +54,9 @@ export default function HarmAndPersecution() {
           defaultValues={{
             details: '',
           }}
-          onSubmit={({ details }) => {
+          onSuccess={({ details }) => {
             setHarmDetails(details);
-            return true;
+            
           }}
           pageId='details'
           schema={z.object({

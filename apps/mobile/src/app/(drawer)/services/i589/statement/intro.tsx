@@ -22,10 +22,10 @@ export default function Intro() {
         defaultValues={{
           agreed: false,
         }}
-        onSubmit={() => {
+        onSuccess={() => {
           setIsStepStarted(true);
 
-          return true;
+          
         }}
         pageId='intro'
         schema={z.object({
