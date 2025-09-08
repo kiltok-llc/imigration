@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { MigriEncounterType, useTriggerMigri } from '@/lib/migri';
 
@@ -12,13 +12,9 @@ export function MigriTrigger({
   type: MigriEncounterType;
 }) {
   const triggerMigri = useTriggerMigri();
-  const triggeredRef = useRef(false);
 
   useEffect(() => {
-    if (!triggeredRef.current) {
-      triggeredRef.current = true;
-      triggerMigri({ id, once, skipMissing: true, type });
-    }
+    triggerMigri({ id, once, skipMissing: true, type });
   }, [id, once, triggerMigri, type]);
 
   return null;

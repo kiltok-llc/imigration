@@ -15,15 +15,13 @@ import { Trans } from '@/components/trans';
 const FORMAT = Intl.DateTimeFormat('en-US');
 
 export function FormDateInput({
+  hint,
   i18nKey,
-  optional,
-  required,
   style,
   ...props
 }: ComponentProps<typeof TextInput> & {
+  hint?: 'optional' | 'required';
   i18nKey: string;
-  optional?: boolean;
-  required?: boolean;
 }) {
   const theme = useTheme();
   const {
@@ -60,12 +58,12 @@ export function FormDateInput({
             <NativeText>
               <Trans i18nKey={i18nKey} />
             </NativeText>
-            {required && (
+            {hint === 'required' && (
               <NativeText style={{ color: theme.colors.error }}>
                 <Trans i18nKey='form.required' />
               </NativeText>
             )}
-            {optional && (
+            {hint === 'optional' && (
               <NativeText
                 style={tw.style('font-normal normal-case', {
                   color: theme.colors.onSurfaceDisabled,
@@ -87,11 +85,7 @@ export function FormDateInput({
         value={value ? FORMAT.format(value) : ''}
         {...props}
       />
-      {error?.message && (
-        <HelperText type='error' visible={!!error}>
-          {error?.message}
-        </HelperText>
-      )}
+      {error?.message && <HelperText type='error'>{error?.message}</HelperText>}
     </View>
   );
 }

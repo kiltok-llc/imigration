@@ -125,14 +125,14 @@ export default function DemographicsAndBirth() {
             <FormBlock>
               <FormField control={control} name='ethnicity'>
                 <QuizFieldTitle />
-                <QuizTextInput optional />
+                <QuizTextInput hint='optional' />
               </FormField>
             </FormBlock>
 
             <FormBlock>
               <FormField control={control} name='religion'>
                 <QuizFieldTitle />
-                <QuizTextInput optional />
+                <QuizTextInput hint='optional' />
               </FormField>
             </FormBlock>
           </>

@@ -45,6 +45,24 @@ export const nameAtom = userDataDocumentAtom(
   NameSchema
 );
 
+export const maidenNameAtom = userDataDocumentAtom(
+  'maiden-name',
+  '',
+  z.string()
+);
+
+export const otherNamesAtom = userDataDocumentAtom(
+  'other-names',
+  [],
+  z.array(z.string())
+);
+
+export const aliasesAtom = userDataDocumentAtom(
+  'aliases',
+  [],
+  z.array(z.string())
+);
+
 export const passportAtom = userDataDocumentAtom(
   'passport',
   DEFAULT_PASSPORT,

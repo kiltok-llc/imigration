@@ -1319,11 +1319,6 @@
                 "title": "¿Cuál era el estatus migratorio de {{ name }} al ingresar?",
                 "title_client": "¿Cuál era su estatus migratorio al entrar?",
                 "label": "Estatus Migratorio"
-              },
-              "status-expiration": {
-                "title": "¿Cuándo expira el estatus migratorio de {{ name }}?",
-                "title_client": "¿Cuándo expira su estatus migratorio?",
-                "label": "Fecha de Expiración"
               }
             }
           },
@@ -1524,7 +1519,7 @@
             },
             "additional-names-title": "Nombres Adicionales",
             "alias-information": {
-              "alias-name": {
+              "aliases": {
                 "label": "¿Cuál es o fue tu alias?"
               },
               "has-alias": {

@@ -73,7 +73,9 @@ export const useTriggerMigri = () => {
 
     if (
       encounter.skipMissing &&
-      !Array.isArray(t(`migri.${encounter.id}`, { returnObjects: true }))
+      !Array.isArray(
+        t(`migri.${encounter.id}.${encounter.type}`, { returnObjects: true })
+      )
     ) {
       console.debug(
         'Skipping migri encounter because translation is missing for id:',

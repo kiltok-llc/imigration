@@ -61,8 +61,8 @@ export function FormAddressInput({
         <FormTextInput
           autoComplete='address-line2'
           dense
+          hint='optional'
           i18nKey='form.address.unit'
-          optional
         />
       </FormField>
 

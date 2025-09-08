@@ -1,4 +1,4 @@
-import { PDFDocument, PDFForm } from '@cantoo/pdf-lib';
+import { PDFDocument } from '@cantoo/pdf-lib';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { atom } from 'jotai';
@@ -30,34 +30,11 @@ const pdfFieldsAtom = atom<PDFField[]>((get) => [
   ...get(hearingFieldsAtom),
 ]);
 
-const SUPPLEMENT_A_PAGES = [10];
-const SUPPLEMENT_B_PAGES = [11];
+const SUPPLEMENT_A_TEMPLATE_PAGES = [10];
+const SUPPLEMENT_B_TEMPLATE_PAGES = [11];
 
-// Extract groups of pages from document into separate document
-async function extractPdfSupplements(src: PDFDocument, groups: number[][]) {
-  const documents: PDFDocument[] = [];
-
-  for (const indicies of groups) {
-    // This could maybe be concurrent with Promise.all for a small speedup, but
-    // pdf-lib should be tested to see if it can handle that first.
-
-    const document = await PDFDocument.create();
-    const pages = await document.copyPages(src, indicies);
-    for (const page of pages) {
-      document.addPage(page);
-    }
-
-    documents.push(document);
-  }
-
-  for (const page of groups.flat().sort().toReversed()) {
-    src.removePage(page);
-  }
-
-  return documents;
-}
-
-function fillPdfForm(form: PDFForm, fields: PDFField[]) {
+function fillPdf(document: PDFDocument, fields: PDFField[]) {
+  const form = document.getForm();
   for (let [name, value] of fields) {
     if (value == null) {
       continue;
@@ -78,70 +55,101 @@ function fillPdfForm(form: PDFForm, fields: PDFField[]) {
     textField.setMaxLength(undefined);
     textField.setText(value);
   }
+  form.flatten();
 }
 
 async function fillPdfSupplement(
   document: PDFDocument,
-  supplement: PDFDocument,
+  supplementPages: number[],
   supplementFields: PDFField[][]
 ) {
   for (const fields of supplementFields) {
-    const form = supplement.getForm();
-    fillPdfForm(form, fields);
-    form.flatten();
-    const pages = await document.copyPages(
-      supplement,
-      supplement.getPageIndices()
-    );
+    const donor = await PDFDocument.load(await document.save(), {
+      password: '',
+      updateMetadata: false,
+    });
+
+    fillPdf(donor, fields);
+    donor.getForm().flatten();
+
+    const pages = await document.copyPages(donor, supplementPages);
     for (const page of pages) {
       document.addPage(page);
     }
   }
 }
 
-async function loadPdfAsset(assetId: number) {
-  const [asset] = await Asset.loadAsync(assetId);
-  const { localUri } = await asset!.downloadAsync();
-  const content = await FileSystem.readAsStringAsync(localUri!, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-  return await PDFDocument.load(content, {
-    password: '',
-    updateMetadata: true,
-  });
+function removePdfSupplementTemplatePages(
+  document: PDFDocument,
+  pages: number[][]
+) {
+  for (const page of [...new Set(pages.flat())].sort().toReversed()) {
+    document.removePage(page);
+  }
 }
 
-async function savePdfDocument(document: PDFDocument) {
-  const content = await document.saveAsBase64({
+async function renderPdf(
+  content: string,
+  fields: PDFField[],
+  supplementAFields: PDFField[][],
+  supplementBFields: PDFField[][]
+) {
+  // TODO workletize this
+  const document = await PDFDocument.load(content, {
+    password: '',
+    updateMetadata: false,
+  });
+
+  fillPdf(document, fields);
+
+  await fillPdfSupplement(
+    document,
+    SUPPLEMENT_A_TEMPLATE_PAGES,
+    supplementAFields
+  );
+
+  await fillPdfSupplement(
+    document,
+    SUPPLEMENT_B_TEMPLATE_PAGES,
+    supplementBFields
+  );
+
+  removePdfSupplementTemplatePages(document, [
+    SUPPLEMENT_A_TEMPLATE_PAGES,
+    SUPPLEMENT_B_TEMPLATE_PAGES,
+  ]);
+
+  return await document.saveAsBase64({
     updateFieldAppearances: true,
   });
-  const path = `${FileSystem.cacheDirectory}${uuid.v4()}.pdf`;
-  await FileSystem.writeAsStringAsync(path, content, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-  return path;
 }
 
 export const i589PdfAtom = atomWithQuery((get) => ({
   queryFn: async () => {
-    const document = await loadPdfAsset(i589PdfTemplate);
-
-    const [supplementA, supplementB] = await extractPdfSupplements(document, [
-      SUPPLEMENT_A_PAGES,
-      SUPPLEMENT_B_PAGES,
-    ]);
-
-    const supplementAFields = get(supplementAFieldsAtom);
-    await fillPdfSupplement(document, supplementA!, supplementAFields);
-
-    const supplementBFields = get(supplementBFieldsAtom);
-    await fillPdfSupplement(document, supplementB!, supplementBFields);
-
-    const form = document.getForm();
     const fields = get(pdfFieldsAtom);
-    fillPdfForm(form, fields);
+    const supplementAFields = get(supplementAFieldsAtom);
+    const supplementBFields = get(supplementBFieldsAtom);
 
-    return await savePdfDocument(document);
+    // TODO use sdk54 apis when available
+
+    const [{ localUri: assetUri } = {}] =
+      await Asset.loadAsync(i589PdfTemplate);
+    const assetContent = await FileSystem.readAsStringAsync(assetUri!, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    const content = await renderPdf(
+      assetContent,
+      fields,
+      supplementAFields,
+      supplementBFields
+    );
+
+    const path = `${FileSystem.cacheDirectory}${uuid.v4()}.pdf`;
+    await FileSystem.writeAsStringAsync(path, content, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    return path;
   },
   queryKey: ['pdf', 'i589'],
   staleTime: __DEV__ ? 0 : Infinity,

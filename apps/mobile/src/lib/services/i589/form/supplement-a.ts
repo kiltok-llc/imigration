@@ -22,11 +22,13 @@ import { PDFField } from '@/lib/services/i589/form/types';
 import { chunked } from '@/lib/utils';
 
 export const supplementAFieldsAtom = atom<PDFField[][]>((get) =>
-  chunked(get(childIdsAtom).slice(0, 4), 2).map((childIds) => [
-    ...get(headerFieldsAtom),
+  chunked(get(childIdsAtom).slice(0, 4), 2).map((childIds) =>
+    [
+      ...get(headerFieldsAtom),
 
-    ...childIds.flatMap((id, idx) => get(childFields({ id, idx }))),
-  ])
+      ...childIds.flatMap((id, idx) => get(childFields({ id, idx }))),
+    ].map(([k, v]) => [`form1[0].#subform[12].${k}`, v])
+  )
 );
 
 const headerFieldsAtom = atom<PDFField[]>((get) => [
@@ -45,36 +47,34 @@ const childFieldsFamily = (
     isEqual
   );
 
-const childFields = childFieldsFamily((id, idx, get) =>
+const childFields = childFieldsFamily((id, idx, get) => [
+  [`TextField12[${idx * 10 + 6}]`, get(childAlienNumberAtom(id))],
+  [`TextField12[${idx * 10 + 7}]`, get(childPassportAtom(id)).number],
+  [`TextField12[${idx * 10 + 8}]`, 'child marital status'],
+  [`TextField12[${idx * 10 + 9}]`, get(childSsnAtom(id))],
+
+  [`TextField12[${idx * 10}]`, get(childNameAtom(id)).last],
+  [`TextField12[${idx * 10 + 2}]`, get(childNameAtom(id)).first],
+  [`TextField12[${idx * 10 + 3}]`, get(childNameAtom(id)).middle ?? ''],
+  [`DateTimeField14[${idx}]`, get(childDobAtom(id))],
+
+  [`TextField12[${idx * 10 + 1}]`, 'child birth location'],
+  [`TextField12[${idx * 10 + 4}]`, 'child nationality'],
+  [`TextField12[${idx * 10 + 5}]`, get(childEthnicityAtom(id))],
+
   [
-    [`TextField12[${idx * 10 + 6}]`, get(childAlienNumberAtom(id))],
-    [`TextFields12[${idx * 10 + 7}]`, get(childPassportAtom(id)).number],
-    [`TextField12[${idx * 10 + 8}]`, 'child marital status'],
-    [`TextField12[${idx * 10 + 9}]`, get(childSsnAtom(id))],
+    idx === 0 ? 'CheckBox12_Sex[2]' : 'SuppAL12_CheckBox[0]',
+    get(childSexAtom(id)) === 'male',
+  ],
+  [
+    idx === 0 ? 'CheckBox12_Sex[3]' : 'SuppAL12_CheckBox[1]',
+    get(childSexAtom(id)) === 'female',
+  ],
 
-    [`TextField12[${idx * 10}]`, get(childNameAtom(id)).last],
-    [`TextField12[${idx * 10 + 2}]`, get(childNameAtom(id)).first],
-    [`TextField12[${idx * 10 + 3}]`, get(childNameAtom(id)).middle ?? ''],
-    [`DateTimeField14[${idx}]`, get(childDobAtom(id))],
-
-    [`TextField12[${idx * 10 + 1}]`, 'child birth location'],
-    [`TextField12[${idx * 10 + 4}]`, 'child nationality'],
-    [`TextField12[${idx * 10 + 5}]`, get(childEthnicityAtom(id))],
-
-    [
-      idx === 0 ? 'CheckBox12_Sex[2]' : 'SuppAL12_CheckBox[0]',
-      get(childSexAtom(id)) === 'male',
-    ],
-    [
-      idx === 0 ? 'CheckBox12_Sex[3]' : 'SuppAL12_CheckBox[1]',
-      get(childSexAtom(id)) === 'female',
-    ],
-
-    ...(get(childIsInUsaAtom(id))
-      ? get(childInUsaFields({ id, idx }))
-      : get(childNotInUsaFields({ id, idx }))),
-  ].map(([k, v]) => [`form1[0].#subform[${idx ? 3 : 1}].${k}`, v])
-);
+  ...(get(childIsInUsaAtom(id))
+    ? get(childInUsaFields({ id, idx }))
+    : get(childNotInUsaFields({ id, idx }))),
+]);
 
 const childNotInUsaFields = childFieldsFamily((_id, idx, _get) => [
   [idx === 0 ? 'CheckBox57[1]' : 'SuppAL13_CheckBox[1]', true],

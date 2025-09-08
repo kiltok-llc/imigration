@@ -1,3 +1,4 @@
+import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
@@ -11,15 +12,28 @@ import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
-import { QuizTextInput } from '@/components/quiz/text';
-import { required } from '@/lib/utils';
+import { QuizCommaListInput, QuizTextInput } from '@/components/quiz/text';
+import {
+  aliasesAtom,
+  maidenNameAtom,
+  nameAtom,
+  otherNamesAtom,
+} from '@/lib/data/user';
+import { required, stringList } from '@/lib/utils';
 
 export default function NameAndAliases() {
+  const setName = useSetAtom(nameAtom);
+  const setMaidenName = useSetAtom(maidenNameAtom);
+  const setOtherNames = useSetAtom(otherNamesAtom);
+  const setAliases = useSetAtom(aliasesAtom);
+
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={DEFAULT_FORM_NAME}
-        onSubmit={() => true}
+        onSuccess={(name) => {
+          setName(name);
+        }}
         pageId='basic-names'
         schema={FormNameSchema}
       >
@@ -41,11 +55,14 @@ export default function NameAndAliases() {
           maidenName: '',
           otherNames: '',
         }}
-        onSubmit={() => true}
+        onSuccess={({ maidenName, otherNames }) => {
+          setMaidenName(maidenName);
+          setOtherNames(otherNames);
+        }}
         pageId='additional-names'
         schema={z.object({
           maidenName: z.string(),
-          otherNames: z.string(),
+          otherNames: stringList(z.array(z.string().nonempty())),
         })}
       >
         {({ control }) => (
@@ -56,11 +73,11 @@ export default function NameAndAliases() {
 
             <FormBlock>
               <FormField control={control} name='maidenName'>
-                <QuizTextInput optional />
+                <QuizTextInput hint='optional' />
               </FormField>
 
               <FormField control={control} name='otherNames'>
-                <QuizTextInput optional />
+                <QuizCommaListInput hint='optional' />
               </FormField>
             </FormBlock>
           </>
@@ -71,10 +88,14 @@ export default function NameAndAliases() {
         defaultValues={{
           hasAlias: null,
         }}
-        onSubmit={() => true}
+        onSuccess={({ aliases }) => {
+          setAliases(aliases ?? []);
+        }}
         pageId='alias-information'
         schema={z.object({
-          aliasName: z.string().nonempty().optional(),
+          aliases: stringList(
+            z.array(z.string().nonempty()).nonempty()
+          ).optional(),
           hasAlias: required(z.boolean().nullable()),
         })}
       >
@@ -90,10 +111,10 @@ export default function NameAndAliases() {
                 active={!!watch('hasAlias')}
                 activeValue=''
                 control={control}
-                name='aliasName'
+                name='aliases'
               >
                 <FormBlock animated>
-                  <QuizTextInput />
+                  <QuizCommaListInput />
                 </FormBlock>
               </ConditionalFormWrapper>
             </FormBlock>

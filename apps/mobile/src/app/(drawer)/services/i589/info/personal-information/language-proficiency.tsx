@@ -34,7 +34,7 @@ export default function LanguageProficiency() {
                 <QuizDropdown options={LANGUAGE_OPTIONS} />
               </FormField>
               <FormField control={control} name='dialect'>
-                <QuizTextInput optional />
+                <QuizTextInput hint='optional' />
               </FormField>
             </FormBlock>
           </>

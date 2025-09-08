@@ -185,7 +185,7 @@ const ChildQuizPage = forwardRef<
           <FormBlock>
             <FormField control={control} name='ethnicity'>
               <QuizFieldTitle variant='titleLarge' />
-              <QuizTextInput optional />
+              <QuizTextInput hint='optional' />
             </FormField>
           </FormBlock>
 

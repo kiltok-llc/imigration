@@ -78,6 +78,21 @@ export async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
+export function stringList<T extends z.ZodType<any, string[]>>(
+  schema: T,
+  sep: string = ','
+) {
+  return z
+    .string()
+    .transform((v) =>
+      v
+        .split(sep)
+        .map((s) => s.trim())
+        .filter(Boolean)
+    )
+    .pipe(schema);
+}
+
 export function toI18nKey(name: string) {
   return name
     .replaceAll(/([a-z])([A-Z])/g, '$1-$2')

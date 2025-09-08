@@ -1,12 +1,6 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import { defineConfig } from 'eslint/config';
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
-
 export default defineConfig([
-  compat.extends('expo'),
   {
     rules: {
       'no-restricted-imports': [
@@ -33,6 +27,7 @@ export default defineConfig([
           additionalHooks: '^(use[A-Za-z]+Ref)$',
         },
       ],
+      'unicorn/no-array-sort': 'off', // https://github.com/facebook/hermes/pull/1298
     },
   },
 ]);

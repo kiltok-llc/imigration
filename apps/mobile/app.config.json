@@ -11,7 +11,7 @@
     "plugins": [
       "expo-router",
       [
-        "expo-dev-launcher",
+        "expo-dev-client",
         {
           "launchMode": "most-recent"
         }
@@ -39,8 +39,7 @@
           "microphonePermission": "iMigration uses the microphone to allow you to dictate text instead of typing.",
           "speechRecognitionPermission": "iMigration uses speech recognition to allow you to dictate text instead of typing."
         }
-      ],
-      ["expo-asset"]
+      ]
     ],
     "experiments": {
       "tsconfigPaths": true

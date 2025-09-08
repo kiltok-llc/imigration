@@ -36,8 +36,8 @@ export function FormNameInput({
         <FormTextInput
           autoComplete='name-middle'
           dense
+          hint='optional'
           label={<Trans i18nKey='form.name.middle' />}
-          optional
         />
       </FormField>
 

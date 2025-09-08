@@ -32,7 +32,6 @@ import {
   childNameAtom,
   childPassportAtom,
   childSsnAtom,
-  childStatusExpirationAtom,
   childUscisNumberAtom,
 } from '@/lib/data/child';
 import { DEFAULT_PASSPORT, DEFAULT_USA_ENTRY } from '@/lib/data/schema';
@@ -44,7 +43,6 @@ import {
   spouseNameAtom,
   spousePassportAtom,
   spouseSsnAtom,
-  spouseStatusExpirationAtom,
   spouseUscisNumberAtom,
 } from '@/lib/data/spouse';
 import {
@@ -54,7 +52,6 @@ import {
   nameAtom,
   passportAtom,
   ssnAtom,
-  statusExpirationAtom,
   uscisNumberAtom,
 } from '@/lib/data/user';
 import { ImmigrationCourtStatusEnum } from '@/lib/schemas';
@@ -121,13 +118,6 @@ export default function ImmigrationStatus() {
   );
   const setEntries = useSetAtom(
     contextFamily(entriesAtom, spouseEntriesAtom, childEntriesAtom)(param)
-  );
-  const setStatusExpiration = useSetAtom(
-    contextFamily(
-      statusExpirationAtom,
-      spouseStatusExpirationAtom,
-      childStatusExpirationAtom
-    )(param)
   );
   const [isInUsa, setIsInUsa] = useAtom(
     contextFamily(
@@ -357,20 +347,15 @@ export default function ImmigrationStatus() {
 
         {isInUsa && (
           <QuizPage
-            defaultValues={{ ...DEFAULT_USA_ENTRY, statusExpiration: null }}
-            onSuccess={({ date, port, status, statusExpiration }) => {
-              setEntries(([_first, ...others]) => [
-                { date, port, status },
-                ...others,
-              ]);
-              setStatusExpiration(statusExpiration);
+            defaultValues={DEFAULT_USA_ENTRY}
+            onSuccess={({ date, port, status }) => {
+              setEntries([{ date, port, status }]);
             }}
             pageId='first-entry'
             schema={z.object({
               date: required(z.date().nullable()),
               port: z.string().nonempty(),
               status: z.string(),
-              statusExpiration: z.date().nullable(),
             })}
           >
             {({ control }) => (
@@ -395,12 +380,7 @@ export default function ImmigrationStatus() {
 
                   <FormField control={control} name='status'>
                     <QuizFieldTitle />
-                    <QuizTextInput optional />
-                  </FormField>
-
-                  <FormField control={control} name='statusExpiration'>
-                    <QuizFieldTitle />
-                    <QuizDateInput optional />
+                    <QuizTextInput hint='optional' />
                   </FormField>
                 </FormBlock>
               </>
@@ -515,7 +495,7 @@ export default function ImmigrationStatus() {
                               control={control}
                               name={`entries.${idx}.status`}
                             >
-                              <QuizTextInput optional />
+                              <QuizTextInput hint='optional' />
                             </FormField>
                           </FormBlock>
                         </TranslationContextProvider>

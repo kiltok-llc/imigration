@@ -34,7 +34,10 @@ export function FormRangeInput({
       </FormField>
 
       <FormField {...lens.focus('end').interop()}>
-        <FormDateInput i18nKey='form.range.end' optional={optionalEnd} />
+        <FormDateInput
+          hint={optionalEnd ? 'optional' : undefined}
+          i18nKey='form.range.end'
+        />
       </FormField>
     </>
   );

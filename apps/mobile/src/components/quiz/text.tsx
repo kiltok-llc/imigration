@@ -21,10 +21,18 @@ import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
 import { useFormField } from '@/components/form/field';
-import { FormTextInput } from '@/components/form/text';
+import { FormCommaListInput, FormTextInput } from '@/components/form/text';
 import { useQuizFieldKey } from '@/components/quiz/hooks';
 import { useSpeechLanguage } from '@/lib/speech';
 import { useT } from '@/lib/translation';
+
+export function QuizCommaListInput({
+  ...props
+}: Omit<ComponentProps<typeof FormCommaListInput>, 'i18nKey'>) {
+  const i18nKey = useQuizFieldKey('label');
+
+  return <FormCommaListInput i18nKey={i18nKey} {...props} />;
+}
 
 export function QuizLongTextInput({
   ...props

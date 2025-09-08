@@ -61,6 +61,8 @@
       "middle": "Middle Name"
     },
     "optional": " (optional)",
+    "optional-comma": " (optional, comma separated)",
+    "comma": " (comma separated)",
     "range": {
       "end": "End Date",
       "start": "Start Date"
@@ -1395,11 +1397,6 @@
                 "title": "What was {{ name }}'s immigration status at entry?",
                 "title_client": "What was your immigration status at entry?",
                 "label": "Immigration Status"
-              },
-              "status-expiration": {
-                "title": "When does {{ name }}'s immigration status expire?",
-                "title_client": "When does your immigration status expire?",
-                "label": "Expiration Date"
               }
             }
           },
@@ -1600,7 +1597,7 @@
             },
             "additional-names-title": "Additional Names",
             "alias-information": {
-              "alias-name": {
+              "aliases": {
                 "label": "What is or was your alias?"
               },
               "has-alias": {
