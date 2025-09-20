@@ -14,7 +14,7 @@ export default function Root() {
   }
 
   if (__DEV__) {
-    return <Redirect href='/onboarding/current-proceedings' />;
+    return <Redirect href='/services' />;
   }
 
   return <Redirect href='/services' />;

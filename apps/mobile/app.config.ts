@@ -1,6 +1,6 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
-const APP_VARIANT = process.env.APP_VARIANT ?? '';
+const APP_VARIANT = process.env.APP_VARIANT!;
 
 function getAppNameSuffix(): string {
   switch (APP_VARIANT) {

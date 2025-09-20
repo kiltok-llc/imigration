@@ -12,12 +12,14 @@ import {
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
 import * as React from 'react';
 import { ComponentProps } from 'react';
-import { Image } from 'react-native';
-import { Drawer as PaperDrawer, useTheme } from 'react-native-paper';
+import { Image, View } from 'react-native';
+import { Drawer as PaperDrawer, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import stars from '@/assets/drawer/stars.png';
 import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
+import { env } from '@/env';
 
 export function Drawer({
   screenOptions,
@@ -27,8 +29,8 @@ export function Drawer({
 
   return (
     <ExpoDrawer
-      drawerContent={(props) => {
-        return (
+      drawerContent={(props) => (
+        <View style={tw`flex-1`}>
           <DrawerContentScrollView alwaysBounceVertical={false} {...props}>
             <Image
               source={stars}
@@ -36,8 +38,24 @@ export function Drawer({
             />
             <DrawerItemList {...props} />
           </DrawerContentScrollView>
-        );
-      }}
+          {env.EXPO_PUBLIC_APP_VARIANT !== 'production' && (
+            <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-2`}>
+              <Text style={tw`font-mono`}>
+                iMigration{' '}
+                {env.EXPO_PUBLIC_APP_VARIANT.replace(/^./, (c) =>
+                  c.toUpperCase()
+                )}
+              </Text>
+              <Text style={tw`font-mono`}>
+                Build ID: {env.EXPO_PUBLIC_BUILD_ID}
+              </Text>
+              <Text style={tw`font-mono`}>
+                Commit Hash: {env.EXPO_PUBLIC_COMMIT_HASH}
+              </Text>
+            </SafeAreaView>
+          )}
+        </View>
+      )}
       screenOptions={{
         headerStyle: {
           backgroundColor: theme.colors.surface,
