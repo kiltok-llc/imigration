@@ -41,10 +41,7 @@ export function Drawer({
           {env.EXPO_PUBLIC_APP_VARIANT !== 'production' && (
             <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-2`}>
               <Text style={tw`font-mono`}>
-                iMigration{' '}
-                {env.EXPO_PUBLIC_APP_VARIANT.replace(/^./, (c) =>
-                  c.toUpperCase()
-                )}
+                iMigration {env.EXPO_PUBLIC_APP_VARIANT}
               </Text>
               <Text style={tw`font-mono`}>
                 Build ID: {env.EXPO_PUBLIC_BUILD_ID}
