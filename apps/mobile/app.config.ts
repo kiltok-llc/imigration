@@ -24,17 +24,28 @@ function getAppIdentifierSuffix(): string {
   }
 }
 
+function getAppSchemeSuffix(): string {
+  switch (APP_VARIANT) {
+    case 'development':
+      return '-dev';
+    case 'preview':
+      return '-preview';
+    default:
+      return '';
+  }
+}
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'iMigration' + getAppNameSuffix(),
-  scheme: 'imigration' + APP_VARIANT ? `-${APP_VARIANT}` : '',
+  name: config.name + getAppNameSuffix(),
+  scheme: config.scheme + getAppSchemeSuffix(),
   slug: config.slug!,
   ios: {
     ...config.ios,
-    bundleIdentifier: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
+    bundleIdentifier: config.ios!.bundleIdentifier + getAppIdentifierSuffix(),
   },
   android: {
     ...config.android,
-    package: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
+    package: config.android!.package + getAppIdentifierSuffix(),
   },
 });

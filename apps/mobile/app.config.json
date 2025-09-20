@@ -1,7 +1,9 @@
 {
   "expo": {
+    "name": "iMigration",
     "slug": "imigration",
     "version": "1.0.0",
+    "scheme": "imigration",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -62,6 +64,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.kiltok.imigration",
       "supportsTablet": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -111,6 +114,7 @@
       }
     },
     "android": {
+      "package": "com.kiltok.imigration",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
