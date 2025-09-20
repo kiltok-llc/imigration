@@ -37,15 +37,13 @@ function getAppSchemeSuffix(): string {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: config.name + getAppNameSuffix(),
-  scheme: config.scheme + getAppSchemeSuffix(),
-  slug: config.slug!,
+  name: 'iMigration' + getAppNameSuffix(),
+  scheme: 'imigration' + getAppSchemeSuffix(),
+  slug: 'imigration',
   ios: {
-    ...config.ios,
-    bundleIdentifier: config.ios!.bundleIdentifier + getAppIdentifierSuffix(),
+    bundleIdentifier: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
   },
   android: {
-    ...config.android,
-    package: config.android!.package + getAppIdentifierSuffix(),
+    package: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
   },
 });

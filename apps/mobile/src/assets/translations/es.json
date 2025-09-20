@@ -44,6 +44,17 @@
                 ]
               }
             },
+            "contact-information": {
+              "contact-information": {
+                "talk": [
+                  "Empecemos obteniendo tu información de contacto.",
+                  "Por favor proporciona tu número de teléfono y dirección de correo electrónico.",
+                  "Esta información nos ayudará a mantenernos en contacto contigo sobre tu aplicación.",
+                  "Ambos campos son opcionales, pero se recomienda proporcionarlos.",
+                  "Haz clic en Confirmar cuando estés listo para continuar."
+                ]
+              }
+            },
             "name-and-aliases": {
               "alias-information": {
                 "talk": [
@@ -548,6 +559,10 @@
     "sex": {
       "female": "Femenino",
       "male": "Masculino"
+    },
+    "contact": {
+      "phone-number": "Número de Teléfono",
+      "email": "Dirección de Correo Electrónico"
     },
     "optional-comma": " (opcional, separado por comas)",
     "comma": " (separado por comas)"

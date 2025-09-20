@@ -74,6 +74,10 @@
     "sex": {
       "female": "Female",
       "male": "Male"
+    },
+    "contact": {
+      "phone-number": "Phone Number",
+      "email": "Email Address"
     }
   },
   "keyboard": {
@@ -301,6 +305,17 @@
             "Press the 'Start' button when you are ready to begin."
           ],
           "personal-information": {
+            "contact-information": {
+              "contact-information": {
+                "talk": [
+                  "Let's start by getting your contact information.",
+                  "Please provide your phone number and email address.",
+                  "This information will help us stay in touch with you about your application.",
+                  "Both fields are optional, but providing them is recommended.",
+                  "Click Confirm when you are ready to continue."
+                ]
+              }
+            },
             "demographics-and-birth": {
               "basic-demographics": {
                 "talk": [

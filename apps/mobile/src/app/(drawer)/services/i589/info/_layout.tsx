@@ -51,6 +51,7 @@ export default function InfoLayout() {
         }}
         routes={[
           'intro',
+          'personal-information/contact-information',
           'personal-information/name-and-aliases',
           'personal-information/demographics-and-birth',
           'personal-information/language-proficiency',
