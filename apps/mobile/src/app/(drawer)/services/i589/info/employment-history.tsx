@@ -1,3 +1,4 @@
+import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import {
@@ -9,9 +10,9 @@ import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import {
-  DEFAULT_RANGE,
+  DEFAULT_FORM_RANGE,
   FormRangeInput,
-  RangeSchemaWithOptionalEnd,
+  FormRangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
 import {
   QuizFieldArrayAdd,
@@ -21,32 +22,31 @@ import { QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
+import { jobHistorySchema } from '@/lib/data/user';
 
 export default function EmploymentHistory() {
+  const setJobHistory = useSetAtom(jobHistorySchema);
+
   return (
     <QuizScreen>
       <QuizPage
         defaultValues={{
-          jobs: [
-            {
-              address: DEFAULT_FORM_ADDRESS,
-              employer: '',
-              occupation: '',
-              range: DEFAULT_RANGE,
-            },
-          ],
+          jobs: [DEFAULT_FORM_JOB],
         }}
-        onSubmit={() => true}
+        onSuccess={({ jobs }) => {
+          setJobHistory(
+            jobs.map(({ address, ...job }) => ({
+              address: {
+                ...address,
+                country: 'USA',
+              },
+              ...job,
+            }))
+          );
+        }}
         pageId='jobs'
         schema={z.object({
-          jobs: z.array(
-            z.object({
-              address: FormAddressSchema,
-              employer: z.string().nonempty(),
-              occupation: z.string().nonempty(),
-              range: RangeSchemaWithOptionalEnd,
-            })
-          ),
+          jobs: z.array(FormJobSchema),
         })}
       >
         {({ control, lens }) => (
@@ -79,13 +79,7 @@ export default function EmploymentHistory() {
                   </FormBlock>
                 )}
               </FormArrayItems>
-              <QuizFieldArrayAdd
-                value={{
-                  address: DEFAULT_FORM_ADDRESS,
-                  name: '',
-                  range: DEFAULT_RANGE,
-                }}
-              />
+              <QuizFieldArrayAdd value={DEFAULT_FORM_JOB} />
             </FormArray>
           </>
         )}
@@ -93,3 +87,17 @@ export default function EmploymentHistory() {
     </QuizScreen>
   );
 }
+
+const FormJobSchema = z.object({
+  address: FormAddressSchema,
+  employer: z.string().nonempty(),
+  occupation: z.string().nonempty(),
+  range: FormRangeSchemaWithOptionalEnd,
+});
+
+const DEFAULT_FORM_JOB: z.input<typeof FormJobSchema> = {
+  address: DEFAULT_FORM_ADDRESS,
+  employer: '',
+  occupation: '',
+  range: DEFAULT_FORM_RANGE,
+};

@@ -5,26 +5,26 @@ import { FormDateInput } from '@/components/form/date';
 import { FormField } from '@/components/form/field';
 import { required } from '@/lib/utils';
 
-export const DEFAULT_RANGE = {
-  end: null,
-  start: null,
-};
-
-export const RangeSchema = z.object({
+export const FormRangeSchema = z.object({
   end: required(z.date().nullable()),
   start: required(z.date().nullable()),
 });
 
-export const RangeSchemaWithOptionalEnd = z.object({
+export const FormRangeSchemaWithOptionalEnd = z.object({
   end: z.date().nullable(),
   start: required(z.date().nullable()),
 });
+
+export const DEFAULT_FORM_RANGE: z.input<typeof FormRangeSchema> = {
+  end: null,
+  start: null,
+};
 
 export function FormRangeInput({
   lens,
   optionalEnd = false,
 }: {
-  lens: Lens<z.input<typeof RangeSchema>>;
+  lens: Lens<z.input<typeof FormRangeSchema>>;
   optionalEnd?: boolean;
 }) {
   return (

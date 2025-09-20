@@ -2,7 +2,6 @@
   "expo": {
     "slug": "imigration",
     "version": "1.0.0",
-    "scheme": "imigration",
     "web": {
       "bundler": "metro",
       "output": "static",

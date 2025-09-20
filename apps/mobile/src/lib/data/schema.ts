@@ -1,5 +1,7 @@
 import z from 'zod/v4';
 
+import { SchoolLevelEnum } from '@/lib/schemas';
+
 export const AlienNumberSchema = z.string();
 
 export const DEFAULT_ALIEN_NUMBER = '';
@@ -70,3 +72,21 @@ export const NativeLanguageSchema = z.object({
 });
 
 export const DEFAULT_NATIVE_LANGUAGE = NativeLanguageSchema.parse({});
+
+export const JobSchema = z.object({
+  address: AddressSchema.default(DEFAULT_ADDRESS),
+  employer: z.string().default(''),
+  occupation: z.string().default(''),
+  range: RangeSchema.default(DEFAULT_RANGE),
+});
+
+export const DEFAULT_JOB = JobSchema.parse({});
+
+export const SchoolInfoSchema = z.object({
+  address: AddressSchema.default(DEFAULT_ADDRESS),
+  level: SchoolLevelEnum.nullable().default(null),
+  name: z.string().default(''),
+  range: RangeSchema.default(DEFAULT_RANGE),
+});
+
+export const DEFAULT_SCHOOL_INFO = SchoolInfoSchema.parse({});

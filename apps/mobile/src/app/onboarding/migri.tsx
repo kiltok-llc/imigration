@@ -1,6 +1,5 @@
 import { Image } from 'expo-image';
 import { Stack, useRouter } from 'expo-router';
-import { useSetAtom } from 'jotai';
 import { Pressable, View } from 'react-native';
 import { Surface, useTheme } from 'react-native-paper';
 import Animated, {
@@ -14,14 +13,12 @@ import tw from 'twrnc';
 import migri from '@/assets/migri/migri.png';
 import { MigriButton } from '@/components/migri/migri-button';
 import { TransText } from '@/components/trans';
-import { isOnboardingCompleteAtom } from '@/lib/onboarding';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export default function Migri() {
   const theme = useTheme();
   const router = useRouter();
-  const setIsOnboarded = useSetAtom(isOnboardingCompleteAtom);
   const rotation = useSharedValue(0);
 
   const spin = () => {
@@ -70,9 +67,7 @@ export default function Migri() {
             </View>
             <MigriButton
               callback={() => {
-                setIsOnboarded(true);
-                router.dismissAll();
-                router.replace('/services');
+                router.navigate('/onboarding/current-proceedings');
               }}
               extended={true}
               id='onboarding.migri'

@@ -567,6 +567,12 @@
       "description": "Me llamo Migri, tu asistente virtual. Estoy aquí para ayudarte a usar la aplicación iMigration.",
       "chat": "Chatea con Migri",
       "start": "¡Empezar!"
+    },
+    "current-proceedings": {
+      "header": "Una cosa más...",
+      "question": "¿Está usted actualmente en procedimientos de la corte de inmigración?",
+      "disclaimer": "Si no está seguro, seleccione \"No\" - puede cambiar esto más tarde.",
+      "continue": "Continuar"
     }
   },
   "previous": "Atrás",
@@ -1569,7 +1575,10 @@
           },
           "current-address": {
             "address": {
-              "title": "Dirección actual"
+              "title": "Dirección actual",
+              "date": {
+                "label": "Fecha en que te mudaste"
+              }
             },
             "mailing-address": {
               "receives-mail": {

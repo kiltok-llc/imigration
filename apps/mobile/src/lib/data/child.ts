@@ -2,8 +2,11 @@ import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { attachmentAtom } from '@/atoms/attachment-atom';
 import {
+  AddressSchema,
   AlienNumberSchema,
+  DEFAULT_ADDRESS,
   DEFAULT_ALIEN_NUMBER,
   DEFAULT_NAME,
   DEFAULT_PASSPORT,
@@ -139,4 +142,17 @@ export const childBirthCertificateAtom = atomFamily((id) =>
     z.string(),
     defaultStorage
   )
+);
+
+export const childAddressAtom = atomFamily((id) =>
+  atomWithMmkvStorage(
+    `child:${id}:address`,
+    DEFAULT_ADDRESS,
+    AddressSchema,
+    defaultStorage
+  )
+);
+
+export const childBirthCertificateAttachmentAtom = atomFamily((id) =>
+  attachmentAtom(`child:${id}:birth-certificate`)
 );

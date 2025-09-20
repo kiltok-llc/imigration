@@ -1,7 +1,9 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
+const APP_VARIANT = process.env.APP_VARIANT ?? '';
+
 function getAppNameSuffix(): string {
-  switch (process.env.APP_VARIANT) {
+  switch (APP_VARIANT) {
     case 'development':
       return ' (Dev)';
     case 'preview':
@@ -12,7 +14,7 @@ function getAppNameSuffix(): string {
 }
 
 function getAppIdentifierSuffix(): string {
-  switch (process.env.APP_VARIANT) {
+  switch (APP_VARIANT) {
     case 'development':
       return '.dev';
     case 'preview':
@@ -25,6 +27,7 @@ function getAppIdentifierSuffix(): string {
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'iMigration' + getAppNameSuffix(),
+  scheme: 'imigration' + APP_VARIANT ? `-${APP_VARIANT}` : '',
   slug: config.slug!,
   ios: {
     ...config.ios,

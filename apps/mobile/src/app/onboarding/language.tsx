@@ -25,48 +25,41 @@ export default function Language() {
         }}
       />
       <View style={tw`flex-1`}>
-        <Image
-          source={banner}
-          style={tw.style('w-full pb-2', { aspectRatio: 2 })}
-        />
-        <SafeAreaView
-          edges={{ bottom: 'maximum' }}
-          style={tw`flex-1 items-center gap-4 p-4`}
+        <Image source={banner} style={tw.style('w-full', { aspectRatio: 2 })} />
+        <ScrollView
+          alwaysBounceVertical={false}
+          contentContainerStyle={tw`grow px-4`}
+          scrollsToTop={false}
+          style={tw`flex-1`}
         >
-          <ScrollView
-            alwaysBounceVertical={false}
-            contentContainerStyle={tw`grow gap-4`}
-            scrollsToTop={false}
-            style={tw`flex-1`}
-          >
-            <TransText
-              i18nKey='onboarding.language.title'
-              style={tw.style('text-center', { color: theme.colors.primary })}
-              variant='displayMedium'
+          <TransText
+            i18nKey='onboarding.language.title'
+            style={tw.style('text-center', { color: theme.colors.primary })}
+            variant='displayMedium'
+          />
+          <TransText
+            i18nKey='onboarding.language.choose-language'
+            style={tw.style('text-center', { color: theme.colors.primary })}
+            variant='headlineSmall'
+          />
+          <View style={tw`mt-auto w-full items-center`}>
+            <Image
+              source={personPassport}
+              style={tw.style('w-5/9 translate-y-1.5 -rotate-3', {
+                aspectRatio: 1,
+              })}
             />
-            <TransText
-              i18nKey='onboarding.language.choose-language'
-              style={tw.style('text-center', { color: theme.colors.primary })}
-              variant='headlineSmall'
-            />
-            <View style={tw`mt-auto w-full items-center`}>
-              <Image
-                source={personPassport}
-                style={tw.style('h-56 translate-y-1.5 -rotate-3', {
-                  aspectRatio: 1,
-                })}
-              />
-              <View style={tw`w-full gap-2`}>
-                <LanguageButton language='en' />
-                <LanguageButton language='es' />
-              </View>
+            <View style={tw`w-full gap-2`}>
+              <LanguageButton language='en' />
+              <LanguageButton language='es' />
             </View>
-          </ScrollView>
+          </View>
+        </ScrollView>
+        <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-4`}>
           <TransButton
             contentStyle={tw`flex-row-reverse`}
             i18nKey='onboarding.language.start'
             icon='arrow-right'
-            labelStyle={tw`text-2xl`}
             onPress={() => {
               router.navigate('/onboarding/migri');
             }}
@@ -94,9 +87,10 @@ function LanguageButton({ language }: { language: string }) {
           size={size * 1.2}
         />
       )}
-      labelStyle={tw.style('text-2xl', active && 'font-semibold')}
+      labelStyle={tw.style(active && 'font-semibold')}
       mode='outlined'
       onPress={() => void i18n.changeLanguage(language)}
+      size='lg'
       style={tw.style(
         'border-2',
         active && {

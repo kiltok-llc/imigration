@@ -158,6 +158,12 @@
       "description": "My name is Migri, your virtual assistant. I'm here to help you with using the iMigration app.",
       "chat": "Chat with Migri",
       "start": "Get Started!"
+    },
+    "current-proceedings": {
+      "header": "One more thing...",
+      "question": "Are you currently in immigration court proceedings?",
+      "disclaimer": "If you're unsure, select \"No\" - you can change this later.",
+      "continue": "Continue"
     }
   },
   "previous": "Back",
@@ -1613,7 +1619,10 @@
           },
           "current-address": {
             "address": {
-              "title": "Current Address"
+              "title": "Current Address",
+              "date": {
+                "label": "Date you moved in"
+              }
             },
             "mailing-address": {
               "receives-mail": {

@@ -1,3 +1,4 @@
+import { useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import {
@@ -10,9 +11,9 @@ import { FormField } from '@/components/form/field';
 import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import { FormRadioGroup } from '@/components/form/radio';
 import {
-  DEFAULT_RANGE,
+  DEFAULT_FORM_RANGE,
   FormRangeInput,
-  RangeSchemaWithOptionalEnd,
+  FormRangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
 import {
   QuizFieldArrayAdd,
@@ -23,10 +24,14 @@ import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
+import { DEFAULT_SCHOOL_INFO } from '@/lib/data/schema';
+import { schoolInfoAtom } from '@/lib/data/user';
 import { SchoolLevelEnum } from '@/lib/schemas';
 import { required } from '@/lib/utils';
 
 export default function SchoolInformation() {
+  const setSchoolInfo = useSetAtom(schoolInfoAtom);
+
   return (
     <QuizScreen>
       <QuizPage
@@ -34,7 +39,16 @@ export default function SchoolInformation() {
           level: null,
           name: '',
         }}
-        onSubmit={() => true}
+        onSuccess={({ level, name }) =>
+          setSchoolInfo(([first, ...rest]) => [
+            {
+              ...(first ?? DEFAULT_SCHOOL_INFO),
+              level,
+              name,
+            },
+            ...rest,
+          ])
+        }
         pageId='basic-school-info'
         schema={z.object({
           level: required(SchoolLevelEnum.nullable()),
@@ -66,7 +80,18 @@ export default function SchoolInformation() {
 
       <QuizPage
         defaultValues={DEFAULT_FORM_ADDRESS}
-        onSubmit={() => true}
+        onSuccess={(address) =>
+          setSchoolInfo(([first, ...rest]) => [
+            {
+              ...(first ?? DEFAULT_SCHOOL_INFO),
+              address: {
+                ...address,
+                country: 'USA',
+              },
+            },
+            ...rest,
+          ])
+        }
         pageId='school-location'
         schema={FormAddressSchema}
       >
@@ -84,10 +109,18 @@ export default function SchoolInformation() {
       </QuizPage>
 
       <QuizPage
-        defaultValues={DEFAULT_RANGE}
-        onSubmit={() => true}
+        defaultValues={DEFAULT_FORM_RANGE}
+        onSuccess={(range) =>
+          setSchoolInfo(([first, ...rest]) => [
+            {
+              ...(first ?? DEFAULT_SCHOOL_INFO),
+              range,
+            },
+            ...rest,
+          ])
+        }
         pageId='attendance-period'
-        schema={RangeSchemaWithOptionalEnd}
+        schema={FormRangeSchemaWithOptionalEnd}
       >
         {({ lens }) => (
           <>
@@ -103,19 +136,22 @@ export default function SchoolInformation() {
       </QuizPage>
 
       <QuizPage
-        defaultValues={{
-          schools: [],
-        }}
-        onSubmit={() => true}
+        defaultValues={{ schools: [] }}
+        onSuccess={({ schools }) =>
+          setSchoolInfo(([first]) => [
+            first!,
+            ...schools.map(({ address, ...school }) => ({
+              ...school,
+              address: {
+                ...address,
+                country: 'USA',
+              },
+            })),
+          ])
+        }
         pageId='other-schools'
         schema={z.object({
-          schools: z.array(
-            z.object({
-              address: FormAddressSchema,
-              name: z.string().nonempty(),
-              range: RangeSchemaWithOptionalEnd,
-            })
-          ),
+          schools: z.array(FormSchoolSchema),
         })}
       >
         {({ control, lens }) => (
@@ -142,13 +178,7 @@ export default function SchoolInformation() {
                   </FormBlock>
                 )}
               </FormArrayItems>
-              <QuizFieldArrayAdd
-                value={{
-                  address: DEFAULT_FORM_ADDRESS,
-                  name: '',
-                  range: DEFAULT_RANGE,
-                }}
-              />
+              <QuizFieldArrayAdd value={DEFAULT_FORM_SCHOOL} />
             </FormArray>
           </>
         )}
@@ -156,3 +186,17 @@ export default function SchoolInformation() {
     </QuizScreen>
   );
 }
+
+const FormSchoolSchema = z.object({
+  address: FormAddressSchema,
+  level: required(SchoolLevelEnum.nullable()),
+  name: z.string().nonempty(),
+  range: FormRangeSchemaWithOptionalEnd,
+});
+
+const DEFAULT_FORM_SCHOOL: z.input<typeof FormSchoolSchema> = {
+  address: DEFAULT_FORM_ADDRESS,
+  level: null,
+  name: '',
+  range: DEFAULT_FORM_RANGE,
+};

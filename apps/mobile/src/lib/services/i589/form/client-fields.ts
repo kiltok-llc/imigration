@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 import { maritalStatusAtom } from '@/lib/data/marriage';
 import {
-  addressAtom,
+  addressesAtom,
   aliasesAtom,
   alienNumberAtom,
   birthLocationAtom,
@@ -51,11 +51,11 @@ export const clientFieldsAtom = atom<PDFField[]>((get) =>
         .join(', '),
     ],
 
-    ['PtAILine8_StreetNumandName[0]', get(addressAtom).street],
-    ['PtAILine8_AptNumber[0]', get(addressAtom).unit],
-    ['TextField1[2]', get(addressAtom).city],
-    ['PtAILine8_State[0]', get(addressAtom).state],
-    ['PtAILine8_Zipcode[0]', get(addressAtom).zipCode],
+    ['PtAILine8_StreetNumandName[0]', get(addressesAtom)[0]?.street],
+    ['PtAILine8_AptNumber[0]', get(addressesAtom)[0]?.unit],
+    ['TextField1[2]', get(addressesAtom)[0]?.city],
+    ['PtAILine8_State[0]', get(addressesAtom)[0]?.state],
+    ['PtAILine8_Zipcode[0]', get(addressesAtom)[0]?.zipCode],
     ['PtAILine8_AreaCode[0]', 'area code'],
     ['PtAILine8_TelephoneNumber[0]', 'phone'],
 

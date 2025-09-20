@@ -6,14 +6,16 @@ import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
   AddressSchema,
   AlienNumberSchema,
-  DEFAULT_ADDRESS,
   DEFAULT_LOCATION,
   DEFAULT_PASSPORT,
   DEFAULT_SSN,
   DEFAULT_USCIS_NUMBER,
+  JobSchema,
   LocationSchema,
   NameSchema,
   PassportSchema,
+  RangeSchema,
+  SchoolInfoSchema,
   SsnSchema,
   UsaEntrySchema,
   UscisNumberSchema,
@@ -21,17 +23,17 @@ import {
 import { defaultStorage } from '@/lib/mmkv';
 import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schemas';
 
-export const alienNumberAtom = atomWithMmkvStorage(
-  'alien-number',
-  '',
-  AlienNumberSchema,
-  defaultStorage
-);
-
 export const entriesAtom = atomWithMmkvStorage(
   'entries',
   [],
   z.array(UsaEntrySchema),
+  defaultStorage
+);
+
+export const alienNumberAtom = atomWithMmkvStorage(
+  'alien-number',
+  '',
+  AlienNumberSchema,
   defaultStorage
 );
 
@@ -84,10 +86,10 @@ export const passportAtom = atomWithMmkvStorage(
   defaultStorage
 );
 
-export const addressAtom = atomWithMmkvStorage(
-  'address',
-  DEFAULT_ADDRESS,
-  AddressSchema,
+export const addressesAtom = atomWithMmkvStorage(
+  'addresses',
+  [],
+  z.array(z.intersection(AddressSchema, RangeSchema)),
   defaultStorage
 );
 
@@ -95,6 +97,13 @@ export const mailingAddressAtom = atomWithMmkvStorage(
   'mailing-address',
   null,
   AddressSchema.nullable(),
+  defaultStorage
+);
+
+export const jobHistorySchema = atomWithMmkvStorage(
+  'job-history',
+  [],
+  z.array(JobSchema),
   defaultStorage
 );
 
@@ -185,5 +194,26 @@ export const uscisNumberAtom = atomWithMmkvStorage(
   'uscis-number',
   DEFAULT_USCIS_NUMBER,
   UscisNumberSchema,
+  defaultStorage
+);
+
+export const phoneNumberAtom = atomWithMmkvStorage(
+  'phone-number',
+  '',
+  z.string(),
+  defaultStorage
+);
+
+export const schoolInfoAtom = atomWithMmkvStorage(
+  'school-info',
+  [],
+  z.array(SchoolInfoSchema),
+  defaultStorage
+);
+
+export const emailAtom = atomWithMmkvStorage(
+  'email',
+  '',
+  z.string(),
   defaultStorage
 );

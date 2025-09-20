@@ -6,7 +6,7 @@ import tw from 'twrnc';
 
 type ButtonProps = ComponentProps<typeof PaperButton> & {
   shrink?: boolean;
-  size?: 'md' | 'sm';
+  size?: 'lg' | 'md' | 'sm';
 };
 
 export const Button = forwardRef<View, ButtonProps>(function Button(
@@ -23,8 +23,14 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
 ) {
   return (
     <PaperButton
-      contentStyle={[tw.style(size === 'md' && 'py-1'), contentStyle]}
-      labelStyle={[tw.style(size === 'md' && 'text-lg'), labelStyle]}
+      contentStyle={[
+        tw.style(size === 'md' && 'py-0.5', size === 'lg' && 'py-0.5'),
+        contentStyle,
+      ]}
+      labelStyle={[
+        tw.style(size === 'md' && 'text-lg', size === 'lg' && 'text-xl'),
+        labelStyle,
+      ]}
       mode='contained'
       ref={ref}
       style={[tw.style(shrink || 'w-full'), style]}

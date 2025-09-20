@@ -10,17 +10,18 @@ import {
 import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
+import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { useService } from '@/hooks/use-service';
-import { addressAtom, mailingAddressAtom } from '@/lib/data/user';
+import { addressesAtom, mailingAddressAtom } from '@/lib/data/user';
 import { required } from '@/lib/utils';
 
 export default function CurrentAddress() {
   const service = useService();
   const router = useRouter();
-  const setAddress = useSetAtom(addressAtom);
+  const setAddresses = useSetAtom(addressesAtom);
   const setMailingAddress = useSetAtom(mailingAddressAtom);
 
   return (
@@ -55,15 +56,23 @@ export default function CurrentAddress() {
       </QuizPage>
 
       <QuizPage
-        defaultValues={DEFAULT_FORM_ADDRESS}
-        onSuccess={(address) =>
-          setAddress({
-            country: 'USA',
-            ...address,
-          })
+        defaultValues={{ address: DEFAULT_FORM_ADDRESS, date: null }}
+        onSuccess={({ address, date }) =>
+          setAddresses(([_first, ...rest]) => [
+            {
+              country: 'USA',
+              end: null,
+              start: date,
+              ...address,
+            },
+            ...rest,
+          ])
         }
         pageId='address'
-        schema={FormAddressSchema}
+        schema={z.object({
+          address: FormAddressSchema,
+          date: required(z.date().nullable()),
+        })}
       >
         {({ lens }) => (
           <>
@@ -72,7 +81,10 @@ export default function CurrentAddress() {
             </FormBlock>
 
             <FormBlock>
-              <FormAddressInput lens={lens} />
+              <FormAddressInput lens={lens.focus('address')} />
+              <FormField name='date'>
+                <QuizDateInput />
+              </FormField>
             </FormBlock>
           </>
         )}
