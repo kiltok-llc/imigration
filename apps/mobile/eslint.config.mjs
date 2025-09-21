@@ -1,9 +1,44 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import baseConfig from '@repo/eslint-config/base';
-import expoConfig from '@repo/eslint-config/expo';
+import expoConfig from 'eslint-config-expo/flat.js';
+import { defineConfig } from 'eslint/config';
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
-
-export default [...compat.extends('expo'), ...baseConfig, ...expoConfig];
+export default defineConfig([
+  {
+    extends: [expoConfig],
+    rules: {
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              importNames: ['SafeAreaView'],
+              message:
+                'Import SafeAreaView from react-native-safe-area-context instead',
+              name: 'react-native',
+            },
+            {
+              importNames: ['Button'],
+              message: 'import Button from @/components/ui/button instead',
+              name: 'react-native-paper',
+            },
+          ],
+        },
+      ],
+      'react-hooks/exhaustive-deps': [
+        'warn',
+        {
+          additionalHooks: '^(use[A-Za-z]+Ref)$',
+        },
+      ],
+    },
+  },
+  {
+    extends: [baseConfig],
+    ignores: ['eslint.config.mjs'],
+    rules: {
+      'unicorn/no-array-sort': 'off', // https://github.com/facebook/hermes/pull/1298
+    },
+  },
+]);

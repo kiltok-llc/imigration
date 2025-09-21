@@ -55,7 +55,7 @@ export default function Data() {
         <SettingsPage>
           <SettingsSection id='user'>
             {tree.trees.map((subTree) => (
-              <Tree key={`${subTree.name}-tree`} {...subTree} />
+              <SettingsTree key={`${subTree.name}-tree`} {...subTree} />
             ))}
             {tree.keys.map((key) => (
               <KeyItem key={key.storageKey} {...key} />
@@ -224,7 +224,12 @@ function KeyItem({
   );
 }
 
-function Tree({ keys, name, nesting = 0, trees }: Tree & { nesting?: number }) {
+function SettingsTree({
+  keys,
+  name,
+  nesting = 0,
+  trees,
+}: Tree & { nesting?: number }) {
   return (
     <List.Accordion
       containerStyle={tw.style({
@@ -234,7 +239,11 @@ function Tree({ keys, name, nesting = 0, trees }: Tree & { nesting?: number }) {
       title={name}
     >
       {trees.map((subTree) => (
-        <Tree key={`${subTree.name}-tree`} nesting={nesting + 1} {...subTree} />
+        <SettingsTree
+          key={`${subTree.name}-tree`}
+          nesting={nesting + 1}
+          {...subTree}
+        />
       ))}
       {keys.map((key) => (
         <KeyItem key={key.storageKey} nesting={nesting + 1} {...key} />

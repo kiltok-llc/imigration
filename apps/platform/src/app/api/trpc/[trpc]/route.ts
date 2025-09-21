@@ -25,6 +25,7 @@ export const OPTIONS = () => {
 
 const handler = async (req: NextRequest) => {
   const response = await fetchRequestHandler({
+    // @ts-expect-error supabase-ssr is out of sync with supabase-js
     createContext: async () => ({
       supabase: await createServerSupabase(),
     }),

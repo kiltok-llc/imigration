@@ -1,10 +1,5 @@
 'use client';
 
-import {
-  QueryKey,
-  useSuspenseQuery,
-  UseSuspenseQueryOptions,
-} from '@tanstack/react-query';
 import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useSelectedLayoutSegments } from 'next/navigation';
@@ -19,27 +14,24 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
-import { dbId } from '@/lib/id';
 import { titleCase } from '@/lib/utils';
-import { documentQueryOptions } from '@/queries/document';
-import { surveyQueryOptions } from '@/queries/survey';
 
 type BreadcrumbConfig = Record<string, ((val: string) => ReactNode) | null>;
 
-function BreadcrumbItemQuery<Q, E, D, K extends QueryKey>({
-  queryOptions,
-  select,
-}: {
-  queryOptions: UseSuspenseQueryOptions<Q, E, D, K>;
-  select: (data: D) => ReactNode;
-}) {
-  const { data } = useSuspenseQuery(queryOptions);
-  return (
-    <div className='lg::max-w-60 max-w-20 truncate md:max-w-40'>
-      {select(data)}
-    </div>
-  );
-}
+// function BreadcrumbItemQuery<Q, E, D, K extends QueryKey>({
+//                                                             queryOptions,
+//                                                             select,
+//                                                           }: {
+//   queryOptions: UseSuspenseQueryOptions<Q, E, D, K>;
+//   select: (data: D) => ReactNode;
+// }) {
+//   const {data} = useSuspenseQuery(queryOptions);
+//   return (
+//     <div className='lg::max-w-60 max-w-20 truncate md:max-w-40'>
+//       {select(data)}
+//     </div>
+//   );
+// }
 
 // [
 //   [ '', '${base}', '' ],
@@ -83,18 +75,6 @@ export function Breadcrumbs() {
 
   const breadcrumbConfig: BreadcrumbConfig = {
     '': () => <HomeIcon />,
-    '/documents/[documentId]': (documentId: string) => (
-      <BreadcrumbItemQuery
-        queryOptions={documentQueryOptions(dbId(documentId))}
-        select={(document) => document.name}
-      />
-    ),
-    '/surveys/[surveyId]': (surveyId: string) => (
-      <BreadcrumbItemQuery
-        queryOptions={surveyQueryOptions(dbId(surveyId))}
-        select={(survey) => survey.name}
-      />
-    ),
   };
 
   const crumbs = routes

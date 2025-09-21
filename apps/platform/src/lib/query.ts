@@ -1,5 +1,8 @@
 import { GenericSchema } from '@repo/supabase/generic';
-import { PostgrestFilterBuilder } from '@supabase/postgrest-js';
+import {
+  PostgrestClientOptions,
+  PostgrestFilterBuilder,
+} from '@supabase/postgrest-js';
 import {
   defaultShouldDehydrateQuery,
   MutationCache,
@@ -81,6 +84,7 @@ export function makeQueryClient() {
 }
 
 export const unwrapQuery = async <
+  ClientOptions extends PostgrestClientOptions,
   Schema extends GenericSchema,
   Row extends Record<string, unknown>,
   Result,
@@ -88,6 +92,7 @@ export const unwrapQuery = async <
   Relationships extends Record<string, GenericSchema>,
 >(
   query: PostgrestFilterBuilder<
+    ClientOptions,
     Schema,
     Row,
     Result,

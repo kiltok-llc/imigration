@@ -6,7 +6,7 @@ import { quizRouteAtom } from '@/lib/quiz/route';
 
 export default function Root() {
   const isOnboarded = useAtomValue(isOnboardingCompleteAtom);
-  const setSavedUrl = useSetAtom(
+  const _setSavedUrl = useSetAtom(
     quizRouteAtom({ service: 'i589', step: 'info' })
   );
 
@@ -16,10 +16,10 @@ export default function Root() {
 
   if (__DEV__) {
     return <Redirect href='/services' />;
-    setSavedUrl('personal-information/contact-information');
-    return (
-      <Redirect href='/services/i589/info/personal-information/contact-information' />
-    );
+    // setSavedUrl('personal-information/contact-information');
+    // return (
+    //   <Redirect href='/services/i589/info/personal-information/contact-information' />
+    // );
   }
 
   return <Redirect href='/services' />;

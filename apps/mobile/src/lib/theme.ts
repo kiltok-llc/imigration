@@ -10,11 +10,11 @@ export const theme = {
 
     onPrimary: '#ffffff',
     onPrimaryContainer: '#001b3c',
-    primary: '#223a5f',
-    primaryContainer: '#d5e3ff',
-
     onSecondary: '#ffffff',
     onSecondaryContainer: '#2d1e00',
+
+    primary: '#223a5f',
+    primaryContainer: '#d5e3ff',
     secondary: '#c29a3c',
     secondaryContainer: '#ffdea6',
 

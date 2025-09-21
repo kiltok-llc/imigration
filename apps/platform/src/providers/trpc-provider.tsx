@@ -36,6 +36,7 @@ const trpcClient = createTRPCClient<AppRouter>({
 export function TrpcProvider({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
   return (
+    // @ts-expect-error tanstack query client type is out of sync with trpc
     <TRPCClientProvider queryClient={queryClient} trpcClient={trpcClient}>
       {children}
     </TRPCClientProvider>
