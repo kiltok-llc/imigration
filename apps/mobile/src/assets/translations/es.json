@@ -1799,7 +1799,7 @@
           "items": {
             "trigger-tutorials": {
               "title": "Activar tutoriales",
-              "description": "Activar automáticamente los tutoriales de Migri al acceder a ciertas páginas por primera vez"
+              "description": "Activar automáticamente los tutoriales de Migri al acceder a ciertas páginas por primera vez."
             }
           }
         }
