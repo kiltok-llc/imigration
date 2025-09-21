@@ -1,4 +1,4 @@
-import { ExpoConfig, ConfigContext } from 'expo/config';
+import { ConfigContext, ExpoConfig } from 'expo/config';
 
 const APP_VARIANT = process.env.APP_VARIANT!;
 
@@ -37,13 +37,15 @@ function getAppSchemeSuffix(): string {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'iMigration' + getAppNameSuffix(),
-  scheme: 'imigration' + getAppSchemeSuffix(),
-  slug: 'imigration',
+  name: config.name + getAppNameSuffix(),
+  scheme: config.scheme + getAppSchemeSuffix(),
+  slug: config.slug!,
   ios: {
-    bundleIdentifier: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
+    ...config.ios,
+    bundleIdentifier: config.ios!.bundleIdentifier + getAppIdentifierSuffix(),
   },
   android: {
-    package: 'com.kiltok.imigration' + getAppIdentifierSuffix(),
+    ...config.android,
+    package: config.android!.package + getAppIdentifierSuffix(),
   },
 });
