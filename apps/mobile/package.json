@@ -13,6 +13,7 @@
     "dev": "expo start",
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
+    "eas-build-post-install": "./scripts/eas-build-post-install.sh",
     "format": "prettier --write --ignore-path ../../.gitignore --cache --cache-location .cache/.prettiercache",
     "format:check": "prettier --check --ignore-path ../../.gitignore --cache --cache-location .cache/.prettiercache",
     "ios": "expo run:ios",

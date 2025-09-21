@@ -177,7 +177,7 @@ function UpdateInfo() {
       </Text>
       <Text style={tw`font-mono`}>
         Commit:{'    '}
-        {env.EXPO_PUBLIC_GIT_COMMIT_HASH ?? 'none'}
+        {env.EXPO_PUBLIC_GIT_COMMIT_HASH?.slice(0, 7) ?? 'none'}
       </Text>
       <Text style={tw`font-mono`}>
         Published: {Updates.createdAt?.toLocaleString() || 'n/a'}

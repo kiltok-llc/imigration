@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+set-env EXPO_PUBLIC_GIT_COMMIT_HASH "$EAS_BUILD_GIT_COMMIT_HASH"
