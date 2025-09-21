@@ -164,14 +164,20 @@ function UpdateInfo() {
   return (
     <>
       <Text style={tw`font-mono`}>
-        Channel: {channel} {!Updates.isEnabled && `(updates disabled)`}
-      </Text>
-      <Text style={tw`font-mono`}>Runtime: {runtime}</Text>
-      <Text style={tw`font-mono`}>
-        Update: {update} {updateInfo && `(${updateInfo})`}
+        Channel:{'   '}
+        {channel} {!Updates.isEnabled && `(updates disabled)`}
       </Text>
       <Text style={tw`font-mono`}>
-        Commit: {env.EXPO_PUBLIC_GIT_COMMIT_HASH ?? 'none'}
+        Runtime:{'   '}
+        {runtime}
+      </Text>
+      <Text style={tw`font-mono`}>
+        Update:{'    '}
+        {update} {updateInfo && `(${updateInfo})`}
+      </Text>
+      <Text style={tw`font-mono`}>
+        Commit:{'    '}
+        {env.EXPO_PUBLIC_GIT_COMMIT_HASH ?? 'none'}
       </Text>
       <Text style={tw`font-mono`}>
         Published: {Updates.createdAt?.toLocaleString() || 'n/a'}
