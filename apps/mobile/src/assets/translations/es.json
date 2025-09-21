@@ -1793,6 +1793,15 @@
             "title_en-ZA": "{{ name }} (Inglés sudafricano)"
           },
           "utterance": "¡Hola! Soy Migri, tu asistente virtual. ¡Puedo ayudarte a navegar por la app de iMigration!"
+        },
+        "migri-tutorials": {
+          "title": "Tutoriales",
+          "items": {
+            "trigger-tutorials": {
+              "title": "Activar tutoriales",
+              "description": "Activar automáticamente los tutoriales de Migri al acceder a ciertas páginas por primera vez"
+            }
+          }
         }
       }
     }

@@ -5,10 +5,17 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { defaultStorage } from '@/lib/mmkv';
 import { useT } from '@/lib/translation';
 
-export const migriVoiceAtom = atomWithMmkvStorage<null | string>(
+export const migriVoiceAtom = atomWithMmkvStorage(
   'migri:voice',
   null,
   z.string().nullable(),
+  defaultStorage
+);
+
+export const isMigriTriggersEnabledAtom = atomWithMmkvStorage(
+  'migri:triggers-enabled',
+  true,
+  z.boolean(),
   defaultStorage
 );
 
@@ -27,15 +34,6 @@ export const migriCompletedEncounterIds = atomWithMmkvStorage<Set<string>>(
 );
 
 const migriEncounterQueueAtom = atom<MigriEncounter[]>([]);
-
-export type MigriAction =
-  | {
-      encounter: MigriEncounter;
-      type: 'push';
-    }
-  | {
-      type: 'pop';
-    };
 
 export type MigriEncounter = {
   callback?: () => void;

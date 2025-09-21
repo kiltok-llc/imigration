@@ -1,6 +1,7 @@
 import * as Speech from 'expo-speech';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { Switch } from 'react-native-paper';
 import tw from 'twrnc';
 
 import {
@@ -11,7 +12,7 @@ import {
 } from '@/components/settings';
 import { Trans } from '@/components/trans';
 import { useQuery } from '@/hooks/use-rn-query';
-import { migriVoiceAtom } from '@/lib/migri';
+import { isMigriTriggersEnabledAtom, migriVoiceAtom } from '@/lib/migri';
 import { useSettingsPath } from '@/lib/settings';
 import { useT } from '@/lib/translation';
 
@@ -19,6 +20,7 @@ export default function Migri() {
   const {
     i18n: { language },
   } = useTranslation();
+
   const { data: voices = [] } = useQuery({
     meta: {
       errorToast: 'Failed to load available voices',
@@ -35,6 +37,9 @@ export default function Migri() {
   return (
     <SettingsScreen>
       <SettingsPage>
+        <SettingsSection id='migri-tutorials'>
+          <TriggerTutorialsItem />
+        </SettingsSection>
         <SettingsSection id='migri-voice'>
           <MigriVoiceItem name={null} voice={null} />
           {voices.map((voice) => (
@@ -86,6 +91,25 @@ function MigriVoiceItem({
           values={{ name }}
         />
       }
+    />
+  );
+}
+
+function TriggerTutorialsItem() {
+  const [isTriggersEnabled, setIsTriggersEnabled] = useAtom(
+    isMigriTriggersEnabledAtom
+  );
+
+  return (
+    <SettingsItem
+      id='trigger-tutorials'
+      onPress={undefined}
+      right={() => (
+        <Switch
+          onValueChange={setIsTriggersEnabled}
+          value={isTriggersEnabled}
+        />
+      )}
     />
   );
 }
