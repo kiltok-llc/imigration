@@ -21,6 +21,7 @@ import tw from 'twrnc';
 
 import stars from '@/assets/drawer/stars.png';
 import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
+import { env } from '@/env';
 
 export function Drawer({
   screenOptions,
@@ -170,11 +171,14 @@ function UpdateInfo() {
         Update: {update} {updateInfo && `(${updateInfo})`}
       </Text>
       <Text style={tw`font-mono`}>
+        Commit: {env.EXPO_PUBLIC_GIT_COMMIT_HASH ?? 'none'}
+      </Text>
+      <Text style={tw`font-mono`}>
         Published: {Updates.createdAt?.toLocaleString() || 'n/a'}
       </Text>
       {Updates.emergencyLaunchReason && (
         <Text style={tw.style(`font-mono`, { color: theme.colors.error })}>
-          Emergency launch reason: {Updates.emergencyLaunchReason}
+          {Updates.emergencyLaunchReason}
         </Text>
       )}
       {isUpdatePending && (
