@@ -10,8 +10,6 @@ import eslintJs from '@eslint/js';
 export default defineConfig([
   includeIgnoreFile(path.join(import.meta.dirname, '../../.gitignore')),
   eslintJs.configs.recommended,
-  // @ts-expect-error typescript-eslint types do not match eslint
   tseslint.configs.strict,
-  // @ts-expect-error typescript-eslint types do not match eslint
   tseslint.configs.stylistic,
 ]);
