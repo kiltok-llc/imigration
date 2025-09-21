@@ -151,34 +151,35 @@ function DrawerItemList({
 }
 
 function UpdateInfo() {
+  const theme = useTheme();
   const { isUpdatePending } = useUpdates();
-  const enabledInfo = Updates.isEnabled ? [] : ['updates disabled'];
-  const embeddedInfo = Updates.isEmbeddedLaunch ? ['embedded'] : [];
-  const pendingInfo = isUpdatePending ? ['update pending'] : [];
-  const channelInfo = [...embeddedInfo, ...enabledInfo, ...pendingInfo].join(
-    ', '
-  );
   const channel = Updates.channel || 'none';
   const runtime = Updates.runtimeVersion?.slice(0, 7) || 'none';
   const update = Updates.updateId?.slice(0, 7) || 'none';
-  const updateDateInfo = Updates.createdAt
-    ? [`installed ${Updates.createdAt?.toLocaleString()}`]
-    : [];
+  const embeddedInfo = Updates.isEmbeddedLaunch ? ['embedded'] : ['downloaded'];
   const emergencyInfo = Updates.isEmergencyLaunch ? ['emergency launch'] : [];
-  const updateInfo = [...updateDateInfo, ...emergencyInfo].join(', ');
+  const updateInfo = [...embeddedInfo, ...emergencyInfo].join(', ');
 
   return (
     <>
       <Text style={tw`font-mono`}>
-        Channel: {channel} {channelInfo && `(${channelInfo})`}
+        Channel: {channel} {!Updates.isEnabled && `(updates disabled)`}
       </Text>
       <Text style={tw`font-mono`}>Runtime: {runtime}</Text>
       <Text style={tw`font-mono`}>
         Update: {update} {updateInfo && `(${updateInfo})`}
       </Text>
+      <Text style={tw`font-mono`}>
+        Updated at {Updates.createdAt?.toLocaleString() || 'n/a'}
+      </Text>
       {Updates.emergencyLaunchReason && (
-        <Text style={tw`font-mono`}>
+        <Text style={tw.style(`font-mono`, { color: theme.colors.error })}>
           Emergency launch reason: {Updates.emergencyLaunchReason}
+        </Text>
+      )}
+      {isUpdatePending && (
+        <Text style={tw.style(`font-mono`, { color: theme.colors.error })}>
+          Update pending, restart to apply.
         </Text>
       )}
     </>
