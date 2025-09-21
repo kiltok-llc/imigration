@@ -170,7 +170,7 @@ function UpdateInfo() {
         Update: {update} {updateInfo && `(${updateInfo})`}
       </Text>
       <Text style={tw`font-mono`}>
-        Updated: {Updates.createdAt?.toLocaleString() || 'n/a'}
+        Published: {Updates.createdAt?.toLocaleString() || 'n/a'}
       </Text>
       {Updates.emergencyLaunchReason && (
         <Text style={tw.style(`font-mono`, { color: theme.colors.error })}>
