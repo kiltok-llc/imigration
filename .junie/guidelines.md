@@ -134,6 +134,27 @@ export default function MyQuiz() {
 - Quiz components (React UI) belong in `@/components/quiz`
 - Always examine existing quiz files for consistency before creating new ones
 - Look at similar quiz files for code patterns, surrounding files for content context
+- Do NOT use quiz components or hooks outside of quizzes. Quiz components and hooks depend on quiz context and should not be used in non-quiz screens.
+
+**Translations**:
+
+- Quiz components all use translation keys derived from the service id, quiz id, screen id, page id, and field id.
+- Screen ids are derived from file paths.
+
+<example>
+services.i589.info.personal-information.contact-information.title -> "Contact Information" // Title for "personal-information/contact-information.tsx" QuizScreen, inside "info" quiz, of "i589" service.
+</example>
+
+<example>
+services.i589.info.employment-history.jobs.title -> "Jobs" // Title for "jobs" page, contained in "employment-history.tsx" QuizScreen, inside "info" quiz, of "i589" service.
+</example>
+
+<example>
+services.i589.info.employment-history.jobs.employer-name.label -> "Employer Name" // Label for "employer-name" field, inside "jobs" page, contained in "employment-history.tsx" QuizScreen, inside "info" quiz, of "i589" service.
+</example>
+
+- Important: When creating new quiz form elements, be sure to add the appropriate translation keys, based on the quiz form elements' location in the quiz hierarchy. To know where to add the keys, look at similar existing quiz form elements and the source code of the quiz elements used.
+- Quiz pages always have titles (which are shown in the quiz layout header).
 
 ### PDF Generation
 
@@ -325,7 +346,6 @@ style={[tw.style('flex-1'), variableStyle]}
 
 - `quiz` components → `form` components (if applicable → `ui` components)
 - Quiz components should depend on underlying, more generic RHF components
-- Do NOT use quiz components or hooks outside of quizzes. Quiz components and hooks depend on quiz context and should not be used in non-quiz screens.
 - Maintain clear separation of concerns -- RHF components handle RHF logic, quiz components handle quiz-specific logic (like quiz field names, labels, page context, etc)
 
 ### Development Best Practices

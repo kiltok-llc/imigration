@@ -1518,6 +1518,19 @@
           }
         },
         "personal-information": {
+          "contact-information": {
+            "title": "Contact Information",
+            "contact-information": {
+              "phone-number": {
+                "label": "Phone Number"
+              },
+              "email": {
+                "label": "Email Address"
+              },
+              "title": "Contact Information",
+              "description": "Please provide your contact information so we can reach you about your application."
+            }
+          },
           "demographics-and-birth": {
             "birth-certificate": {
               "has-birth-certificate": {

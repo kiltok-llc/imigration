@@ -1474,6 +1474,19 @@
           }
         },
         "personal-information": {
+          "contact-information": {
+            "contact-information": {
+              "phone-number": {
+                "label": "Número de Teléfono"
+              },
+              "email": {
+                "label": "Dirección de Correo Electrónico"
+              },
+              "title": "Información de Contacto",
+              "description": "Por favor proporciona tu información de contacto para que podamos comunicarnos contigo sobre tu aplicación."
+            },
+            "title": "Información de contacto"
+          },
           "demographics-and-birth": {
             "birth-certificate": {
               "has-birth-certificate": {

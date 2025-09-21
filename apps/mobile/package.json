@@ -81,6 +81,7 @@
     "react-i18next": "^15.7.3",
     "react-merge-refs": "^3.0.2",
     "react-native": "0.81.4",
+    "react-native-advanced-input-mask": "1.4.2",
     "react-native-circular-progress": "^1.4.1",
     "react-native-date-picker": "5.0.12",
     "react-native-fast-confetti": "^1.1.1",

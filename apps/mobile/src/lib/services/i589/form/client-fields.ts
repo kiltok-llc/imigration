@@ -19,7 +19,7 @@ import {
   nativeLanguageAtom,
   otherLanguagesAtom,
   otherNamesAtom,
-  passportAtom,
+  passportAtom, phoneNumberAtom,
   religionAtom,
   sexAtom,
   ssnAtom,
@@ -56,8 +56,8 @@ export const clientFieldsAtom = atom<PDFField[]>((get) =>
     ['TextField1[2]', get(addressesAtom)[0]?.city],
     ['PtAILine8_State[0]', get(addressesAtom)[0]?.state],
     ['PtAILine8_Zipcode[0]', get(addressesAtom)[0]?.zipCode],
-    ['PtAILine8_AreaCode[0]', 'area code'],
-    ['PtAILine8_TelephoneNumber[0]', 'phone'],
+    ['PtAILine8_AreaCode[0]', get(phoneNumberAtom).slice(4, 7)],
+    ['PtAILine8_TelephoneNumber[0]', get(phoneNumberAtom).slice(9)],
 
     [
       'PtAILine9_InCareOf[0]',
@@ -68,8 +68,8 @@ export const clientFieldsAtom = atom<PDFField[]>((get) =>
     ['PtAILine9_City[0]', get(mailingAddressAtom)?.city ?? ''],
     ['PtAILine9_State[0]', get(mailingAddressAtom)?.state ?? ''],
     ['PtAILine9_ZipCode[0]', get(mailingAddressAtom)?.zipCode ?? ''],
-    ['PtAILine9_AreaCode[0]', 'mailing area code'],
-    ['PtAILine9_TelephoneNumbe[0]', 'mailing phone'],
+    ['PtAILine9_AreaCode[0]', get(phoneNumberAtom).slice(4, 7)],
+    ['PtAILine9_TelephoneNumbe[0]', get(phoneNumberAtom).slice(9)],
 
     ['PartALine9Sex[0]', get(sexAtom) === 'male'],
     ['PartALine9Sex[1]', get(sexAtom) === 'female'],

@@ -1,9 +1,14 @@
 import { useSetAtom } from 'jotai';
+import { Ref } from 'react';
+import {
+  MaskedTextInput,
+  MaskedTextInputRef,
+} from 'react-native-advanced-input-mask';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
-import { QuizPageTitle } from '@/components/quiz/label';
+import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
@@ -16,30 +21,41 @@ export default function ContactInformation() {
   return (
     <QuizScreen>
       <QuizPage
-        defaultValues={{ email: '', phoneNumber: '' }}
+        defaultValues={{ email: '', phoneNumber: '+1 ' }}
         onSuccess={({ email, phoneNumber }) => {
           setPhoneNumber(phoneNumber);
           setEmail(email);
         }}
         pageId='contact-information'
         schema={z.object({
-          email: z.string().email().or(z.literal('')), // Allow empty for optional
-          phoneNumber: z.string(),
+          email: z.email(),
+          phoneNumber: z.string().regex(/^\+1 \(\d{3}\) \d{3}-\d{4}$/),
         })}
       >
         {({ control }) => (
           <>
             <FormBlock>
               <QuizPageTitle />
+              <QuizPageDescription />
             </FormBlock>
 
             <FormBlock>
               <FormField control={control} name='phoneNumber'>
-                <QuizTextInput hint='optional' inputMode='tel' />
+                <QuizTextInput
+                  inputMode='tel'
+                  render={({ ref, ...props }) => (
+                    <MaskedTextInput
+                      autocomplete={false}
+                      mask='+1 ([000]) [000]-[0000]'
+                      ref={ref as Ref<MaskedTextInputRef>}
+                      {...props}
+                    />
+                  )}
+                />
               </FormField>
 
               <FormField control={control} name='email'>
-                <QuizTextInput hint='optional' inputMode='email' />
+                <QuizTextInput inputMode='email' />
               </FormField>
             </FormBlock>
           </>
