@@ -10,6 +10,8 @@ import {
   ParamListBase,
 } from '@react-navigation/native';
 import { Drawer as ExpoDrawer } from 'expo-router/drawer';
+import * as Updates from 'expo-updates';
+import { useUpdates } from 'expo-updates';
 import * as React from 'react';
 import { ComponentProps } from 'react';
 import { Image, View } from 'react-native';
@@ -19,7 +21,6 @@ import tw from 'twrnc';
 
 import stars from '@/assets/drawer/stars.png';
 import toggleDrawerIcon from '@/assets/drawer/toggle-drawer-icon.png';
-import { env } from '@/env';
 
 export function Drawer({
   screenOptions,
@@ -38,17 +39,9 @@ export function Drawer({
             />
             <DrawerItemList {...props} />
           </DrawerContentScrollView>
-          {env.EXPO_PUBLIC_APP_VARIANT !== 'production' && (
+          {Updates.channel !== 'production' && (
             <SafeAreaView edges={{ bottom: 'maximum' }} style={tw`p-2`}>
-              <Text style={tw`font-mono`}>
-                iMigration {env.EXPO_PUBLIC_APP_VARIANT}
-              </Text>
-              <Text style={tw`font-mono`}>
-                Build ID: {env.EXPO_PUBLIC_BUILD_ID}
-              </Text>
-              <Text style={tw`font-mono`}>
-                Commit Hash: {env.EXPO_PUBLIC_COMMIT_HASH}
-              </Text>
+              <UpdateInfo />
             </SafeAreaView>
           )}
         </View>
@@ -154,5 +147,40 @@ function DrawerItemList({
         );
       })}
     </PaperDrawer.Section>
+  );
+}
+
+function UpdateInfo() {
+  const { isUpdatePending } = useUpdates();
+  const enabledInfo = Updates.isEnabled ? [] : ['updates disabled'];
+  const embeddedInfo = Updates.isEmbeddedLaunch ? ['embedded'] : [];
+  const pendingInfo = isUpdatePending ? ['update pending'] : [];
+  const channelInfo = [...embeddedInfo, ...enabledInfo, ...pendingInfo].join(
+    ', '
+  );
+  const channel = Updates.channel || 'none';
+  const runtime = Updates.runtimeVersion?.slice(0, 7) || 'none';
+  const update = Updates.updateId?.slice(0, 7) || 'none';
+  const updateDateInfo = Updates.createdAt
+    ? [`installed ${Updates.createdAt?.toLocaleString()}`]
+    : [];
+  const emergencyInfo = Updates.isEmergencyLaunch ? ['emergency launch'] : [];
+  const updateInfo = [...updateDateInfo, ...emergencyInfo].join(', ');
+
+  return (
+    <>
+      <Text style={tw`font-mono`}>
+        Channel: {channel} {channelInfo && `(${channelInfo})`}
+      </Text>
+      <Text style={tw`font-mono`}>Runtime: {runtime}</Text>
+      <Text style={tw`font-mono`}>
+        Update: {update} {updateInfo && `(${updateInfo})`}
+      </Text>
+      {Updates.emergencyLaunchReason && (
+        <Text style={tw`font-mono`}>
+          Emergency launch reason: {Updates.emergencyLaunchReason}
+        </Text>
+      )}
+    </>
   );
 }
