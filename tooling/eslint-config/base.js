@@ -3,6 +3,7 @@ import eslintPluginMarkdown from '@eslint/markdown';
 import eslintPluginCanonical from 'eslint-plugin-canonical';
 import eslintPluginNode from 'eslint-plugin-n';
 import eslintPluginPerfectionist from 'eslint-plugin-perfectionist';
+import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import eslintPluginTurbo from 'eslint-plugin-turbo';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import { defineConfig } from 'eslint/config';
@@ -56,4 +57,5 @@ export default defineConfig([
       'unicorn/prevent-abbreviations': 'off',
     },
   },
+  eslintPluginPrettier,
 ]);

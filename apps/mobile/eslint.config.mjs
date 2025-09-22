@@ -26,12 +26,6 @@ export default defineConfig([
           ],
         },
       ],
-      'react-hooks/exhaustive-deps': [
-        'warn',
-        {
-          additionalHooks: '^(use[A-Za-z]+Ref)$',
-        },
-      ],
     },
   },
   {
