@@ -1,4 +1,7 @@
 {
   "extends": "@repo/tsconfig/base.json",
-  "include": ["*.js"]
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": ["."]
 }
