@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import migri from '@/assets/migri/migri.png';
-import { MigriButton } from '@/components/migri/migri-button';
+import { MigriButton } from '@/components/migri/migri-talk-button';
 import { TransText } from '@/components/trans';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);

@@ -6,7 +6,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import PdfRendererView from 'react-native-pdf-renderer';
 import tw from 'twrnc';
 
-import { MigriButton } from '@/components/migri/migri-button';
+import { MigriButton } from '@/components/migri/migri-talk-button';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
 import { i589PdfAtom } from '@/lib/services/i589/form/pdf';

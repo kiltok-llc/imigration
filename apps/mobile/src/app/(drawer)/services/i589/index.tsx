@@ -8,14 +8,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { ConfettiPortal } from '@/components/confetti-portal';
-import { MigriButton } from '@/components/migri/migri-button';
+import { MigriButton } from '@/components/migri/migri-talk-button';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
 import { useService } from '@/hooks/use-service';
-import { migriCompletedEncounterIds, useTriggerMigri } from '@/lib/migri';
+import { migriCompletedEncounterIds, triggerMigri } from '@/lib/migri';
 import { resetQuizPages } from '@/lib/quiz/page';
 import { resetQuizRoute } from '@/lib/quiz/route';
 import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
@@ -73,7 +73,7 @@ export default function I589() {
         }}
       />
       <ConfettiPortal />
-      <MigriTrigger id={`services.${service}.${step}`} type='talk' />
+      <MigriTrigger id={`services.${service}.${step}`} />
       <View style={tw`flex-1`}>
         <ScrollView
           alwaysBounceVertical={false}
@@ -165,7 +165,6 @@ function MigriHeaderIcons() {
   const service = useService();
   const steps = ['eligibility', 'info', 'statement', 'review'] as const;
   const completedIds = useAtomValue(migriCompletedEncounterIds);
-  const triggerMigri = useTriggerMigri();
 
   return steps
     .filter((step) => completedIds.has(`${service}.${step}`))
@@ -173,14 +172,7 @@ function MigriHeaderIcons() {
       <HeaderMenuItem
         i18nKey={`services.${service}.menu.migri.${step}`}
         key={step}
-        onPress={() => {
-          triggerMigri({
-            id: `services.${service}.${step}`,
-            once: false,
-            skipMissing: false,
-            type: 'talk',
-          });
-        }}
+        onPress={() => triggerMigri(`services.${service}.${step}`)}
       />
     ));
 }

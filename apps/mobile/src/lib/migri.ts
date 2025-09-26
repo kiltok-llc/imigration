@@ -1,9 +1,9 @@
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import i18n from '@/i18n';
 import { defaultStorage } from '@/lib/mmkv';
-import { useT } from '@/lib/translation';
 
 export const migriVoiceAtom = atomWithMmkvStorage(
   'migri:voice',
@@ -21,7 +21,7 @@ export const isMigriTriggersEnabledAtom = atomWithMmkvStorage(
 
 export const isMigriSpeechEnabledAtom = atomWithMmkvStorage(
   'migri:speech-enabled',
-  true,
+  false,
   z.boolean(),
   defaultStorage
 );
@@ -33,56 +33,60 @@ export const migriCompletedEncounterIds = atomWithMmkvStorage<Set<string>>(
   defaultStorage
 );
 
-const migriEncounterQueueAtom = atom<MigriEncounter[]>([]);
+export const migriEncounterQueueAtom = atom<MigriEncounter[]>([]);
+
+export const useCurrentMigriEncounter = () => {
+  const [current] = useAtomValue(migriEncounterQueueAtom);
+  return current;
+};
+
+export const useDismissCurrentMigriEncounter = () => {
+  const setMigriEncounters = useSetAtom(migriEncounterQueueAtom);
+  return () => setMigriEncounters((encounters) => encounters.slice(1));
+};
 
 export type MigriEncounter = {
   callback?: () => void;
   id: string;
-  key?: string;
-  once: boolean;
-  skipMissing: boolean;
-  type: MigriEncounterType;
+  key: string;
 };
-
-export type MigriEncounterType = 'talk';
 
 const randomKey = () => Math.random().toString(36).slice(2);
 
-export const useCurrentMigri = () => {
-  const [head] = useAtomValue(migriEncounterQueueAtom);
-  return head;
+const defaultStore = getDefaultStore();
+
+type MigriOptions = {
+  callback?: () => void;
+  once?: boolean;
+  skip?: boolean;
 };
 
-export const useDismissMigri = () => {
-  const setQueue = useSetAtom(migriEncounterQueueAtom);
-  return () => setQueue((queue) => queue.slice(1));
-};
+export function triggerMigri(
+  id: string,
+  { callback, once = false, skip = false }: MigriOptions = {}
+) {
+  const completed = defaultStore.get(migriCompletedEncounterIds);
+  if (once && completed.has(id)) {
+    console.debug('Skipping migri encounter because it was already completed', {
+      id,
+    });
+    return;
+  }
 
-export const useTriggerMigri = () => {
-  const setMigriState = useSetAtom(migriEncounterQueueAtom);
-  const t = useT();
-  const [completedEncounterIds, setCompletedEncounterIds] = useAtom(
-    migriCompletedEncounterIds
-  );
-  return (encounter: MigriEncounter) => {
-    if (encounter.once && completedEncounterIds.has(encounter.id)) {
-      return;
-    }
+  if (
+    skip &&
+    !Array.isArray(i18n.t(`migri.${id}.talk`, { returnObjects: true }))
+  ) {
+    console.debug('Skipping migri encounter because translation is missing', {
+      id,
+    });
+    return;
+  }
 
-    if (
-      encounter.skipMissing &&
-      !Array.isArray(
-        t(`migri.${encounter.id}.${encounter.type}`, { returnObjects: true })
-      )
-    ) {
-      console.debug(
-        'Skipping migri encounter because translation is missing for id:',
-        encounter.id
-      );
-      return;
-    }
-
-    setCompletedEncounterIds((ids) => ids.add(encounter.id));
-    setMigriState((state) => [...state, { key: randomKey(), ...encounter }]);
-  };
-};
+  console.debug('Triggering migri encounter', { id });
+  defaultStore.set(migriCompletedEncounterIds, (ids) => new Set([id, ...ids]));
+  defaultStore.set(migriEncounterQueueAtom, (encounters) => [
+    ...encounters,
+    { callback, id, key: randomKey(), type: 'talk' },
+  ]);
+}

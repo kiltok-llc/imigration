@@ -12,7 +12,7 @@ import tw from 'twrnc';
 
 import banner from '@/assets/onboarding/usa-banner-2.png';
 import { DrawerToggleButton } from '@/components/drawer';
-import { MigriButton } from '@/components/migri/migri-button';
+import { MigriButton } from '@/components/migri/migri-talk-button';
 import { MigriTrigger } from '@/components/migri/migri-trigger';
 import { TransButton, TransText } from '@/components/trans';
 import { Button } from '@/components/ui/button';
@@ -41,7 +41,7 @@ export default function Services() {
         }}
       />
 
-      <MigriTrigger id='services.welcome' type='talk' />
+      <MigriTrigger id='services.welcome' />
 
       <View style={tw`flex-1`}>
         <Image source={banner} style={tw.style('w-full', { aspectRatio: 4 })} />

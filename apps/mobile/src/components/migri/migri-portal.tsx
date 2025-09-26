@@ -36,26 +36,32 @@ import {
   isMigriSpeechEnabledAtom,
   MigriEncounter,
   migriVoiceAtom,
-  useCurrentMigri,
-  useDismissMigri,
+  useCurrentMigriEncounter,
+  useDismissCurrentMigriEncounter,
 } from '@/lib/migri';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export function MigriPortal() {
-  const onDismiss = useDismissMigri();
-  const current = useCurrentMigri();
+  const current = useCurrentMigriEncounter();
+  const handleDismiss = useDismissCurrentMigriEncounter();
 
   return (
     <Portal>
       <Modal
         contentContainerStyle={tw`size-full`}
         dismissable={true}
-        onDismiss={onDismiss}
+        onDismiss={handleDismiss}
         style={tw`m-0`}
         visible={!!current}
       >
-        {current && <MigriModalContent {...current} key={current.key} />}
+        {current && (
+          <MigriModalContent
+            {...current}
+            dismiss={handleDismiss}
+            key={current.key}
+          />
+        )}
       </Modal>
     </Portal>
   );
@@ -112,14 +118,17 @@ const useSpeakMessage = (message: string) => {
   }, [language, message, voice, isSpeechEnabled]);
 };
 
-function MigriModalContent({ callback, id, type }: MigriEncounter) {
+function MigriModalContent({
+  callback,
+  dismiss,
+  id,
+}: MigriEncounter & { dismiss: () => void }) {
   const { t } = useTranslation();
-  const dismiss = useDismissMigri();
   const [isSpeechEnabled, setIsSpeechEnabled] = useAtom(
     isMigriSpeechEnabledAtom
   );
   const [index, setIndex] = useState(0);
-  const messages = t([`migri.${id}.${type}`, `migri.fallback.${type}`], {
+  const messages = t([`migri.${id}.talk`, `migri.fallback.talk`], {
     context: __DEV__ ? 'dev' : undefined,
     id,
     returnObjects: true,

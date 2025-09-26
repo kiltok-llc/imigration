@@ -2,31 +2,23 @@ import { useIsFocused } from '@react-navigation/native';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 
-import {
-  isMigriTriggersEnabledAtom,
-  MigriEncounterType,
-  useTriggerMigri,
-} from '@/lib/migri';
+import { isMigriTriggersEnabledAtom, triggerMigri } from '@/lib/migri';
 
-export function MigriTrigger({
-  id,
-  once = true,
-  type,
-}: {
-  id: string;
-  once?: boolean;
-  type: MigriEncounterType;
-}) {
-  const triggerMigri = useTriggerMigri();
+export function MigriTrigger({ id }: { id: string }) {
   const isFocused = useIsFocused();
   const isMigriTriggersEnabled = useAtomValue(isMigriTriggersEnabledAtom);
 
   useEffect(() => {
-    if (!isMigriTriggersEnabled || !isFocused) {
+    if (!isMigriTriggersEnabled) {
       return;
     }
-    triggerMigri({ id, once, skipMissing: true, type });
-  }, [id, isFocused, isMigriTriggersEnabled, once, triggerMigri, type]);
+
+    if (!isFocused) {
+      return;
+    }
+
+    triggerMigri(id, { once: true, skip: true });
+  }, [id, isFocused, isMigriTriggersEnabled]);
 
   return null;
 }
