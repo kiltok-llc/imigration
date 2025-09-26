@@ -10,7 +10,7 @@ export const env = createEnv({
       .min(0)
       .max(1)
       .optional(),
-    EXPO_PUBLIC_SUPABASE_ANON_KEY: z.string().nonempty(),
+    EXPO_PUBLIC_SUPABASE_ANON_KEY: z.string(),
     EXPO_PUBLIC_SUPABASE_URL: z.url(),
     EXPO_PUBLIC_TRPC_URL: z.url(),
   },

@@ -1,6 +1,7 @@
 {
   "extends": "@repo/tsconfig/internal-package.json",
   "compilerOptions": {
+    "rootDir": ".",
     "lib": ["ES2023", "dom", "dom.iterable"]
   },
   "include": ["."]
