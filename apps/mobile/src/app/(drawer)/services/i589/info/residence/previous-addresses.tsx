@@ -2,6 +2,7 @@ import z from 'zod/v4';
 
 import {
   DEFAULT_FORM_ADDRESS,
+  EXAMPLE_ADDRESS,
   FormAddressInput,
   FormAddressSchema,
 } from '@/components/form/address';
@@ -10,6 +11,7 @@ import { FormField } from '@/components/form/field';
 import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import {
   DEFAULT_FORM_RANGE,
+  EXAMPLE_RANGE,
   FormRangeInput,
   FormRangeSchema,
 } from '@/components/form/range';
@@ -31,6 +33,12 @@ export default function PreviousAddresses() {
         }}
         onSubmit={() => true}
         pageId='previous-residence'
+        sampleData={{
+          example: {
+            address: EXAMPLE_ADDRESS,
+            range: EXAMPLE_RANGE,
+          },
+        }}
         schema={z.object({
           address: FormAddressSchema,
           range: FormRangeSchema,
@@ -61,6 +69,20 @@ export default function PreviousAddresses() {
         }}
         onSubmit={() => true}
         pageId='past-residences'
+        sampleData={{
+          example: {
+            residences: [
+              {
+                address: EXAMPLE_ADDRESS,
+                range: EXAMPLE_RANGE,
+              },
+              {
+                address: EXAMPLE_ADDRESS,
+                range: EXAMPLE_RANGE,
+              },
+            ],
+          },
+        }}
         schema={z.object({
           residences: z.array(
             z.object({

@@ -34,6 +34,13 @@ export default function LanguageProficiency() {
           setEnglish(english ?? true);
         }}
         pageId='native-language'
+        sampleData={{
+          example: {
+            dialect: 'Mexico',
+            english: true,
+            language: 'es',
+          },
+        }}
         schema={z.object({
           dialect: z.string(),
           english: required(z.boolean().nullable()).optional(),
@@ -75,6 +82,11 @@ export default function LanguageProficiency() {
         }}
         onSuccess={({ languages }) => setOtherLanguages(languages)}
         pageId='other-languages'
+        sampleData={{
+          example: {
+            languages: ['fr', 'de'],
+          },
+        }}
         schema={z.object({
           languages: z.array(z.string()),
         })}

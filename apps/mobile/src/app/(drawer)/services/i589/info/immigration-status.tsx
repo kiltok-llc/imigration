@@ -2,7 +2,6 @@ import { isEqual } from '@ver0/deep-equal';
 import { useLocalSearchParams } from 'expo-router';
 import { atom, PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
-import { View } from 'react-native';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
@@ -16,7 +15,6 @@ import {
 } from '@/components/quiz/fieldarray';
 import {
   QuizFieldDescription,
-  QuizFieldTip,
   QuizFieldTitle,
   QuizPageTitle,
 } from '@/components/quiz/label';
@@ -148,6 +146,17 @@ export default function ImmigrationStatus() {
             setPassport({ ...passport, ...DEFAULT_PASSPORT });
           }}
           pageId='passport'
+          sampleData={{
+            example: {
+              hasPassport: true,
+              passport: {
+                country: 'United States',
+                expiration: new Date('2030-12-31'),
+                number: 'P123456789',
+                type: 'passport',
+              },
+            },
+          }}
           schema={z.object({
             hasPassport: required(z.boolean().nullable()),
             passport: z
@@ -219,6 +228,12 @@ export default function ImmigrationStatus() {
             setAlienNumber(number ?? '');
           }}
           pageId='alien-number'
+          sampleData={{
+            example: {
+              hasAlienNumber: true,
+              number: 'A123456789',
+            },
+          }}
           schema={z.object({
             hasAlienNumber: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -257,6 +272,12 @@ export default function ImmigrationStatus() {
             setSsn(number ?? '');
           }}
           pageId='ssn'
+          sampleData={{
+            example: {
+              hasSsn: true,
+              number: '123-45-6789',
+            },
+          }}
           schema={z.object({
             hasSsn: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -294,6 +315,12 @@ export default function ImmigrationStatus() {
             setUscisNumber(number ?? '');
           }}
           pageId='uscis'
+          sampleData={{
+            example: {
+              hasUscis: true,
+              number: 'MSC1234567890',
+            },
+          }}
           schema={z.object({
             hasUscis: required(z.boolean().nullable()),
             number: z.string().nonempty().optional(),
@@ -331,6 +358,11 @@ export default function ImmigrationStatus() {
             setImmigrationCourtStatus(status);
           }}
           pageId='court'
+          sampleData={{
+            example: {
+              status: 'never',
+            },
+          }}
           schema={z.object({
             status: required(ImmigrationCourtStatusEnum.nullable()),
           })}
@@ -360,6 +392,11 @@ export default function ImmigrationStatus() {
               setIsInUsa(isInUsa);
             }}
             pageId='is-in-usa'
+            sampleData={{
+              example: {
+                isInUsa: true,
+              },
+            }}
             schema={z.object({
               isInUsa: required(z.boolean().nullable()),
             })}
@@ -382,6 +419,13 @@ export default function ImmigrationStatus() {
               setEntries([{ date, port, status }]);
             }}
             pageId='first-entry'
+            sampleData={{
+              example: {
+                date: new Date('2022-06-15'),
+                port: 'John F. Kennedy International Airport, NY',
+                status: 'B-1/B-2 Visitor',
+              },
+            }}
             schema={z.object({
               date: required(z.date().nullable()),
               port: z.string().nonempty(),
@@ -396,21 +440,24 @@ export default function ImmigrationStatus() {
 
                 <FormBlock>
                   <FormField control={control} name='date'>
-                    <View>
-                      <QuizFieldTitle />
-                      <QuizFieldTip />
-                    </View>
+                    <QuizFieldTitle />
                     <QuizDateInput />
                   </FormField>
+                </FormBlock>
 
+                <FormBlock>
                   <FormField control={control} name='port'>
                     <QuizFieldTitle />
                     <QuizTextInput />
                   </FormField>
+                </FormBlock>
 
-                  <FormField control={control} name='status'>
-                    <QuizFieldTitle />
-                    <QuizTextInput hint='optional' />
+                <FormBlock>
+                  <FormField control={control} name='port'>
+                    <FormField control={control} name='status'>
+                      <QuizFieldTitle />
+                      <QuizTextInput hint='optional' />
+                    </FormField>
                   </FormField>
                 </FormBlock>
               </>
@@ -432,6 +479,12 @@ export default function ImmigrationStatus() {
               }
             }}
             pageId='previous-entry'
+            sampleData={{
+              example: {
+                entryDate: new Date('2020-03-10'),
+                hasPreviousEntry: true,
+              },
+            }}
             schema={z.object({
               entryDate: z.date().nullable().optional(),
               hasPreviousEntry: required(z.boolean().nullable()),
@@ -453,7 +506,7 @@ export default function ImmigrationStatus() {
                   name='entryDate'
                 >
                   <FormBlock animated>
-                    <QuizFieldDescription />
+                    <QuizFieldTitle />
                     <QuizDateInput />
                   </FormBlock>
                 </ConditionalFormWrapper>
@@ -473,6 +526,23 @@ export default function ImmigrationStatus() {
               }
             }}
             pageId='other-entries'
+            sampleData={{
+              example: {
+                entries: [
+                  {
+                    date: new Date('2021-11-20'),
+                    port: 'Los Angeles International Airport, CA',
+                    status: 'F-1 Student',
+                  },
+                  {
+                    date: new Date('2023-08-15'),
+                    port: 'Miami International Airport, FL',
+                    status: 'B-2 Tourist',
+                  },
+                ],
+                hasOtherEntries: true,
+              },
+            }}
             schema={z.object({
               entries: z
                 .array(

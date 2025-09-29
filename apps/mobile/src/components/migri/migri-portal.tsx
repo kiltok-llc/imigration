@@ -2,7 +2,14 @@ import { Entypo } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import * as Speech from 'expo-speech';
 import { useAtom, useAtomValue } from 'jotai';
-import { ComponentProps, useEffect, useRef, useState } from 'react';
+import {
+  ComponentProps,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View, ViewStyle } from 'react-native';
 import {
@@ -27,7 +34,6 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 import tw from 'twrnc';
-import { useInterval } from 'usehooks-ts';
 
 import migri from '@/assets/migri/migri.gif';
 import speechBubble from '@/assets/migri/speech-bubble.png';
@@ -41,6 +47,11 @@ import {
 } from '@/lib/migri';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
+
+type ReaderViewHandle = {
+  hasMore: () => boolean;
+  more: (factor?: number) => void;
+};
 
 export function MigriPortal() {
   const current = useCurrentMigriEncounter();
@@ -67,36 +78,40 @@ export function MigriPortal() {
   );
 }
 
-function AutoScrollView({ ...props }: ComponentProps<typeof ScrollView>) {
-  const ref = useRef<ScrollView>(null);
+const ReaderView = forwardRef<
+  ReaderViewHandle,
+  ComponentProps<typeof ScrollView>
+>(function ReaderView({ ...props }, ref) {
+  const scrollRef = useRef<ScrollView>(null);
+  const offsetRef = useRef(0);
   const heightRef = useRef(0);
   const contentHeightRef = useRef(0);
-  const scrollRef = useRef(0);
-  const SCROLL_RATIO = 0.5;
-  const SCROLL_INTERVAL = 6000;
 
-  useInterval(() => {
-    const height = heightRef.current;
-    const contentHeight = contentHeightRef.current;
-    const scroll = scrollRef.current;
-
-    if (scroll + height >= contentHeight - 1) {
-      ref.current?.scrollTo({ y: 0 });
-    } else {
-      ref.current?.scrollTo({ y: scroll + height * SCROLL_RATIO });
-    }
-  }, SCROLL_INTERVAL);
+  useImperativeHandle(
+    ref,
+    () => ({
+      hasMore: () => {
+        const bottom = offsetRef.current + heightRef.current;
+        return bottom < contentHeightRef.current - 1;
+      },
+      more: (ratio = 0.75) => {
+        const offset = offsetRef.current + heightRef.current * ratio;
+        scrollRef.current?.scrollTo({ y: offset });
+      },
+    }),
+    []
+  );
 
   return (
     <ScrollView
+      ref={scrollRef}
+      {...props}
       onContentSizeChange={(_w, h) => (contentHeightRef.current = h)}
       onLayout={(e) => (heightRef.current = e.nativeEvent.layout.height)}
-      onScroll={(e) => (scrollRef.current = e.nativeEvent.contentOffset.y)}
-      ref={ref}
-      {...props}
+      onScroll={(e) => (offsetRef.current = e.nativeEvent.contentOffset.y)}
     />
   );
-}
+});
 
 const useSpeakMessage = (message: string) => {
   const {
@@ -124,6 +139,7 @@ function MigriModalContent({
   id,
 }: MigriEncounter & { dismiss: () => void }) {
   const { t } = useTranslation();
+  const readerRef = useRef<ReaderViewHandle>(null);
   const [isSpeechEnabled, setIsSpeechEnabled] = useAtom(
     isMigriSpeechEnabledAtom
   );
@@ -137,12 +153,18 @@ function MigriModalContent({
   useSpeakMessage(message);
 
   const next = () => {
+    if (readerRef.current?.hasMore()) {
+      readerRef.current?.more();
+      return;
+    }
+
     if (index < messages.length - 1) {
       setIndex(index + 1);
-    } else {
-      dismiss();
-      callback?.();
+      return;
     }
+
+    dismiss();
+    callback?.();
   };
 
   const hasNext = index < messages.length - 1;
@@ -174,9 +196,10 @@ function MigriModalContent({
           style={tw`absolute inset-0`}
         />
         <View style={tw`absolute top-11 right-7 bottom-28 left-8`}>
-          <AutoScrollView
+          <ReaderView
             contentContainerStyle={tw`grow justify-center`}
             key={index}
+            ref={readerRef}
             scrollEnabled={false}
           >
             <Animated.Text entering={ZoomIn}>
@@ -184,7 +207,7 @@ function MigriModalContent({
                 <Trans components={transComponents}>{message}</Trans>
               </Text>
             </Animated.Text>
-          </AutoScrollView>
+          </ReaderView>
         </View>
         <View style={tw`absolute right-7 bottom-20 left-8 h-6`}>
           {hasNext && <NextIndicator />}

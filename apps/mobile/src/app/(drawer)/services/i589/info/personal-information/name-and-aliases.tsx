@@ -35,6 +35,13 @@ export default function NameAndAliases() {
           setName(name);
         }}
         pageId='basic-names'
+        sampleData={{
+          example: {
+            first: 'John',
+            last: 'Smith',
+            middle: 'Michael',
+          },
+        }}
         schema={FormNameSchema}
       >
         {({ lens }) => (
@@ -60,6 +67,12 @@ export default function NameAndAliases() {
           setOtherNames(otherNames);
         }}
         pageId='additional-names'
+        sampleData={{
+          example: {
+            maidenName: 'Johnson',
+            otherNames: 'Johnny, Jon',
+          },
+        }}
         schema={z.object({
           maidenName: z.string(),
           otherNames: stringList(z.array(z.string().nonempty())),
@@ -92,6 +105,12 @@ export default function NameAndAliases() {
           setAliases(aliases ?? []);
         }}
         pageId='alias-information'
+        sampleData={{
+          example: {
+            aliases: 'J. Smith, Johnny Smith',
+            hasAlias: true,
+          },
+        }}
         schema={z.object({
           aliases: stringList(
             z.array(z.string().nonempty()).nonempty()

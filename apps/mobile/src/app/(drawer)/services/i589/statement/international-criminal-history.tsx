@@ -36,6 +36,11 @@ export default function InternationalCriminalHistory() {
           }
         }}
         pageId='has-international-criminal-history'
+        sampleData={{
+          example: {
+            hasInternationalCriminalHistory: true,
+          },
+        }}
         schema={z.object({
           hasInternationalCriminalHistory: required(z.boolean().nullable()),
         })}
@@ -59,6 +64,12 @@ export default function InternationalCriminalHistory() {
             setInternationalCriminalHistoryDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Briefly investigated abroad for attending protests; case dismissed.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -82,6 +93,11 @@ export default function InternationalCriminalHistory() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

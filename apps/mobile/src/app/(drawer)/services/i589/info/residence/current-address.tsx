@@ -4,6 +4,7 @@ import z from 'zod/v4';
 
 import {
   DEFAULT_FORM_ADDRESS,
+  EXAMPLE_ADDRESS,
   FormAddressInput,
   FormAddressSchema,
 } from '@/components/form/address';
@@ -39,6 +40,11 @@ export default function CurrentAddress() {
           return true;
         }}
         pageId='us-residence-status'
+        sampleData={{
+          example: {
+            resident: true,
+          },
+        }}
         schema={z.object({
           resident: required(z.boolean().nullable()),
         })}
@@ -69,6 +75,12 @@ export default function CurrentAddress() {
           ])
         }
         pageId='address'
+        sampleData={{
+          example: {
+            address: EXAMPLE_ADDRESS,
+            date: new Date(),
+          },
+        }}
         schema={z.object({
           address: FormAddressSchema,
           date: required(z.date().nullable()),
@@ -100,6 +112,11 @@ export default function CurrentAddress() {
           )
         }
         pageId='mailing-address'
+        sampleData={{
+          example: {
+            receivesMail: true,
+          },
+        }}
         schema={z.object({
           mailingAddress: FormAddressSchema.optional(),
           receivesMail: required(z.boolean().nullable()),

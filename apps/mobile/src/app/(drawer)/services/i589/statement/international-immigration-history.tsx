@@ -35,6 +35,11 @@ export default function InternationalImmigrationHistory() {
           }
         }}
         pageId='has-international-immigration-history'
+        sampleData={{
+          example: {
+            hasInternationalImmigrationHistory: true,
+          },
+        }}
         schema={z.object({
           hasInternationalImmigrationHistory: required(z.boolean().nullable()),
         })}
@@ -61,6 +66,12 @@ export default function InternationalImmigrationHistory() {
             setInternationalImmigrationHistoryDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Sought refuge in a neighboring country for six months before returning.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}

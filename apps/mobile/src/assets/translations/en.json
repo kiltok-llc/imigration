@@ -1389,22 +1389,20 @@
           "first-entry": {
             "title": "Please provide the following information about {{ name }}'s most recent entry into the United States.",
             "title_client": "Please provide the following information about your most recent entry into the United States.",
-            "entry": {
-              "date": {
-                "title_client": "When did you enter the United States?",
-                "title": "When did {{ name }} enter the United States?",
-                "label": "Entry date"
-              },
-              "port": {
-                "title": "Where did {{ name }} enter the United States?",
-                "title_client": "Where did you enter the United States?",
-                "label": "Port of entry"
-              },
-              "status": {
-                "title": "What was {{ name }}'s immigration status at entry?",
-                "title_client": "What was your immigration status at entry?",
-                "label": "Immigration Status"
-              }
+            "date": {
+              "title_client": "When did you enter the United States?",
+              "title": "When did {{ name }} enter the United States?",
+              "label": "Entry date"
+            },
+            "port": {
+              "title": "Where did {{ name }} enter the United States?",
+              "title_client": "Where did you enter the United States?",
+              "label": "Port of entry"
+            },
+            "status": {
+              "title": "What was {{ name }}'s immigration status at entry?",
+              "title_client": "What was your immigration status at entry?",
+              "label": "Immigration Status"
             }
           },
           "ssn": {

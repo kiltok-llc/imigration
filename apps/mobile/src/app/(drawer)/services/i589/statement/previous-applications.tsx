@@ -35,6 +35,11 @@ export default function PreviousApplications() {
           }
         }}
         pageId='has-previous-applications'
+        sampleData={{
+          example: {
+            hasPreviousApplications: true,
+          },
+        }}
         schema={z.object({
           hasPreviousApplications: required(z.boolean().nullable()),
         })}
@@ -58,6 +63,12 @@ export default function PreviousApplications() {
             setPreviousApplicationDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Filed an asylum application in 2020 that was withdrawn after lawyer advice.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}

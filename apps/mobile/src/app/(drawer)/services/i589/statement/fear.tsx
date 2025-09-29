@@ -34,6 +34,11 @@ export default function Fear() {
           }
         }}
         pageId='has-fear'
+        sampleData={{
+          example: {
+            hasFear: true,
+          },
+        }}
         schema={z.object({
           hasFear: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function Fear() {
             setFearDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'I fear persecution due to my political activism against the ruling party.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function Fear() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

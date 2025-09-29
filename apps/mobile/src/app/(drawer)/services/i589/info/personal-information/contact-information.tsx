@@ -27,6 +27,12 @@ export default function ContactInformation() {
           setEmail(email);
         }}
         pageId='contact-information'
+        sampleData={{
+          example: {
+            email: 'test@example.com',
+            phoneNumber: '+1 (555) 555-5555',
+          },
+        }}
         schema={z.object({
           email: z.email(),
           phoneNumber: z.string().regex(/^\+1 \(\d{3}\) \d{3}-\d{4}$/),

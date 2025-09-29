@@ -3,6 +3,7 @@ import z from 'zod/v4';
 
 import {
   DEFAULT_FORM_ADDRESS,
+  EXAMPLE_ADDRESS,
   FormAddressInput,
   FormAddressSchema,
 } from '@/components/form/address';
@@ -12,6 +13,7 @@ import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import { FormRadioGroup } from '@/components/form/radio';
 import {
   DEFAULT_FORM_RANGE,
+  EXAMPLE_RANGE,
   FormRangeInput,
   FormRangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
@@ -50,6 +52,12 @@ export default function SchoolInformation() {
           ])
         }
         pageId='basic-school-info'
+        sampleData={{
+          example: {
+            level: 'university',
+            name: 'Springfield University',
+          },
+        }}
         schema={z.object({
           level: required(SchoolLevelEnum.nullable()),
           name: z.string().nonempty(),
@@ -93,6 +101,9 @@ export default function SchoolInformation() {
           ])
         }
         pageId='school-location'
+        sampleData={{
+          example: EXAMPLE_ADDRESS,
+        }}
         schema={FormAddressSchema}
       >
         {({ lens }) => (
@@ -120,6 +131,9 @@ export default function SchoolInformation() {
           ])
         }
         pageId='attendance-period'
+        sampleData={{
+          example: EXAMPLE_RANGE,
+        }}
         schema={FormRangeSchemaWithOptionalEnd}
       >
         {({ lens }) => (
@@ -150,6 +164,24 @@ export default function SchoolInformation() {
           ])
         }
         pageId='other-schools'
+        sampleData={{
+          example: {
+            schools: [
+              {
+                address: EXAMPLE_ADDRESS,
+                level: 'secondary',
+                name: 'Springfield High School',
+                range: EXAMPLE_RANGE,
+              },
+              {
+                address: EXAMPLE_ADDRESS,
+                level: 'university',
+                name: 'Shelbyville College',
+                range: EXAMPLE_RANGE,
+              },
+            ],
+          },
+        }}
         schema={z.object({
           schools: z.array(FormSchoolSchema),
         })}

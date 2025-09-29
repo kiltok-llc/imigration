@@ -22,6 +22,12 @@ export default function LateApplication() {
           setLateApplicationDetails(details);
         }}
         pageId='details'
+        sampleData={{
+          example: {
+            details:
+              'I arrived shortly before the one-year deadline and needed time to gather documents.',
+          },
+        }}
         schema={z.object({
           details: z.string().nonempty(),
         })}

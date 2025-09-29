@@ -34,6 +34,11 @@ export default function HarmAndPersecution() {
           }
         }}
         pageId='has-been-harmed'
+        sampleData={{
+          example: {
+            hasBeenHarmed: true,
+          },
+        }}
         schema={z.object({
           hasBeenHarmed: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function HarmAndPersecution() {
             setHarmDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Police detained me for attending opposition rallies and inflicted injuries.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function HarmAndPersecution() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

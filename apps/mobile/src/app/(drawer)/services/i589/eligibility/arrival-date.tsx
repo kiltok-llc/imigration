@@ -27,6 +27,11 @@ export default function ArrivalDate() {
           return true;
         }}
         pageId='is-recent-arrival'
+        sampleData={{
+          example: {
+            isRecentArrival: true,
+          },
+        }}
         schema={z.object({
           isRecentArrival: required(z.boolean().nullable()),
         })}

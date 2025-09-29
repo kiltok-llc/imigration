@@ -16,6 +16,11 @@ export default function Intro() {
         }}
         onSuccess={() => {}}
         pageId='final-declaration'
+        sampleData={{
+          example: {
+            agreed: true,
+          },
+        }}
         schema={z.object({
           agreed: z.literal<boolean>(true),
         })}

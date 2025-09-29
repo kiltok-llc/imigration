@@ -5,6 +5,7 @@ import z from 'zod/v4';
 import { useAttachFile } from '@/atoms/attachment-atom';
 import {
   DEFAULT_FORM_SHORT_ADDRESS,
+  EXAMPLE_SHORT_ADDRESS,
   FormShortAddressInput,
   FormShortAddressSchema,
 } from '@/components/form/address';
@@ -50,6 +51,11 @@ export default function DemographicsAndBirth() {
           setSex(sex);
         }}
         pageId='sex'
+        sampleData={{
+          example: {
+            sex: 'male',
+          },
+        }}
         schema={z.object({
           sex: required(SexEnum.nullable()),
         })}
@@ -76,6 +82,12 @@ export default function DemographicsAndBirth() {
           setDob(date);
         }}
         pageId='birth'
+        sampleData={{
+          example: {
+            date: new Date('1990-05-15'),
+            location: EXAMPLE_SHORT_ADDRESS,
+          },
+        }}
         schema={z.object({
           date: required(z.date().nullable()),
           location: FormShortAddressSchema,
@@ -108,6 +120,12 @@ export default function DemographicsAndBirth() {
           setNationality(currentNationality);
         }}
         pageId='nationality'
+        sampleData={{
+          example: {
+            birthNationality: 'United States',
+            currentNationality: 'United States',
+          },
+        }}
         schema={z.object({
           birthNationality: z.string().nonempty(),
           currentNationality: z.string().nonempty(),
@@ -142,6 +160,12 @@ export default function DemographicsAndBirth() {
           setReligion(religion);
         }}
         pageId='additional-info'
+        sampleData={{
+          example: {
+            ethnicity: 'Hispanic or Latino',
+            religion: 'Christianity',
+          },
+        }}
         schema={z.object({
           ethnicity: z.string(),
           religion: z.string(),
@@ -174,6 +198,11 @@ export default function DemographicsAndBirth() {
           attachBirthCertificate(image ? new File(image) : null);
         }}
         pageId='birth-certificate'
+        sampleData={{
+          example: {
+            hasBirthCertificate: false,
+          },
+        }}
         schema={z.object({
           hasBirthCertificate: required(z.boolean().nullable()),
           image: required(z.string().nullable()).optional(),

@@ -34,6 +34,11 @@ export default function CriminalHistory() {
           }
         }}
         pageId='has-criminal-history'
+        sampleData={{
+          example: {
+            hasCriminalHistory: true,
+          },
+        }}
         schema={z.object({
           hasCriminalHistory: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function CriminalHistory() {
             setCriminalHistoryDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Detained for peaceful protest in 2019; charges later dismissed.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function CriminalHistory() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

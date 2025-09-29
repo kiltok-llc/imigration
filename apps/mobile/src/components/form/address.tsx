@@ -42,6 +42,24 @@ export const FormShortAddressSchema = z.object({
   country: z.string().nonempty(),
 });
 
+export const EXAMPLE_SHORT_ADDRESS = {
+  city: 'New York',
+  country: 'United States',
+};
+
+export const EXAMPLE_ADDRESS = {
+  city: 'New York',
+  state: 'NY',
+  street: '123 Main St',
+  unit: 'Apt 4B',
+  zipCode: '10001',
+};
+
+export const EXAMPLE_ADDRESS_WITH_COUNTRY = {
+  ...EXAMPLE_ADDRESS,
+  country: 'United States',
+};
+
 export function FormAddressInput({
   lens,
 }: {

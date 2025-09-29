@@ -28,6 +28,11 @@ export default function PreviousApplications() {
           return true;
         }}
         pageId='has-previous-app'
+        sampleData={{
+          example: {
+            hasPreviousApp: false,
+          },
+        }}
         schema={z.object({
           hasPreviousApp: required(z.boolean().nullable()),
         })}

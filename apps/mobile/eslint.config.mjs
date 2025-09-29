@@ -5,6 +5,7 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
   {
     extends: [expoConfig],
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
     rules: {
       'import/no-named-as-default': 'off',
       'import/no-named-as-default-member': 'off',

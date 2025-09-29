@@ -41,6 +41,11 @@ export default function ReasonForLeaving() {
           return true;
         }}
         pageId='is-escaping-harm'
+        sampleData={{
+          example: {
+            isEscapingHarm: true,
+          },
+        }}
         schema={z.object({
           isEscapingHarm: required(z.boolean().nullable()),
         })}
@@ -69,6 +74,12 @@ export default function ReasonForLeaving() {
           return true;
         }}
         pageId='harm-reasons'
+        sampleData={{
+          example: {
+            customHarmReason: 'Gender identity',
+            harmReasons: ['politics', 'other'],
+          },
+        }}
         schema={z.object({
           customHarmReason: z.string().nonempty().nullable(),
           harmReasons: z.array(HarmReasonEnum).nonempty(),
@@ -118,6 +129,11 @@ export default function ReasonForLeaving() {
           return true;
         }}
         pageId='is-harmed-by-gov'
+        sampleData={{
+          example: {
+            isHarmedByGov: true,
+          },
+        }}
         schema={z.object({
           isHarmedByGov: required(z.boolean().nullable()),
         })}

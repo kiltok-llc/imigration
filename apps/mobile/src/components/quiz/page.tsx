@@ -1,5 +1,6 @@
 import { Lens, useLens } from '@hookform/lenses';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import * as Updates from 'expo-updates';
 import { PrimitiveAtom, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import {
@@ -20,10 +21,12 @@ import {
 } from 'react-hook-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated, { LinearTransition } from 'react-native-reanimated';
+import { toast } from 'sonner-native';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
 import { QuizPageIdProvider } from '@/components/quiz/screen';
+import { Button } from '@/components/ui/button';
 import { useScreen } from '@/hooks/use-screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
@@ -49,6 +52,7 @@ export type QuizPageProps<
   pageId: string;
   pageKey?: string;
   ref?: Ref<QuizPageHandle>;
+  sampleData: Record<string, Input>;
   schema?: z.ZodType<Output, Input>;
 };
 
@@ -61,6 +65,7 @@ export function QuizPage<Input extends FieldValues, Output>({
   pageId,
   pageKey,
   ref = null,
+  sampleData,
   schema,
   ...props
 }: QuizPageProps<Input, Output>) {
@@ -93,18 +98,10 @@ export function QuizPage<Input extends FieldValues, Output>({
     useCallback(
       (get) => {
         const persistedValues = get(valuesAtom);
-        if (persistedValues) {
-          // console.debug(
-          //   `Loaded quiz values for ${pageId}:${pageKey}`,
-          //   persistedValues
-          // );
-          reset(persistedValues, {
-            keepDefaultValues: true,
-            keepDirtyValues: true,
-          });
-        }
+        console.debug(`Loaded quiz values`, persistedValues);
+        reset(persistedValues ?? undefined, { keepDefaultValues: true });
       },
-      [reset, valuesAtom]
+      [valuesAtom, reset]
     )
   );
 
@@ -161,6 +158,22 @@ export function QuizPage<Input extends FieldValues, Output>({
         <Animated.View layout={LinearTransition} style={tw`gap-16 py-16`}>
           <FormProvider {...context}>
             {children?.({ ...context, lens })}
+            {Updates.channel !== 'production' &&
+              Object.entries(sampleData).map(([key, data]) => (
+                <Button
+                  key={key}
+                  mode='contained-tonal'
+                  onPress={() => {
+                    toast.success(`Loaded ${key} data`);
+                    reset(data, {
+                      keepDefaultValues: true,
+                    });
+                  }}
+                  size='sm'
+                >
+                  Load {key} data
+                </Button>
+              ))}
           </FormProvider>
         </Animated.View>
       </KeyboardAwareScrollView>

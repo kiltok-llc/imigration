@@ -3,6 +3,7 @@ import z from 'zod/v4';
 
 import {
   DEFAULT_FORM_ADDRESS,
+  EXAMPLE_ADDRESS,
   FormAddressInput,
   FormAddressSchema,
 } from '@/components/form/address';
@@ -11,6 +12,7 @@ import { FormField } from '@/components/form/field';
 import { FormArray, FormArrayItems } from '@/components/form/fieldarray';
 import {
   DEFAULT_FORM_RANGE,
+  EXAMPLE_RANGE,
   FormRangeInput,
   FormRangeSchemaWithOptionalEnd,
 } from '@/components/form/range';
@@ -45,6 +47,24 @@ export default function EmploymentHistory() {
           );
         }}
         pageId='jobs'
+        sampleData={{
+          example: {
+            jobs: [
+              {
+                address: EXAMPLE_ADDRESS,
+                employer: 'Restaurant ABC',
+                occupation: 'Server',
+                range: EXAMPLE_RANGE,
+              },
+              {
+                address: EXAMPLE_ADDRESS,
+                employer: 'Retail Store XYZ',
+                occupation: 'Sales Associate',
+                range: EXAMPLE_RANGE,
+              },
+            ],
+          },
+        }}
         schema={z.object({
           jobs: z.array(FormJobSchema),
         })}

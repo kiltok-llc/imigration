@@ -20,6 +20,11 @@ export const DEFAULT_FORM_RANGE: z.input<typeof FormRangeSchema> = {
   start: null,
 };
 
+export const EXAMPLE_RANGE = {
+  end: new Date('2023-01-01'),
+  start: new Date('2022-01-01'),
+};
+
 export function FormRangeInput({
   lens,
   optionalEnd = false,

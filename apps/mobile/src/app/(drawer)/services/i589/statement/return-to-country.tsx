@@ -34,6 +34,11 @@ export default function ReturnToCountry() {
           }
         }}
         pageId='has-returned-to-country'
+        sampleData={{
+          example: {
+            hasReturnedToCountry: true,
+          },
+        }}
         schema={z.object({
           hasReturnedToCountry: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function ReturnToCountry() {
             setReturnToCountryDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Returned for a family emergency in 2021 and stayed for two weeks.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function ReturnToCountry() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

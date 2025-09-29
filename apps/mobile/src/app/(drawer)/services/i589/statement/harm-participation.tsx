@@ -34,6 +34,11 @@ export default function HarmParticipation() {
           }
         }}
         pageId='has-harm-participation'
+        sampleData={{
+          example: {
+            hasHarmParticipation: false,
+          },
+        }}
         schema={z.object({
           hasHarmParticipation: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function HarmParticipation() {
             setHarmParticipationDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'I refused to participate in any acts that would harm others.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function HarmParticipation() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

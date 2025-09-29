@@ -3,6 +3,7 @@ import z from 'zod/v4';
 
 import {
   DEFAULT_FORM_SHORT_ADDRESS,
+  EXAMPLE_SHORT_ADDRESS,
   FormShortAddressInput,
   FormShortAddressSchema,
 } from '@/components/form/address';
@@ -20,7 +21,6 @@ import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
-import { QuizTextInput } from '@/components/quiz/text';
 import {
   divorceDateAtom,
   maritalStatusAtom,
@@ -57,6 +57,11 @@ export default function MaritalStatus() {
           setMaritalStatus(status);
         }}
         pageId='marital-status'
+        sampleData={{
+          example: {
+            status: 'married',
+          },
+        }}
         schema={z.object({
           status: required(MaritalStatusEnum.nullable()),
         })}
@@ -88,6 +93,11 @@ export default function MaritalStatus() {
             }
           }}
           pageId='marriage-certificate'
+          sampleData={{
+            example: {
+              hasCertificate: false,
+            },
+          }}
           schema={z.object({
             certificate: required(z.string().nullable()).optional(),
             hasCertificate: required(z.boolean().nullable()),
@@ -129,6 +139,13 @@ export default function MaritalStatus() {
             setDivorceDate(divorceDate);
           }}
           pageId='marriage-info'
+          sampleData={{
+            example: {
+              date: new Date('2015-06-20'),
+              divorceDate: null,
+              location: EXAMPLE_SHORT_ADDRESS,
+            },
+          }}
           schema={z.object({
             date: required(z.date().nullable()),
             divorceDate:
@@ -169,6 +186,13 @@ export default function MaritalStatus() {
             setSpouseName(name);
           }}
           pageId='spouse-info'
+          sampleData={{
+            example: {
+              first: 'Ana',
+              last: 'Smith',
+              middle: 'Lucia',
+            },
+          }}
           schema={FormNameSchema}
         >
           {({ lens }) => (
@@ -190,12 +214,18 @@ export default function MaritalStatus() {
             setSpouseLocation(location ?? DEFAULT_LOCATION);
           }}
           pageId='spouse-location'
+          sampleData={{
+            example: {
+              isInUsa: true,
+              location: EXAMPLE_SHORT_ADDRESS,
+            },
+          }}
           schema={z.object({
             isInUsa: required(z.boolean().nullable()),
             location: FormShortAddressSchema.optional(),
           })}
         >
-          {({ control, watch }) => (
+          {({ control, lens, watch }) => (
             <>
               <FormBlock>
                 <FormField control={control} name='isInUsa'>
@@ -212,7 +242,9 @@ export default function MaritalStatus() {
               >
                 <FormBlock animated>
                   <QuizFieldTitle />
-                  <QuizTextInput />
+                  <FormShortAddressInput
+                    lens={lens.focus('location').defined()}
+                  />
                 </FormBlock>
               </ConditionalFormWrapper>
             </>

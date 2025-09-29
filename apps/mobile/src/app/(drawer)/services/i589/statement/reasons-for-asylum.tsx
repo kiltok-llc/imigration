@@ -23,6 +23,11 @@ export default function ReasonsForAsylum() {
           setReasonsForAsylum(reasons);
         }}
         pageId='reasons'
+        sampleData={{
+          example: {
+            reasons: ['politics', 'religion'],
+          },
+        }}
         schema={z.object({
           reasons: z.array(AsylumReasonEnum).nonempty(),
         })}

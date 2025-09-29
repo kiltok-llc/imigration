@@ -37,6 +37,12 @@ export default function OrganizationalAffiliations() {
           setPastDetails(details ?? '');
         }}
         pageId='has-past-affiliations'
+        sampleData={{
+          example: {
+            details: 'Member of university student union from 2016 to 2018.',
+            hasPastAffiliations: true,
+          },
+        }}
         schema={z.object({
           details: z.string().nonempty().optional(),
           hasPastAffiliations: required(z.boolean().nullable()),
@@ -76,6 +82,11 @@ export default function OrganizationalAffiliations() {
           }}
           onSuccess={() => true}
           pageId='past-affiliations-documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}
@@ -102,6 +113,12 @@ export default function OrganizationalAffiliations() {
           setCurrentDetails(details ?? '');
         }}
         pageId='has-current-affiliations'
+        sampleData={{
+          example: {
+            details: 'Volunteer with a human rights nonprofit since 2022.',
+            hasCurrentAffiliations: true,
+          },
+        }}
         schema={z.object({
           details: z.string().nonempty().optional(),
           hasCurrentAffiliations: required(z.boolean().nullable()),
@@ -141,6 +158,11 @@ export default function OrganizationalAffiliations() {
           }}
           onSuccess={() => true}
           pageId='current-affiliations-documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-2'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

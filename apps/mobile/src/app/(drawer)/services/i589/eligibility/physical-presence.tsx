@@ -27,6 +27,11 @@ export default function PhysicalPresence() {
           return true;
         }}
         pageId='is-in-usa'
+        sampleData={{
+          example: {
+            isInUsa: true,
+          },
+        }}
         schema={z.object({
           isInUsa: required(z.boolean().nullable()),
         })}

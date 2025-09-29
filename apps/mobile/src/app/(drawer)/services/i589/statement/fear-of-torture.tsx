@@ -34,6 +34,11 @@ export default function FearOfTorture() {
           }
         }}
         pageId='has-fear-of-torture'
+        sampleData={{
+          example: {
+            hasFearOfTorture: true,
+          },
+        }}
         schema={z.object({
           hasFearOfTorture: required(z.boolean().nullable()),
         })}
@@ -57,6 +62,12 @@ export default function FearOfTorture() {
             setFearOfTortureDetails(details);
           }}
           pageId='details'
+          sampleData={{
+            example: {
+              details:
+                'Received threats from local authorities warning of torture upon return.',
+            },
+          }}
           schema={z.object({
             details: z.string().nonempty(),
           })}
@@ -80,6 +91,11 @@ export default function FearOfTorture() {
           }}
           onSubmit={() => true}
           pageId='documents'
+          sampleData={{
+            example: {
+              documents: ['document-id-1'],
+            },
+          }}
           schema={z.object({
             documents: z.array(z.string()),
           })}

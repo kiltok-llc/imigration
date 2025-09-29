@@ -27,6 +27,11 @@ export default function CountryOfOrigin() {
           return true;
         }}
         pageId='is-from-safe-country'
+        sampleData={{
+          example: {
+            isFromSafeCountry: false,
+          },
+        }}
         schema={z.object({
           isFromSafeCountry: z.boolean().nullable(),
         })}
