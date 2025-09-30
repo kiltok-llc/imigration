@@ -69,7 +69,7 @@ export function StepIcons({
                   </View>
                 </Pressable>
                 <Text
-                  numberOfLines={2}
+                  numberOfLines={1}
                   style={tw.style(
                     'text-center',
                     currentStepIdx < stepIdx ? 'opacity-70' : 'font-semibold'

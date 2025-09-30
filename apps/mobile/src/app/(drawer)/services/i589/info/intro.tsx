@@ -26,11 +26,6 @@ export default function Intro() {
           setIsStepStarted(true);
         }}
         pageId='intro'
-        sampleData={{
-          example: {
-            agreed: true,
-          },
-        }}
         schema={z.object({
           agreed: z.literal<boolean>(true),
         })}

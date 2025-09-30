@@ -52,7 +52,7 @@ export type QuizPageProps<
   pageId: string;
   pageKey?: string;
   ref?: Ref<QuizPageHandle>;
-  sampleData: Record<string, Input>;
+  sampleData?: Record<string, Input>;
   schema?: z.ZodType<Output, Input>;
 };
 
@@ -65,7 +65,7 @@ export function QuizPage<Input extends FieldValues, Output>({
   pageId,
   pageKey,
   ref = null,
-  sampleData,
+  sampleData = {},
   schema,
   ...props
 }: QuizPageProps<Input, Output>) {
