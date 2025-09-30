@@ -114,8 +114,8 @@ export function QuizScreen({
 
       const activeChild = childRefs[page]?.current;
       if (!activeChild) {
-        console.warn('No active child found for submission.');
-        return false;
+        console.log('No active child found for submission.');
+        return true;
       }
 
       return await activeChild.submit();

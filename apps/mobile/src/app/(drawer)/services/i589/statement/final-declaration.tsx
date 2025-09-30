@@ -7,7 +7,7 @@ import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 
-export default function Intro() {
+export default function FinalDeclaration() {
   return (
     <QuizScreen>
       <QuizPage

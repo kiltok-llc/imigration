@@ -3,7 +3,7 @@ import { useLocalSegments } from '@/hooks/use-local-segments';
 export const useService = () => {
   const [services, service] = useLocalSegments();
   if (services !== 'services') {
-    console.warn("The first segment must be 'services'.");
+    console.warn("[useService] the first segment must be 'services'.");
     return '';
   }
 

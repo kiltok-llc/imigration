@@ -110,10 +110,10 @@ export function QuizPage<Input extends FieldValues, Output>({
   }, [loadQuizValues]);
 
   useImperativeHandle(ref, () => ({
-    reset() {
+    reset: () => {
       reset(defaultValues);
     },
-    async submit() {
+    submit: async () => {
       let result = false;
       await handleSubmit(
         (data) => {
