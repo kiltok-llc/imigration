@@ -13,7 +13,7 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { useService } from '@/hooks/use-service';
 import { addressesAtom, mailingAddressAtom } from '@/lib/data/user';
@@ -27,7 +27,7 @@ export default function CurrentAddress() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           resident: null,
         }}
@@ -59,9 +59,9 @@ export default function CurrentAddress() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{ address: DEFAULT_FORM_ADDRESS, date: null }}
         onSuccess={({ address, date }) =>
           setAddresses(([_first, ...rest]) => [
@@ -100,9 +100,9 @@ export default function CurrentAddress() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           receivesMail: null,
         }}
@@ -148,7 +148,7 @@ export default function CurrentAddress() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

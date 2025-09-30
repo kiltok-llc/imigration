@@ -22,7 +22,7 @@ import {
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
@@ -36,7 +36,7 @@ export default function SchoolInformation() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           level: null,
           name: '',
@@ -84,9 +84,9 @@ export default function SchoolInformation() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={DEFAULT_FORM_ADDRESS}
         onSuccess={(address) =>
           setSchoolInfo(([first, ...rest]) => [
@@ -117,9 +117,9 @@ export default function SchoolInformation() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={DEFAULT_FORM_RANGE}
         onSuccess={(range) =>
           setSchoolInfo(([first, ...rest]) => [
@@ -147,9 +147,9 @@ export default function SchoolInformation() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{ schools: [] }}
         onSuccess={({ schools }) =>
           setSchoolInfo(([first]) => [
@@ -214,7 +214,7 @@ export default function SchoolInformation() {
             </FormArray>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

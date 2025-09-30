@@ -55,7 +55,7 @@ apps/mobile/
 ## Quiz Implementation
 
 - Follow the `QuizScreen` → `QuizPage` structure; UI lives in `@/components/quiz`, orchestration helpers stay in `@/lib/quiz`.
-- Pick the right callback for `QuizPage`: `onSuccess` for simple acceptance, `onSubmit` when you may reject data (return `true`/`false`).
+- Pick the right callback for `QuizFormPage`: `onSuccess` for simple acceptance, `onSubmit` when you may reject data (return `true`/`false`).
 - Quiz pages always need titles and field translations; derive keys from the service → quiz → screen → page → field hierarchy to keep them consistent (e.g., `services.i589.info.employment-history.jobs.employer-name.label`).
 - Review similar quiz files before adding new ones, and never consume quiz components outside of quiz flows.
 

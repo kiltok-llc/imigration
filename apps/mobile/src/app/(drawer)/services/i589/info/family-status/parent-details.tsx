@@ -22,7 +22,7 @@ import {
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import {
-  QuizPage,
+  QuizFormPage,
   QuizPageHandle,
   QuizPageProps,
 } from '@/components/quiz/page';
@@ -64,7 +64,7 @@ const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
       <TranslationContextProvider
         value={{ context: parent === 'mother' ? 'female' : 'male' }}
       >
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             alive: null,
             birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
@@ -141,7 +141,7 @@ const ParentPage = forwardRef<QuizPageHandle, ParentPageProps>(
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
       </TranslationContextProvider>
     );
   }

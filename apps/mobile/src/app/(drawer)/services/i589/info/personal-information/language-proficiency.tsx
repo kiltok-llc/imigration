@@ -7,7 +7,7 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDropdown, QuizMultiDropdown } from '@/components/quiz/dropdown';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -24,7 +24,7 @@ export default function LanguageProficiency() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           dialect: '',
           language: '',
@@ -74,9 +74,9 @@ export default function LanguageProficiency() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           languages: [],
         }}
@@ -105,7 +105,7 @@ export default function LanguageProficiency() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

@@ -5,7 +5,7 @@ import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { QuizConfirmBox } from '@/components/quiz/checkbox';
 import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { useService } from '@/hooks/use-service';
 import { useStep } from '@/hooks/use-step';
@@ -18,7 +18,7 @@ export default function Intro() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           agreed: false,
         }}
@@ -41,7 +41,7 @@ export default function Intro() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

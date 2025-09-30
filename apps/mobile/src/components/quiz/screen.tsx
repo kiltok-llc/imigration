@@ -18,6 +18,7 @@ import { Keyboard, View } from 'react-native';
 import tw from 'twrnc';
 
 import { FadeSlotPageWrapper } from '@/components/fade-slot';
+import { MigriButton } from '@/components/migri/migri-talk-button';
 import { QuizPageHandle, QuizPageProps } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useDevMenuItem } from '@/hooks/use-dev-menu-items';
@@ -63,12 +64,18 @@ const useSyncCurrentPageId = (children: ReactNode, page: number) => {
     setPageId(pageId ?? '');
     return resetPageId;
   }, [pageId, resetPageId, setPageId]);
+
+  return pageId;
 };
 
 export function QuizScreen({
   children,
+  migriFAB = true,
   screenKey,
-}: PropsWithChildren<{ screenKey?: string }>) {
+}: PropsWithChildren<{
+  migriFAB?: boolean;
+  screenKey?: string;
+}>) {
   useSyncScreenKey(screenKey);
 
   const t = useT();
@@ -99,7 +106,7 @@ export function QuizScreen({
     )
   );
 
-  useSyncCurrentPageId(children, page);
+  const pageId = useSyncCurrentPageId(children, page);
 
   const {
     data: submissionResult,
@@ -163,12 +170,19 @@ export function QuizScreen({
           <View key={idx} style={tw`flex-1`}>
             {isValidElement<QuizPageProps>(child)
               ? cloneElement(child, {
-                  ref: childRefs[idx],
+                  pageRef: childRefs[idx],
                 })
               : child}
           </View>
         ))}
       </ReactivePagerView>
+      {migriFAB && (
+        <MigriButton
+          float
+          id={`services.${service}.${step}.${screen}.${pageId}`}
+          style={tw`right-4 bottom-4`}
+        />
+      )}
     </FadeSlotPageWrapper>
   );
 }

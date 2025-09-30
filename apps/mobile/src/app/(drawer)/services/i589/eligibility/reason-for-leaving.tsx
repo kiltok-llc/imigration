@@ -8,7 +8,7 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizCheckboxItem } from '@/components/quiz/checkbox';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { required } from '@/lib/utils';
@@ -28,7 +28,7 @@ export default function ReasonForLeaving() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           isEscapingHarm: null,
         }}
@@ -58,9 +58,9 @@ export default function ReasonForLeaving() {
             </FormField>
           </FormBlock>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           customHarmReason: null,
           harmReasons: [],
@@ -114,9 +114,9 @@ export default function ReasonForLeaving() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           isHarmedByGov: null,
         }}
@@ -146,7 +146,7 @@ export default function ReasonForLeaving() {
             </FormField>
           </FormBlock>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

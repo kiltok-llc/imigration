@@ -5,7 +5,7 @@ import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
@@ -14,7 +14,7 @@ export default function PhysicalPresence() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           isInUsa: null,
         }}
@@ -44,7 +44,7 @@ export default function PhysicalPresence() {
             </FormField>
           </FormBlock>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

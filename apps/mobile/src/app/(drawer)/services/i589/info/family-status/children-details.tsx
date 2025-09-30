@@ -15,7 +15,7 @@ import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import {
-  QuizPage,
+  QuizFormPage,
   QuizPageHandle,
   QuizPageProps,
 } from '@/components/quiz/page';
@@ -45,7 +45,7 @@ export default function ChildrenDetails() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           hasChildren: null,
         }}
@@ -90,7 +90,7 @@ export default function ChildrenDetails() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
       {childIds.map((id, index) => (
         <ChildQuizPage id={id} index={index} key={id} pageId='child' />
@@ -111,7 +111,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
     const lastName = useAtomValue(nameAtom).last;
 
     return (
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           dob: null,
           ethnicity: '',
@@ -233,7 +233,7 @@ const ChildQuizPage = forwardRef<QuizPageHandle, ChildQuizPageProps>(
             </ConditionalFormWrapper>
           </TranslationContextProvider>
         )}
-      </QuizPage>
+      </QuizFormPage>
     );
   }
 );

@@ -10,7 +10,7 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizCommaListInput, QuizTextInput } from '@/components/quiz/text';
 import {
@@ -29,7 +29,7 @@ export default function NameAndAliases() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={DEFAULT_FORM_NAME}
         onSuccess={(name) => {
           setName(name);
@@ -55,9 +55,9 @@ export default function NameAndAliases() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           maidenName: '',
           otherNames: '',
@@ -95,9 +95,9 @@ export default function NameAndAliases() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           hasAlias: null,
         }}
@@ -139,7 +139,7 @@ export default function NameAndAliases() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

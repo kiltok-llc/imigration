@@ -4,6 +4,7 @@ import * as Updates from 'expo-updates';
 import { PrimitiveAtom, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import {
+  PropsWithChildren,
   ReactNode,
   Ref,
   useCallback,
@@ -38,37 +39,36 @@ export type QuizPageHandle = {
   submit: () => Promise<boolean>;
 };
 
-export type QuizPageProps<
-  Input extends FieldValues = FieldValues,
-  Output = any,
-> = {
-  children?: (
-    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
-  ) => ReactNode;
-  defaultValues?: Input;
-  formOptions?: UseFormProps<Input, any, Output>;
-  onSubmit?: (data: Output) => boolean;
-  onSuccess?: (data: Output) => void;
+export type QuizPageProps = {
   pageId: string;
   pageKey?: string;
-  ref?: Ref<QuizPageHandle>;
-  sampleData?: Record<string, Input>;
-  schema?: z.ZodType<Output, Input>;
+  pageRef?: Ref<QuizPageHandle>;
 };
 
-export function QuizPage<Input extends FieldValues, Output>({
+export function QuizFormPage<Input extends FieldValues, Output>({
   children,
   defaultValues,
   formOptions = {},
   onSubmit = () => true,
-  onSuccess,
+  onSuccess = () => {},
   pageId,
   pageKey,
-  ref = null,
+  pageRef = null,
   sampleData = {},
   schema,
-  ...props
-}: QuizPageProps<Input, Output>) {
+}: QuizPageProps & {
+  children?: (
+    context: UseFormReturn<Input, any, Output> & { lens: Lens<Input> }
+  ) => ReactNode;
+  defaultValues: Input;
+  formOptions?: UseFormProps<Input, any, Output>;
+  onSubmit?: (data: Output) => boolean;
+  onSuccess?: (data: Output) => void;
+  pageId: string;
+  pageRef?: Ref<QuizPageHandle>;
+  sampleData?: Record<string, Input>;
+  schema: z.ZodType<Output, Input>;
+}) {
   const service = useService();
   const screen = useScreen();
   const step = useStep();
@@ -85,7 +85,7 @@ export function QuizPage<Input extends FieldValues, Output>({
 
   const context = useForm<Input, any, Output>({
     defaultValues: defaultValues as DefaultValues<Input>,
-    resolver: standardSchemaResolver<Input, any, Output>(schema!),
+    resolver: standardSchemaResolver<Input, any, Output>(schema),
     ...formOptions,
   });
   const { control, handleSubmit, reset, subscribe } = context;
@@ -109,29 +109,6 @@ export function QuizPage<Input extends FieldValues, Output>({
     loadQuizValues();
   }, [loadQuizValues]);
 
-  useImperativeHandle(ref, () => ({
-    reset: () => {
-      reset(defaultValues);
-    },
-    submit: async () => {
-      let result = false;
-      await handleSubmit(
-        (data) => {
-          console.debug('Passed validation!', data);
-          result = onSubmit(data);
-          if (result && onSuccess) {
-            onSuccess(data);
-          }
-        },
-        (errors) => {
-          console.debug('Failed validation!', errors);
-          result = false;
-        }
-      )();
-      return result;
-    },
-  }));
-
   useEffect(
     () =>
       subscribe({
@@ -146,16 +123,40 @@ export function QuizPage<Input extends FieldValues, Output>({
   );
 
   return (
-    <QuizPageIdProvider value={pageId}>
+    <QuizPage
+      onReset={() => reset(defaultValues)}
+      onSubmit={async () => {
+        let result = false;
+        await handleSubmit(
+          (data) => {
+            console.debug('Passed validation!', data);
+            result = onSubmit(data);
+            if (result) {
+              onSuccess(data);
+            }
+          },
+          (errors) => {
+            console.debug('Failed validation!', errors);
+            result = false;
+          }
+        )();
+        return result;
+      }}
+      pageId={pageId}
+      pageKey={pageKey}
+      pageRef={pageRef}
+    >
       <KeyboardAwareScrollView
         bottomOffset={80}
         contentContainerStyle={tw`grow justify-center`}
         disableScrollOnKeyboardHide={true}
         scrollsToTop={false}
-        style={tw`flex-1 px-4 pt-4`}
-        {...props}
+        style={tw`flex-1`}
       >
-        <Animated.View layout={LinearTransition} style={tw`gap-16 py-16`}>
+        <Animated.View
+          layout={LinearTransition}
+          style={tw`gap-16 px-4 pt-4 pb-16`}
+        >
           <FormProvider {...context}>
             {children?.({ ...context, lens })}
             {Updates.channel !== 'production' &&
@@ -177,6 +178,24 @@ export function QuizPage<Input extends FieldValues, Output>({
           </FormProvider>
         </Animated.View>
       </KeyboardAwareScrollView>
-    </QuizPageIdProvider>
+    </QuizPage>
   );
+}
+
+export function QuizPage({
+  children,
+  onReset = () => {},
+  onSubmit = async () => true,
+  pageId,
+  pageRef,
+}: PropsWithChildren<QuizPageProps> & {
+  onReset?: () => void;
+  onSubmit?: () => Promise<boolean>;
+}) {
+  useImperativeHandle(pageRef, () => ({
+    reset: onReset,
+    submit: onSubmit,
+  }));
+
+  return <QuizPageIdProvider value={pageId}>{children}</QuizPageIdProvider>;
 }

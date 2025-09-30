@@ -20,13 +20,13 @@ import {
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function PreviousAddresses() {
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           address: DEFAULT_FORM_ADDRESS,
           range: DEFAULT_FORM_RANGE,
@@ -61,9 +61,9 @@ export default function PreviousAddresses() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           residences: [],
         }}
@@ -121,7 +121,7 @@ export default function PreviousAddresses() {
             </FormArray>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

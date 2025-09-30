@@ -24,7 +24,7 @@ import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import {
-  QuizPage,
+  QuizFormPage,
   QuizPageHandle,
   QuizPageProps,
 } from '@/components/quiz/page';
@@ -52,7 +52,7 @@ export default function SiblingsDetails() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           hasSiblings: null,
         }}
@@ -99,7 +99,7 @@ export default function SiblingsDetails() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
       {siblingIds.map((id, index) => (
         <SiblingQuizPage id={id} index={index} key={id} pageId='sibling' />
@@ -118,7 +118,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
     const lastName = useAtomValue(nameAtom).last;
 
     return (
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
           dob: null,
@@ -223,7 +223,7 @@ const SiblingQuizPage = forwardRef<QuizPageHandle, SiblingQuizPageProps>(
             </ConditionalFormWrapper>
           </TranslationContextProvider>
         )}
-      </QuizPage>
+      </QuizFormPage>
     );
   }
 );

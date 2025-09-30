@@ -18,7 +18,7 @@ import {
   QuizFieldTitle,
   QuizPageTitle,
 } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
@@ -138,7 +138,7 @@ export default function ImmigrationStatus() {
   return (
     <TranslationContextProvider value={{ values: { name } }}>
       <QuizScreen screenKey={`${context}${id ? `-${id}` : ''}`}>
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             hasPassport: null,
           }}
@@ -220,9 +220,9 @@ export default function ImmigrationStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
 
-        <QuizPage
+        <QuizFormPage
           defaultValues={{ hasAlienNumber: null }}
           onSuccess={({ number }) => {
             setAlienNumber(number ?? '');
@@ -262,9 +262,9 @@ export default function ImmigrationStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
 
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             hasSsn: null,
           }}
@@ -305,9 +305,9 @@ export default function ImmigrationStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
 
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             hasUscis: null,
           }}
@@ -348,9 +348,9 @@ export default function ImmigrationStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
 
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             status: null,
           }}
@@ -381,10 +381,10 @@ export default function ImmigrationStatus() {
               </FormBlock>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
 
         {context === 'child' && (
-          <QuizPage
+          <QuizFormPage
             defaultValues={{
               isInUsa: null,
             }}
@@ -409,11 +409,11 @@ export default function ImmigrationStatus() {
                 </FormField>
               </FormBlock>
             )}
-          </QuizPage>
+          </QuizFormPage>
         )}
 
         {isInUsa && (
-          <QuizPage
+          <QuizFormPage
             defaultValues={DEFAULT_USA_ENTRY}
             onSuccess={({ date, port, status }) => {
               setEntries([{ date, port, status }]);
@@ -462,11 +462,11 @@ export default function ImmigrationStatus() {
                 </FormBlock>
               </>
             )}
-          </QuizPage>
+          </QuizFormPage>
         )}
 
         {context === 'spouse' && isInUsa && (
-          <QuizPage
+          <QuizFormPage
             defaultValues={{
               hasPreviousEntry: null,
             }}
@@ -512,11 +512,11 @@ export default function ImmigrationStatus() {
                 </ConditionalFormWrapper>
               </>
             )}
-          </QuizPage>
+          </QuizFormPage>
         )}
 
         {context === 'client' && (
-          <QuizPage
+          <QuizFormPage
             defaultValues={{
               hasOtherEntries: null,
             }}
@@ -617,7 +617,7 @@ export default function ImmigrationStatus() {
                 </ConditionalFormWrapper>
               </>
             )}
-          </QuizPage>
+          </QuizFormPage>
         )}
       </QuizScreen>
     </TranslationContextProvider>

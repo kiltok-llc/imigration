@@ -18,7 +18,7 @@ import {
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import {
@@ -49,7 +49,7 @@ export default function MaritalStatus() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           status: null,
         }}
@@ -80,10 +80,10 @@ export default function MaritalStatus() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
       {maritalStatus === 'married' && (
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             hasCertificate: null,
           }}
@@ -123,11 +123,11 @@ export default function MaritalStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
       )}
 
       {maritalStatus !== 'single' && (
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             date: null,
             divorceDate: null,
@@ -176,11 +176,11 @@ export default function MaritalStatus() {
               </FormBlock>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
       )}
 
       {maritalStatus === 'married' && (
-        <QuizPage
+        <QuizFormPage
           defaultValues={DEFAULT_FORM_NAME}
           onSuccess={(name) => {
             setSpouseName(name);
@@ -201,11 +201,11 @@ export default function MaritalStatus() {
               <FormNameInput lens={lens} />
             </FormBlock>
           )}
-        </QuizPage>
+        </QuizFormPage>
       )}
 
       {maritalStatus === 'married' && (
-        <QuizPage
+        <QuizFormPage
           defaultValues={{
             isInUsa: null,
           }}
@@ -249,7 +249,7 @@ export default function MaritalStatus() {
               </ConditionalFormWrapper>
             </>
           )}
-        </QuizPage>
+        </QuizFormPage>
       )}
     </QuizScreen>
   );

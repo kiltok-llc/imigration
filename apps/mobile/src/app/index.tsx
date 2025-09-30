@@ -15,7 +15,7 @@ export default function Root() {
   }
 
   if (__DEV__) {
-    return <Redirect href='/services' />;
+    return <Redirect href='/services/i589/statement' />;
     // setSavedUrl('personal-information/contact-information');
     // return (
     //   <Redirect href='/services/i589/info/personal-information/contact-information' />

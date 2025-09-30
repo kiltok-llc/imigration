@@ -9,7 +9,7 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { emailAtom, phoneNumberAtom } from '@/lib/data/user';
@@ -20,7 +20,7 @@ export default function ContactInformation() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{ email: '', phoneNumber: '+1 ' }}
         onSuccess={({ email, phoneNumber }) => {
           setPhoneNumber(phoneNumber);
@@ -66,7 +66,7 @@ export default function ContactInformation() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

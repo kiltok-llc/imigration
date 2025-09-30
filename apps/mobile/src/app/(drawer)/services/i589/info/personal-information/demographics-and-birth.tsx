@@ -15,7 +15,7 @@ import { FormImageInput } from '@/components/form/image';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -43,7 +43,7 @@ export default function DemographicsAndBirth() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           sex: null,
         }}
@@ -70,9 +70,9 @@ export default function DemographicsAndBirth() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           date: null,
           location: DEFAULT_FORM_SHORT_ADDRESS,
@@ -108,9 +108,9 @@ export default function DemographicsAndBirth() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           birthNationality: '',
           currentNationality: '',
@@ -148,9 +148,9 @@ export default function DemographicsAndBirth() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           ethnicity: '',
           religion: '',
@@ -188,9 +188,9 @@ export default function DemographicsAndBirth() {
             </FormBlock>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
 
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           hasBirthCertificate: null,
         }}
@@ -230,7 +230,7 @@ export default function DemographicsAndBirth() {
             </ConditionalFormWrapper>
           </>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }

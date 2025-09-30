@@ -6,7 +6,7 @@ import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizPage } from '@/components/quiz/page';
+import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function CountryOfOrigin() {
@@ -14,7 +14,7 @@ export default function CountryOfOrigin() {
 
   return (
     <QuizScreen>
-      <QuizPage
+      <QuizFormPage
         defaultValues={{
           isFromSafeCountry: null,
         }}
@@ -44,7 +44,7 @@ export default function CountryOfOrigin() {
             </FormField>
           </FormBlock>
         )}
-      </QuizPage>
+      </QuizFormPage>
     </QuizScreen>
   );
 }
