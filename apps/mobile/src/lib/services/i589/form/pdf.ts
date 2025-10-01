@@ -180,7 +180,7 @@ export const i589PdfAtom = atomWithQuery((get) => ({
     );
 
     const file = new File(Paths.cache, `${uuid.v4()}.pdf`);
-    file.write(content);
+    file.write(content, {});
     return file.uri;
   },
   queryKey: ['pdf', 'i589'],
