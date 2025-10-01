@@ -63,6 +63,3 @@ android/
 .temp/
 
 .venv/
-
-# I think cactus build is creating this file
-.projectId.json

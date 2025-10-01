@@ -23,7 +23,6 @@ nodeLinker: hoisted
 onlyBuiltDependencies:
   - '@sentry/cli'
   - '@tailwindcss/oxide'
-  - cactus-react-native
   - canvas
   - core-js
   - core-js-pure
