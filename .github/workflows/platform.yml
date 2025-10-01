@@ -1,6 +1,7 @@
 name: Platform
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'apps/platform/**'

@@ -1,6 +1,7 @@
 name: Supabase
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'packages/supabase/**'
