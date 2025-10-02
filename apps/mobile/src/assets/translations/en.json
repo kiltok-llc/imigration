@@ -1,4 +1,7 @@
 {
+  "chat": {
+    "placeholder": "Chat with Migri..."
+  },
   "permission": {
     "camera": {
       "denied": "To take photos, please allow camera access in your device settings."

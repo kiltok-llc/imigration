@@ -1,12 +1,13 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useAtomValue } from 'jotai';
-import { PropsWithChildren, ReactNode, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ComponentProps, PropsWithChildren, ReactNode, useRef } from 'react';
+import { ScrollView, View, ViewStyle } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { Surface, Text, TextInput, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
+import { useT } from '@/lib/translation';
 
 export type Side = 'left' | 'right';
 
@@ -60,29 +61,39 @@ export function ChatBubble({
   );
 }
 
-export function ChatContainer({ children }: PropsWithChildren) {
+export function ChatContainer({
+  children,
+  style,
+}: PropsWithChildren<{ style?: ViewStyle }>) {
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
   return (
     <KeyboardAvoidingView
       behavior='padding'
       keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
-      style={tw`flex-1`}
+      style={style}
     >
       {children}
     </KeyboardAvoidingView>
   );
 }
 
-export function ChatInput() {
-  const [value, setValue] = useState('');
+export function ChatInput({
+  outlineStyle,
+  style,
+  ...props
+}: ComponentProps<typeof TextInput>) {
+  const t = useT();
+
   return (
     <TextInput
+      dense={true}
       mode='outlined'
-      onChangeText={setValue}
-      outlineStyle={tw`rounded-3xl`}
-      style={tw`m-2`}
-      value={value}
+      outlineStyle={[tw`rounded-3xl`, outlineStyle]}
+      placeholder={t('chat.placeholder')}
+      right={<TextInput.Icon icon='microphone' />}
+      style={[tw`m-2`, style]}
+      {...props}
     />
   );
 }

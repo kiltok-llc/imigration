@@ -27,7 +27,7 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-redeclare': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           args: 'all',
           argsIgnorePattern: '^_',

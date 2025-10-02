@@ -1,4 +1,7 @@
 import { useAtomValue } from 'jotai';
+import { useState } from 'react';
+import { TextInput, useTheme } from 'react-native-paper';
+import tw from 'twrnc';
 
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
@@ -58,10 +61,14 @@ const chatMessages: ChatMessage[] = [
 
 export default function Statement() {
   const name = useAtomValue(nameAtom).first;
+  const [value, setValue] = useState('');
+  const theme = useTheme();
+  const isTyping = !!value;
+
   return (
     <QuizScreen migriFAB={false}>
       <QuizPage pageId='statement'>
-        <ChatContainer>
+        <ChatContainer style={tw`flex-1`}>
           <ChatMessages>
             {chatMessages.map(({ id, role, text }) => (
               <ChatBubble
@@ -72,7 +79,16 @@ export default function Statement() {
               />
             ))}
           </ChatMessages>
-          <ChatInput />
+          <ChatInput
+            onChangeText={setValue}
+            right={
+              <TextInput.Icon
+                color={isTyping ? theme.colors.primary : theme.colors.outline}
+                icon={isTyping ? 'arrow-up-circle' : 'microphone'}
+              />
+            }
+            value={value}
+          />
         </ChatContainer>
       </QuizPage>
     </QuizScreen>
