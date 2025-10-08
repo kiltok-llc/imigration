@@ -1,73 +1,145 @@
+import { isEqual } from '@ver0/deep-equal';
 import { useRouter } from 'expo-router';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { atomWithReset, useResetAtom } from 'jotai/utils';
-import { useCallback, useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { atomFamily, AtomFamily } from 'jotai/vanilla/utils/atomFamily';
+import { useCallback } from 'react';
+import z from 'zod/v4';
 
-import { useScreen } from '@/hooks/use-screen';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
-import { quizPageAtom } from '@/lib/quiz/page';
+import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { useQuizScreenKey } from '@/components/quiz/screen';
+import { useLocalSegments } from '@/hooks/use-local-segments';
+import { defaultStorage } from '@/lib/mmkv';
 import {
   useIncrementRoute,
   useIsFirstRoute,
   useIsLastRoute,
   useOnComplete,
 } from '@/lib/routes';
+import { clearMMKVKeys } from '@/lib/utils';
 
-const quizScreenKeyAtom = atomWithReset('');
+const atoms = new Map<string, AtomFamily<any, any>>();
 
-export const useQuizScreenKey = () => useAtomValue(quizScreenKeyAtom);
-
-export const useSyncScreenKey = (screenKey: string | undefined) => {
-  const setScreenKey = useSetAtom(quizScreenKeyAtom);
-  const resetScreenKey = useResetAtom(quizScreenKeyAtom);
-  useEffect(() => {
-    setScreenKey(screenKey ?? '');
-    return resetScreenKey;
-  }, [resetScreenKey, screenKey, setScreenKey]);
-};
-export const useHandleQuizScreenNext = (
-  pages: number,
-  screenKey: string | undefined
+export const quizScreenAtomFamily = <T>(
+  key: string,
+  schema: z.ZodType<T>,
+  initialValue: T
 ) => {
-  const service = useService();
-  const step = useStep();
-  const screen = useScreen();
-  const [page, setPage] = useAtom(
-    quizPageAtom({ screen, screenKey, service, step })
+  const anAtom = atomFamily(
+    ({
+      screen,
+      screenKey = '',
+      service,
+      step,
+    }: {
+      screen: string;
+      screenKey: string;
+      service: string;
+      step: string;
+    }) =>
+      atomWithMmkvStorage(
+        `services:${service}:${step}:${screen}:${screenKey}:${key}`,
+        initialValue,
+        schema,
+        defaultStorage
+      ),
+    isEqual
+  );
+
+  atoms.set(key, anAtom);
+
+  return anAtom;
+};
+
+export const useQuizScreenAtomKey = () => {
+  const [_services, service = '', step = '', ...screens] = useLocalSegments();
+  const screen = screens.join('.');
+  const screenKey = useQuizScreenKey();
+  return {
+    screen,
+    screenKey,
+    service,
+    step,
+  };
+};
+
+const PATTERN_ANY = '[^:]*';
+
+export function resetQuizScreenAtoms({
+  key,
+  screen = PATTERN_ANY,
+  screenKey = PATTERN_ANY,
+  service,
+  step,
+}: {
+  key: string;
+  screen?: string;
+  screenKey?: string;
+  service: string;
+  step: string;
+}) {
+  const exp = new RegExp(
+    `^services:(${service}):(${step}):(${screen}):(${screenKey}):(${key})$`
+  );
+  console.log('Clearing quiz screen atoms matching', exp);
+
+  for (const [service, step, screen, screenKey, key] of clearMMKVKeys<
+    [string, string, string, string, string]
+  >(exp, defaultStorage)) {
+    const atom = atoms.get(key);
+    if (!atom) {
+      console.error(`Unknown quiz page atom key: ${key}`);
+      continue;
+    }
+
+    atom.remove({
+      screen,
+      screenKey,
+      service,
+      step,
+    });
+  }
+}
+
+export const quizScreenCurrentPageIdxAtom = quizScreenAtomFamily(
+  'page',
+  z.number(),
+  0
+);
+
+export const useHandleQuizScreenNext = (pages: number) => {
+  const [pageIdx, setPageIdx] = useAtom(
+    quizScreenCurrentPageIdxAtom(useQuizScreenAtomKey())
   );
   const isLastRoute = useIsLastRoute();
   const onComplete = useOnComplete();
   const incrementRoute = useIncrementRoute();
 
   return useCallback(() => {
-    if (page < pages - 1) {
-      void setPage(page + 1);
+    if (pageIdx < pages - 1) {
+      void setPageIdx(pageIdx + 1);
     } else if (isLastRoute) {
       onComplete();
     } else {
       incrementRoute(1);
     }
-  }, [onComplete, incrementRoute, isLastRoute, page, pages, setPage]);
+  }, [onComplete, incrementRoute, isLastRoute, pageIdx, pages, setPageIdx]);
 };
-export const useHandleQuizScreenPrev = (screenKey: string | undefined) => {
-  const service = useService();
-  const step = useStep();
-  const screen = useScreen();
-  const [page, setPage] = useAtom(
-    quizPageAtom({ screen, screenKey, service, step })
+
+export const useHandleQuizScreenPrev = () => {
+  const [pageIdx, setPageIdx] = useAtom(
+    quizScreenCurrentPageIdxAtom(useQuizScreenAtomKey())
   );
   const isFirstRoute = useIsFirstRoute();
   const router = useRouter();
   const incrementRoute = useIncrementRoute();
 
   return useCallback(() => {
-    if (page > 0) {
-      void setPage(page - 1);
+    if (pageIdx > 0) {
+      void setPageIdx(pageIdx - 1);
     } else if (isFirstRoute) {
       router.back();
     } else {
       incrementRoute(-1);
     }
-  }, [incrementRoute, isFirstRoute, page, router, setPage]);
+  }, [incrementRoute, isFirstRoute, pageIdx, router, setPageIdx]);
 };

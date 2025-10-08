@@ -7,8 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { TransButton, TransText } from '@/components/trans';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { useQuizActions } from '@/lib/quiz/actions';
 import { quizFooterHeightAtom, quizHeaderHeightAtom } from '@/lib/quiz/header';
 import {
@@ -90,8 +89,7 @@ function QuizHeader() {
   const t = useT();
   const theme = useTheme();
   const setQuizHeaderHeight = useSetAtom(quizHeaderHeightAtom);
-  const service = useService();
-  const step = useStep();
+  const [_service, service = '', step = ''] = useLocalSegments();
 
   const [currentRoute, currentParams] = useCurrentRoute();
   const [nextRoute, nextParams] = useNextRoute();

@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { atomWithReset, useResetAtom } from 'jotai/utils';
+import { useAtomValue } from 'jotai';
 import {
   Children,
   cloneElement,
@@ -23,24 +22,19 @@ import { QuizPageHandle, QuizPageProps } from '@/components/quiz/page';
 import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useDevMenuItem } from '@/hooks/use-dev-menu-items';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
-import { useScreen } from '@/hooks/use-screen';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
-import { useQuizActions } from '@/lib/quiz/actions';
-import { quizPageAtom } from '@/lib/quiz/page';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
+import { useQuizActions } from '@/lib/quiz/actions';
+import {
+  quizScreenCurrentPageIdxAtom,
   useHandleQuizScreenNext,
   useHandleQuizScreenPrev,
-  useSyncScreenKey,
+  useQuizScreenAtomKey,
 } from '@/lib/quiz/screen';
 import { useT } from '@/lib/translation';
-
-const QuizPageIdContext = createContext<string>('');
-export const QuizPageIdProvider = QuizPageIdContext.Provider;
-export const useQuizPageId = () => useContext(QuizPageIdContext);
-
-const quizCurrentPageIdAtom = atomWithReset('');
-export const useQuizCurrentPageId = () => useAtomValue(quizCurrentPageIdAtom);
 
 export const useChildRefs = (children: ReactNode) =>
   useMemo(
@@ -52,61 +46,52 @@ export const useChildRefs = (children: ReactNode) =>
     [children]
   );
 
-const useSyncCurrentPageId = (children: ReactNode, page: number) => {
-  const pages = Children.toArray(children).filter((child) =>
+const useCurrentPageId = (children: ReactNode, page: number) =>
+  Children.toArray(children).filter((child) =>
     isValidElement<QuizPageProps>(child)
-  );
-  const pageId = pages[page]?.props?.pageId;
+  )[page]?.props?.pageId ?? '';
 
-  const setPageId = useSetAtom(quizCurrentPageIdAtom);
-  const resetPageId = useResetAtom(quizCurrentPageIdAtom);
-  useEffect(() => {
-    setPageId(pageId ?? '');
-    return resetPageId;
-  }, [pageId, resetPageId, setPageId]);
+const QuizScreenKeyContext = createContext<string>('');
+export const QuizScreenKeyProvider = QuizScreenKeyContext.Provider;
+export const useQuizScreenKey = () => useContext(QuizScreenKeyContext);
 
-  return pageId;
-};
+const QuizScreenCurrentPageIdContext = createRequiredContext<string>();
+export const useQuizScreenCurrentPageId = () =>
+  useRequiredContext(QuizScreenCurrentPageIdContext);
 
 export function QuizScreen({
   children,
   migriFAB = true,
-  screenKey,
 }: PropsWithChildren<{
   migriFAB?: boolean;
-  screenKey?: string;
 }>) {
-  useSyncScreenKey(screenKey);
-
   const t = useT();
 
-  const screen = useScreen();
-  const service = useService();
-  const step = useStep();
-  const page = useAtomValue(quizPageAtom({ screen, screenKey, service, step }));
+  const [_services, service = '', step = '', ...screens] = useLocalSegments();
+  const screen = screens.join('.');
+  const pageIdx = useAtomValue(
+    quizScreenCurrentPageIdxAtom(useQuizScreenAtomKey())
+  );
   const keyboardVisible = useKeyboardVisible();
   const childRefs = useChildRefs(children);
-  const handleQuizScreenNext = useHandleQuizScreenNext(
-    childRefs.length,
-    screenKey
-  );
-  const handleQuizScreenPrev = useHandleQuizScreenPrev(screenKey);
+  const handleQuizScreenNext = useHandleQuizScreenNext(childRefs.length);
+  const handleQuizScreenPrev = useHandleQuizScreenPrev();
   const { setHandleBack, setHandleContinue } = useQuizActions();
 
   useDevMenuItem(
     useCallback(
       () => ({
         callback: () => {
-          childRefs[page]?.current?.reset();
+          childRefs[pageIdx]?.current?.reset();
         },
         name: 'Reset Quiz Page Values',
         shouldCollapse: true,
       }),
-      [childRefs, page]
+      [childRefs, pageIdx]
     )
   );
 
-  const pageId = useSyncCurrentPageId(children, page);
+  const currentPageId = useCurrentPageId(children, pageIdx);
 
   const {
     data: submissionResult,
@@ -119,7 +104,7 @@ export function QuizScreen({
     async mutationFn() {
       Keyboard.dismiss();
 
-      const activeChild = childRefs[page]?.current;
+      const activeChild = childRefs[pageIdx]?.current;
       if (!activeChild) {
         console.log('No active child found for submission.');
         return true;
@@ -164,25 +149,31 @@ export function QuizScreen({
   }, [handleQuizScreenPrev, keyboardVisible, isBackSuccess, resetBack]);
 
   return (
-    <FadeSlotPageWrapper>
-      <ReactivePagerView orientation='vertical' page={page} style={tw`flex-1`}>
-        {Children.toArray(children).map((child, idx) => (
-          <View key={idx} style={tw`flex-1`}>
-            {isValidElement<QuizPageProps>(child)
-              ? cloneElement(child, {
-                  pageRef: childRefs[idx],
-                })
-              : child}
-          </View>
-        ))}
-      </ReactivePagerView>
-      {migriFAB && (
-        <MigriButton
-          float
-          id={`services.${service}.${step}.${screen}.${pageId}`}
-          style={tw`right-4 bottom-4`}
-        />
-      )}
-    </FadeSlotPageWrapper>
+    <QuizScreenCurrentPageIdContext.Provider value={currentPageId}>
+      <FadeSlotPageWrapper>
+        <ReactivePagerView
+          orientation='vertical'
+          page={pageIdx}
+          style={tw`flex-1`}
+        >
+          {Children.toArray(children).map((child, idx) => (
+            <View key={idx} style={tw`flex-1`}>
+              {isValidElement<QuizPageProps>(child)
+                ? cloneElement(child, {
+                    pageRef: childRefs[idx],
+                  })
+                : child}
+            </View>
+          ))}
+        </ReactivePagerView>
+        {migriFAB && (
+          <MigriButton
+            float
+            id={`services.${service}.${step}.${screen}.${currentPageId}`}
+            style={tw`right-4 bottom-4`}
+          />
+        )}
+      </FadeSlotPageWrapper>
+    </QuizScreenCurrentPageIdContext.Provider>
   );
 }

@@ -1,14 +1,12 @@
 import { Redirect } from 'expo-router';
 import { useAtomValue } from 'jotai';
 
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { quizRouteAtom } from '@/lib/quiz/route';
 import { useRouteUrls } from '@/lib/routes';
 
 export function SavedQuizRouteRedirect() {
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const routes = useRouteUrls();
   const savedUrl = useAtomValue(quizRouteAtom({ service, step }));
   const route = savedUrl && routes.includes(savedUrl) ? savedUrl : routes[0];

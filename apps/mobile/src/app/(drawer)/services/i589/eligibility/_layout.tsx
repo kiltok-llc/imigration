@@ -4,16 +4,14 @@ import { useTimeout } from 'usehooks-ts';
 
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { QuizProvider } from '@/lib/quiz/provider';
 import { RoutesProvider } from '@/lib/routes';
 import { isStepStartedAtom } from '@/lib/step';
 import { useT } from '@/lib/translation';
 
 export default function EligibilityLayout() {
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const t = useT();
   const setStarted = useSetAtom(isStepStartedAtom({ service, step }));
 

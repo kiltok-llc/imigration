@@ -12,15 +12,15 @@ import { FormBlock } from '@/components/form/block';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
-import { useService } from '@/hooks/use-service';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { addressesAtom, mailingAddressAtom } from '@/lib/data/user';
 import { required } from '@/lib/utils';
 
 export default function CurrentAddress() {
-  const service = useService();
+  const [_services, service = ''] = useLocalSegments();
   const router = useRouter();
   const setAddresses = useSetAtom(addressesAtom);
   const setMailingAddress = useSetAtom(mailingAddressAtom);

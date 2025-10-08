@@ -13,14 +13,14 @@ import {
   QuizFieldArrayAdd,
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import {
   QuizFieldDescription,
   QuizFieldTitle,
   QuizPageTitle,
 } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
-import { QuizScreen } from '@/components/quiz/screen';
+import { QuizScreen, QuizScreenKeyProvider } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
   childAlienNumberAtom,
@@ -137,430 +137,113 @@ export default function ImmigrationStatus() {
 
   return (
     <TranslationContextProvider value={{ values: { name } }}>
-      <QuizScreen screenKey={`${context}${id ? `-${id}` : ''}`}>
-        <QuizFormPage
-          defaultValues={{
-            hasPassport: null,
-          }}
-          onSuccess={({ passport }) => {
-            setPassport({ ...passport, ...DEFAULT_PASSPORT });
-          }}
-          pageId='passport'
-          sampleData={{
-            example: {
-              hasPassport: true,
-              passport: {
-                country: 'United States',
-                expiration: new Date('2030-12-31'),
-                number: 'P123456789',
-                type: 'passport',
-              },
-            },
-          }}
-          schema={z.object({
-            hasPassport: required(z.boolean().nullable()),
-            passport: z
-              .object({
-                number: z.string().nonempty(),
-                ...(context === 'client'
-                  ? {
-                      country: z.string().nonempty(),
-                      expiration: z.date().nullable(),
-                      type: PassportTypeEnum,
-                    }
-                  : {}),
-              })
-              .optional(),
-          })}
-        >
-          {({ control, watch }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='hasPassport'>
-                  <QuizFieldTitle />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-
-              <ConditionalFormWrapper
-                active={!!watch('hasPassport')}
-                activeValue={{ country: '', number: '' }}
-                control={control}
-                name='passport'
-              >
-                <FormBlock>
-                  <FormField control={control} name='passport.country'>
-                    <QuizFieldTitle />
-                    <QuizTextInput />
-                  </FormField>
-
-                  <FormField control={control} name='passport.number'>
-                    <QuizFieldTitle />
-                    <QuizTextInput />
-                  </FormField>
-
-                  {context === 'client' && (
-                    <>
-                      <FormField control={control} name='passport.expiration'>
-                        <QuizFieldTitle />
-                        <QuizDateInput />
-                      </FormField>
-
-                      <FormField control={control} name='passport.type'>
-                        <QuizFieldTitle />
-                        <FormRadioGroup>
-                          {PassportTypeEnum.options.map((type) => (
-                            <QuizRadioItem key={type} value={type} />
-                          ))}
-                        </FormRadioGroup>
-                      </FormField>
-                    </>
-                  )}
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
-
-        <QuizFormPage
-          defaultValues={{ hasAlienNumber: null }}
-          onSuccess={({ number }) => {
-            setAlienNumber(number ?? '');
-          }}
-          pageId='alien-number'
-          sampleData={{
-            example: {
-              hasAlienNumber: true,
-              number: 'A123456789',
-            },
-          }}
-          schema={z.object({
-            hasAlienNumber: required(z.boolean().nullable()),
-            number: z.string().nonempty().optional(),
-          })}
-        >
-          {({ control, watch }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='hasAlienNumber'>
-                  <QuizFieldTitle />
-                  <QuizFieldDescription />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-
-              <ConditionalFormWrapper
-                active={!!watch('hasAlienNumber')}
-                activeValue={''}
-                control={control}
-                name='number'
-              >
-                <FormBlock>
-                  <QuizFieldTitle />
-                  <QuizTextInput />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
-
-        <QuizFormPage
-          defaultValues={{
-            hasSsn: null,
-          }}
-          onSuccess={({ number }) => {
-            setSsn(number ?? '');
-          }}
-          pageId='ssn'
-          sampleData={{
-            example: {
-              hasSsn: true,
-              number: '123-45-6789',
-            },
-          }}
-          schema={z.object({
-            hasSsn: required(z.boolean().nullable()),
-            number: z.string().nonempty().optional(),
-          })}
-        >
-          {({ control, watch }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='hasSsn'>
-                  <QuizFieldTitle />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-
-              <ConditionalFormWrapper
-                active={!!watch('hasSsn')}
-                activeValue={''}
-                control={control}
-                name='number'
-              >
-                <FormBlock>
-                  <QuizFieldTitle />
-                  <QuizTextInput />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
-
-        <QuizFormPage
-          defaultValues={{
-            hasUscis: null,
-          }}
-          onSuccess={({ number }) => {
-            setUscisNumber(number ?? '');
-          }}
-          pageId='uscis'
-          sampleData={{
-            example: {
-              hasUscis: true,
-              number: 'MSC1234567890',
-            },
-          }}
-          schema={z.object({
-            hasUscis: required(z.boolean().nullable()),
-            number: z.string().nonempty().optional(),
-          })}
-        >
-          {({ control, watch }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='hasUscis'>
-                  <QuizFieldTitle />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-
-              <ConditionalFormWrapper
-                active={!!watch('hasUscis')}
-                activeValue={''}
-                control={control}
-                name='number'
-              >
-                <FormBlock>
-                  <QuizFieldTitle />
-                  <QuizTextInput />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
-
-        <QuizFormPage
-          defaultValues={{
-            status: null,
-          }}
-          onSuccess={({ status }) => {
-            setImmigrationCourtStatus(status);
-          }}
-          pageId='court'
-          sampleData={{
-            example: {
-              status: 'never',
-            },
-          }}
-          schema={z.object({
-            status: required(ImmigrationCourtStatusEnum.nullable()),
-          })}
-        >
-          {({ control }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='status'>
-                  <QuizFieldTitle />
-                  <FormRadioGroup>
-                    {ImmigrationCourtStatusEnum.options.map((status) => (
-                      <QuizRadioItem key={status} value={status} />
-                    ))}
-                  </FormRadioGroup>
-                </FormField>
-              </FormBlock>
-            </>
-          )}
-        </QuizFormPage>
-
-        {context === 'child' && (
+      <QuizScreenKeyProvider value={`${context}${id ? `-${id}` : ''}`}>
+        <QuizScreen>
           <QuizFormPage
             defaultValues={{
-              isInUsa: null,
+              hasPassport: null,
             }}
-            onSuccess={({ isInUsa }) => {
-              setIsInUsa(isInUsa);
+            onSuccess={({ passport }) => {
+              setPassport({ ...passport, ...DEFAULT_PASSPORT });
             }}
-            pageId='is-in-usa'
+            pageId='passport'
             sampleData={{
               example: {
-                isInUsa: true,
+                hasPassport: true,
+                passport: {
+                  country: 'United States',
+                  expiration: new Date('2030-12-31'),
+                  number: 'P123456789',
+                  type: 'passport',
+                },
               },
             }}
             schema={z.object({
-              isInUsa: required(z.boolean().nullable()),
-            })}
-          >
-            {({ control }) => (
-              <FormBlock>
-                <FormField control={control} name='isInUsa'>
-                  <QuizFieldTitle />
-                  <FormBooleanInput />
-                </FormField>
-              </FormBlock>
-            )}
-          </QuizFormPage>
-        )}
-
-        {isInUsa && (
-          <QuizFormPage
-            defaultValues={DEFAULT_USA_ENTRY}
-            onSuccess={({ date, port, status }) => {
-              setEntries([{ date, port, status }]);
-            }}
-            pageId='first-entry'
-            sampleData={{
-              example: {
-                date: new Date('2022-06-15'),
-                port: 'John F. Kennedy International Airport, NY',
-                status: 'B-1/B-2 Visitor',
-              },
-            }}
-            schema={z.object({
-              date: required(z.date().nullable()),
-              port: z.string().nonempty(),
-              status: z.string(),
-            })}
-          >
-            {({ control }) => (
-              <>
-                <FormBlock>
-                  <QuizPageTitle />
-                </FormBlock>
-
-                <FormBlock>
-                  <FormField control={control} name='date'>
-                    <QuizFieldTitle />
-                    <QuizDateInput />
-                  </FormField>
-                </FormBlock>
-
-                <FormBlock>
-                  <FormField control={control} name='port'>
-                    <QuizFieldTitle />
-                    <QuizTextInput />
-                  </FormField>
-                </FormBlock>
-
-                <FormBlock>
-                  <FormField control={control} name='port'>
-                    <FormField control={control} name='status'>
-                      <QuizFieldTitle />
-                      <QuizTextInput hint='optional' />
-                    </FormField>
-                  </FormField>
-                </FormBlock>
-              </>
-            )}
-          </QuizFormPage>
-        )}
-
-        {context === 'spouse' && isInUsa && (
-          <QuizFormPage
-            defaultValues={{
-              hasPreviousEntry: null,
-            }}
-            onSuccess={({ entryDate }) => {
-              if (entryDate) {
-                setEntries(([first]) => [
-                  first!,
-                  { ...DEFAULT_USA_ENTRY, date: entryDate },
-                ]);
-              }
-            }}
-            pageId='previous-entry'
-            sampleData={{
-              example: {
-                entryDate: new Date('2020-03-10'),
-                hasPreviousEntry: true,
-              },
-            }}
-            schema={z.object({
-              entryDate: z.date().nullable().optional(),
-              hasPreviousEntry: required(z.boolean().nullable()),
+              hasPassport: required(z.boolean().nullable()),
+              passport: z
+                .object({
+                  number: z.string().nonempty(),
+                  ...(context === 'client'
+                    ? {
+                        country: z.string().nonempty(),
+                        expiration: z.date().nullable(),
+                        type: PassportTypeEnum,
+                      }
+                    : {}),
+                })
+                .optional(),
             })}
           >
             {({ control, watch }) => (
               <>
                 <FormBlock>
-                  <FormField control={control} name='hasPreviousEntry'>
+                  <FormField control={control} name='hasPassport'>
                     <QuizFieldTitle />
                     <FormBooleanInput />
                   </FormField>
                 </FormBlock>
 
                 <ConditionalFormWrapper
-                  active={!!watch('hasPreviousEntry')}
-                  activeValue={null}
+                  active={!!watch('hasPassport')}
+                  activeValue={{ country: '', number: '' }}
                   control={control}
-                  name='entryDate'
+                  name='passport'
                 >
-                  <FormBlock animated>
-                    <QuizFieldTitle />
-                    <QuizDateInput />
+                  <FormBlock>
+                    <FormField control={control} name='passport.country'>
+                      <QuizFieldTitle />
+                      <QuizTextInput />
+                    </FormField>
+
+                    <FormField control={control} name='passport.number'>
+                      <QuizFieldTitle />
+                      <QuizTextInput />
+                    </FormField>
+
+                    {context === 'client' && (
+                      <>
+                        <FormField control={control} name='passport.expiration'>
+                          <QuizFieldTitle />
+                          <QuizDateInput />
+                        </FormField>
+
+                        <FormField control={control} name='passport.type'>
+                          <QuizFieldTitle />
+                          <FormRadioGroup>
+                            {PassportTypeEnum.options.map((type) => (
+                              <QuizRadioItem key={type} value={type} />
+                            ))}
+                          </FormRadioGroup>
+                        </FormField>
+                      </>
+                    )}
                   </FormBlock>
                 </ConditionalFormWrapper>
               </>
             )}
           </QuizFormPage>
-        )}
 
-        {context === 'client' && (
           <QuizFormPage
-            defaultValues={{
-              hasOtherEntries: null,
+            defaultValues={{ hasAlienNumber: null }}
+            onSuccess={({ number }) => {
+              setAlienNumber(number ?? '');
             }}
-            onSuccess={({ entries }) => {
-              if (entries) {
-                setEntries(([first]) => [first!, ...entries]);
-              }
-            }}
-            pageId='other-entries'
+            pageId='alien-number'
             sampleData={{
               example: {
-                entries: [
-                  {
-                    date: new Date('2021-11-20'),
-                    port: 'Los Angeles International Airport, CA',
-                    status: 'F-1 Student',
-                  },
-                  {
-                    date: new Date('2023-08-15'),
-                    port: 'Miami International Airport, FL',
-                    status: 'B-2 Tourist',
-                  },
-                ],
-                hasOtherEntries: true,
+                hasAlienNumber: true,
+                number: 'A123456789',
               },
             }}
             schema={z.object({
-              entries: z
-                .array(
-                  z.object({
-                    date: z.date().nullable(),
-                    port: z.string().nonempty(),
-                    status: z.string(),
-                  })
-                )
-                .nonempty()
-                .optional(),
-              hasOtherEntries: z.boolean().nullable(),
+              hasAlienNumber: required(z.boolean().nullable()),
+              number: z.string().nonempty().optional(),
             })}
           >
             {({ control, watch }) => (
               <>
                 <FormBlock>
-                  <FormField control={control} name='hasOtherEntries'>
+                  <FormField control={control} name='hasAlienNumber'>
                     <QuizFieldTitle />
                     <QuizFieldDescription />
                     <FormBooleanInput />
@@ -568,58 +251,381 @@ export default function ImmigrationStatus() {
                 </FormBlock>
 
                 <ConditionalFormWrapper
-                  active={!!watch('hasOtherEntries')}
-                  activeValue={[{ date: null, port: '', status: '' }]}
+                  active={!!watch('hasAlienNumber')}
+                  activeValue={''}
                   control={control}
-                  name='entries'
+                  name='number'
                 >
-                  <FormArray control={control} name='entries'>
-                    <FormArrayItems>
-                      {(idx) => (
-                        <TranslationContextProvider value={{ count: idx + 2 }}>
-                          <FormBlock animated>
-                            <QuizFieldArrayItemHeader removeButton={idx > 0} />
-                            <FormField
-                              control={control}
-                              name={`entries.${idx}.date`}
-                            >
-                              <QuizDateInput />
-                            </FormField>
-                            <FormField
-                              control={control}
-                              name={`entries.${idx}.port`}
-                            >
-                              <QuizTextInput />
-                            </FormField>
-                            <FormField
-                              control={control}
-                              name={`entries.${idx}.status`}
-                            >
-                              <QuizTextInput hint='optional' />
-                            </FormField>
-                          </FormBlock>
-                        </TranslationContextProvider>
-                      )}
-                    </FormArrayItems>
-
-                    {(watch('entries')?.length ?? 0) < 2 && (
-                      <FormBlock animated>
-                        <QuizFieldArrayAdd
-                          value={{
-                            date: null,
-                            port: '',
-                            status: '',
-                          }}
-                        />
-                      </FormBlock>
-                    )}
-                  </FormArray>
+                  <FormBlock>
+                    <QuizFieldTitle />
+                    <QuizTextInput />
+                  </FormBlock>
                 </ConditionalFormWrapper>
               </>
             )}
           </QuizFormPage>
-        )}
-      </QuizScreen>
+
+          <QuizFormPage
+            defaultValues={{
+              hasSsn: null,
+            }}
+            onSuccess={({ number }) => {
+              setSsn(number ?? '');
+            }}
+            pageId='ssn'
+            sampleData={{
+              example: {
+                hasSsn: true,
+                number: '123-45-6789',
+              },
+            }}
+            schema={z.object({
+              hasSsn: required(z.boolean().nullable()),
+              number: z.string().nonempty().optional(),
+            })}
+          >
+            {({ control, watch }) => (
+              <>
+                <FormBlock>
+                  <FormField control={control} name='hasSsn'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+
+                <ConditionalFormWrapper
+                  active={!!watch('hasSsn')}
+                  activeValue={''}
+                  control={control}
+                  name='number'
+                >
+                  <FormBlock>
+                    <QuizFieldTitle />
+                    <QuizTextInput />
+                  </FormBlock>
+                </ConditionalFormWrapper>
+              </>
+            )}
+          </QuizFormPage>
+
+          <QuizFormPage
+            defaultValues={{
+              hasUscis: null,
+            }}
+            onSuccess={({ number }) => {
+              setUscisNumber(number ?? '');
+            }}
+            pageId='uscis'
+            sampleData={{
+              example: {
+                hasUscis: true,
+                number: 'MSC1234567890',
+              },
+            }}
+            schema={z.object({
+              hasUscis: required(z.boolean().nullable()),
+              number: z.string().nonempty().optional(),
+            })}
+          >
+            {({ control, watch }) => (
+              <>
+                <FormBlock>
+                  <FormField control={control} name='hasUscis'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+
+                <ConditionalFormWrapper
+                  active={!!watch('hasUscis')}
+                  activeValue={''}
+                  control={control}
+                  name='number'
+                >
+                  <FormBlock>
+                    <QuizFieldTitle />
+                    <QuizTextInput />
+                  </FormBlock>
+                </ConditionalFormWrapper>
+              </>
+            )}
+          </QuizFormPage>
+
+          <QuizFormPage
+            defaultValues={{
+              status: null,
+            }}
+            onSuccess={({ status }) => {
+              setImmigrationCourtStatus(status);
+            }}
+            pageId='court'
+            sampleData={{
+              example: {
+                status: 'never',
+              },
+            }}
+            schema={z.object({
+              status: required(ImmigrationCourtStatusEnum.nullable()),
+            })}
+          >
+            {({ control }) => (
+              <>
+                <FormBlock>
+                  <FormField control={control} name='status'>
+                    <QuizFieldTitle />
+                    <FormRadioGroup>
+                      {ImmigrationCourtStatusEnum.options.map((status) => (
+                        <QuizRadioItem key={status} value={status} />
+                      ))}
+                    </FormRadioGroup>
+                  </FormField>
+                </FormBlock>
+              </>
+            )}
+          </QuizFormPage>
+
+          {context === 'child' && (
+            <QuizFormPage
+              defaultValues={{
+                isInUsa: null,
+              }}
+              onSuccess={({ isInUsa }) => {
+                setIsInUsa(isInUsa);
+              }}
+              pageId='is-in-usa'
+              sampleData={{
+                example: {
+                  isInUsa: true,
+                },
+              }}
+              schema={z.object({
+                isInUsa: required(z.boolean().nullable()),
+              })}
+            >
+              {({ control }) => (
+                <FormBlock>
+                  <FormField control={control} name='isInUsa'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+              )}
+            </QuizFormPage>
+          )}
+
+          {isInUsa && (
+            <QuizFormPage
+              defaultValues={DEFAULT_USA_ENTRY}
+              onSuccess={({ date, port, status }) => {
+                setEntries([{ date, port, status }]);
+              }}
+              pageId='first-entry'
+              sampleData={{
+                example: {
+                  date: new Date('2022-06-15'),
+                  port: 'John F. Kennedy International Airport, NY',
+                  status: 'B-1/B-2 Visitor',
+                },
+              }}
+              schema={z.object({
+                date: required(z.date().nullable()),
+                port: z.string().nonempty(),
+                status: z.string(),
+              })}
+            >
+              {({ control }) => (
+                <>
+                  <FormBlock>
+                    <QuizPageTitle />
+                  </FormBlock>
+
+                  <FormBlock>
+                    <FormField control={control} name='date'>
+                      <QuizFieldTitle />
+                      <QuizDateInput />
+                    </FormField>
+                  </FormBlock>
+
+                  <FormBlock>
+                    <FormField control={control} name='port'>
+                      <QuizFieldTitle />
+                      <QuizTextInput />
+                    </FormField>
+                  </FormBlock>
+
+                  <FormBlock>
+                    <FormField control={control} name='port'>
+                      <FormField control={control} name='status'>
+                        <QuizFieldTitle />
+                        <QuizTextInput hint='optional' />
+                      </FormField>
+                    </FormField>
+                  </FormBlock>
+                </>
+              )}
+            </QuizFormPage>
+          )}
+
+          {context === 'spouse' && isInUsa && (
+            <QuizFormPage
+              defaultValues={{
+                hasPreviousEntry: null,
+              }}
+              onSuccess={({ entryDate }) => {
+                if (entryDate) {
+                  setEntries(([first]) => [
+                    first!,
+                    { ...DEFAULT_USA_ENTRY, date: entryDate },
+                  ]);
+                }
+              }}
+              pageId='previous-entry'
+              sampleData={{
+                example: {
+                  entryDate: new Date('2020-03-10'),
+                  hasPreviousEntry: true,
+                },
+              }}
+              schema={z.object({
+                entryDate: z.date().nullable().optional(),
+                hasPreviousEntry: required(z.boolean().nullable()),
+              })}
+            >
+              {({ control, watch }) => (
+                <>
+                  <FormBlock>
+                    <FormField control={control} name='hasPreviousEntry'>
+                      <QuizFieldTitle />
+                      <FormBooleanInput />
+                    </FormField>
+                  </FormBlock>
+
+                  <ConditionalFormWrapper
+                    active={!!watch('hasPreviousEntry')}
+                    activeValue={null}
+                    control={control}
+                    name='entryDate'
+                  >
+                    <FormBlock animated>
+                      <QuizFieldTitle />
+                      <QuizDateInput />
+                    </FormBlock>
+                  </ConditionalFormWrapper>
+                </>
+              )}
+            </QuizFormPage>
+          )}
+
+          {context === 'client' && (
+            <QuizFormPage
+              defaultValues={{
+                hasOtherEntries: null,
+              }}
+              onSuccess={({ entries }) => {
+                if (entries) {
+                  setEntries(([first]) => [first!, ...entries]);
+                }
+              }}
+              pageId='other-entries'
+              sampleData={{
+                example: {
+                  entries: [
+                    {
+                      date: new Date('2021-11-20'),
+                      port: 'Los Angeles International Airport, CA',
+                      status: 'F-1 Student',
+                    },
+                    {
+                      date: new Date('2023-08-15'),
+                      port: 'Miami International Airport, FL',
+                      status: 'B-2 Tourist',
+                    },
+                  ],
+                  hasOtherEntries: true,
+                },
+              }}
+              schema={z.object({
+                entries: z
+                  .array(
+                    z.object({
+                      date: z.date().nullable(),
+                      port: z.string().nonempty(),
+                      status: z.string(),
+                    })
+                  )
+                  .nonempty()
+                  .optional(),
+                hasOtherEntries: z.boolean().nullable(),
+              })}
+            >
+              {({ control, watch }) => (
+                <>
+                  <FormBlock>
+                    <FormField control={control} name='hasOtherEntries'>
+                      <QuizFieldTitle />
+                      <QuizFieldDescription />
+                      <FormBooleanInput />
+                    </FormField>
+                  </FormBlock>
+
+                  <ConditionalFormWrapper
+                    active={!!watch('hasOtherEntries')}
+                    activeValue={[{ date: null, port: '', status: '' }]}
+                    control={control}
+                    name='entries'
+                  >
+                    <FormArray control={control} name='entries'>
+                      <FormArrayItems>
+                        {(idx) => (
+                          <TranslationContextProvider
+                            value={{ count: idx + 2 }}
+                          >
+                            <FormBlock animated>
+                              <QuizFieldArrayItemHeader
+                                removeButton={idx > 0}
+                              />
+                              <FormField
+                                control={control}
+                                name={`entries.${idx}.date`}
+                              >
+                                <QuizDateInput />
+                              </FormField>
+                              <FormField
+                                control={control}
+                                name={`entries.${idx}.port`}
+                              >
+                                <QuizTextInput />
+                              </FormField>
+                              <FormField
+                                control={control}
+                                name={`entries.${idx}.status`}
+                              >
+                                <QuizTextInput hint='optional' />
+                              </FormField>
+                            </FormBlock>
+                          </TranslationContextProvider>
+                        )}
+                      </FormArrayItems>
+
+                      {(watch('entries')?.length ?? 0) < 2 && (
+                        <FormBlock animated>
+                          <QuizFieldArrayAdd
+                            value={{
+                              date: null,
+                              port: '',
+                              status: '',
+                            }}
+                          />
+                        </FormBlock>
+                      )}
+                    </FormArray>
+                  </ConditionalFormWrapper>
+                </>
+              )}
+            </QuizFormPage>
+          )}
+        </QuizScreen>
+      </QuizScreenKeyProvider>
     </TranslationContextProvider>
   );
 }

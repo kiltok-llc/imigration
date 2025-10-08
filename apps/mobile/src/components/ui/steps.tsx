@@ -5,7 +5,7 @@ import { Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { Trans } from '@/components/trans';
-import { useService } from '@/hooks/use-service';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { chunked } from '@/lib/utils';
 
 export type Step = {
@@ -29,7 +29,7 @@ export function StepIcons({
   steps: Step[];
   style?: ViewStyle;
 }) {
-  const service = useService();
+  const [_services, service] = useLocalSegments();
   const theme = useTheme();
   const currentStepIdx = steps.findIndex(({ id }) => id === stepId);
 

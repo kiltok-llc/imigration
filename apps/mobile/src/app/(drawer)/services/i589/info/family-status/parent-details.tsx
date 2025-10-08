@@ -19,8 +19,9 @@ import {
   FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizFormPage, QuizPageProps } from '@/components/quiz/page';
+import { QuizPageProps } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import {
   parentAddressAtom,

@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import tw from 'twrnc';
 
 import { FormLabel } from '@/components/form/label';
-import { useQuizFieldKey, useQuizPageKey } from '@/components/quiz/hooks';
+import { useQuizFieldLocaleKey, useQuizPageLocaleKey } from '@/lib/quiz/locale';
 
 export function QuizFieldDescription({
   name,
@@ -11,7 +11,7 @@ export function QuizFieldDescription({
 }: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'> & {
   name?: string;
 }) {
-  const i18nKey = useQuizFieldKey('description', name);
+  const i18nKey = useQuizFieldLocaleKey('description', name);
 
   return <FormLabel i18nKey={i18nKey} {...props} variant='titleMedium' />;
 }
@@ -23,7 +23,7 @@ export function QuizFieldTip({
 }: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'> & {
   name?: string;
 }) {
-  const i18nKey = useQuizFieldKey('tip', name);
+  const i18nKey = useQuizFieldLocaleKey('tip', name);
 
   return (
     <FormLabel
@@ -42,7 +42,7 @@ export function QuizFieldTitle({
 }: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'> & {
   name?: string;
 }) {
-  const i18nKey = useQuizFieldKey('title', name);
+  const i18nKey = useQuizFieldLocaleKey('title', name);
 
   return (
     <FormLabel
@@ -57,7 +57,7 @@ export function QuizFieldTitle({
 export function QuizPageDescription({
   ...props
 }: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'>) {
-  const i18nKey = useQuizPageKey('description');
+  const i18nKey = useQuizPageLocaleKey('description');
 
   return <FormLabel i18nKey={i18nKey} {...props} variant='titleMedium' />;
 }
@@ -66,7 +66,7 @@ export function QuizPageTitle({
   style,
   ...props
 }: Omit<ComponentProps<typeof FormLabel>, 'i18nKey'>) {
-  const i18nKey = useQuizPageKey('title');
+  const i18nKey = useQuizPageLocaleKey('title');
 
   return (
     <FormLabel

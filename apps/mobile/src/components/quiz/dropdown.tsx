@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
 import { FormDropdown, FormMultiDropdown } from '@/components/form/dropdown';
-import { useQuizFieldKey } from '@/components/quiz/hooks';
+import { useQuizFieldLocaleKey } from '@/lib/quiz/locale';
 
 export function QuizDropdown({
   options,
@@ -9,7 +9,7 @@ export function QuizDropdown({
 }: Omit<ComponentProps<typeof FormDropdown>, 'i18nKey' | 'options'> & {
   options: { i18nKey?: string; value: string }[];
 }) {
-  const rootKey = useQuizFieldKey(null);
+  const rootKey = useQuizFieldLocaleKey(null);
 
   return (
     <FormDropdown
@@ -29,7 +29,7 @@ export function QuizMultiDropdown({
 }: Omit<ComponentProps<typeof FormMultiDropdown>, 'i18nKey' | 'options'> & {
   options: { i18nKey?: string; value: string }[];
 }) {
-  const rootKey = useQuizFieldKey(null);
+  const rootKey = useQuizFieldLocaleKey(null);
 
   return (
     <FormMultiDropdown

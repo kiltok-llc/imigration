@@ -8,12 +8,12 @@ import tw from 'twrnc';
 import { ConfettiPortal } from '@/components/confetti-portal';
 import { TransButton, TransText } from '@/components/trans';
 import { Container } from '@/components/ui/container';
-import { useService } from '@/hooks/use-service';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { i589StepAtom } from '@/lib/services/i589/step';
 import { useT } from '@/lib/translation';
 
 export default function Eligible() {
-  const service = useService();
+  const [_services, service = ''] = useLocalSegments();
   const t = useT();
   const setStep = useSetAtom(i589StepAtom);
 

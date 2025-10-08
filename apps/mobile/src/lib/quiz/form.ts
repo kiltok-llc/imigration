@@ -6,7 +6,7 @@ import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { defaultStorage } from '@/lib/mmkv';
 import { clearMMKVKeys } from '@/lib/utils';
 
-export const quizValuesAtom = atomFamily(
+export const quizFormAtom = atomFamily(
   ({
     pageId,
     pageKey = '',
@@ -31,34 +31,7 @@ export const quizValuesAtom = atomFamily(
   isEqual
 );
 
-export function resetAllQuizValues() {
-  console.log('Clearing ALL quiz values');
-  const exp =
-    /^services:([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):values$/;
-
-  for (const [
-    service,
-    step,
-    screen,
-    screenKey,
-    pageId,
-    pageKey,
-  ] of clearMMKVKeys<[string, string, string, string, string, string]>(
-    exp,
-    defaultStorage
-  )) {
-    quizValuesAtom.remove({
-      pageId,
-      pageKey,
-      screen,
-      screenKey,
-      service,
-      step,
-    });
-  }
-}
-
-export function resetQuizValues({
+export function resetQuizForm({
   service,
   step,
 }: {
@@ -79,7 +52,7 @@ export function resetQuizValues({
   for (const [screen, screenKey, pageId, pageKey] of clearMMKVKeys<
     [string, string, string, string]
   >(exp, defaultStorage)) {
-    quizValuesAtom.remove({
+    quizFormAtom.remove({
       pageId,
       pageKey,
       screen,

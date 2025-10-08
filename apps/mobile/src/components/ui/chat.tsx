@@ -1,13 +1,7 @@
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useAtomValue } from 'jotai';
-import { ComponentProps, PropsWithChildren, ReactNode, useRef } from 'react';
-import { ScrollView, View, ViewStyle } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { Surface, Text, TextInput, useTheme } from 'react-native-paper';
+import { ReactNode } from 'react';
+import { View } from 'react-native';
+import { Surface, Text, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
-
-import { quizHeaderHeightAtom } from '@/lib/quiz/header';
-import { useT } from '@/lib/translation';
 
 export type Side = 'left' | 'right';
 
@@ -18,7 +12,7 @@ export function ChatBubble({
 }: {
   label: ReactNode;
   side: Side;
-  text: string;
+  text: ReactNode;
 }) {
   const theme = useTheme();
 
@@ -58,52 +52,5 @@ export function ChatBubble({
         </Text>
       </Surface>
     </View>
-  );
-}
-
-export function ChatContainer({
-  children,
-  style,
-}: PropsWithChildren<{ style?: ViewStyle }>) {
-  const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
-  const navHeaderHeight = useHeaderHeight();
-  return (
-    <KeyboardAvoidingView
-      behavior='padding'
-      keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
-      style={style}
-    >
-      {children}
-    </KeyboardAvoidingView>
-  );
-}
-
-export function ChatInput({
-  outlineStyle,
-  style,
-  ...props
-}: ComponentProps<typeof TextInput>) {
-  const t = useT();
-
-  return (
-    <TextInput
-      dense={true}
-      mode='outlined'
-      outlineStyle={[tw`rounded-3xl`, outlineStyle]}
-      placeholder={t('chat.placeholder')}
-      right={<TextInput.Icon icon='microphone' />}
-      style={[tw`m-2`, style]}
-      {...props}
-    />
-  );
-}
-
-export function ChatMessages({ children }: PropsWithChildren) {
-  const scrollRef = useRef<ScrollView>(null);
-
-  return (
-    <ScrollView contentContainerStyle={tw`p-2`} ref={scrollRef}>
-      {children}
-    </ScrollView>
   );
 }

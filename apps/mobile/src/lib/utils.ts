@@ -93,13 +93,6 @@ export function stringList<T extends z.ZodType<any, string[]>>(
     .pipe(schema);
 }
 
-export function toI18nKey(name: string) {
-  return name
-    .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
-    .replaceAll(/.\d+/g, '')
-    .toLowerCase();
-}
-
 export function toRouteId(routeName: string) {
   return routeName.replaceAll('/', '.');
 }

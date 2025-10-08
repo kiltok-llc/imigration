@@ -8,13 +8,13 @@ import {
   useFormArray,
   useFormFieldArrayItem,
 } from '@/components/form/fieldarray';
-import { useQuizFieldKey } from '@/components/quiz/hooks';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { useQuizFieldLocaleKey } from '@/lib/quiz/locale';
 
 export function QuizFieldArrayAdd({
   ...props
 }: Omit<ComponentProps<typeof FormArrayAdd>, 'i18nKey'>) {
-  const i18nKey = useQuizFieldKey('add');
+  const i18nKey = useQuizFieldLocaleKey('add');
 
   return <FormArrayAdd i18nKey={i18nKey} {...props} />;
 }

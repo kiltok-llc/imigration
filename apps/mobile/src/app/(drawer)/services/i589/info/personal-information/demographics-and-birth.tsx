@@ -14,8 +14,8 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {

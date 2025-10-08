@@ -8,10 +8,9 @@ import { useTheme } from 'react-native-paper';
 import tw from 'twrnc';
 
 import { TransButton, TransText } from '@/components/trans';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
+import { resetQuizForm } from '@/lib/quiz/form';
 import { quizRouteAtom } from '@/lib/quiz/route';
-import { resetQuizValues } from '@/lib/quiz/values';
 
 export function QuizErrorFallback({
   children,
@@ -19,8 +18,7 @@ export function QuizErrorFallback({
   retry,
 }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const resetQuizRoute = useResetAtom(quizRouteAtom({ service, step }));
   const router = useRouter();
 
@@ -60,7 +58,7 @@ export function QuizErrorFallback({
         i18nKey='quiz.error.reset-values'
         mode='text'
         onPress={() => {
-          resetQuizValues({ service, step });
+          resetQuizForm({ service, step });
           void retry();
         }}
       />

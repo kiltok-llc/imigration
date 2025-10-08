@@ -7,8 +7,7 @@ import { toast } from 'sonner-native';
 import { FadeSlot } from '@/components/fade-slot';
 import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { lateApplicationDetailsAtom } from '@/lib/data/asylum';
 import { entriesAtom } from '@/lib/data/user';
 import { QuizProvider } from '@/lib/quiz/provider';
@@ -34,8 +33,7 @@ const submissionIsLateAtom = atom((get) => {
 });
 
 export default function StatementLayout() {
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const t = useT();
   const router = useRouter();
   const setStep = useSetAtom(i589StepAtom);

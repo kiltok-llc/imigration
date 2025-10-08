@@ -3,8 +3,8 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { QuizConfirmBox } from '@/components/quiz/checkbox';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function FinalDeclaration() {

@@ -5,8 +5,7 @@ import { useEffect } from 'react';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
 import { useCurrentRouteUrl, useRouteUrls } from '@/lib/routes';
 
@@ -39,8 +38,7 @@ export function resetQuizRoute({
 }
 
 export const useSyncQuizRoute = () => {
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const routes = useRouteUrls();
   const currentRouteUrl = useCurrentRouteUrl();
   const saveQuizRoute = useSetAtom(quizRouteAtom({ service, step }));

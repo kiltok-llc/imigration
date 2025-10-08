@@ -14,10 +14,10 @@ import { TransButton, TransText } from '@/components/trans';
 import { Divider } from '@/components/ui/divider';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { Step, StepIcons, Stepper } from '@/components/ui/steps';
-import { useService } from '@/hooks/use-service';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { migriCompletedEncounterIds, triggerMigri } from '@/lib/migri';
-import { resetQuizPages } from '@/lib/quiz/page';
 import { resetQuizRoute } from '@/lib/quiz/route';
+import { resetQuizScreenAtoms } from '@/lib/quiz/screen';
 import { I589Step, i589StepAtom } from '@/lib/services/i589/step';
 import { isStepStartedAtom } from '@/lib/step';
 import { useT } from '@/lib/translation';
@@ -59,7 +59,7 @@ export const steps: Step[] = [
 
 export default function I589() {
   const t = useT();
-  const service = useService();
+  const [_services, service = ''] = useLocalSegments();
   const router = useRouter();
   const [step, setStep] = useAtom(i589StepAtom);
   const isStarted = useAtomValue(isStepStartedAtom({ service, step }));
@@ -128,7 +128,7 @@ export default function I589() {
 }
 
 function I589Menu({ tintColor }: { tintColor?: string }) {
-  const service = useService();
+  const [_services, service = ''] = useLocalSegments();
   const step = useAtomValue(i589StepAtom);
 
   return (
@@ -138,7 +138,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
           i18nKey={`services.${service}.menu.revise.info`}
           leadingIcon='note-edit'
           onPress={() => {
-            resetQuizPages({ service, step: 'info' });
+            resetQuizScreenAtoms({ key: 'page', service, step: 'info' });
             resetQuizRoute({ service, step: 'info' });
             router.navigate(`/services/${service}/info`);
           }}
@@ -149,7 +149,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
           i18nKey={`services.${service}.menu.revise.statement`}
           leadingIcon='account-edit'
           onPress={() => {
-            resetQuizPages({ service, step: 'statement' });
+            resetQuizScreenAtoms({ key: 'page', service, step: 'statement' });
             resetQuizRoute({ service, step: 'statement' });
             router.navigate(`/services/${service}/statement`);
           }}
@@ -162,7 +162,7 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
 }
 
 function MigriHeaderIcons() {
-  const service = useService();
+  const [_services, service = ''] = useLocalSegments();
   const steps = ['eligibility', 'info', 'statement', 'review'] as const;
   const completedIds = useAtomValue(migriCompletedEncounterIds);
 

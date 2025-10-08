@@ -4,16 +4,14 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { QuizConfirmBox } from '@/components/quiz/checkbox';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizPageDescription, QuizPageTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { isStepStartedAtom } from '@/lib/step';
 
 export default function Intro() {
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const setIsStepStarted = useSetAtom(isStepStartedAtom({ service, step }));
 
   return (

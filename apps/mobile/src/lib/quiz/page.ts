@@ -1,63 +1,133 @@
 import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
+import { AtomFamily } from 'jotai/vanilla/utils/atomFamily';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { useQuizPageId, useQuizPageKey } from '@/components/quiz/page';
+import { useQuizScreenKey } from '@/components/quiz/screen';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
 import { clearMMKVKeys } from '@/lib/utils';
 
-export const quizPageAtom = atomFamily(
-  ({
-    screen,
-    screenKey = '',
-    service,
-    step,
-  }: {
-    screen: string;
-    screenKey: string | undefined;
-    service: string;
-    step: string;
-  }) =>
-    atomWithMmkvStorage(
-      `services:${service}:${step}:${screen}:${screenKey}:page`,
-      0,
-      z.number(),
-      defaultStorage
-    ),
-  isEqual
-);
+const atoms = new Map<string, AtomFamily<any, any>>();
 
-export function resetAllQuizPages() {
-  console.log('Clearing ALL quiz pages');
-
-  const exp = /^services:([^:]*):([^:]*):([^:]*):([^:]*):page$/;
-  for (const [service, step, screen, screenKey] of clearMMKVKeys<
-    [string, string, string, string]
-  >(exp, defaultStorage)) {
-    quizPageAtom.remove({
+export const quizPageAtomFamily = <T>(
+  key: string,
+  schema: z.ZodType<T>,
+  initialValue: T
+) => {
+  const anAtom = atomFamily(
+    ({
+      pageId,
+      pageKey,
       screen,
       screenKey,
       service,
       step,
-    });
-  }
-}
+    }: {
+      pageId: string;
+      pageKey: string;
+      screen: string;
+      screenKey: string;
+      service: string;
+      step: string;
+    }) =>
+      atomWithMmkvStorage(
+        `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:${key}`,
+        initialValue,
+        schema,
+        defaultStorage
+      ),
+    isEqual
+  );
 
-export function resetQuizPages({
+  atoms.set(key, anAtom);
+
+  return anAtom;
+};
+
+export const useQuizPageAtomKeyStatic = ({
+  pageId,
+  pageKey,
+}: {
+  pageId: string;
+  pageKey: string;
+}) => {
+  const [_services, service = '', step = '', ...screens] = useLocalSegments();
+  const screen = screens.join('.');
+  const screenKey = useQuizScreenKey();
+  return {
+    pageId,
+    pageKey,
+    screen,
+    screenKey,
+    service,
+    step,
+  };
+};
+
+export const useQuizPageAtomKey = () => {
+  const [_services, service = '', step = '', ...screens] = useLocalSegments();
+  const screen = screens.join('.');
+  const screenKey = useQuizScreenKey();
+  const pageId = useQuizPageId();
+  const pageKey = useQuizPageKey();
+  return {
+    pageId,
+    pageKey,
+    screen,
+    screenKey,
+    service,
+    step,
+  };
+};
+
+const PATTERN_ANY = '[^:]*';
+
+export function resetQuizPageAtoms({
+  key,
+  pageId = PATTERN_ANY,
+  pageKey,
+  screen = PATTERN_ANY,
+  screenKey = PATTERN_ANY,
   service,
   step,
 }: {
+  key: string;
+  pageId?: string;
+  pageKey?: string;
+  screen?: string;
+  screenKey?: string;
   service: string;
   step: string;
 }) {
-  console.log(`Clearing quiz pages for ${service}.${step}`);
+  const exp = new RegExp(
+    `^services:(${service}):(${step}):(${screen}):(${screenKey}):(${pageId}):(${pageKey}):(${key})$`
+  );
+  console.log('Clearing quiz page atoms matching', exp);
 
-  const exp = new RegExp(`^services:${service}:${step}:([^:]+):([^:]+):page$`);
-  for (const [screen, screenKey] of clearMMKVKeys<[string, string]>(
+  for (const [
+    service,
+    step,
+    screen,
+    screenKey,
+    pageId,
+    pageKey,
+    key,
+  ] of clearMMKVKeys<[string, string, string, string, string, string, string]>(
     exp,
     defaultStorage
   )) {
-    quizPageAtom.remove({
+    const atom = atoms.get(key);
+    if (!atom) {
+      console.error(`Unknown quiz page atom key: ${key}`);
+      continue;
+    }
+
+    atom.remove({
+      pageId,
+      pageKey,
       screen,
       screenKey,
       service,

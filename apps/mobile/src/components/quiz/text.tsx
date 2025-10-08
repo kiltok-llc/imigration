@@ -22,14 +22,14 @@ import tw from 'twrnc';
 
 import { useFormField } from '@/components/form/field';
 import { FormCommaListInput, FormTextInput } from '@/components/form/text';
-import { useQuizFieldKey } from '@/components/quiz/hooks';
+import { useQuizFieldLocaleKey } from '@/lib/quiz/locale';
 import { useSpeechLanguage } from '@/lib/speech';
 import { useT } from '@/lib/translation';
 
 export function QuizCommaListInput({
   ...props
 }: Omit<ComponentProps<typeof FormCommaListInput>, 'i18nKey'>) {
-  const i18nKey = useQuizFieldKey('label');
+  const i18nKey = useQuizFieldLocaleKey('label');
 
   return <FormCommaListInput i18nKey={i18nKey} {...props} />;
 }
@@ -37,7 +37,7 @@ export function QuizCommaListInput({
 export function QuizLongTextInput({
   ...props
 }: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
-  const i18nKey = useQuizFieldKey('label');
+  const i18nKey = useQuizFieldLocaleKey('label');
   const {
     field: { onBlur, onChange, value },
   } = useFormField();
@@ -73,7 +73,7 @@ export function QuizLongTextInput({
 export function QuizTextInput({
   ...props
 }: Omit<ComponentProps<typeof FormTextInput>, 'i18nKey'>) {
-  const i18nKey = useQuizFieldKey('label');
+  const i18nKey = useQuizFieldLocaleKey('label');
 
   return <FormTextInput i18nKey={i18nKey} scrollEnabled={false} {...props} />;
 }

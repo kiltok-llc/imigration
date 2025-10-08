@@ -6,8 +6,8 @@ import { LANGUAGE_OPTIONS } from '@/components/form/dropdown';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDropdown, QuizMultiDropdown } from '@/components/quiz/dropdown';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizFieldTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {

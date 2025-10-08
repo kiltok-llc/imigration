@@ -17,8 +17,8 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
+import { QuizFormPage } from '@/components/quiz/form-page';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizFormPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import {

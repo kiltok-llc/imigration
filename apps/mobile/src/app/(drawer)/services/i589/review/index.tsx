@@ -7,15 +7,13 @@ import PdfRendererView from 'react-native-pdf-renderer';
 import tw from 'twrnc';
 
 import { MigriButton } from '@/components/migri/migri-talk-button';
-import { useService } from '@/hooks/use-service';
-import { useStep } from '@/hooks/use-step';
+import { useLocalSegments } from '@/hooks/use-local-segments';
 import { i589PdfAtom } from '@/lib/services/i589/form/pdf';
 import { useT } from '@/lib/translation';
 
 export default function Review() {
   const t = useT();
-  const service = useService();
-  const step = useStep();
+  const [_services, service = '', step = ''] = useLocalSegments();
   const { data: pdf, status } = useAtomValue(i589PdfAtom);
 
   return (
