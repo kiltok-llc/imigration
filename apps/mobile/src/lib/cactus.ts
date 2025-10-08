@@ -17,6 +17,7 @@ type ModelName = keyof typeof MODELS;
 const STOP_WORDS = [
   '<|end_of_text|>',
   '<|endoftext|>',
+  '<|im_end|>',
   '</s>',
   '<end_of_utterance>',
 ];
@@ -138,7 +139,7 @@ async function downloadModel(modelName: ModelName): Promise<File> {
 
 export const cactus = new CactusManager();
 
-export const useCactus = () => {
+export const useLoadCactus = () => {
   useEffect(() => {
     if (cactus.state === 'initialized') {
       return;
@@ -146,6 +147,4 @@ export const useCactus = () => {
 
     void cactus.initialize();
   }, []);
-
-  return cactus;
 };
