@@ -1,14 +1,16 @@
 import { useHeaderHeight } from '@react-navigation/elements';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { PropsWithChildren, useRef } from 'react';
 import { TextInput as RNTextInput, ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { TextInput, useTheme } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import tw from 'twrnc';
 
 import { QuizPage, QuizPageProps } from '@/components/quiz/page';
 import { ChatBubble } from '@/components/ui/chat';
+import { useCactus } from '@/lib/cactus';
 import { nameAtom } from '@/lib/data/user';
 import { quizChatInputAtom, quizChatMessagesAtom } from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
@@ -34,6 +36,8 @@ export function QuizChatPage({
   );
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
+
+  const cactus = useCactus();
 
   return (
     <QuizPage
@@ -72,13 +76,22 @@ function QuizChatInput() {
   const ref = useRef<RNTextInput>(null);
   const theme = useTheme();
   const [value, setValue] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
+  const setMessages = useSetAtom(quizChatMessagesAtom(useQuizPageAtomKey()));
+
+  const handleSend = () => {
+    setMessages((messages) => [
+      ...messages,
+      { id: uuid.v4(), role: 'user', text: value.trim() },
+    ]);
+    setValue('');
+  };
 
   return (
     <TextInput
       dense={true}
       mode='outlined'
       onChangeText={setValue}
-      onSubmitEditing={(e) => console.log('send', e.nativeEvent.text)}
+      onSubmitEditing={handleSend}
       outlineStyle={tw`rounded-3xl`}
       placeholder={t('chat.placeholder')}
       ref={ref}
@@ -86,7 +99,7 @@ function QuizChatInput() {
         <TextInput.Icon
           color={value ? theme.colors.primary : theme.colors.outline}
           icon={value ? 'arrow-up-circle' : 'microphone'}
-          onPress={() => console.log('button pressed')}
+          onPress={value ? handleSend : () => {}}
         />
       }
       style={tw`m-2`}

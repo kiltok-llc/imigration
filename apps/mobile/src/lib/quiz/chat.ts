@@ -1,19 +1,18 @@
 import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
-import { AtomFamily } from 'jotai/vanilla/utils/atomFamily';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { defaultStorage } from '@/lib/mmkv';
 
-const atoms = new Map<string, AtomFamily<any, any>>();
+const atoms = new Map<string, ReturnType<typeof atomFamily>>();
 
 export const quizChatAtomFamily = <T>(
   key: string,
   schema: z.ZodType<T>,
   initialValue: T
 ) => {
-  const anAtom = atomFamily(
+  const family = atomFamily(
     ({
       pageId,
       pageKey = '',
@@ -38,9 +37,9 @@ export const quizChatAtomFamily = <T>(
     isEqual
   );
 
-  atoms.set(key, anAtom);
+  atoms.set(key, family as ReturnType<typeof atomFamily>);
 
-  return anAtom;
+  return family;
 };
 
 const QuizChatMessageSchema = z.object({

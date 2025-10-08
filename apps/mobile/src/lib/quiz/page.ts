@@ -1,6 +1,5 @@
 import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
-import { AtomFamily } from 'jotai/vanilla/utils/atomFamily';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
@@ -10,14 +9,14 @@ import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
 import { clearMMKVKeys } from '@/lib/utils';
 
-const atoms = new Map<string, AtomFamily<any, any>>();
+const atoms = new Map<string, ReturnType<typeof atomFamily>>();
 
 export const quizPageAtomFamily = <T>(
   key: string,
   schema: z.ZodType<T>,
   initialValue: T
 ) => {
-  const anAtom = atomFamily(
+  const family = atomFamily(
     ({
       pageId,
       pageKey,
@@ -42,9 +41,9 @@ export const quizPageAtomFamily = <T>(
     isEqual
   );
 
-  atoms.set(key, anAtom);
+  atoms.set(key, family as ReturnType<typeof atomFamily>);
 
-  return anAtom;
+  return family;
 };
 
 export const useQuizPageAtomKeyStatic = ({

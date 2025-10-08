@@ -1,7 +1,7 @@
 import { isEqual } from '@ver0/deep-equal';
 import { useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
-import { atomFamily, AtomFamily } from 'jotai/vanilla/utils/atomFamily';
+import { atomFamily } from 'jotai/utils';
 import { useCallback } from 'react';
 import z from 'zod/v4';
 
@@ -17,14 +17,14 @@ import {
 } from '@/lib/routes';
 import { clearMMKVKeys } from '@/lib/utils';
 
-const atoms = new Map<string, AtomFamily<any, any>>();
+const atoms = new Map<string, ReturnType<typeof atomFamily>>();
 
 export const quizScreenAtomFamily = <T>(
   key: string,
   schema: z.ZodType<T>,
   initialValue: T
 ) => {
-  const anAtom = atomFamily(
+  const family = atomFamily(
     ({
       screen,
       screenKey = '',
@@ -45,9 +45,9 @@ export const quizScreenAtomFamily = <T>(
     isEqual
   );
 
-  atoms.set(key, anAtom);
+  atoms.set(key, family as ReturnType<typeof atomFamily>);
 
-  return anAtom;
+  return family;
 };
 
 export const useQuizScreenAtomKey = () => {

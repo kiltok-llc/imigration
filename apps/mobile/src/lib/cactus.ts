@@ -1,10 +1,10 @@
 import type { CactusOAICompatibleMessage } from 'cactus-react-native';
 
 import { CactusLM } from 'cactus-react-native';
-import { File, Paths } from 'expo-file-system';
-import { createDownloadResumable } from 'expo-file-system/legacy';
+import { Directory, File, Paths } from 'expo-file-system';
+import { useEffect } from 'react';
 
-const MODEL_DIR = `${Paths.document}/models`;
+const MODEL_DIR = new Directory(Paths.document, 'models');
 
 const MODELS = {
   'qwen2.5-0.5b-instruct-q5_k_m.gguf': {
@@ -22,10 +22,33 @@ const STOP_WORDS = [
 ];
 
 class CactusManager {
-  initProgress = 0;
-  isInitialized = false;
+  state: 'error' | 'initialized' | 'initializing' | 'uninitialized' =
+    'uninitialized';
 
   private lm: CactusLM | null = null;
+
+  async _initialize() {
+    console.debug('[Cactus] initializing...');
+    this.state = 'initializing';
+
+    // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
+    const [modelPath] = await Promise.all([
+      downloadModel('qwen2.5-0.5b-instruct-q5_k_m.gguf'),
+    ]);
+
+    const { error, lm } = await CactusLM.init({
+      model: modelPath.uri,
+      n_batch: 256,
+      n_ctx: 2048,
+      n_threads: 4,
+    });
+
+    if (error || !lm) {
+      throw error || new Error('Unknown error initializing Cactus LM');
+    }
+
+    this.lm = lm;
+  }
 
   async generateResponse(
     messages: CactusOAICompatibleMessage[]
@@ -77,63 +100,52 @@ class CactusManager {
   }
 
   async initialize() {
-    if (this.isInitialized) return;
-
-    const fileProgress = new Map<string, number>();
-    const onFileProgress = (progress: number, file: string) => {
-      console.debug(
-        `[Cactus] downloading ${file}: ${(progress * 100).toFixed(2)}%`
-      );
-      fileProgress.set(file, progress);
-      const totalProgress = fileProgress.values().reduce((a, b) => a + b, 0);
-      this.initProgress = totalProgress / Object.keys(MODELS).length;
-    };
-
-    // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
-    const [modelPath] = await Promise.all([
-      downloadModel('qwen2.5-0.5b-instruct-q5_k_m.gguf', onFileProgress),
-    ]);
-
-    const { error, lm } = await CactusLM.init({
-      model: modelPath.uri,
-      n_batch: 256,
-      n_ctx: 2048,
-      n_threads: 4,
-    });
-
-    if (error || !lm) {
-      throw error || new Error('Unknown error initializing Cactus LM');
+    if (this.state === 'initialized') {
+      console.log('[Cactus] already initialized');
+      return;
     }
 
-    this.lm = lm;
-    this.isInitialized = true;
+    if (this.state === 'initializing') {
+      console.log('[Cactus] already initializing');
+      return;
+    }
+
+    try {
+      await this._initialize();
+    } catch (error) {
+      console.error('[Cactus] initialization failed', error);
+      this.state = 'error';
+      return;
+    }
+
+    console.log('[Cactus] initialization complete');
+    this.state = 'initialized';
   }
 }
 
-async function downloadModel(
-  modelName: ModelName,
-  onProgress: (progress: number, file: string) => void
-): Promise<File> {
+async function downloadModel(modelName: ModelName): Promise<File> {
   const { url } = MODELS[modelName];
-  const filePath = new File(MODEL_DIR, modelName);
+  const modelFile = new File(MODEL_DIR, modelName);
 
-  if (!filePath.exists) {
-    const { md5: _md5 } = await createDownloadResumable(
-      url,
-      filePath.uri,
-      {
-        md5: true,
-      },
-      ({ totalBytesExpectedToWrite, totalBytesWritten }) =>
-        onProgress(totalBytesWritten / totalBytesExpectedToWrite, modelName)
-    )
-      .downloadAsync()
-      .then((res) => res!);
-
-    // TODO check md5
+  if (!modelFile.exists) {
+    const downloadFile = await File.downloadFileAsync(url, Paths.cache);
+    modelFile.parentDirectory.create({ idempotent: true, intermediates: true });
+    downloadFile.move(modelFile);
   }
 
-  return filePath;
+  return modelFile;
 }
 
 export const cactus = new CactusManager();
+
+export const useCactus = () => {
+  useEffect(() => {
+    if (cactus.state === 'initialized') {
+      return;
+    }
+
+    void cactus.initialize();
+  }, []);
+
+  return cactus;
+};
