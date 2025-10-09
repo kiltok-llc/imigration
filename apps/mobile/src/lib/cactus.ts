@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 const MODEL_DIR = new Directory(Paths.document, 'models');
 
 const MODELS = {
-  'qwen2.5-0.5b-instruct-q5_k_m.gguf': {
-    url: 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q5_k_m.gguf',
+  'Qwen3-0.6B-Q8_0.gguf': {
+    url: 'https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q8_0.gguf',
   },
 };
 
@@ -34,7 +34,7 @@ class CactusManager {
 
     // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
     const [modelPath] = await Promise.all([
-      downloadModel('qwen2.5-0.5b-instruct-q5_k_m.gguf'),
+      downloadModel('Qwen3-0.6B-Q8_0.gguf'),
     ]);
 
     const { error, lm } = await CactusLM.init({
@@ -66,11 +66,14 @@ class CactusManager {
     const result = await this.lm.completion(
       messages,
       {
+        min_p: 0,
         n_predict: 256,
+        penalty_present: 1.5,
         penalty_repeat: 1.05,
         stop: STOP_WORDS,
-        temperature: 0.7,
-        top_p: 0.9,
+        temperature: 0.6,
+        top_k: 20,
+        top_p: 0.95,
       },
       ({ token }) => {
         if (firstTokenTime === null && token) {

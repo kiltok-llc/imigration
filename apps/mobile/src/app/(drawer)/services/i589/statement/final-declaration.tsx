@@ -9,7 +9,7 @@ import { QuizScreen } from '@/components/quiz/screen';
 
 export default function FinalDeclaration() {
   return (
-    <QuizScreen>
+    <QuizScreen migriFAB={false}>
       <QuizFormPage
         defaultValues={{
           agreed: false,

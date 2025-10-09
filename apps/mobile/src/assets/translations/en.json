@@ -1,6 +1,20 @@
 {
   "chat": {
-    "placeholder": "Chat with Migri..."
+    "placeholder": "Chat with Migri...",
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          "You are Migri, an immigration assistant inside the iMigration app.",
+          "Your purpose is to help the user, {{name.first}}, with their immigration process in the United States.",
+          "",
+          "Language Control:",
+          "- The app settings control the language.",
+          "- The active language is English.",
+          "- Always respond in the active language."
+        ]
+      }
+    ]
   },
   "permission": {
     "camera": {
@@ -207,7 +221,9 @@
         "Oh no! I don't know how to help with this yet.",
         "Please let us know what you were looking for so we can improve Migri."
       ],
-      "talk_dev": ["Missing translation!\n<pre><small>{{ id }}</small></pre>"]
+      "talk_dev": [
+        "Missing translation!\n<pre><small>{{ id }}</small></pre>"
+      ]
     },
     "onboarding": {
       "migri": {
@@ -741,9 +757,6 @@
             }
           }
         },
-        "statement": {
-          "title": "Statement"
-        },
         "final-declaration": {
           "title": "Final Declaration",
           "final-declaration": {
@@ -751,6 +764,409 @@
             "description": "I swear (affirm) that I know the contents of this application that I am signing, including all attached documents and supplements, and that they are all true to the best of my knowledge and belief. I also understand that if it is determined that I knowingly filed a frivolous asylum application, I will be permanently ineligible for any benefit under the Immigration and Nationality Act, and that I cannot avoid a finding of a frivolous application simply because someone advised me to provide false information in my asylum application.",
             "agreed": {
               "label": "I agree"
+            }
+          }
+        },
+        "fear-of-return": {
+          "title": "Fear of Return",
+          "fear-of-return": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Fear of Return"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Are you afraid to return to your country? If you have to return, are you afraid that you or your family might suffer harm or mistreatment?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Fear of returning to your country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please explain in detail why you are afraid to return to your country. In your explanation, try to include the following information:\n\nWhat harm or mistreatment you fear may happen if you return.\n\nWho you believe might harm or mistreat you.\n\nWhether anything has changed since you left that might affect the risk of harm or mistreatment. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you could be harmed or mistreated if you return.\n\nAny additional information that may help explain your fear of returning."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documents related to your fear of return"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents that may help confirm the information you have provided about your fear of returning. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "criminal-history": {
+          "title": "Criminal History",
+          "criminal-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Criminal History"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you or any family member included in this application ever committed a crime or been arrested, charged, convicted, or sentenced for any offense in the United States (including violations of immigration laws)?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Details of criminal history"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Provide detailed information for each instance:\n\nWhat happened and under what circumstances?\nWhen did it occur?\nWhat was the sentence received, and what were the place and length of detention or imprisonment?\nWhat were the reasons for the detention or conviction?\nWhat formal charges were brought against you or your family members included in this application, and what were the reasons for your/their release?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Criminal history documents"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents related to your or your family's criminal history. This may include court records, police reports, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "fear-of-torture": {
+          "title": "Torture",
+          "fear-of-torture": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Torture"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Are you afraid of being tortured in your country or in any other country to which you may be returned?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Similar to the previous question, but not only about fear of harm or mistreatment — this one is about fear of being tortured."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please explain in detail why you are afraid that you or your family may be tortured if you return to your country. In your explanation, try to include the following information:\n\nWhat you fear may happen if you return.\n\nWho you believe might harm or torture you.\n\nWhether anything has changed since you left that might affect this fear. For example, is the situation the same, has it improved, or has it gotten worse? Please explain why.\n\nWhy you believe you may be harmed or tortured if you return.\n\nAny additional information that may help explain your fear of returning."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documents related to your fear of torture"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents that may help confirm the information you have provided about your fear of torture. This may include police reports, letters, screenshots, medical records, photographs, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "harm-and-persecution": {
+          "title": "Harm and Persecution",
+          "harm-and-persecution": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "system",
+                  "content": [
+                    "Your task is to collect factual information from {{name.first}} about any harm, threats, or mistreatment experienced before coming to the United States.",
+                    "This information will be used to help prepare a clear and complete record for {{name.first}}’s asylum process in the USA.",
+                    "",
+                    "Primary Outcomes:",
+                    "- Interview the user to collect accurate facts and details.",
+                    "- Build a simple timeline and fact summary.",
+                    "",
+                    "Guidelines:",
+                    "- Collect enough detail to show a clear timeline and reliable facts.",
+                    "- Use follow-ups only to clarify or fill missing information (dates, places, people, reasons, outcomes).",
+                    "- Do not provide legal advice, opinions, or explanations about immigration law.",
+                    "- Keep questions and confirmations concise.",
+                    "- Flag missing dates, contradictions, or unclear details and ask one simple question at a time to fix them.",
+                    "",
+                    "Conversation Flow:",
+                    "- One question at a time.",
+                    "- Always confirm key details (who, what, when, where, how).",
+                    "- Keep replies short (<80 words).",
+                    "- If unclear, ask a follow-up question to clarify or fill gaps.",
+                    "- Use confirmations to summarize and verify details.",
+                    "- Once the user has no more events to share, you can end the interview.",
+                    "",
+                    "Document and Evidence Handling:",
+                    "- You can offer document submission whenever evidence or proof could strengthen the case.",
+                    "- If the user mentions police reports, photos, letters, text messages, medical papers, or other files, tell them they can upload or attach those documents, photos, or screenshots."
+                  ]
+                },
+                {
+                  "role": "assistant",
+                  "content": [
+                    "I'm going to ask you a few questions about any harm, mistreatment, or threats you—or your family, close friends, or coworkers—may have experienced before coming to the United States.",
+                    "When describing your experiences, please include as much detail as possible. In your explanation, try to address the following:",
+                    "- What happened and how it happened.",
+                    "- When it happened. Indicate whether it was a single incident or if it happened many times.",
+                    "- Who was responsible. If you do not know their names, explain whether they belonged to a group, gang, cartel, political group, or were part of the government.",
+                    "- Why you believe you or your family were harmed, mistreated, or threatened.",
+                    "- Any additional information. Include anything else you can share that may help us better understand what happened.",
+                    "If you did not experience any harm, mistreatment, or threats, just type “no” or “none,” and we’ll move to the next section."
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "international-criminal-history": {
+          "title": "International Criminal History",
+          "international-criminal-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "International Criminal History"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you ever been arrested, charged, or convicted for a crime in any country <strong>other</strong> than the United States?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "International criminal history details"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please provide details about your arrest, charge, or conviction. Include the following information:\n\nThe country where the incident occurred.\n\nThe date of the incident.\n\nThe nature of the crime.\n\nThe outcome (e.g., acquitted, convicted, case dismissed).\n\nAny additional relevant information."
+                },
+                {
+                  "role": "assistant",
+                  "content": "International criminal history documents"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents related to your arrest, charge, or conviction. This may include court records, police reports, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "organizational-affiliations": {
+          "title": "Memberships & Groups",
+          "organizational-affiliations": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Memberships & Groups"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Current membership and group affiliation details"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please describe in detail the current level of participation for each person who is involved:\n\nHow do they participate?\n\nWhat is your or your family member’s current level of participation?\n\nDo you or your family members currently hold leadership positions or important roles? If so, which position?\n\nHow long have you or your family member(s) participated in that organization or group?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Do you or your family continue participating in these groups or organizations?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Past membership and group affiliation details"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please provide details about your involvement with the gang or group. Include the following information:\n\nThe name of the gang or group.\n\nThe nature of your involvement.\n\nThe time period of your involvement.\n\nAny criminal activities you were involved in.\n\nAny additional relevant information."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you or any member of your family ever belonged to or been associated with any organization or group in your country of origin, such as, but not limited to, a political party, a student group, a labor union, a religious organization, a military or paramilitary group, a civil patrol, a guerrilla organization, an ethnic group, a human rights group, or the press or media?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Current membership and group affiliation documents"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents related to you or your family's <strong>current</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Past membership and group affiliation documents"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents related to you or your family's <strong>past</strong> membership or affiliation with any organization or group which may help confirm the information you have provided. This may include membership cards, letters, photographs, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "previous-applications": {
+          "title": "Previous Applications",
+          "previous-applications": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Previous Applications"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you, your spouse, your child(ren), your father, your mother, or your siblings ever applied to the United States Government for refugee status, asylum, or withholding of removal?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Details of Prior Application"
+                },
+                {
+                  "role": "assistant",
+                  "content": "What happened? Was there a decision, and if so, what was the decision?\n\nWhat happened to the status that you, your spouse, your child(ren), your father, your mother, or your sibling(s) received as a result of that decision?\n\nWere you included in the application of your father, mother, or spouse? If you were included, what was the A-Number of your father, mother, or spouse?\n\nIf an immigration judge or the Board of Immigration Appeals denied your asylum, please explain: what has changed in the conditions of your country or in your personal situation since your application was denied? Why is your case different now?"
+                }
+              ]
+            }
+          }
+        },
+        "return-to-country": {
+          "title": "Return to Country",
+          "return-to-country": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Return to Country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "After you left your country to come to the United States (or the country where you suffered harm or fear harm), did you return to that country?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explanation of travel to home country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explain in detail:\nWhy did you return?\nWhen did you return?\nHow long did you stay?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documents related to travel to home country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents that may help confirm the information you have provided about your travel to your home country. This may include travel tickets, passport stamps, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "harm-participation": {
+          "title": "Participation in Persecution",
+          "harm-participation": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Participation in Persecution"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you, your spouse, or your child(ren) ever ordered, incited, assisted, or otherwise participated in causing harm or suffering to any person because of their race, religion, nationality, membership in a particular social group, or belief in a particular political opinion?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Details of involvement"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Provide a detailed description of each incident, specifying your involvement and/or the involvement of your family members."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documents related to involvement in harm or persecution"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents that may help confirm the information you have provided about your or your family's involvement. This may include court records, police reports, letters, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "international-immigration-history": {
+          "title": "Legal Status in Other Countries",
+          "international-immigration-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Legal Status in Other Countries"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Have you, your spouse, your child(ren), or other family members such as your father, mother, or siblings ever applied for or received any legal status in a country other than the one from which you are now requesting asylum?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explanation of legal status in another country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Provide a detailed explanation of what happened with that legal status, for you or any of your family members. Include the following:\n\nWhere — in which country did this occur?\nWhat was your status while you were in that country?\nWhat was the reason you left?\nDo you have the right to return with “legal residence”?\nDid you apply for refugee or asylum status while living in that country? Explain why or why not."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documents related to legal status in another country"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Please submit any documents that may help confirm the information you have provided about your or your family's legal status in another country. This may include visas, residence permits, asylum or refugee status documents, or any other relevant documents."
+                }
+              ]
+            }
+          }
+        },
+        "reasons-for-asylum": {
+          "title": "Reasons for Asylum",
+          "reasons-for-asylum": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Reasons for Asylum"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Reasons for seeking asylum"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Based on your previous answers and explanations, indicate the reasons you are requesting asylum. You may select one or more reasons."
+                }
+              ]
+            }
+          }
+        },
+        "late-application": {
+          "title": "Late Application",
+          "late-application": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Late Application"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Late Application Explanation"
+                },
+                {
+                  "role": "assistant",
+                  "content": "It has already been more than a year since you entered the United States. The U.S. government requires that this application be submitted within one year. Please explain in great detail why you were not able to submit this application within one year of your entry into the United States.\n\nIt is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)"
+                }
+              ]
             }
           }
         }

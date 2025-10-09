@@ -74,7 +74,22 @@ export default function StatementLayout() {
           router.dismissTo(`/services/${service}`);
           router.replace(`/services/${service}?confetti=true`);
         }}
-        routes={['intro', 'statement', 'final-declaration']}
+        routes={[
+          'intro',
+          ...(submissionIsLate ? ['late-application'] : []),
+          'harm-and-persecution',
+          'fear-of-return',
+          'fear-of-torture',
+          'international-criminal-history',
+          'organizational-affiliations',
+          'reasons-for-asylum',
+          'previous-applications',
+          'international-immigration-history',
+          'harm-participation',
+          'return-to-country',
+          'criminal-history',
+          'final-declaration',
+        ]}
       >
         <QuizProvider>
           <QuizLayout>

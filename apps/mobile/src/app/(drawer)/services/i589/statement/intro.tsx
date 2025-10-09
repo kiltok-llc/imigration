@@ -15,7 +15,7 @@ export default function Intro() {
   const setIsStepStarted = useSetAtom(isStepStartedAtom({ service, step }));
 
   return (
-    <QuizScreen>
+    <QuizScreen migriFAB={false}>
       <QuizFormPage
         defaultValues={{
           agreed: false,

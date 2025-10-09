@@ -1,7 +1,9 @@
 import { useHeaderHeight } from '@react-navigation/elements';
+import { CactusOAICompatibleMessage } from 'cactus-react-native';
 import { useAtom, useAtomValue } from 'jotai';
-import { useAtomCallback, useResetAtom } from 'jotai/utils';
+import { useResetAtom } from 'jotai/utils';
 import { PropsWithChildren, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { TextInput, useTheme } from 'react-native-paper';
@@ -14,8 +16,22 @@ import { cactus, useLoadCactus } from '@/lib/cactus';
 import { nameAtom } from '@/lib/data/user';
 import { quizChatInputAtom, quizChatMessagesAtom } from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
+import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
 import { useQuizPageAtomKey, useQuizPageAtomKeyStatic } from '@/lib/quiz/page';
 import { useT } from '@/lib/translation';
+
+export const useBaseMessages = () => {
+  const { t } = useTranslation();
+  const name = useAtomValue(nameAtom);
+  const i18nKey = useQuizPageLocaleKey('chat.messages');
+  return [
+    ...(t('chat.messages', {
+      name,
+      returnObjects: true,
+    }) as CactusOAICompatibleMessage[]),
+    ...(t(i18nKey, { returnObjects: true }) as CactusOAICompatibleMessage[]),
+  ];
+};
 
 export function QuizChatPage({
   pageId,
@@ -64,20 +80,21 @@ function QuizChatInput() {
   const t = useT();
   const ref = useRef<RNTextInput>(null);
   const theme = useTheme();
+  const baseMessages = useBaseMessages();
   const [value, setValue] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
-  const messagesAtom = quizChatMessagesAtom(useQuizPageAtomKey());
+  const [messages, setMessages] = useAtom(
+    quizChatMessagesAtom(useQuizPageAtomKey())
+  );
 
-  const handleSend = useAtomCallback(async (get, set) => {
-    const messages = get(messagesAtom);
-
-    set(messagesAtom, (messages) => [
+  const handleSend = async () => {
+    setMessages((messages) => [
       ...messages,
       { id: uuid.v4(), role: 'user', text: value.trim() },
     ]);
     setValue('');
 
     const assistantMessage = await cactus.generateResponse([
-      { content: 'Vos sos Migri, un assistente virtual.', role: 'system' },
+      ...baseMessages,
       ...messages.map(({ role, text }) => ({
         content: text,
         role,
@@ -85,11 +102,11 @@ function QuizChatInput() {
       { content: value.trim(), role: 'user' },
     ]);
 
-    set(messagesAtom, (messages) => [
+    setMessages((messages) => [
       ...messages,
       { id: uuid.v4(), role: 'assistant', text: assistantMessage },
     ]);
-  });
+  };
 
   return (
     <TextInput
@@ -115,14 +132,27 @@ function QuizChatInput() {
 
 function QuizChatMessages() {
   const name = useAtomValue(nameAtom).first;
+  const baseMessages = useBaseMessages();
   const messages = useAtomValue(quizChatMessagesAtom(useQuizPageAtomKey()));
 
-  return messages.map(({ id, role, text }) => (
-    <ChatBubble
-      key={id}
-      label={role === 'user' ? name : 'Migri'}
-      side={role === 'user' ? 'right' : 'left'}
-      text={text}
-    />
-  ));
+  return (
+    <>
+      {baseMessages.map(({ content, role }, idx) => (
+        <ChatBubble
+          key={`base-${idx}`}
+          label={role === 'user' ? name : 'Migri'}
+          side={role === 'user' ? 'right' : 'left'}
+          text={Array.isArray(content) ? content.join('\n') : content}
+        />
+      ))}
+      {messages.map(({ id, role, text }) => (
+        <ChatBubble
+          key={id}
+          label={role === 'user' ? name : 'Migri'}
+          side={role === 'user' ? 'right' : 'left'}
+          text={text}
+        />
+      ))}
+    </>
+  );
 }
