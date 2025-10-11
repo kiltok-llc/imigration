@@ -12,6 +12,10 @@ import tw from 'twrnc';
 
 import { QuizPage, QuizPageProps } from '@/components/quiz/page';
 import { ChatBubble } from '@/components/ui/chat';
+import {
+  HeaderMenuItem,
+  HeaderMenuItemPortal,
+} from '@/components/ui/header-menu';
 import { cactus, useLoadCactus } from '@/lib/cactus';
 import { nameAtom } from '@/lib/data/user';
 import { quizChatInputAtom, quizChatMessagesAtom } from '@/lib/quiz/chat';
@@ -22,15 +26,8 @@ import { useT } from '@/lib/translation';
 
 export const useBaseMessages = () => {
   const { t } = useTranslation();
-  const name = useAtomValue(nameAtom);
   const i18nKey = useQuizPageLocaleKey('chat.messages');
-  return [
-    ...(t('chat.messages', {
-      name,
-      returnObjects: true,
-    }) as CactusOAICompatibleMessage[]),
-    ...(t(i18nKey, { returnObjects: true }) as CactusOAICompatibleMessage[]),
-  ];
+  return t(i18nKey, { returnObjects: true }) as CactusOAICompatibleMessage[];
 };
 
 export function QuizChatPage({
@@ -62,6 +59,16 @@ export function QuizChatPage({
       pageKey={pageKey}
       pageRef={pageRef}
     >
+      <HeaderMenuItemPortal>
+        <HeaderMenuItem
+          i18nKey='chat.menu.reset'
+          leadingIcon='refresh'
+          onPress={() => {
+            resetMessages();
+            resetInput();
+          }}
+        />
+      </HeaderMenuItemPortal>
       <KeyboardAvoidingView
         behavior='padding'
         keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
@@ -102,15 +109,18 @@ function QuizChatInput() {
         content: text,
         role,
       })),
-      { content: value.trim(), role: 'user' },
+      { content: `${value.trim()}`, role: 'user' },
     ];
-    console.log('prompt', prompt);
-    const assistantMessage = await cactus.generateResponse(prompt);
+    const rawMessage = await cactus.generateResponse(prompt);
+    const THINK_END_TAG = '</think>';
+    const thinkIdx = rawMessage.indexOf(THINK_END_TAG);
+    const cleanMessage = rawMessage
+      .slice(thinkIdx + THINK_END_TAG.length)
+      .trim();
 
-    console.log('generated!');
     setMessages((messages) => [
       ...messages,
-      { id: uuid.v4(), role: 'assistant', text: assistantMessage },
+      { id: uuid.v4(), role: 'assistant', text: cleanMessage },
     ]);
   };
 

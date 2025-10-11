@@ -2,6 +2,7 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { router, Stack, useRouter } from 'expo-router';
 import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
+import { ComponentProps } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -68,7 +69,11 @@ export default function I589() {
     <>
       <Stack.Screen
         options={{
-          headerRight: (props) => <I589Menu {...props} />,
+          headerRight: (props) => (
+            <HeaderMenu {...props}>
+              <I589MenuItems />
+            </HeaderMenu>
+          ),
           title: t(`services.${service}.progress.screenTitle`),
         }}
       />
@@ -127,12 +132,14 @@ export default function I589() {
   );
 }
 
-function I589Menu({ tintColor }: { tintColor?: string }) {
+function I589MenuItems(props: ComponentProps<typeof HeaderMenu>) {
   const [_services, service = ''] = useLocalSegments();
+  const steps = ['eligibility', 'info', 'statement', 'review'] as const;
   const step = useAtomValue(i589StepAtom);
+  const completedIds = useAtomValue(migriCompletedEncounterIds);
 
   return (
-    <HeaderMenu tintColor={tintColor}>
+    <>
       {['review', 'statement'].includes(step) && (
         <HeaderMenuItem
           i18nKey={`services.${service}.menu.revise.info`}
@@ -156,23 +163,15 @@ function I589Menu({ tintColor }: { tintColor?: string }) {
         />
       )}
       {['info', 'statement'].includes(step) && <Divider />}
-      <MigriHeaderIcons />
-    </HeaderMenu>
+      {steps
+        .filter((step) => completedIds.has(`${service}.${step}`))
+        .map((step) => (
+          <HeaderMenuItem
+            i18nKey={`services.${service}.menu.migri.${step}`}
+            key={step}
+            onPress={() => triggerMigri(`services.${service}.${step}`)}
+          />
+        ))}
+    </>
   );
-}
-
-function MigriHeaderIcons() {
-  const [_services, service = ''] = useLocalSegments();
-  const steps = ['eligibility', 'info', 'statement', 'review'] as const;
-  const completedIds = useAtomValue(migriCompletedEncounterIds);
-
-  return steps
-    .filter((step) => completedIds.has(`${service}.${step}`))
-    .map((step) => (
-      <HeaderMenuItem
-        i18nKey={`services.${service}.menu.migri.${step}`}
-        key={step}
-        onPress={() => triggerMigri(`services.${service}.${step}`)}
-      />
-    ));
 }

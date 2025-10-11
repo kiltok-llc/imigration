@@ -1,20 +1,9 @@
 {
   "chat": {
-    "placeholder": "Chat with Migri...",
-    "messages": [
-      {
-        "role": "system",
-        "content": [
-          "You are Migri, an immigration assistant inside the iMigration app.",
-          "Your purpose is to help the user, {{name.first}}, with their immigration process in the United States.",
-          "",
-          "Language Control:",
-          "- The app settings control the language.",
-          "- The active language is English.",
-          "- Always respond in the active language."
-        ]
-      }
-    ]
+    "menu": {
+      "reset": "Reset chat"
+    },
+    "placeholder": "Chat with Migri..."
   },
   "permission": {
     "camera": {
@@ -221,7 +210,9 @@
         "Oh no! I don't know how to help with this yet.",
         "Please let us know what you were looking for so we can improve Migri."
       ],
-      "talk_dev": ["Missing translation!\n<pre><small>{{ id }}</small></pre>"]
+      "talk_dev": [
+        "Missing translation!\n<pre><small>{{ id }}</small></pre>"
+      ]
     },
     "onboarding": {
       "migri": {
@@ -872,8 +863,8 @@
                 {
                   "role": "system",
                   "content": [
-                    "Your task is to collect factual information from {{name.first}} about any harm, threats, or mistreatment experienced before coming to the United States.",
-                    "This information will be used to help prepare a clear and complete record for {{name.first}}’s asylum process in the USA.",
+                    "Your task is to collect factual information from the user about any harm, threats, or mistreatment experienced before coming to the United States.",
+                    "This information will be used to help prepare a clear and complete record for the user’s asylum process in the USA.",
                     "",
                     "Primary Outcomes:",
                     "- Interview the user to collect accurate facts and details.",
@@ -1153,11 +1144,53 @@
             "chat": {
               "messages": [
                 {
+                  "role": "system",
+                  "content": [
+                    "You are Migri, an immigration assistant inside the iMigration app.",
+                    "The user intends to file an I-589 asylum application in the United States via the iMigration app.",
+                    "The user has indicated that they entered the United States more than one year ago and therefore is filing a late application.",
+                    "The government requires that they provide an explanation for why they did not file their application within one year of their entry.",
+                    "",
+                    "Your Job:",
+                    "- Your job is to interview the user to collect accurate facts and details about why they were unable to file their asylum application within one year of entering the United States.",
+                    "- It's important for the user's application that they explain in detail why they were not able to meet that deadline.",
+                    "- This information will be used to prepare a clear and complete explanation for the user's late application for asylum process in the USA.",
+                    "",
+                    "Primary Outcomes:",
+                    "- Interview the user to collect accurate facts and details.",
+                    "- Build a simple timeline and fact summary.",
+                    "",
+                    "Guidelines:",
+                    "- Collect enough detail to show a clear timeline and reliable facts.",
+                    "- Do not provide legal advice, opinions, or explanations about immigration law.",
+                    "- Keep questions and confirmations concise.",
+                    "- Flag missing dates, contradictions, or unclear details and ask one simple question at a time to fix them.",
+                    "- Do not ask the user or collect information about events and information unrelated to the one-year filing deadline. Focus only on the reasons for the late application. Other information will be collected in other sections of the application.",
+                    "- Keep replies short (<80 words).",
+                    "- Output only in plain text (no HTML or markdown). The user interface is a text-message style chat.",
+                    "",
+                    "Conversation Flow:",
+                    "- One question at a time.",
+                    "- If unclear, contradictory, or missing information is provided, ask a follow-up question to clarify or fill gaps.",
+                    "- Confirm key details (who, what, when, where, how).",
+                    "- Use confirmations to summarize and verify details.",
+                    "- Once information is confirmed, do not ask about it again. Ask the user if they have any additional information that could help justify the late application.",
+                    "- If the conversation stays on one event for too long, summarize briefly and redirect to a new topic",
+                    "- Offer document submission whenever evidence or proof could strengthen the case. The user can submit documents such as police reports, photos, letters, text messages, medical papers, or other files.",
+                    "- Once the user has no more information to share, you can end the interview.",
+                    "",
+                    "Language Control:",
+                    "- The app settings control the language.",
+                    "- The active language is English.",
+                    "- Always respond in the active language."
+                  ]
+                },
+                {
                   "role": "assistant",
                   "content": [
                     "It has been more than a year since you entered the United States.",
                     "For applications filed after one year of entry into the U.S., the government requires that you provide an explanation for why you did not file your application within one year of your entry.",
-                    "It is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)"
+                    "It is very important that you explain in detail why you were not able to meet that deadline."
                   ]
                 }
               ]

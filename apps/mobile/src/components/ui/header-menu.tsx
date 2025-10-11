@@ -1,13 +1,25 @@
 import { HeaderButton } from '@react-navigation/elements';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
-import { Children, ComponentProps, PropsWithChildren, useState } from 'react';
+import {
+  Children,
+  ComponentProps,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Icon, Menu } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 
 import { Trans } from '@/components/trans';
 import {
   createRequiredContext,
   useRequiredContext,
 } from '@/hooks/use-required-context';
+
+const headerMenuItemsAtom = atom<ReactNode[]>([]);
 
 const HeaderMenuContext = createRequiredContext<{
   open: boolean;
@@ -22,8 +34,9 @@ export function HeaderMenu({
   tintColor?: string;
 }>) {
   const [open, setOpen] = useState(false);
+  const headerMenuItems = useAtomValue(headerMenuItemsAtom);
 
-  if (Children.toArray(children).length === 0) {
+  if (headerMenuItems.length === 0) {
     return null;
   }
 
@@ -42,6 +55,7 @@ export function HeaderMenu({
     >
       <HeaderMenuContext.Provider value={{ open, setOpen }}>
         {children}
+        {headerMenuItems}
       </HeaderMenuContext.Provider>
     </Menu>
   );
@@ -66,4 +80,18 @@ export function HeaderMenuItem({
       {...props}
     />
   );
+}
+
+export function HeaderMenuItemPortal({ children }: PropsWithChildren) {
+  const setHeaderMenuItems = useSetAtom(headerMenuItemsAtom);
+
+  useEffect(() => {
+    setHeaderMenuItems((items) => [...items, children]);
+
+    return () => {
+      setHeaderMenuItems((items) => items.filter((i) => i !== children));
+    };
+  }, [children, setHeaderMenuItems]);
+
+  return null;
 }

@@ -26,8 +26,8 @@ export default function InfoLayout() {
     <>
       <Stack.Screen
         options={{
-          headerRight: ({ tintColor }) => (
-            <HeaderMenu tintColor={tintColor}>
+          headerRight: (props) => (
+            <HeaderMenu {...props}>
               <HeaderMenuItem
                 i18nKey='quiz.menu.save-exit'
                 leadingIcon='content-save'

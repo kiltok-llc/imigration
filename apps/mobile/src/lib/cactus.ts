@@ -67,13 +67,13 @@ class CactusManager {
       messages,
       {
         min_p: 0,
-        n_predict: 256,
+        n_predict: 512,
         penalty_present: 1.5,
         penalty_repeat: 1.05,
         stop: STOP_WORDS,
-        temperature: 0.6,
+        temperature: 0.7,
         top_k: 20,
-        top_p: 0.95,
+        top_p: 0.8,
       },
       ({ token }) => {
         if (firstTokenTime === null && token) {
