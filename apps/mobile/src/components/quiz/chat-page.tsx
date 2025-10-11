@@ -93,15 +93,21 @@ function QuizChatInput() {
     ]);
     setValue('');
 
-    const assistantMessage = await cactus.generateResponse([
-      ...baseMessages,
+    const prompt = [
+      ...baseMessages.map(({ content, ...rest }) => ({
+        content: Array.isArray(content) ? content.join('\n') : content,
+        ...rest,
+      })),
       ...messages.map(({ role, text }) => ({
         content: text,
         role,
       })),
       { content: value.trim(), role: 'user' },
-    ]);
+    ];
+    console.log('prompt', prompt);
+    const assistantMessage = await cactus.generateResponse(prompt);
 
+    console.log('generated!');
     setMessages((messages) => [
       ...messages,
       { id: uuid.v4(), role: 'assistant', text: assistantMessage },
@@ -137,14 +143,17 @@ function QuizChatMessages() {
 
   return (
     <>
-      {baseMessages.map(({ content, role }, idx) => (
-        <ChatBubble
-          key={`base-${idx}`}
-          label={role === 'user' ? name : 'Migri'}
-          side={role === 'user' ? 'right' : 'left'}
-          text={Array.isArray(content) ? content.join('\n') : content}
-        />
-      ))}
+      {baseMessages.map(
+        ({ content, role }, idx) =>
+          role !== 'system' && (
+            <ChatBubble
+              key={`base-${idx}`}
+              label={role === 'user' ? name : 'Migri'}
+              side={role === 'user' ? 'right' : 'left'}
+              text={Array.isArray(content) ? content.join('\n') : content}
+            />
+          )
+      )}
       {messages.map(({ id, role, text }) => (
         <ChatBubble
           key={id}

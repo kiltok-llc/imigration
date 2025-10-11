@@ -221,9 +221,7 @@
         "Oh no! I don't know how to help with this yet.",
         "Please let us know what you were looking for so we can improve Migri."
       ],
-      "talk_dev": [
-        "Missing translation!\n<pre><small>{{ id }}</small></pre>"
-      ]
+      "talk_dev": ["Missing translation!\n<pre><small>{{ id }}</small></pre>"]
     },
     "onboarding": {
       "migri": {
@@ -894,7 +892,7 @@
                     "- Keep replies short (<80 words).",
                     "- If unclear, ask a follow-up question to clarify or fill gaps.",
                     "- Use confirmations to summarize and verify details.",
-                    "- Once the user has no more events to share, you can end the interview.",
+                    "- Once the user has no more information to share, you can end the interview.",
                     "",
                     "Document and Evidence Handling:",
                     "- You can offer document submission whenever evidence or proof could strengthen the case.",
@@ -1156,15 +1154,11 @@
               "messages": [
                 {
                   "role": "assistant",
-                  "content": "Late Application"
-                },
-                {
-                  "role": "assistant",
-                  "content": "Late Application Explanation"
-                },
-                {
-                  "role": "assistant",
-                  "content": "It has already been more than a year since you entered the United States. The U.S. government requires that this application be submitted within one year. Please explain in great detail why you were not able to submit this application within one year of your entry into the United States.\n\nIt is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)"
+                  "content": [
+                    "It has been more than a year since you entered the United States.",
+                    "For applications filed after one year of entry into the U.S., the government requires that you provide an explanation for why you did not file your application within one year of your entry.",
+                    "It is very important that you explain in detail why you were not able to meet that deadline (for example, if you were sick and hospitalized: What happened to you? How long were you in the hospital? In which hospital were you treated?)"
+                  ]
                 }
               ]
             }

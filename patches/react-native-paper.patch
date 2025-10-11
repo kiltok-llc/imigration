@@ -1,0 +1,29 @@
+diff --git a/src/components/Menu/Menu.tsx b/src/components/Menu/Menu.tsx
+index 55922c1fc27003eea00c77c4dbef180f9016b938..4f6532d51fc6973a33de7fff315df0c49fba867c 100644
+--- a/src/components/Menu/Menu.tsx
++++ b/src/components/Menu/Menu.tsx
+@@ -20,6 +20,7 @@ import {
+ } from 'react-native';
+ 
+ import { useSafeAreaInsets } from 'react-native-safe-area-context';
++import useLatestCallback from 'use-latest-callback';
+ 
+ import MenuItem from './MenuItem';
+ import { useInternalTheme } from '../../core/theming';
+@@ -387,7 +388,7 @@ const Menu = ({
+     });
+   }, [removeListeners, theme]);
+ 
+-  const updateVisibility = React.useCallback(
++  const updateVisibility = useLatestCallback(
+     async (display: boolean) => {
+       // Menu is rendered in Portal, which updates items asynchronously
+       // We need to do the same here so that the ref is up-to-date
+@@ -404,7 +405,6 @@ const Menu = ({
+         return;
+       });
+     },
+-    [hide, show]
+   );
+ 
+   React.useEffect(() => {
