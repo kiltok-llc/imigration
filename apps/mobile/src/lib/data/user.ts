@@ -1,3 +1,4 @@
+import { atom } from 'jotai';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
@@ -28,6 +29,20 @@ export const entriesAtom = atomWithMmkvStorage(
   [],
   z.array(UsaEntrySchema),
   defaultStorage
+);
+
+export const mostRecentEntryAtom = atom(
+  (get) =>
+    get(entriesAtom)
+      .filter(({ date }) => date !== null)
+      .sort(({ date: a }, { date: b }) => b!.getTime() - a!.getTime())[0]
+);
+
+export const firstEntryAtom = atom(
+  (get) =>
+    get(entriesAtom)
+      .filter(({ date }) => date !== null)
+      .sort(({ date: a }, { date: b }) => a!.getTime() - b!.getTime())[0]
 );
 
 export const alienNumberAtom = atomWithMmkvStorage(
@@ -92,6 +107,24 @@ export const addressesAtom = atomWithMmkvStorage(
   z.array(z.intersection(AddressSchema, RangeSchema)),
   defaultStorage
 );
+
+export const persecutionCountryAtom = atomWithMmkvStorage(
+  'persecution-country',
+  '',
+  z.string(),
+  defaultStorage
+);
+
+const now = Date.now();
+export const mostRecentInternalAddressAtom = atom((get) =>
+  get(addressesAtom)
+    .sort(
+      ({ end: a }, { end: b }) => (b?.getTime() ?? now) - (a?.getTime() ?? now)
+    )
+    .find(({ country }) => country !== 'USA')
+);
+
+export const usaAddressAtom = atom((get) => get(addressesAtom)[0]);
 
 export const mailingAddressAtom = atomWithMmkvStorage(
   'mailing-address',

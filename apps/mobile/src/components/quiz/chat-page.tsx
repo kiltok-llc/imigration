@@ -1,13 +1,15 @@
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useMutation } from '@tanstack/react-query';
 import { CactusOAICompatibleMessage } from 'cactus-react-native';
 import { useAtom, useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useRef } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, TextInput, useTheme } from 'react-native-paper';
 import uuid from 'react-native-uuid';
+import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
 import { QuizPage, QuizPageProps } from '@/components/quiz/page';
@@ -16,7 +18,7 @@ import {
   HeaderMenuItem,
   HeaderMenuItemPortal,
 } from '@/components/ui/header-menu';
-import { cactus, useLoadCactus } from '@/lib/cactus';
+import { useCactus } from '@/lib/cactus';
 import { nameAtom } from '@/lib/data/user';
 import { quizChatInputAtom, quizChatMessagesAtom } from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
@@ -34,10 +36,11 @@ export function QuizChatPage({
   pageId,
   pageKey = '',
   pageRef = null,
-}: PropsWithChildren<QuizPageProps>) {
-  useLoadCactus();
-
-  const scrollRef = useRef<ScrollView>(null);
+  prompt = '',
+}: PropsWithChildren<QuizPageProps> & {
+  prompt?: string; // TODO make this required
+}) {
+  const t = useT();
 
   const resetMessages = useResetAtom(
     quizChatMessagesAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
@@ -45,8 +48,51 @@ export function QuizChatPage({
   const resetInput = useResetAtom(
     quizChatInputAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
   );
+
+  const { cactus, status } = useCactus();
+
+  const [messages, setMessages] = useAtom(
+    quizChatMessagesAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
+  );
+  const inputValue = useAtomValue(
+    quizChatInputAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
+  );
+
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
+
+  const { isPending: isThinking, mutate: handleSendInput } = useMutation({
+    meta: {
+      errorToastKey: 'chat.toast.chat-error',
+    },
+    mutationFn: async () => {
+      if (status !== 'initialized') {
+        toast.warning(t('chat.toast.not-ready'));
+        return;
+      }
+
+      const message = inputValue.trim();
+      setMessages((messages) => [
+        ...messages,
+        { id: uuid.v4(), role: 'user', text: message },
+      ]);
+      resetInput();
+
+      const response = await cactus.generateResponse([
+        { content: prompt, role: 'system' },
+        ...messages.map(({ role, text }) => ({
+          content: text,
+          role,
+        })),
+        { content: message, role: 'user' },
+      ]);
+
+      setMessages((messages) => [
+        ...messages,
+        { id: uuid.v4(), role: 'assistant', text: response },
+      ]);
+    },
+  });
 
   return (
     <QuizPage
@@ -74,62 +120,26 @@ export function QuizChatPage({
         keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
         style={tw`flex-1`}
       >
-        <ScrollView contentContainerStyle={tw`p-2`} ref={scrollRef}>
-          <QuizChatMessages />
-        </ScrollView>
-        <QuizChatInput />
+        <QuizChatMessages isThinking={isThinking} />
+        <QuizChatInput onSendInput={handleSendInput} />
       </KeyboardAvoidingView>
     </QuizPage>
   );
 }
 
-function QuizChatInput() {
+function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
   const t = useT();
   const ref = useRef<RNTextInput>(null);
   const theme = useTheme();
-  const baseMessages = useBaseMessages();
   const [value, setValue] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
-  const [messages, setMessages] = useAtom(
-    quizChatMessagesAtom(useQuizPageAtomKey())
-  );
-
-  const handleSend = async () => {
-    setMessages((messages) => [
-      ...messages,
-      { id: uuid.v4(), role: 'user', text: value.trim() },
-    ]);
-    setValue('');
-
-    const prompt = [
-      ...baseMessages.map(({ content, ...rest }) => ({
-        content: Array.isArray(content) ? content.join('\n') : content,
-        ...rest,
-      })),
-      ...messages.map(({ role, text }) => ({
-        content: text,
-        role,
-      })),
-      { content: `${value.trim()}`, role: 'user' },
-    ];
-    const rawMessage = await cactus.generateResponse(prompt);
-    const THINK_END_TAG = '</think>';
-    const thinkIdx = rawMessage.indexOf(THINK_END_TAG);
-    const cleanMessage = rawMessage
-      .slice(thinkIdx + THINK_END_TAG.length)
-      .trim();
-
-    setMessages((messages) => [
-      ...messages,
-      { id: uuid.v4(), role: 'assistant', text: cleanMessage },
-    ]);
-  };
 
   return (
     <TextInput
       dense={true}
       mode='outlined'
+      multiline={true}
       onChangeText={setValue}
-      onSubmitEditing={handleSend}
+      onSubmitEditing={onSendInput}
       outlineStyle={tw`rounded-3xl`}
       placeholder={t('chat.placeholder')}
       ref={ref}
@@ -137,33 +147,34 @@ function QuizChatInput() {
         <TextInput.Icon
           color={value ? theme.colors.primary : theme.colors.outline}
           icon={value ? 'arrow-up-circle' : 'microphone'}
-          onPress={value ? handleSend : () => {}}
+          onPress={value ? onSendInput : () => {}}
         />
       }
-      style={tw`m-2`}
+      style={tw.style(`m-2`, { backgroundColor: theme.colors.surface })}
       value={value}
     />
   );
 }
 
-function QuizChatMessages() {
+function QuizChatMessages({ isThinking }: { isThinking: boolean }) {
   const name = useAtomValue(nameAtom).first;
   const baseMessages = useBaseMessages();
   const messages = useAtomValue(quizChatMessagesAtom(useQuizPageAtomKey()));
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    scrollRef.current?.scrollToEnd();
+  }, [messages]);
 
   return (
-    <>
-      {baseMessages.map(
-        ({ content, role }, idx) =>
-          role !== 'system' && (
-            <ChatBubble
-              key={`base-${idx}`}
-              label={role === 'user' ? name : 'Migri'}
-              side={role === 'user' ? 'right' : 'left'}
-              text={Array.isArray(content) ? content.join('\n') : content}
-            />
-          )
-      )}
+    <ScrollView contentContainerStyle={tw`p-2`} ref={scrollRef}>
+      {baseMessages.map(({ content, role }, idx) => (
+        <ChatBubble
+          key={`base-${idx}`}
+          label={role === 'user' ? name : 'Migri'}
+          side={role === 'user' ? 'right' : 'left'}
+          text={Array.isArray(content) ? content.join('\n') : content}
+        />
+      ))}
       {messages.map(({ id, role, text }) => (
         <ChatBubble
           key={id}
@@ -172,6 +183,13 @@ function QuizChatMessages() {
           text={text}
         />
       ))}
-    </>
+      {isThinking && (
+        <ChatBubble
+          label='Migri'
+          side='left'
+          text={<ActivityIndicator size='small' style={tw`p-1`} />}
+        />
+      )}
+    </ScrollView>
   );
 }

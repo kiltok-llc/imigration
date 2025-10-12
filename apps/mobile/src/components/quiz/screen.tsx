@@ -65,8 +65,6 @@ export function QuizScreen({
 }: PropsWithChildren<{
   migriFAB?: boolean;
 }>) {
-  const t = useT();
-
   const [_services, service = '', step = '', ...screens] = useLocalSegments();
   const screen = screens.join('.');
   const pageIdx = useAtomValue(
@@ -99,7 +97,7 @@ export function QuizScreen({
     reset: resetSubmit,
   } = useMutation({
     meta: {
-      errorToast: t('quiz.toast.error'),
+      errorToastKey: 'quiz.toast.error',
     },
     async mutationFn() {
       Keyboard.dismiss();

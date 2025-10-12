@@ -20,10 +20,10 @@ export default function Migri() {
   const {
     i18n: { language },
   } = useTranslation();
-
+  const path = useSettingsPath();
   const { data: voices = [] } = useQuery({
     meta: {
-      errorToast: 'Failed to load available voices',
+      errorToastKey: `${path}.toast.voices-error`,
     },
     queryFn: Speech.getAvailableVoicesAsync,
     queryKey: ['voices'],

@@ -32,25 +32,21 @@ export const quizFormAtom = atomFamily(
 );
 
 export function resetQuizForm({
+  screen,
   service,
   step,
 }: {
+  screen: string;
   service: string;
   step: string;
 }) {
   console.log(`Clearing quiz values for ${service}.${step}`);
-  console.log(
-    'keys',
-    defaultStorage
-      .getAllKeys()
-      .filter((k) => k.startsWith(`services:${service}:${step}`))
-  );
   const exp = new RegExp(
-    `^services:${service}:${step}:([^:]*):([^:]*):([^:]*):([^:]*):values$`
+    `^services:${service}:${step}:${screen}:([^:]*):([^:]*):([^:]*):values$`
   );
 
-  for (const [screen, screenKey, pageId, pageKey] of clearMMKVKeys<
-    [string, string, string, string]
+  for (const [screenKey, pageId, pageKey] of clearMMKVKeys<
+    [string, string, string]
   >(exp, defaultStorage)) {
     quizFormAtom.remove({
       pageId,

@@ -147,7 +147,7 @@
                 "Aquí indicas si estás actualmente en los Estados Unidos. Esto es importante para tu solicitud. Haz clic en \"Sí\" o \"No\" según corresponda. ¡Tómate tu tiempo!"
               ]
             },
-            "first-entry": {
+            "recent-entry": {
               "talk": [
                 "Por favor proporciona información sobre tu entrada más reciente a Estados Unidos.",
                 "Indica la fecha exacta de tu entrada en el campo correspondiente.",
@@ -212,14 +212,6 @@
           },
           "residence": {
             "previous-addresses": {
-              "previous-residence": {
-                "talk": [
-                  "Por favor, indica dónde vivías antes de llegar a los Estados Unidos.",
-                  "Esto ayuda a entender tu historial de residencia.",
-                  "Luego, selecciona el período durante el cual viviste allí.",
-                  "Asegúrate de que toda la información sea correcta antes de continuar."
-                ]
-              },
               "past-residences": {
                 "talk": [
                   "Por favor, enumera todos los lugares donde has vivido en los últimos cinco años.",
@@ -640,7 +632,6 @@
           "statement": "Revisar Declaración"
         },
         "migri": {
-          "eligibility": "Ayuda con la Solicitud de Asilo",
           "info": "Ayuda con Información Personal",
           "statement": "Ayuda con Declaración Personal",
           "review": "Ayuda con Revisión"
@@ -1087,7 +1078,7 @@
               "title_child": "¿Está {{ name }} actualmente en los Estados Unidos?"
             }
           },
-          "first-entry": {
+          "recent-entry": {
             "title": "Por favor, proporcione la siguiente información sobre la entrada más reciente de {{ name }} a los Estados Unidos.",
             "title_client": "Por favor, proporcione la siguiente información sobre su entrada más reciente a los Estados Unidos.",
             "date": {
@@ -1185,8 +1176,8 @@
               "label": "Fecha (MM/DD/YYYY)"
             }
           },
-          "previous-entry": {
-            "has-previous-entry": {
+          "other-entries": {
+            "has-other-entries": {
               "title_spouse": "¿Ha entrado {{ name }} alguna vez a los Estados Unidos antes del último ingreso?"
             },
             "entry-date": {
@@ -1334,14 +1325,6 @@
         "residence": {
           "previous-addresses": {
             "title": "Direcciones Anteriores",
-            "previous-residence": {
-              "address": {
-                "title": "Antes de llegar a los Estados Unidos, ¿dónde vivías?"
-              },
-              "range": {
-                "title": "¿Durante qué período viviste allí?"
-              }
-            },
             "past-residences": {
               "title": "Comenzando por el más reciente, enumera todos los lugares en los que has vivido en los últimos cinco años.",
               "residences": {

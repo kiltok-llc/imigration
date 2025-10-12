@@ -2,6 +2,8 @@ import type { CactusOAICompatibleMessage } from 'cactus-react-native';
 
 import { CactusLM } from 'cactus-react-native';
 import { Directory, File, Paths } from 'expo-file-system';
+import { atom, getDefaultStore, useAtomValue } from 'jotai';
+import { atomWithMutation } from 'jotai-tanstack-query';
 import { useEffect } from 'react';
 
 const MODEL_DIR = new Directory(Paths.document, 'models');
@@ -22,15 +24,74 @@ const STOP_WORDS = [
   '<end_of_utterance>',
 ];
 
-class CactusManager {
-  state: 'error' | 'initialized' | 'initializing' | 'uninitialized' =
-    'uninitialized';
+type CactusManagerState =
+  | DestroyingState
+  | ErrorState
+  | InitializedState
+  | InitializingState
+  | UninitializedState;
+type DestroyingState = { cactus?: never; status: 'destroying' };
+type ErrorState = { cactus?: never; status: 'error' };
+type InitializedState = { cactus: Cactus; status: 'initialized' };
+type InitializingState = { cactus?: never; status: 'initializing' };
+type UninitializedState = { cactus?: never; status: 'uninitialized' };
 
-  private lm: CactusLM | null = null;
+const cactusAtom = atom<CactusManagerState>({ status: 'uninitialized' });
 
-  async _initialize() {
+const defaultStore = getDefaultStore();
+
+const initializeCactusAtom = atomWithMutation((get) => ({
+  meta: {
+    errorToastKey: 'chat.toast.init-error',
+    loadingToastKey: 'chat.toast.init-loading',
+  },
+  mutationFn: async (): Promise<Cactus> => {
+    const { status } = get(cactusAtom);
+    if (status !== 'uninitialized') {
+      throw new Error(
+        `[Cactus] cannot initialize from current state: ${status}`
+      );
+    }
+
+    defaultStore.set(cactusAtom, { status: 'initializing' });
+    return await Cactus.initialize();
+  },
+  onError: () => defaultStore.set(cactusAtom, { status: 'error' }),
+  onSuccess: (cactus) =>
+    defaultStore.set(cactusAtom, { cactus, status: 'initialized' }),
+  retry: 5,
+}));
+
+const destroyCactusAtom = atomWithMutation((get) => ({
+  mutationFn: async () => {
+    const { cactus, status } = get(cactusAtom);
+    if (status !== 'initialized') {
+      throw new Error(`[Cactus] cannot destroy from current state: ${status}`);
+    }
+
+    defaultStore.set(cactusAtom, { status: 'destroying' });
+    await cactus.destroy();
+  },
+  onError: (error) => {
+    // We would rather leak the memory and pretend teardown succeeded than to
+    // lock up cactus by setting the error state.
+    // defaultStore.set(cactusAtom, { status: 'error' })
+    console.warn('[Cactus] error during destroy, ignoring', error);
+    defaultStore.set(cactusAtom, { status: 'uninitialized' });
+  },
+  onSuccess: () => defaultStore.set(cactusAtom, { status: 'uninitialized' }),
+  retry: 2,
+}));
+
+class Cactus {
+  private lm: CactusLM;
+
+  constructor(lm: CactusLM) {
+    this.lm = lm;
+  }
+
+  static async initialize(): Promise<Cactus> {
     console.debug('[Cactus] initializing...');
-    this.state = 'initializing';
 
     // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
     const [modelPath] = await Promise.all([
@@ -48,17 +109,18 @@ class CactusManager {
       throw error || new Error('Unknown error initializing Cactus LM');
     }
 
-    this.lm = lm;
+    return new Cactus(lm);
+  }
+
+  async destroy() {
+    console.debug('[Cactus] destroying...');
+
+    await this.lm.release();
   }
 
   async generateResponse(
     messages: CactusOAICompatibleMessage[]
   ): Promise<string> {
-    if (!this.lm) {
-      console.log('[Cactus] LM not initialized');
-      return '';
-    }
-
     const startTime = performance.now();
     let firstTokenTime: null | number = null;
     let responseText = '';
@@ -100,30 +162,9 @@ class CactusManager {
       `[Cactus] TTFT ${timeToFirstToken.toFixed(0)}ms | ${tokensPerSecond.toFixed(0)} tok/s | ${tokenCount} tokens`
     );
 
-    return responseText;
-  }
-
-  async initialize() {
-    if (this.state === 'initialized') {
-      console.log('[Cactus] already initialized');
-      return;
-    }
-
-    if (this.state === 'initializing') {
-      console.log('[Cactus] already initializing');
-      return;
-    }
-
-    try {
-      await this._initialize();
-    } catch (error) {
-      console.error('[Cactus] initialization failed', error);
-      this.state = 'error';
-      return;
-    }
-
-    console.log('[Cactus] initialization complete');
-    this.state = 'initialized';
+    const THINK_END = '</think>';
+    const thinkEndIdx = responseText.indexOf(THINK_END);
+    return responseText.slice(thinkEndIdx + THINK_END.length).trim();
   }
 }
 
@@ -140,14 +181,17 @@ async function downloadModel(modelName: ModelName): Promise<File> {
   return modelFile;
 }
 
-export const cactus = new CactusManager();
+export const useCactus = () => {
+  const { mutate: initializeCactus } = useAtomValue(initializeCactusAtom);
+  const { mutate: destroyCactus } = useAtomValue(destroyCactusAtom);
 
-export const useLoadCactus = () => {
   useEffect(() => {
-    if (cactus.state === 'initialized') {
-      return;
-    }
+    initializeCactus();
 
-    void cactus.initialize();
-  }, []);
+    return () => {
+      void destroyCactus();
+    };
+  }, [initializeCactus, destroyCactus]);
+
+  return useAtomValue(cactusAtom);
 };

@@ -7,11 +7,9 @@ import {
   PropsWithChildren,
   ReactNode,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import { Icon, Menu } from 'react-native-paper';
-import uuid from 'react-native-uuid';
 
 import { Trans } from '@/components/trans';
 import {
@@ -36,7 +34,7 @@ export function HeaderMenu({
   const [open, setOpen] = useState(false);
   const headerMenuItems = useAtomValue(headerMenuItemsAtom);
 
-  if (headerMenuItems.length === 0) {
+  if (Children.toArray(children).length + headerMenuItems.length === 0) {
     return null;
   }
 

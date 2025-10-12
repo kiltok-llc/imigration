@@ -18,14 +18,10 @@ export const prettifyNativeLanguage = ({
 }: z.infer<typeof NativeLanguageSchema>) =>
   dialect ? `${language} (${dialect})` : language;
 
-export const prettifyDate = (date: Date | null) =>
-  date
-    ? new Intl.DateTimeFormat('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      }).format(date)
-    : '';
+export const prettifyDate = (
+  date: Date | null,
+  options?: Intl.DateTimeFormatOptions
+) => date?.toLocaleDateString('en-US', options) ?? '';
 
 export const prettifyName = ({
   first,

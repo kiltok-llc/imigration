@@ -2,7 +2,6 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { router, Stack, useRouter } from 'expo-router';
 import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
-import { ComponentProps } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -132,11 +131,14 @@ export default function I589() {
   );
 }
 
-function I589MenuItems(props: ComponentProps<typeof HeaderMenu>) {
+function I589MenuItems() {
   const [_services, service = ''] = useLocalSegments();
   const steps = ['eligibility', 'info', 'statement', 'review'] as const;
   const step = useAtomValue(i589StepAtom);
   const completedIds = useAtomValue(migriCompletedEncounterIds);
+  const completedSteps = steps.filter((step) =>
+    completedIds.has(`services.${service}.${step}`)
+  );
 
   return (
     <>
@@ -162,16 +164,14 @@ function I589MenuItems(props: ComponentProps<typeof HeaderMenu>) {
           }}
         />
       )}
-      {['info', 'statement'].includes(step) && <Divider />}
-      {steps
-        .filter((step) => completedIds.has(`${service}.${step}`))
-        .map((step) => (
-          <HeaderMenuItem
-            i18nKey={`services.${service}.menu.migri.${step}`}
-            key={step}
-            onPress={() => triggerMigri(`services.${service}.${step}`)}
-          />
-        ))}
+      {completedSteps.length > 0 && <Divider />}
+      {completedSteps.map((step) => (
+        <HeaderMenuItem
+          i18nKey={`services.${service}.menu.migri.${step}`}
+          key={step}
+          onPress={() => triggerMigri(`services.${service}.${step}`)}
+        />
+      ))}
     </>
   );
 }

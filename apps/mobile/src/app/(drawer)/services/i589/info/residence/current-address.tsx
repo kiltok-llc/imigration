@@ -86,7 +86,7 @@ export default function CurrentAddress() {
           date: required(z.date().nullable()),
         })}
       >
-        {({ lens }) => (
+        {({ control, lens }) => (
           <>
             <FormBlock>
               <QuizPageTitle />
@@ -94,7 +94,7 @@ export default function CurrentAddress() {
 
             <FormBlock>
               <FormAddressInput lens={lens.focus('address')} />
-              <FormField name='date'>
+              <FormField control={control} name='date'>
                 <QuizDateInput />
               </FormField>
             </FormBlock>

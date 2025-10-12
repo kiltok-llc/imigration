@@ -122,8 +122,8 @@ export default function DemographicsAndBirth() {
         pageId='nationality'
         sampleData={{
           example: {
-            birthNationality: 'United States',
-            currentNationality: 'United States',
+            birthNationality: 'USA',
+            currentNationality: 'USA',
           },
         }}
         schema={z.object({

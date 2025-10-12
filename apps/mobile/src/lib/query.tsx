@@ -15,6 +15,7 @@ import { AppState, Platform } from 'react-native';
 import { toast } from 'sonner-native';
 
 import { env } from '@/env';
+import i18n from '@/i18n';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,10 +25,11 @@ const queryClient = new QueryClient({
   },
   mutationCache: new MutationCache({
     onError(error, _variables, _context, mutation) {
-      console.error('Error running mutation:', error);
+      console.log('Error running mutation:', error);
+      // TODO send to sentry
 
-      if (mutation.meta?.errorToast) {
-        toast.error(mutation.meta.errorToast as string, {
+      if (mutation.meta?.errorToastKey) {
+        toast.error(i18n.t(mutation.meta.errorToastKey as string), {
           id: `mutation-${mutation.mutationId}`,
         });
       } else {
@@ -35,15 +37,15 @@ const queryClient = new QueryClient({
       }
     },
     onMutate(_variables, mutation) {
-      if (mutation.meta?.loadingToast) {
-        toast.loading(mutation.meta.loadingToast as string, {
+      if (mutation.meta?.loadingToastKey) {
+        toast.loading(i18n.t(mutation.meta.loadingToastKey as string), {
           id: `mutation-${mutation.mutationId}`,
         });
       }
     },
     onSuccess(_data, _variables, _context, mutation) {
-      if (mutation.meta?.successToast) {
-        toast.success(mutation.meta.successToast as string, {
+      if (mutation.meta?.successToastKey) {
+        toast.success(i18n.t(mutation.meta.successToastKey as string), {
           id: `mutation-${mutation.mutationId}`,
         });
       } else {
@@ -53,15 +55,16 @@ const queryClient = new QueryClient({
   }),
   queryCache: new QueryCache({
     onError(error, query) {
-      console.error('Error running query:', error);
+      console.log('Error running query:', error);
+      // TODO send to sentry
 
-      if (query.meta?.errorToast) {
-        toast.error(query.meta.errorToast as string);
+      if (query.meta?.errorToastKey) {
+        toast.error(i18n.t(query.meta.errorToastKey as string));
       }
     },
     onSuccess(_data, query) {
-      if (query.meta?.successToast) {
-        toast.success(query.meta.successToast as string);
+      if (query.meta?.successToastKey) {
+        toast.success(i18n.t(query.meta.successToastKey as string));
       }
     },
   }),

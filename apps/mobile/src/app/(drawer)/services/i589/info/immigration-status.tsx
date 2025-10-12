@@ -151,7 +151,7 @@ export default function ImmigrationStatus() {
               example: {
                 hasPassport: true,
                 passport: {
-                  country: 'United States',
+                  country: 'USA',
                   expiration: new Date('2030-12-31'),
                   number: 'P123456789',
                   type: 'passport',
@@ -419,7 +419,7 @@ export default function ImmigrationStatus() {
               onSuccess={({ date, port, status }) => {
                 setEntries([{ date, port, status }]);
               }}
-              pageId='first-entry'
+              pageId='recent-entry'
               sampleData={{
                 example: {
                   date: new Date('2022-06-15'),
@@ -479,7 +479,7 @@ export default function ImmigrationStatus() {
                   ]);
                 }
               }}
-              pageId='previous-entry'
+              pageId='other-entries'
               sampleData={{
                 example: {
                   entryDate: new Date('2020-03-10'),

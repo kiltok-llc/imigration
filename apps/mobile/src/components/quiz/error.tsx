@@ -18,7 +18,8 @@ export function QuizErrorFallback({
   retry,
 }: PropsWithChildren<ErrorBoundaryProps> & ReactErrorBoundaryProps) {
   const theme = useTheme();
-  const [_services, service = '', step = ''] = useLocalSegments();
+  const [_services, service = '', step = '', ...screens] = useLocalSegments();
+  const screen = screens.join('.');
   const resetQuizRoute = useResetAtom(quizRouteAtom({ service, step }));
   const router = useRouter();
 
@@ -58,7 +59,7 @@ export function QuizErrorFallback({
         i18nKey='quiz.error.reset-values'
         mode='text'
         onPress={() => {
-          resetQuizForm({ service, step });
+          resetQuizForm({ screen, service, step });
           void retry();
         }}
       />

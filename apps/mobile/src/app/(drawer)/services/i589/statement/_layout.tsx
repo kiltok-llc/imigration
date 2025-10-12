@@ -9,7 +9,7 @@ import { QuizLayout } from '@/components/quiz/layout';
 import { HeaderMenu, HeaderMenuItem } from '@/components/ui/header-menu';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import { lateApplicationDetailsAtom } from '@/lib/data/asylum';
-import { entriesAtom } from '@/lib/data/user';
+import { firstEntryAtom } from '@/lib/data/user';
 import { QuizProvider } from '@/lib/quiz/provider';
 import { RoutesProvider } from '@/lib/routes';
 import { i589StepAtom } from '@/lib/services/i589/step';
@@ -19,18 +19,9 @@ const now = new Date();
 const oneYear = 365 * 24 * 60 * 60 * 1000; // One year in milliseconds
 const cuttoffDate = new Date(now.getTime() - oneYear);
 
-const submissionIsLateAtom = atom((get) => {
-  const [mostRecentEntry] = get(entriesAtom)
-    .map(({ date }) => date)
-    .filter((date) => date !== null)
-    .sort((a, b) => b.getTime() - a.getTime());
-
-  if (!mostRecentEntry) {
-    return true;
-  }
-
-  return mostRecentEntry.getTime() < cuttoffDate.getTime();
-});
+const submissionIsLateAtom = atom(
+  (get) => get(firstEntryAtom)?.date?.getTime() ?? 0 < cuttoffDate.getTime()
+);
 
 export default function StatementLayout() {
   const [_services, service = '', step = ''] = useLocalSegments();
