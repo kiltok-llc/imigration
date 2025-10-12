@@ -77,7 +77,7 @@ const createMMKVStorage = <Value>(
       const str = storage.getString(key);
       // console.debug(`storage.subscribe(${key}) = ${str}`);
       if (str === undefined) {
-        console.warn(
+        console.debug(
           `MMKV value with key: ${key} was deleted, but subscription was active!`
         );
         return;

@@ -90,6 +90,8 @@ def main(from_path: Path, to_path: Path):
             instructions=f"You are a translation assistant for a self-service immigration app. Translate the following i18n file {from_language} to {to_language}. Keep the translation concise and accurate. Do not output anything except a single valid JSON object. The keys must match the input exactly.",
             input=json.dumps(dict(chunk)),
         ).output_text
+        if translation.startswith('```json'):
+            translation = '\n'.join(translation.splitlines()[1:-1])
         try:
             translated_items = json.loads(translation)
         except json.JSONDecodeError as e:

@@ -1,10 +1,11 @@
 import type { CactusOAICompatibleMessage } from 'cactus-react-native';
 
+import { useMutation } from '@tanstack/react-query';
 import { CactusLM } from 'cactus-react-native';
 import { Directory, File, Paths } from 'expo-file-system';
 import { atom, getDefaultStore, useAtomValue } from 'jotai';
-import { atomWithMutation } from 'jotai-tanstack-query';
 import { useEffect } from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 
 const MODEL_DIR = new Directory(Paths.document, 'models');
 
@@ -12,76 +13,123 @@ const MODELS = {
   'Qwen3-0.6B-Q8_0.gguf': {
     url: 'https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q8_0.gguf',
   },
+  'Qwen3-1.7B-Q4_K_S.gguf': {
+    url: 'https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_S.gguf',
+  },
 };
-
-type ModelName = keyof typeof MODELS;
-
-const STOP_WORDS = [
-  '<|end_of_text|>',
-  '<|endoftext|>',
-  '<|im_end|>',
-  '</s>',
-  '<end_of_utterance>',
-];
 
 type CactusManagerState =
   | DestroyingState
-  | ErrorState
   | InitializedState
   | InitializingState
   | UninitializedState;
+
 type DestroyingState = { cactus?: never; status: 'destroying' };
-type ErrorState = { cactus?: never; status: 'error' };
 type InitializedState = { cactus: Cactus; status: 'initialized' };
 type InitializingState = { cactus?: never; status: 'initializing' };
+type ModelName = keyof typeof MODELS;
 type UninitializedState = { cactus?: never; status: 'uninitialized' };
 
 const cactusAtom = atom<CactusManagerState>({ status: 'uninitialized' });
 
 const defaultStore = getDefaultStore();
 
-const initializeCactusAtom = atomWithMutation((get) => ({
-  meta: {
-    errorToastKey: 'chat.toast.init-error',
-    loadingToastKey: 'chat.toast.init-loading',
-  },
-  mutationFn: async (): Promise<Cactus> => {
-    const { status } = get(cactusAtom);
-    if (status !== 'uninitialized') {
-      throw new Error(
-        `[Cactus] cannot initialize from current state: ${status}`
-      );
-    }
+const useDownloadCactusModels = () =>
+  useMutation({
+    meta: {
+      errorToastKey: 'chat.toast.download-error',
+    },
+    mutationFn: async () => {
+      const { status } = defaultStore.get(cactusAtom);
+      if (status === 'initialized') {
+        console.debug(`[Cactus] skipping download, already ${status}`);
+        return;
+      }
 
-    defaultStore.set(cactusAtom, { status: 'initializing' });
-    return await Cactus.initialize();
-  },
-  onError: () => defaultStore.set(cactusAtom, { status: 'error' }),
-  onSuccess: (cactus) =>
-    defaultStore.set(cactusAtom, { cactus, status: 'initialized' }),
-  retry: 5,
-}));
+      if (status !== 'uninitialized') {
+        // error here so that we can retry the download later
+        throw new Error(`cannot download models from current state: ${status}`);
+      }
 
-const destroyCactusAtom = atomWithMutation((get) => ({
-  mutationFn: async () => {
-    const { cactus, status } = get(cactusAtom);
-    if (status !== 'initialized') {
-      throw new Error(`[Cactus] cannot destroy from current state: ${status}`);
-    }
+      defaultStore.set(cactusAtom, { status: 'initializing' });
+      try {
+        await Cactus.downloadModels();
+      } catch (error) {
+        defaultStore.set(cactusAtom, { status: 'uninitialized' });
+        throw new Error('failed to download models', { cause: error });
+      }
 
-    defaultStore.set(cactusAtom, { status: 'destroying' });
-    await cactus.destroy();
-  },
-  onError: (error) => {
-    // We would rather leak the memory and pretend teardown succeeded than to
-    // lock up cactus by setting the error state.
-    // defaultStore.set(cactusAtom, { status: 'error' })
-    console.warn('[Cactus] error during destroy, ignoring', error);
-    defaultStore.set(cactusAtom, { status: 'uninitialized' });
-  },
-  onSuccess: () => defaultStore.set(cactusAtom, { status: 'uninitialized' }),
-  retry: 2,
-}));
+      console.debug('[Cactus] models downloaded!');
+      defaultStore.set(cactusAtom, { status: 'uninitialized' });
+    },
+    mutationKey: ['downloadModels'],
+    retry: 3,
+  });
+
+const useInitCactus = () =>
+  useMutation({
+    meta: {
+      errorToastKey: 'chat.toast.init-error',
+      loadingToastKey: 'chat.toast.init-loading',
+    },
+    mutationFn: async () => {
+      const { status } = defaultStore.get(cactusAtom);
+      if (status === 'initialized') {
+        console.debug(`[Cactus] skipping init, already ${status}`);
+        return;
+      }
+
+      if (status !== 'uninitialized') {
+        // error here so that we can retry the init later
+        throw new Error(`cannot initialize from current state: ${status}`);
+      }
+
+      defaultStore.set(cactusAtom, { status: 'initializing' });
+      try {
+        const cactus = await Cactus.initialize();
+        defaultStore.set(cactusAtom, { cactus, status: 'initialized' });
+      } catch (error) {
+        defaultStore.set(cactusAtom, { status: 'uninitialized' });
+        throw new Error('failed to initialize cactus', { cause: error });
+      }
+
+      console.debug('[Cactus] initialized!');
+    },
+    retry: 5,
+  });
+
+const useDestroyCactus = () =>
+  useMutation({
+    mutationFn: async () => {
+      const { cactus, status } = defaultStore.get(cactusAtom);
+      if (status === 'uninitialized') {
+        console.debug(`[Cactus] skipping destroy, already ${status}`);
+        return; // already destroyed
+      }
+
+      if (status !== 'initialized') {
+        throw new Error(`cannot destroy from current state: ${status}`);
+      }
+
+      defaultStore.set(cactusAtom, { status: 'destroying' });
+      try {
+        await cactus.destroy();
+      } catch (error) {
+        // Even if destroy fails, we can just set the state to uninitialized
+        defaultStore.set(cactusAtom, { status: 'uninitialized' });
+        throw new Error('failed to destroy cactus', { cause: error });
+      }
+
+      console.debug('[Cactus] destroyed!');
+      defaultStore.set(cactusAtom, { status: 'uninitialized' });
+    },
+    // Retrying failed destroys would not do anything except hide errors,
+    // since we pretend the destruction succeeded (by setting state
+    // uninitialized) even if it failed.
+    retry: false,
+  });
+
+const MESSAGE_HISTORY_LIMIT = 16; // TODO summarize old messages instead
 
 class Cactus {
   private lm: CactusLM;
@@ -90,13 +138,15 @@ class Cactus {
     this.lm = lm;
   }
 
+  static async downloadModels() {
+    console.debug('[Cactus] downloading models...');
+    return [await downloadModel('Qwen3-1.7B-Q4_K_S.gguf')] as const;
+  }
+
   static async initialize(): Promise<Cactus> {
     console.debug('[Cactus] initializing...');
 
-    // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
-    const [modelPath] = await Promise.all([
-      downloadModel('Qwen3-0.6B-Q8_0.gguf'),
-    ]);
+    const [modelPath] = await Cactus.downloadModels();
 
     const { error, lm } = await CactusLM.init({
       model: modelPath.uri,
@@ -106,7 +156,8 @@ class Cactus {
     });
 
     if (error || !lm) {
-      throw error || new Error('Unknown error initializing Cactus LM');
+      lm?.release(); // TODO would be nice to fix this typing in cactus-react-native
+      throw error || new Error('unknown error initializing CactusLM');
     }
 
     return new Cactus(lm);
@@ -121,18 +172,24 @@ class Cactus {
   async generateResponse(
     messages: CactusOAICompatibleMessage[]
   ): Promise<string> {
+    const limitedMessages = [
+      ...messages.filter(({ role }) => role === 'system'),
+      ...messages
+        .filter(({ role }) => role !== 'system')
+        .slice(-MESSAGE_HISTORY_LIMIT),
+    ];
+
     const startTime = performance.now();
     let firstTokenTime: null | number = null;
-    let responseText = '';
 
     const result = await this.lm.completion(
-      messages,
+      limitedMessages,
       {
         min_p: 0,
-        n_predict: 512,
+        n_predict: 2048,
         penalty_present: 1.5,
         penalty_repeat: 1.05,
-        stop: STOP_WORDS,
+        stop: ['<|im_end|>'],
         temperature: 0.7,
         top_k: 20,
         top_p: 0.8,
@@ -141,30 +198,44 @@ class Cactus {
         if (firstTokenTime === null && token) {
           firstTokenTime = performance.now();
         }
-        if (token) {
-          responseText += token;
-        }
       }
     );
 
-    responseText = responseText || result.text || 'No response generated';
+    const {
+      stopped_eos,
+      text,
+      timings: { predicted_n, predicted_per_second },
+      tokens_evaluated,
+      tokens_predicted,
+      truncated,
+    } = result;
+
+    console.debug('[Cactus] predicted', result);
 
     const endTime = performance.now();
     const totalTime = endTime - startTime;
     const timeToFirstToken = firstTokenTime
       ? firstTokenTime - startTime
       : totalTime;
-    const tokenCount = responseText.split(/\s+/).length;
-    const tokensPerSecond =
-      tokenCount > 0 ? tokenCount / (totalTime / 1000) : 0;
 
-    console.log(
-      `[Cactus] TTFT ${timeToFirstToken.toFixed(0)}ms | ${tokensPerSecond.toFixed(0)} tok/s | ${tokenCount} tokens`
+    console.debug(
+      `[Cactus] TTFT ${timeToFirstToken.toFixed(0)}ms | ${predicted_per_second.toFixed(0)} tok/s | ${predicted_n} tokens`
     );
 
+    if (truncated) {
+      console.warn('[Cactus] context window was truncated', {
+        tokens_evaluated,
+        tokens_predicted,
+      });
+    }
+
+    if (!stopped_eos) {
+      return 'Response failed. Please try again.';
+    }
+
     const THINK_END = '</think>';
-    const thinkEndIdx = responseText.indexOf(THINK_END);
-    return responseText.slice(thinkEndIdx + THINK_END.length).trim();
+    const thinkEndIdx = text.indexOf(THINK_END);
+    return text.slice(thinkEndIdx + THINK_END.length).trim();
   }
 }
 
@@ -173,7 +244,9 @@ async function downloadModel(modelName: ModelName): Promise<File> {
   const modelFile = new File(MODEL_DIR, modelName);
 
   if (!modelFile.exists) {
-    const downloadFile = await File.downloadFileAsync(url, Paths.cache);
+    const downloadFile = await File.downloadFileAsync(url, Paths.cache, {
+      idempotent: true,
+    });
     modelFile.parentDirectory.create({ idempotent: true, intermediates: true });
     downloadFile.move(modelFile);
   }
@@ -182,16 +255,42 @@ async function downloadModel(modelName: ModelName): Promise<File> {
 }
 
 export const useCactus = () => {
-  const { mutate: initializeCactus } = useAtomValue(initializeCactusAtom);
-  const { mutate: destroyCactus } = useAtomValue(destroyCactusAtom);
+  const { mutate: initCactus } = useInitCactus();
+  const { mutate: destroyCactus } = useDestroyCactus();
 
   useEffect(() => {
-    initializeCactus();
+    const subscription = AppState.addEventListener(
+      'change',
+      (status: AppStateStatus) => {
+        switch (status) {
+          case 'active': {
+            initCactus();
+            break;
+          }
+          case 'background': {
+            destroyCactus();
+            break;
+          }
+        }
+      }
+    );
+
+    initCactus();
 
     return () => {
-      void destroyCactus();
+      subscription.remove();
+
+      destroyCactus();
     };
-  }, [initializeCactus, destroyCactus]);
+  }, [destroyCactus, initCactus]);
 
   return useAtomValue(cactusAtom);
+};
+
+export const useEnsureDownloadCactusModels = () => {
+  const { mutate: downloadModels } = useDownloadCactusModels();
+
+  useEffect(() => {
+    downloadModels();
+  }, [downloadModels]);
 };

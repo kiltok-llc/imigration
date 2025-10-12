@@ -3,13 +3,11 @@ import { useAtomValue } from 'jotai';
 import {
   Children,
   cloneElement,
-  createContext,
   createRef,
   isValidElement,
   PropsWithChildren,
   ReactNode,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
 } from 'react';
@@ -23,18 +21,14 @@ import { ReactivePagerView } from '@/components/reactive-pager-view';
 import { useDevMenuItem } from '@/hooks/use-dev-menu-items';
 import { useKeyboardVisible } from '@/hooks/use-keyboard-visible';
 import { useLocalSegments } from '@/hooks/use-local-segments';
-import {
-  createRequiredContext,
-  useRequiredContext,
-} from '@/hooks/use-required-context';
 import { useQuizActions } from '@/lib/quiz/actions';
 import {
+  QuizScreenCurrentPageIdProvider,
   quizScreenCurrentPageIdxAtom,
   useHandleQuizScreenNext,
   useHandleQuizScreenPrev,
   useQuizScreenAtomKey,
 } from '@/lib/quiz/screen';
-import { useT } from '@/lib/translation';
 
 export const useChildRefs = (children: ReactNode) =>
   useMemo(
@@ -50,14 +44,6 @@ const useCurrentPageId = (children: ReactNode, page: number) =>
   Children.toArray(children).filter((child) =>
     isValidElement<QuizPageProps>(child)
   )[page]?.props?.pageId ?? '';
-
-const QuizScreenKeyContext = createContext<string>('');
-export const QuizScreenKeyProvider = QuizScreenKeyContext.Provider;
-export const useQuizScreenKey = () => useContext(QuizScreenKeyContext);
-
-const QuizScreenCurrentPageIdContext = createRequiredContext<string>();
-export const useQuizScreenCurrentPageId = () =>
-  useRequiredContext(QuizScreenCurrentPageIdContext);
 
 export function QuizScreen({
   children,
@@ -147,7 +133,7 @@ export function QuizScreen({
   }, [handleQuizScreenPrev, keyboardVisible, isBackSuccess, resetBack]);
 
   return (
-    <QuizScreenCurrentPageIdContext.Provider value={currentPageId}>
+    <QuizScreenCurrentPageIdProvider value={currentPageId}>
       <FadeSlotPageWrapper>
         <ReactivePagerView
           orientation='vertical'
@@ -172,6 +158,6 @@ export function QuizScreen({
           />
         )}
       </FadeSlotPageWrapper>
-    </QuizScreenCurrentPageIdContext.Provider>
+    </QuizScreenCurrentPageIdProvider>
   );
 }

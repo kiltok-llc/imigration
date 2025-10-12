@@ -20,7 +20,7 @@ import {
   QuizPageTitle,
 } from '@/components/quiz/label';
 import { QuizRadioItem } from '@/components/quiz/radio';
-import { QuizScreen, QuizScreenKeyProvider } from '@/components/quiz/screen';
+import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
   childAlienNumberAtom,
@@ -56,6 +56,7 @@ import {
   ssnAtom,
   uscisNumberAtom,
 } from '@/lib/data/user';
+import { QuizScreenKeyProvider } from '@/lib/quiz/screen';
 import { ImmigrationCourtStatusEnum } from '@/lib/schemas';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';

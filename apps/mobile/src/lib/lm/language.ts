@@ -12,10 +12,5 @@ export const useLanguagePrompt = () => {
 
   const languageName = LANGUAGES[language as unknown as keyof typeof LANGUAGES];
 
-  return [
-    'Language Control:',
-    '- The app settings control the language.',
-    `- The active language is ${languageName}.`,
-    '- Always respond in the active language.',
-  ].join('\n');
+  return [`VERY VERY IMPORTANT: Respond in ${languageName}.`].join('\n');
 };

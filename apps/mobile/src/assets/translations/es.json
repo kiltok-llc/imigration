@@ -634,7 +634,8 @@
         "migri": {
           "info": "Ayuda con Información Personal",
           "statement": "Ayuda con Declaración Personal",
-          "review": "Ayuda con Revisión"
+          "review": "Ayuda con Revisión",
+          "eligibility": "Ayuda con la Elegibilidad para Asilo"
         }
       },
       "appeal": {
@@ -674,6 +675,409 @@
         },
         "statement": {
           "title": "Declaración"
+        },
+        "fear-of-return": {
+          "title": "Miedo a Regresar",
+          "fear-of-return": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Miedo a Regresar"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Tienes miedo de regresar a tu país? Si tienes que regresar, ¿temes que tú o tu familia puedan sufrir daño o maltrato?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Miedo a regresar a tu país"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, explica en detalle por qué tienes miedo de regresar a tu país. En tu explicación, intenta incluir la siguiente información:\n\n¿Qué daño o maltrato temes que te pueda suceder si regresas?\n\n¿Quién crees que podría hacerte daño o maltratarte?\n\n¿Ha cambiado algo desde que te fuiste que podría afectar el riesgo de daño o maltrato? Por ejemplo, ¿la situación es la misma, ha mejorado o ha empeorado? Por favor, explica por qué.\n\n¿Por qué crees que podrías ser dañado o maltratado si regresas?\n\nCualquier información adicional que pueda ayudar a explicar tu miedo a regresar."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos relacionados con tu miedo a regresar"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento que pueda ayudar a confirmar la información que has proporcionado sobre tu miedo a regresar. Esto puede incluir informes policiales, cartas, capturas de pantalla, registros médicos, fotografías o cualquier otro documento relevante."
+                }
+              ]
+            }
+          }
+        },
+        "criminal-history": {
+          "title": "Historial Criminal",
+          "criminal-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Historial Criminal"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez tú o algún miembro de tu familia incluido en esta solicitud ha cometido un delito o ha sido arrestado, acusado, condenado o sentenciado por alguna ofensa en los Estados Unidos (incluidas violaciones de las leyes de inmigración)?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles del historial criminal"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Proporciona información detallada para cada caso:\n\n¿Qué ocurrió y en qué circunstancias?\n¿Cuándo sucedió?\n¿Cuál fue la sentencia recibida y cuál fue el lugar y la duración de la detención o prisión?\n¿Cuáles fueron las razones de la detención o condena?\n¿Qué cargos formales se presentaron en tu contra o en la de tus familiares incluidos en esta solicitud y cuáles fueron las razones de tu/su liberación?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos del historial criminal"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento relacionado con el historial criminal tuyo o de tu familia. Esto puede incluir registros judiciales, informes policiales o cualquier otro documento relevante."
+                }
+              ]
+            }
+          }
+        },
+        "fear-of-torture": {
+          "title": "Tortura",
+          "fear-of-torture": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Tortura"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Tienes miedo de ser torturado en tu país o en cualquier otro país al que puedas ser devuelto?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Similar a la pregunta anterior, pero no solo sobre miedo a daño o maltrato, esta es sobre el miedo de ser torturado."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, explica en detalle por qué temes que tú o tu familia puedan ser torturados si regresas a tu país. En tu explicación, trata de incluir la siguiente información:\n\nLo que temes que pueda pasar si regresas.\n\nQuién crees que podría hacerte daño o torturarte.\n\nSi ha cambiado algo desde que te fuiste que podría afectar este miedo. Por ejemplo, ¿la situación es la misma, ha mejorado o ha empeorado? Por favor, explica por qué.\n\nPor qué crees que puedes ser dañado o torturado si regresas.\n\nCualquier información adicional que pueda ayudar a explicar tu miedo de regresar."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos relacionados con tu miedo a la tortura"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento que pueda ayudar a confirmar la información que has proporcionado sobre tu miedo a la tortura. Esto puede incluir informes policiales, cartas, capturas de pantalla, registros médicos, fotografías o cualquier otro documento relevante."
+                }
+              ]
+            }
+          }
+        },
+        "harm-and-persecution": {
+          "title": "Daño y Persecución",
+          "harm-and-persecution": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "system",
+                  "content": [
+                    "Tu tarea es recolectar información factual del usuario sobre cualquier daño, amenaza o maltrato experimentado antes de llegar a los Estados Unidos.",
+                    "Esta información se utilizará para ayudar a preparar un registro claro y completo para el proceso de asilo del usuario en EE. UU.",
+                    "",
+                    "Resultados Principales:",
+                    "- Entrevistar al usuario para recolectar hechos y detalles precisos.",
+                    "- Construir una línea de tiempo simple y un resumen de hechos.",
+                    "",
+                    "Directrices:",
+                    "- Recolectar suficiente detalle para mostrar una línea de tiempo clara y hechos confiables.",
+                    "- Utilizar preguntas de seguimiento solo para aclarar o completar información faltante (fechas, lugares, personas, razones, resultados).",
+                    "- No proporcionar asesoría legal, opiniones o explicaciones sobre la ley de inmigración.",
+                    "- Mantener preguntas y confirmaciones concisas.",
+                    "- Marcar fechas faltantes, contradicciones o detalles poco claros y hacer una sola pregunta a la vez para corregirlas.",
+                    "",
+                    "Flujo de Conversación:",
+                    "- Una pregunta a la vez.",
+                    "- Siempre confirmar detalles clave (quién, qué, cuándo, dónde, cómo).",
+                    "- Mantener respuestas cortas (<80 palabras).",
+                    "- Si no está claro, hacer una pregunta de seguimiento para aclarar o llenar vacíos.",
+                    "- Usar confirmaciones para resumir y verificar detalles.",
+                    "- Una vez que el usuario no tenga más información que compartir, puedes terminar la entrevista.",
+                    "",
+                    "Manejo de Documentos y Evidencias:",
+                    "- Puedes ofrecer la presentación de documentos siempre que la evidencia o prueba pueda fortalecer el caso.",
+                    "- Si el usuario menciona informes policiales, fotos, cartas, mensajes de texto, documentos médicos u otros archivos, diles que pueden subir o adjuntar esos documentos, fotos o capturas de pantalla."
+                  ]
+                },
+                {
+                  "role": "assistant",
+                  "content": [
+                    "Voy a hacerte algunas preguntas sobre cualquier daño, maltrato o amenazas que tú, o tu familia, amigos cercanos o compañeros de trabajo, hayan podido experimentar antes de venir a los Estados Unidos.",
+                    "Al describir tus experiencias, por favor incluye tanto detalle como sea posible. En tu explicación, trata de abordar lo siguiente:",
+                    "- Qué pasó y cómo sucedió.",
+                    "- Cuándo sucedió. Indica si fue un incidente único o si sucedió muchas veces.",
+                    "- Quién fue responsable. Si no conoces sus nombres, explica si pertenecían a un grupo, pandilla, cartel, grupo político, o eran parte del gobierno.",
+                    "- Por qué crees que tú o tu familia fueron dañados, maltratados o amenazados.",
+                    "- Cualquier información adicional. Incluye cualquier cosa más que puedas compartir que pueda ayudarnos a entender mejor lo que sucedió.",
+                    "Si no experimentaste ningún daño, maltrato o amenaza, simplemente escribe \"no\" o \"ninguno\", y pasaremos a la siguiente sección."
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "international-criminal-history": {
+          "title": "Historial Criminal Internacional",
+          "international-criminal-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Historial Criminal Internacional"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez has sido arrestado, acusado o condenado por un crimen en cualquier país <strong>que no sea</strong> Estados Unidos?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles del historial criminal internacional"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, proporciona detalles sobre tu arresto, cargo o condena. Incluye la siguiente información:\n\nEl país donde ocurrió el incidente.\n\nLa fecha del incidente.\n\nLa naturaleza del crime.\n\nEl resultado (por ejemplo, absuelto, condenado, caso desestimado).\n\nCualquier información adicional relevante."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos del historial criminal internacional"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento relacionado con tu arresto, cargo o condena. Esto puede incluir registros judiciales, informes policiales o cualquier otro documento relevante."
+                }
+              ]
+            }
+          }
+        },
+        "organizational-affiliations": {
+          "title": "Afiliaciones y Grupos",
+          "organizational-affiliations": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Afiliaciones y Grupos"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles actuales de membresías y afiliaciones"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, describe en detalle el nivel actual de participación de cada persona involucrada:\n\n¿Cómo participan?\n\n¿Cuál es tu nivel actual de participación o el de tu familiar?\n\n¿Tú o tus familiares ocupan actualmente posiciones de liderazgo o roles importantes? Si es así, ¿qué posición?\n\n¿Cuánto tiempo has participado tú o tus familiares en esa organización o grupo?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Tú o tu familia continúan participando en estos grupos u organizaciones?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles de membresías y afiliaciones pasadas"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, proporciona detalles sobre tu participación con la pandilla o grupo. Incluye la siguiente información:\n\nEl nombre de la pandilla o grupo.\n\nLa naturaleza de tu participación.\n\nEl período de tu participación.\n\nCualquier actividad criminal en la que estuvieras involucrado.\n\nCualquier información adicional relevante."
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez tú o algún miembro de tu familia han pertenecido o estado asociados a alguna organización o grupo en tu país de origen, como, pero no limitado a, un partido político, un grupo estudiantil, un sindicato, una organización religiosa, un grupo militar o paramilitar, una patrulla civil, una organización guerrillera, un grupo étnico, un grupo de derechos humanos o la prensa o los medios?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos actuales de membresías y afiliaciones"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento relacionado con tu o la <strong>actual</strong> membresía o afiliación de tu familia con cualquier organización o grupo que pueda ayudar a confirmar la información que has proporcionado. Esto puede incluir tarjetas de membresía, cartas, fotografías o cualquier otro documento relevante."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos pasados de membresías y afiliaciones"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envía cualquier documento relacionado con tu o la <strong>pasada</strong> membresía o afiliación de tu familia con cualquier organización o grupo que pueda ayudar a confirmar la información que has proporcionado. Esto puede incluir tarjetas de membresía, cartas, fotografías o cualquier otro documento relevante."
+                }
+              ]
+            }
+          }
+        },
+        "previous-applications": {
+          "title": "Solicitudes Previas",
+          "previous-applications": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Solicitudes Anteriores"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez usted, su cónyuge, sus hijos, su padre, su madre o sus hermanos han solicitado al Gobierno de los Estados Unidos estatus de refugiado, asilo o suspensión de deportación?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles de Solicitudes Anteriores"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Qué ocurrió? ¿Hubo una decisión y, de ser así, cuál fue?\n\n¿Qué pasó con el estatus que usted, su cónyuge, sus hijos, su padre, su madre o sus hermanos recibieron como resultado de esa decisión?\n\n¿Estuvo usted incluido en la solicitud de su padre, madre o cónyuge? Si estuvo incluido, ¿cuál era el número A de su padre, madre o cónyuge?\n\nSi un juez de inmigración o la Junta de Apelaciones de Inmigración negó su asilo, por favor explique: ¿qué ha cambiado en las condiciones de su país o en su situación personal desde que se negó su solicitud? ¿Por qué es su caso diferente ahora?"
+                }
+              ]
+            }
+          }
+        },
+        "reasons-for-asylum": {
+          "reasons-for-asylum": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Razones para el asilo"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Razones para solicitar asilo"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Con base en tus respuestas y explicaciones anteriores, indica las razones por las que solicitas asilo. Puedes seleccionar una o más razones."
+                }
+              ]
+            }
+          },
+          "title": "Razones para el Asilo"
+        },
+        "late-application": {
+          "title": "Solicitud Tardía",
+          "late-application": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Han pasado más de un año desde que ingresaste a los Estados Unidos."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Para las solicitudes presentadas después de un año de ingreso a los EE. UU., el gobierno requiere que proporciones una explicación de por qué no presentaste tu solicitud dentro del año de tu ingreso."
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Puedes decirme por qué no pudiste presentar tu solicitud de asilo dentro del plazo de un año después de llegar a los EE. UU.?\n(Por ejemplo, ¿estabas enfermo, no conocías la norma, tenías miedo, o algo más?)"
+                }
+              ]
+            }
+          }
+        },
+        "return-to-country": {
+          "title": "Regreso al País",
+          "return-to-country": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Regreso al País"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Después de que dejó su país para venir a los Estados Unidos (o al país donde sufrió daño o teme daño), ¿regresó a ese país?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explicación del viaje al país de origen"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explique en detalle:\n¿Por qué regresó?\n¿Cuándo regresó?\n¿Cuánto tiempo estuvo?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos relacionados con el viaje al país de origen"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envíe cualquier documento que pueda ayudar a confirmar la información que ha proporcionado sobre su viaje a su país de origen. Esto puede incluir boletos de viaje, sellos de pasaporte u otros documentos relevantes."
+                }
+              ]
+            }
+          }
+        },
+        "harm-participation": {
+          "title": "Participación en Persecución",
+          "harm-participation": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Participación en Persecución"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez usted, su cónyuge o sus hijos han ordenado, incitado, asistido o participado de alguna manera en causar daño o sufrimiento a alguna persona debido a su raza, religión, nacionalidad, pertenencia a un grupo social particular o creencia en una opinión política particular?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Detalles de la participación"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Proporcione una descripción detallada de cada incidente, especificando su participación y/o la participación de sus familiares."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos relacionados con la participación en daño o persecución"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envíe cualquier documento que pueda ayudar a confirmar la información que ha proporcionado sobre su participación o la de su familia. Esto puede incluir registros judiciales, informes policiales, cartas u otros documentos relevantes."
+                }
+              ]
+            }
+          }
+        },
+        "international-immigration-history": {
+          "title": "Estatus Legal en Otros Países",
+          "international-immigration-history": {
+            "chat": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Estatus Legal en Otros Países"
+                },
+                {
+                  "role": "assistant",
+                  "content": "¿Alguna vez usted, su cónyuge, sus hijos u otros miembros de la familia, como su padre, madre o hermanos, han solicitado o recibido algún estatus legal en un país diferente al que ahora está solicitando asilo?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Explicación del estatus legal en otro país"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Proporcione una explicación detallada de lo que ocurrió con ese estatus legal, para usted o cualquier miembro de su familia. Incluya lo siguiente:\n\n¿Dónde — en qué país ocurrió esto?\n¿Cuál era su estatus mientras estaba en ese país?\n¿Cuál fue la razón por la que se fue?\n¿Tiene derecho a regresar con \"residencia legal\"?\n¿Solicitó estatus de refugiado o asilo mientras vivía en ese país? Explique por qué o por qué no."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Documentos relacionados con el estatus legal en otro país"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Por favor, envíe cualquier documento que pueda ayudar a confirmar la información que ha proporcionado sobre su estatus legal o el de su familia en otro país. Esto puede incluir visas, permisos de residencia, documentos de estatus de asilo o refugiado, u otros documentos relevantes."
+                }
+              ]
+            }
+          }
         }
       },
       "eligibility": {
@@ -1051,7 +1455,7 @@
           "other-entries": {
             "has-other-entries": {
               "title_client": "¿Ha ingresado a los Estados Unidos en alguna otra ocasión en los últimos cinco años?",
-              "description_client": "Si solo ha ingresado una vez a los Estados Unidos, puede seleccionar 'No'.",
+              "description_client": "Si solo ha ingresado una vez a los Estados Unidos, puede seleccionar 'No'."
             },
             "other-entries": {
               "title_client": "Comenzando con el más reciente, proporcione la siguiente información sobre todas las <strong>otras</strong> veces que ha ingresado a los Estados Unidos, aparte de la primera."
@@ -1333,6 +1737,13 @@
                 "title_ordinal_few": "{{count}}ª Residencia",
                 "title_ordinal_other": "{{count}}ª Residencia",
                 "add": "Añadir residencia"
+              },
+              "description": "No incluyas tu dirección actual aquí. Solo incluye los lugares donde has vivido en el pasado, dentro o fuera de los Estados Unidos."
+            },
+            "persecution-country": {
+              "country": {
+                "title": "Por favor, selecciona el país donde temes daño o persecución.",
+                "description": "Si temes daño o persecución en más de un país, selecciona el país donde temes más daño."
               }
             }
           },
@@ -1538,7 +1949,28 @@
             }
           }
         }
+      },
+      "toast": {
+        "voices-error": "Error al cargar las voces. Por favor, intenta de nuevo más tarde."
       }
     }
+  },
+  "chat": {
+    "toast": {
+      "download-error": "Se produjo un error al descargar los modelos de IA. Por favor, inténtalo de nuevo más tarde.",
+      "not-ready": "Por favor espera, Migri se está preparando para chatear contigo.",
+      "init-error": "Se produjo un error al iniciar el chat. Por favor, inténtalo de nuevo más tarde.",
+      "destroy-error": "Se produjo un error con el chat. Si continúas teniendo problemas, reinicia la aplicación.",
+      "init-loading": "Inicializando chat...",
+      "chat-error": "Se produjo un error con el chat. Por favor, inténtalo de nuevo más tarde."
+    },
+    "menu": {
+      "reset": "Restablecer chat"
+    },
+    "placeholder": "Chatea con Migri..."
+  },
+  "country": {
+    "USA": "🇺🇸 Estados Unidos",
+    "MEX": "🇲🇽 México"
   }
 }

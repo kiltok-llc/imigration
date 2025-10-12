@@ -1,6 +1,7 @@
 {
   "chat": {
     "toast": {
+      "download-error": "There was an error downloading AI models. Please try again later.",
       "not-ready": "Please wait, Migri is getting ready to chat with you.",
       "init-error": "There was an error initializing the chat. Please try again later.",
       "destroy-error": "There was an error with the chat. If you continue to have issues, please restart the app.",

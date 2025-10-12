@@ -2,12 +2,15 @@ import { isEqual } from '@ver0/deep-equal';
 import { useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
-import { useCallback } from 'react';
+import { createContext, useCallback, useContext } from 'react';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { useQuizScreenKey } from '@/components/quiz/screen';
 import { useLocalSegments } from '@/hooks/use-local-segments';
+import {
+  createRequiredContext,
+  useRequiredContext,
+} from '@/hooks/use-required-context';
 import { defaultStorage } from '@/lib/mmkv';
 import {
   useIncrementRoute,
@@ -49,6 +52,16 @@ export const quizScreenAtomFamily = <T>(
 
   return family;
 };
+
+const QuizScreenKeyContext = createContext<string>('');
+export const QuizScreenKeyProvider = QuizScreenKeyContext.Provider;
+export const useQuizScreenKey = () => useContext(QuizScreenKeyContext);
+
+const QuizScreenCurrentPageIdContext = createRequiredContext<string>();
+export const QuizScreenCurrentPageIdProvider =
+  QuizScreenCurrentPageIdContext.Provider;
+export const useQuizScreenCurrentPageId = () =>
+  useRequiredContext(QuizScreenCurrentPageIdContext);
 
 export const useQuizScreenAtomKey = () => {
   const [_services, service = '', step = '', ...screens] = useLocalSegments();

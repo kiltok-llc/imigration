@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { ActivityIndicator, TextInput, useTheme } from 'react-native-paper';
+import { Markdown } from 'react-native-remark';
 import uuid from 'react-native-uuid';
 import { toast } from 'sonner-native';
 import tw from 'twrnc';
@@ -68,6 +69,7 @@ export function QuizChatPage({
     mutationFn: async () => {
       if (status !== 'initialized') {
         toast.warning(t('chat.toast.not-ready'));
+        console.log(`Cactus not ready: ${status}`);
         return;
       }
 
@@ -180,7 +182,7 @@ function QuizChatMessages({ isThinking }: { isThinking: boolean }) {
           key={id}
           label={role === 'user' ? name : 'Migri'}
           side={role === 'user' ? 'right' : 'left'}
-          text={text}
+          text={role === 'user' ? text : <Markdown markdown={text} />}
         />
       ))}
       {isThinking && (

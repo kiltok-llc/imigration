@@ -4,9 +4,9 @@ import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
 import { useQuizPageId, useQuizPageKey } from '@/components/quiz/page';
-import { useQuizScreenKey } from '@/components/quiz/screen';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
+import { useQuizScreenKey } from '@/lib/quiz/screen';
 import { clearMMKVKeys } from '@/lib/utils';
 
 const atoms = new Map<string, ReturnType<typeof atomFamily>>();
