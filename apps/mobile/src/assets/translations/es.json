@@ -1051,7 +1051,7 @@
           "other-entries": {
             "has-other-entries": {
               "title_client": "¿Ha ingresado a los Estados Unidos en alguna otra ocasión en los últimos cinco años?",
-              "description_client": "Si solo ha ingresado una vez a los Estados Unidos, puede seleccionar 'No'."
+              "description_client": "Si solo ha ingresado una vez a los Estados Unidos, puede seleccionar 'No'.",
             },
             "other-entries": {
               "title_client": "Comenzando con el más reciente, proporcione la siguiente información sobre todas las <strong>otras</strong> veces que ha ingresado a los Estados Unidos, aparte de la primera."
@@ -1071,6 +1071,15 @@
               "status": {
                 "label": "Estado migratorio"
               }
+            }
+          },
+          "previous-entry": {
+            "has-previous-entry": {
+              "title_spouse": "¿Ha entrado {{ name }} alguna vez a los Estados Unidos antes del último ingreso?"
+            },
+            "entry-date": {
+              "title_spouse": "Por favor, proporcione la fecha de la entrada anterior de {{ name }} a los Estados Unidos.",
+              "label": "Fecha de entrada anterior"
             }
           },
           "is-in-usa": {
@@ -1174,15 +1183,6 @@
             "statusExpirationDate": {
               "title": "Fecha de expiración de este estado",
               "label": "Fecha (MM/DD/YYYY)"
-            }
-          },
-          "other-entries": {
-            "has-other-entries": {
-              "title_spouse": "¿Ha entrado {{ name }} alguna vez a los Estados Unidos antes del último ingreso?"
-            },
-            "entry-date": {
-              "title_spouse": "Por favor, proporcione la fecha de la entrada anterior de {{ name }} a los Estados Unidos.",
-              "label": "Fecha de entrada anterior"
             }
           },
           "passport": {

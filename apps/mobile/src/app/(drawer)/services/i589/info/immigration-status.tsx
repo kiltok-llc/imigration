@@ -479,7 +479,7 @@ export default function ImmigrationStatus() {
                   ]);
                 }
               }}
-              pageId='other-entries'
+              pageId='previous-entry'
               sampleData={{
                 example: {
                   entryDate: new Date('2020-03-10'),
