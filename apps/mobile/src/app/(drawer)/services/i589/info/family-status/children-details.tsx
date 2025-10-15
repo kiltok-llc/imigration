@@ -12,9 +12,9 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPageProps } from '@/components/quiz/page';
+import { QuizPage, QuizPageProps } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -52,129 +52,128 @@ export function ChildQuizPage({
   const lastName = useAtomValue(nameAtom).last;
 
   return (
-    <QuizFormPage
-      defaultValues={{
-        dob: null,
-        ethnicity: '',
-        hasBirthCertificate: null,
-        livesInUsa: null,
-        name: {
-          ...DEFAULT_FORM_NAME,
-          last: lastName,
-        },
-        sex: null,
-      }}
-      key={id}
-      onSuccess={({
-        birthCertificate,
-        dob,
-        ethnicity,
-        livesInUsa,
-        name,
-        sex,
-      }) => {
-        setDob(dob);
-        setEthnicity(ethnicity);
-        setBirthCertificate(birthCertificate ?? '');
-        setLivesInUsa(livesInUsa);
-        setName(name);
-        setSex(sex);
-      }}
-      pageId={pageId}
-      pageKey={id}
-      pageRef={pageRef}
-      sampleData={{
-        example: {
-          dob: new Date('2012-04-10'),
-          ethnicity: 'Latino',
-          hasBirthCertificate: false,
-          livesInUsa: true,
+    <QuizPage pageId={pageId} pageKey={id} pageRef={pageRef}>
+      <QuizForm
+        defaultValues={{
+          dob: null,
+          ethnicity: '',
+          hasBirthCertificate: null,
+          livesInUsa: null,
           name: {
-            first: 'Alex',
-            last: lastName || 'Smith',
-            middle: 'Jay',
+            ...DEFAULT_FORM_NAME,
+            last: lastName,
           },
-          sex: 'male',
-        },
-      }}
-      schema={z.object({
-        birthCertificate: required(z.string().nullable()).optional(),
-        dob: required(z.date().nullable()),
-        ethnicity: z.string(),
-        hasBirthCertificate: required(z.boolean().nullable()),
-        livesInUsa: required(z.boolean().nullable()),
-        name: FormNameSchema,
-        sex: required(SexEnum.nullable()),
-      })}
-    >
-      {({ control, lens, watch }) => (
-        <TranslationContextProvider
-          value={{
-            context: watch('name.first') ? 'named' : 'unnamed',
-            count: index + 1,
-            values: {
-              name: watch('name.first'),
-              ordinal: true,
-              total: numberOfChildren,
+          sex: null,
+        }}
+        key={id}
+        onSuccess={({
+          birthCertificate,
+          dob,
+          ethnicity,
+          livesInUsa,
+          name,
+          sex,
+        }) => {
+          setDob(dob);
+          setEthnicity(ethnicity);
+          setBirthCertificate(birthCertificate ?? '');
+          setLivesInUsa(livesInUsa);
+          setName(name);
+          setSex(sex);
+        }}
+        sampleData={{
+          example: {
+            dob: new Date('2012-04-10'),
+            ethnicity: 'Latino',
+            hasBirthCertificate: false,
+            livesInUsa: true,
+            name: {
+              first: 'Alex',
+              last: lastName || 'Smith',
+              middle: 'Jay',
             },
-          }}
-        >
-          <QuizPageTitle />
-
-          <FormBlock>
-            <QuizFieldTitle name='name' variant='titleLarge' />
-            <FormNameInput lens={lens.focus('name')} />
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='sex'>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormSexInput />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='dob'>
-              <QuizFieldTitle variant='titleLarge' />
-              <QuizDateInput />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='livesInUsa'>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='ethnicity'>
-              <QuizFieldTitle variant='titleLarge' />
-              <QuizTextInput hint='optional' />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='hasBirthCertificate'>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-
-          <ConditionalFormWrapper
-            active={!!watch('hasBirthCertificate')}
-            activeValue={null}
-            control={control}
-            name='birthCertificate'
+            sex: 'male',
+          },
+        }}
+        schema={z.object({
+          birthCertificate: required(z.string().nullable()).optional(),
+          dob: required(z.date().nullable()),
+          ethnicity: z.string(),
+          hasBirthCertificate: required(z.boolean().nullable()),
+          livesInUsa: required(z.boolean().nullable()),
+          name: FormNameSchema,
+          sex: required(SexEnum.nullable()),
+        })}
+      >
+        {({ control, lens, watch }) => (
+          <TranslationContextProvider
+            value={{
+              context: watch('name.first') ? 'named' : 'unnamed',
+              count: index + 1,
+              values: {
+                name: watch('name.first'),
+                ordinal: true,
+                total: numberOfChildren,
+              },
+            }}
           >
-            <FormBlock animated>
-              <QuizFieldTitle />
-              <FormImageInput />
+            <QuizPageTitle />
+
+            <FormBlock>
+              <QuizFieldTitle name='name' variant='titleLarge' />
+              <FormNameInput lens={lens.focus('name')} />
             </FormBlock>
-          </ConditionalFormWrapper>
-        </TranslationContextProvider>
-      )}
-    </QuizFormPage>
+
+            <FormBlock>
+              <FormField control={control} name='sex'>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormSexInput />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='dob'>
+                <QuizFieldTitle variant='titleLarge' />
+                <QuizDateInput />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='livesInUsa'>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='ethnicity'>
+                <QuizFieldTitle variant='titleLarge' />
+                <QuizTextInput hint='optional' />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='hasBirthCertificate'>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+
+            <ConditionalFormWrapper
+              active={!!watch('hasBirthCertificate')}
+              activeValue={null}
+              control={control}
+              name='birthCertificate'
+            >
+              <FormBlock animated>
+                <QuizFieldTitle />
+                <FormImageInput />
+              </FormBlock>
+            </ConditionalFormWrapper>
+          </TranslationContextProvider>
+        )}
+      </QuizForm>
+    </QuizPage>
   );
 }
 
@@ -183,52 +182,53 @@ export default function ChildrenDetails() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          hasChildren: null,
-        }}
-        onSuccess={({ numChildren }) => {
-          setChildIds(stretchTo(childIds, numChildren ?? 0, () => uuid.v4()));
-        }}
-        pageId='children-information'
-        sampleData={{
-          example: {
-            hasChildren: true,
-            numChildren: '2',
-          },
-        }}
-        schema={z.object({
-          hasChildren: required(z.boolean().nullable()),
-          numChildren: z
-            .string()
-            // .regex(/^\d+$/)
-            .pipe(z.coerce.number<string>().int().positive())
-            .optional(),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='hasChildren'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
-            </FormBlock>
-
-            <ConditionalFormWrapper
-              active={!!watch('hasChildren')}
-              activeValue={'0'}
-              control={control}
-              name='numChildren'
-            >
-              <FormBlock animated>
-                <QuizFieldTitle />
-                <QuizTextInput inputMode='numeric' />
+      <QuizPage pageId='children-information'>
+        <QuizForm
+          defaultValues={{
+            hasChildren: null,
+          }}
+          onSuccess={({ numChildren }) => {
+            setChildIds(stretchTo(childIds, numChildren ?? 0, () => uuid.v4()));
+          }}
+          sampleData={{
+            example: {
+              hasChildren: true,
+              numChildren: '2',
+            },
+          }}
+          schema={z.object({
+            hasChildren: required(z.boolean().nullable()),
+            numChildren: z
+              .string()
+              // .regex(/^\d+$/)
+              .pipe(z.coerce.number<string>().int().positive())
+              .optional(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='hasChildren'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
               </FormBlock>
-            </ConditionalFormWrapper>
-          </>
-        )}
-      </QuizFormPage>
+
+              <ConditionalFormWrapper
+                active={!!watch('hasChildren')}
+                activeValue={'0'}
+                control={control}
+                name='numChildren'
+              >
+                <FormBlock animated>
+                  <QuizFieldTitle />
+                  <QuizTextInput inputMode='numeric' />
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
 
       {childIds.map((id, index) => (
         <ChildQuizPage id={id} index={index} key={id} pageId='child' />

@@ -22,13 +22,14 @@ import {
   QuizFieldArrayAdd,
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import {
   QuizFieldDescription,
   QuizFieldTitle,
   QuizPageDescription,
   QuizPageTitle,
 } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { addressesAtom, persecutionCountryAtom } from '@/lib/data/user';
 
@@ -45,105 +46,107 @@ export default function PreviousAddresses() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          residences: [],
-        }}
-        onSuccess={({ residences }) => {
-          setAddresses(([first]) => [
-            first!,
-            ...residences.map(({ address, range }) => ({
-              ...address,
-              ...range,
-            })),
-          ]);
-        }}
-        pageId='past-residences'
-        sampleData={{
-          example: {
-            residences: [
-              {
-                address: EXAMPLE_ADDRESS_WITH_COUNTRY,
-                range: EXAMPLE_RANGE,
-              },
-              {
-                address: EXAMPLE_INTERNATIONAL_ADDRESS_WITH_COUNTRY,
-                range: EXAMPLE_RANGE,
-              },
-            ],
-          },
-        }}
-        schema={z.object({
-          residences: z
-            .array(
-              z.object({
-                address: FormAddressWithCountrySchema,
-                range: FormRangeSchema,
-              })
-            )
-            .nonempty(),
-        })}
-      >
-        {({ control, lens }) => (
-          <>
+      <QuizPage pageId='past-residences'>
+        <QuizForm
+          defaultValues={{
+            residences: [],
+          }}
+          onSuccess={({ residences }) => {
+            setAddresses(([first]) => [
+              first!,
+              ...residences.map(({ address, range }) => ({
+                ...address,
+                ...range,
+              })),
+            ]);
+          }}
+          sampleData={{
+            example: {
+              residences: [
+                {
+                  address: EXAMPLE_ADDRESS_WITH_COUNTRY,
+                  range: EXAMPLE_RANGE,
+                },
+                {
+                  address: EXAMPLE_INTERNATIONAL_ADDRESS_WITH_COUNTRY,
+                  range: EXAMPLE_RANGE,
+                },
+              ],
+            },
+          }}
+          schema={z.object({
+            residences: z
+              .array(
+                z.object({
+                  address: FormAddressWithCountrySchema,
+                  range: FormRangeSchema,
+                })
+              )
+              .nonempty(),
+          })}
+        >
+          {({ control, lens }) => (
+            <>
+              <FormBlock>
+                <QuizPageTitle />
+                <QuizPageDescription />
+              </FormBlock>
+
+              <FormArray control={control} name='residences'>
+                <FormArrayItems>
+                  {(idx) => (
+                    <FormBlock>
+                      <QuizFieldArrayItemHeader />
+                      <FormAddressWithCountryInput
+                        lens={lens.focus(`residences.${idx}.address`)}
+                      />
+                      <FormRangeInput
+                        lens={lens.focus(`residences.${idx}.range`)}
+                      />
+                    </FormBlock>
+                  )}
+                </FormArrayItems>
+                <QuizFieldArrayAdd
+                  value={{
+                    address: DEFAULT_FORM_ADDRESS,
+                    range: DEFAULT_FORM_RANGE,
+                  }}
+                />
+              </FormArray>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='persecution-country'>
+        <QuizForm
+          defaultValues={{
+            country: '',
+          }}
+          onSuccess={({ country }) => setPersecutionCountry(country)}
+          schema={z.object({
+            country: z.string().nonempty(),
+          })}
+        >
+          {({ control }) => (
             <FormBlock>
-              <QuizPageTitle />
-              <QuizPageDescription />
+              <FormField control={control} name='country'>
+                <QuizFieldTitle />
+                <QuizFieldDescription />
+                <FormRadioGroup>
+                  {persecutionCountries.map((country) => (
+                    <FormRadioItem
+                      i18nKey={`country.${country}`}
+                      key={country}
+                      value={country}
+                    />
+                  ))}
+                </FormRadioGroup>
+              </FormField>
             </FormBlock>
-
-            <FormArray control={control} name='residences'>
-              <FormArrayItems>
-                {(idx) => (
-                  <FormBlock>
-                    <QuizFieldArrayItemHeader />
-                    <FormAddressWithCountryInput
-                      lens={lens.focus(`residences.${idx}.address`)}
-                    />
-                    <FormRangeInput
-                      lens={lens.focus(`residences.${idx}.range`)}
-                    />
-                  </FormBlock>
-                )}
-              </FormArrayItems>
-              <QuizFieldArrayAdd
-                value={{
-                  address: DEFAULT_FORM_ADDRESS,
-                  range: DEFAULT_FORM_RANGE,
-                }}
-              />
-            </FormArray>
-          </>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          country: '',
-        }}
-        onSuccess={({ country }) => setPersecutionCountry(country)}
-        pageId='persecution-country'
-        schema={z.object({
-          country: z.string().nonempty(),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='country'>
-              <QuizFieldTitle />
-              <QuizFieldDescription />
-              <FormRadioGroup>
-                {persecutionCountries.map((country) => (
-                  <FormRadioItem
-                    i18nKey={`country.${country}`}
-                    key={country}
-                    value={country}
-                  />
-                ))}
-              </FormRadioGroup>
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizFormPage>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

@@ -1,10 +1,10 @@
-import { QuizChatPage } from '@/components/quiz/chat-page';
+import { QuizChat } from '@/components/quiz/chat';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function InternationalImmigrationHistory() {
   return (
     <QuizScreen migriFAB={false}>
-      <QuizChatPage pageId='international-immigration-history' />
+      <QuizChat pageId='international-immigration-history' />
     </QuizScreen>
   );
 }

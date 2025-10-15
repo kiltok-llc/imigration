@@ -25,7 +25,7 @@ const queryClient = new QueryClient({
   },
   mutationCache: new MutationCache({
     onError(error, _variables, _context, mutation) {
-      console.log('Error running mutation:', error);
+      console.error('Error during mutation:', error);
       // TODO send to sentry
 
       if (mutation.meta?.errorToastKey) {
@@ -55,7 +55,7 @@ const queryClient = new QueryClient({
   }),
   queryCache: new QueryCache({
     onError(error, query) {
-      console.log('Error running query:', error);
+      console.error('Error during query:', error);
       // TODO send to sentry
 
       if (query.meta?.errorToastKey) {

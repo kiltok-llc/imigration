@@ -1,10 +1,10 @@
-import { QuizChatPage } from '@/components/quiz/chat-page';
+import { QuizChat } from '@/components/quiz/chat';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function HarmAndPersecution() {
   return (
     <QuizScreen migriFAB={false}>
-      <QuizChatPage pageId='harm-and-persecution' />
+      <QuizChat pageId='harm-and-persecution' />
     </QuizScreen>
   );
 }

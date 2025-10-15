@@ -1,14 +1,16 @@
-import type { CactusOAICompatibleMessage } from 'cactus-react-native';
-
 import { useMutation } from '@tanstack/react-query';
-import { CactusLM } from 'cactus-react-native';
+import {
+  CactusLM,
+  CactusOAICompatibleMessage,
+  parseAndExecuteTool,
+  Tools,
+} from 'cactus-react-native';
 import { Directory, File, Paths } from 'expo-file-system';
 import { atom, getDefaultStore, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 
 const MODEL_DIR = new Directory(Paths.document, 'models');
-
 const MODELS = {
   'Qwen3-0.6B-Q8_0.gguf': {
     url: 'https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q8_0.gguf',
@@ -18,15 +20,22 @@ const MODELS = {
   },
 };
 
+export type CactusActionChip = {
+  description: string;
+  id: string;
+};
+
 type CactusManagerState =
   | DestroyingState
   | InitializedState
   | InitializingState
   | UninitializedState;
-
 type DestroyingState = { cactus?: never; status: 'destroying' };
 type InitializedState = { cactus: Cactus; status: 'initialized' };
 type InitializingState = { cactus?: never; status: 'initializing' };
+type Message = CactusOAICompatibleMessage & {
+  chipIds?: string[];
+};
 type ModelName = keyof typeof MODELS;
 type UninitializedState = { cactus?: never; status: 'uninitialized' };
 
@@ -129,6 +138,16 @@ const useDestroyCactus = () =>
     retry: false,
   });
 
+function partition<T>(arr: T[], predicate: (item: T) => boolean): [T[], T[]] {
+  return arr.reduce(
+    (acc, item) => {
+      acc[predicate(item) ? 0 : 1].push(item);
+      return acc;
+    },
+    [[], []] as [T[], T[]]
+  );
+}
+
 const MESSAGE_HISTORY_LIMIT = 16; // TODO summarize old messages instead
 
 class Cactus {
@@ -170,27 +189,56 @@ class Cactus {
   }
 
   async generateResponse(
-    messages: CactusOAICompatibleMessage[]
+    messages: Message[],
+    availableChips: CactusActionChip[] = [],
+    onChip: (chip: string) => void = () => {},
+    recursionCount: number = 0,
+    recursionLimit: number = 3
   ): Promise<string> {
-    const limitedMessages = [
-      ...messages.filter(({ role }) => role === 'system'),
-      ...messages
-        .filter(({ role }) => role !== 'system')
-        .slice(-MESSAGE_HISTORY_LIMIT),
-    ];
+    console.debug('[Cactus] messages', messages);
+
+    const [systemMessages, conversationMessages] = partition(
+      messages,
+      ({ role }) => role === 'system'
+    );
+    if (conversationMessages.length > MESSAGE_HISTORY_LIMIT) {
+      // TODO summarize old messages instead of dropping them
+      console.debug('[Cactus] trimming message history', {
+        conversationMessages: conversationMessages.length,
+        messageLimit: MESSAGE_HISTORY_LIMIT,
+        totalMessages: messages.length,
+      });
+
+      return await this.generateResponse(
+        [
+          ...systemMessages,
+          ...conversationMessages.slice(-MESSAGE_HISTORY_LIMIT),
+        ],
+        [],
+        onChip,
+        recursionCount, // don't count this as a recursion
+        recursionLimit
+      );
+    }
+
+    const tools = new Tools();
+    addChipsTool(tools, availableChips);
 
     const startTime = performance.now();
     let firstTokenTime: null | number = null;
 
     const result = await this.lm.completion(
-      limitedMessages,
+      messages,
       {
+        jinja: true,
         min_p: 0,
         n_predict: 2048,
         penalty_present: 1.5,
         penalty_repeat: 1.05,
         stop: ['<|im_end|>'],
         temperature: 0.7,
+        tool_choice: 'auto',
+        tools: tools.getSchemas(),
         top_k: 20,
         top_p: 0.8,
       },
@@ -202,8 +250,8 @@ class Cactus {
     );
 
     const {
+      content,
       stopped_eos,
-      text,
       timings: { predicted_n, predicted_per_second },
       tokens_evaluated,
       tokens_predicted,
@@ -211,6 +259,37 @@ class Cactus {
     } = result;
 
     console.debug('[Cactus] predicted', result);
+
+    const { toolCalled, toolInput, toolName, toolOutput } =
+      await parseAndExecuteTool(result, tools ?? new Tools());
+
+    if (toolCalled) {
+      console.debug(
+        `[Cactus] executed tool ${toolName}(${JSON.stringify(toolInput, null, 2)}) -> ${JSON.stringify(toolOutput, null, 2)}`
+      );
+
+      let chip: null | string = null;
+      console.log(toolName);
+      if (toolName === 'showActionChip') {
+        chip = toolInput.id;
+        onChip(chip!);
+      }
+
+      return await this.generateResponse(
+        [
+          ...messages,
+          {
+            content: JSON.stringify(toolOutput) ?? '',
+            role: 'tool',
+            tool_call_id: result?.tool_calls?.[0]?.id,
+          },
+        ],
+        chip ? availableChips.filter((c) => c.id !== chip) : availableChips,
+        onChip,
+        recursionCount + 1,
+        recursionLimit
+      );
+    }
 
     const endTime = performance.now();
     const totalTime = endTime - startTime;
@@ -230,13 +309,43 @@ class Cactus {
     }
 
     if (!stopped_eos) {
-      return 'Response failed. Please try again.';
+      throw new Error('[Cactus] generation did not complete');
     }
 
+    let response = content.trim();
+
     const THINK_END = '</think>';
-    const thinkEndIdx = text.indexOf(THINK_END);
-    return text.slice(thinkEndIdx + THINK_END.length).trim();
+    if (response.includes(THINK_END)) {
+      console.warn('[Cactus] response content contains think tags!');
+      response = response.split(THINK_END)[1]!.trim();
+    }
+
+    return response;
   }
+}
+
+function addChipsTool(tools: Tools, chips: CactusActionChip[]) {
+  tools.add(
+    function showActionChip(type: string) {
+      console.warn(`[Cactus] showActionChip called with type: ${type}`);
+
+      return `Action chip ${type} will be shown with your next message.`;
+    },
+    [
+      'Append an action chip to the next assistant message that the user can press to perform a specific action.',
+      'Available action chips:',
+      ...chips.map(({ description, id }) => `- ${id}: ${description}`),
+    ].join('\n'),
+    {
+      id: {
+        description: 'Which action chip to show.',
+        // @ts-expect-error cactus-react-native typing is wrong here
+        enum: chips.map(({ id }) => id),
+        required: true,
+        type: 'string',
+      },
+    }
+  );
 }
 
 async function downloadModel(modelName: ModelName): Promise<File> {

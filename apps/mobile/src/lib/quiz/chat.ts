@@ -1,8 +1,10 @@
 import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
+import { ReactNode } from 'react';
 import z from 'zod/v4';
 
 import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { CactusActionChip } from '@/lib/cactus';
 import { defaultStorage } from '@/lib/mmkv';
 
 const atoms = new Map<string, ReturnType<typeof atomFamily>>();
@@ -57,3 +59,13 @@ export const quizChatMessagesAtom = quizChatAtomFamily(
 );
 
 export const quizChatInputAtom = quizChatAtomFamily('input', z.string(), '');
+
+export const quizChatChipsAtom = quizChatAtomFamily(
+  'chips',
+  z.array(z.string()),
+  []
+);
+
+export type QuizChatActionChip = CactusActionChip & {
+  render: () => ReactNode;
+};

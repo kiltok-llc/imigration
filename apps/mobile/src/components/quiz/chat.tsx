@@ -1,66 +1,59 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useMutation } from '@tanstack/react-query';
 import { CactusOAICompatibleMessage } from 'cactus-react-native';
-import { useAtom, useAtomValue } from 'jotai';
-import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { PropsWithChildren, ReactNode, Ref, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { ActivityIndicator, TextInput, useTheme } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import { Markdown } from 'react-native-remark';
 import uuid from 'react-native-uuid';
 import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
-import { QuizPage, QuizPageProps } from '@/components/quiz/page';
-import { ChatBubble } from '@/components/ui/chat';
+import { QuizPageProps, useQuizPageHandle } from '@/components/quiz/page';
+import { ChatBubble, ChatThinkingDots } from '@/components/ui/chat';
 import {
   HeaderMenuItem,
   HeaderMenuItemPortal,
 } from '@/components/ui/header-menu';
-import { useCactus } from '@/lib/cactus';
+import { CactusActionChip, useCactus } from '@/lib/cactus';
 import { nameAtom } from '@/lib/data/user';
-import { quizChatInputAtom, quizChatMessagesAtom } from '@/lib/quiz/chat';
+import {
+  QuizChatActionChip,
+  quizChatChipsAtom,
+  quizChatInputAtom,
+  quizChatMessagesAtom,
+} from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
 import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
-import { useQuizPageAtomKey, useQuizPageAtomKeyStatic } from '@/lib/quiz/page';
+import { useQuizPageAtomKey } from '@/lib/quiz/page';
 import { useT } from '@/lib/translation';
 
-export const useBaseMessages = () => {
+const useBaseMessages = () => {
   const { t } = useTranslation();
   const i18nKey = useQuizPageLocaleKey('chat.messages');
   return t(i18nKey, { returnObjects: true }) as CactusOAICompatibleMessage[];
 };
 
-export function QuizChatPage({
-  pageId,
-  pageKey = '',
-  pageRef = null,
-  prompt = '',
-}: PropsWithChildren<QuizPageProps> & {
-  prompt?: string; // TODO make this required
+export function QuizChat({
+  chips: availableChips,
+  prompt,
+}: {
+  chips: QuizChatActionChip[];
+  prompt: string;
 }) {
-  const t = useT();
-
-  const resetMessages = useResetAtom(
-    quizChatMessagesAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
-  );
-  const resetInput = useResetAtom(
-    quizChatInputAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
-  );
-
-  const { cactus, status } = useCactus();
-
-  const [messages, setMessages] = useAtom(
-    quizChatMessagesAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
-  );
-  const inputValue = useAtomValue(
-    quizChatInputAtom(useQuizPageAtomKeyStatic({ pageId, pageKey }))
-  );
-
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
+
+  const t = useT();
+  const { cactus, status } = useCactus();
+  const [messages, setMessages] = useAtom(
+    quizChatMessagesAtom(useQuizPageAtomKey())
+  );
+  const [input, setInput] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
+  const setChips = useSetAtom(quizChatChipsAtom(useQuizPageAtomKey()));
 
   const { isPending: isThinking, mutate: handleSendInput } = useMutation({
     meta: {
@@ -73,47 +66,57 @@ export function QuizChatPage({
         return;
       }
 
-      const message = inputValue.trim();
+      const message = input.trim();
       setMessages((messages) => [
         ...messages,
         { id: uuid.v4(), role: 'user', text: message },
       ]);
-      resetInput();
+      setInput('');
+      setChips([]);
 
-      const response = await cactus.generateResponse([
-        { content: prompt, role: 'system' },
-        ...messages.map(({ role, text }) => ({
-          content: text,
-          role,
-        })),
-        { content: message, role: 'user' },
-      ]);
+      const response = await cactus.generateResponse(
+        [
+          { content: prompt, role: 'system' },
+          ...messages.map(({ role, text }) => ({
+            content: text,
+            role,
+          })),
+          { content: message, role: 'user' },
+        ],
+        availableChips,
+        (chip) => setChips((chips) => [...chips, chip])
+      );
 
+      // TODO -- what if state is reset while we are generating?
       setMessages((messages) => [
         ...messages,
-        { id: uuid.v4(), role: 'assistant', text: response },
+        {
+          id: uuid.v4(),
+          role: 'assistant',
+          text: response,
+        },
       ]);
     },
   });
 
+  useQuizPageHandle(() => ({
+    reset: () => {
+      setMessages([]);
+      setInput('');
+    },
+    submit: async () => false,
+  }));
+
   return (
-    <QuizPage
-      onReset={() => {
-        resetMessages();
-        resetInput();
-      }}
-      onSubmit={async () => false}
-      pageId={pageId}
-      pageKey={pageKey}
-      pageRef={pageRef}
-    >
+    <>
       <HeaderMenuItemPortal>
         <HeaderMenuItem
           i18nKey='chat.menu.reset'
           leadingIcon='refresh'
           onPress={() => {
-            resetMessages();
-            resetInput();
+            setMessages([]);
+            setInput('');
+            setChips([]);
           }}
         />
       </HeaderMenuItemPortal>
@@ -122,11 +125,20 @@ export function QuizChatPage({
         keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
         style={tw`flex-1`}
       >
-        <QuizChatMessages isThinking={isThinking} />
+        <QuizChatMessages isThinking={isThinking}>
+          <QuizChatChips />
+        </QuizChatMessages>
         <QuizChatInput onSendInput={handleSendInput} />
       </KeyboardAvoidingView>
-    </QuizPage>
+    </>
   );
+}
+
+function QuizChatChips() {
+  const chips = useAtomValue(quizChatChipsAtom(useQuizPageAtomKey()));
+  console.log('chips', chips);
+  // TODO
+  return null;
 }
 
 function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
@@ -158,7 +170,10 @@ function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
   );
 }
 
-function QuizChatMessages({ isThinking }: { isThinking: boolean }) {
+function QuizChatMessages({
+  children,
+  isThinking,
+}: PropsWithChildren<{ isThinking: boolean }>) {
   const name = useAtomValue(nameAtom).first;
   const baseMessages = useBaseMessages();
   const messages = useAtomValue(quizChatMessagesAtom(useQuizPageAtomKey()));
@@ -174,24 +189,25 @@ function QuizChatMessages({ isThinking }: { isThinking: boolean }) {
           key={`base-${idx}`}
           label={role === 'user' ? name : 'Migri'}
           side={role === 'user' ? 'right' : 'left'}
-          text={Array.isArray(content) ? content.join('\n') : content}
-        />
+        >
+          {Array.isArray(content) ? content.join('\n') : content}
+        </ChatBubble>
       ))}
       {messages.map(({ id, role, text }) => (
         <ChatBubble
           key={id}
           label={role === 'user' ? name : 'Migri'}
           side={role === 'user' ? 'right' : 'left'}
-          text={role === 'user' ? text : <Markdown markdown={text} />}
-        />
+        >
+          {role === 'user' ? text : <Markdown markdown={text} />}
+        </ChatBubble>
       ))}
       {isThinking && (
-        <ChatBubble
-          label='Migri'
-          side='left'
-          text={<ActivityIndicator size='small' style={tw`p-1`} />}
-        />
+        <ChatBubble label='Migri' side='left'>
+          <ChatThinkingDots />
+        </ChatBubble>
       )}
+      {children}
     </ScrollView>
   );
 }

@@ -1,10 +1,10 @@
-import { QuizChatPage } from '@/components/quiz/chat-page';
+import { QuizChat } from '@/components/quiz/chat';
 import { QuizScreen } from '@/components/quiz/screen';
 
 export default function FearOfTorture() {
   return (
     <QuizScreen migriFAB={false}>
-      <QuizChatPage pageId='fear-of-torture' />
+      <QuizChat pageId='fear-of-torture' />
     </QuizScreen>
   );
 }

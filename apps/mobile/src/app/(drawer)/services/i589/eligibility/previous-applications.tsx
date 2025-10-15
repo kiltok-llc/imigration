@@ -5,8 +5,9 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
@@ -15,37 +16,38 @@ export default function PreviousApplications() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          hasPreviousApp: null,
-        }}
-        onSubmit={({ hasPreviousApp }) => {
-          if (hasPreviousApp) {
-            router.navigate('../ineligible');
-            return false;
-          }
+      <QuizPage pageId='has-previous-app'>
+        <QuizForm
+          defaultValues={{
+            hasPreviousApp: null,
+          }}
+          onSubmit={({ hasPreviousApp }) => {
+            if (hasPreviousApp) {
+              router.navigate('../ineligible');
+              return false;
+            }
 
-          return true;
-        }}
-        pageId='has-previous-app'
-        sampleData={{
-          example: {
-            hasPreviousApp: false,
-          },
-        }}
-        schema={z.object({
-          hasPreviousApp: required(z.boolean().nullable()),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='hasPreviousApp'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizFormPage>
+            return true;
+          }}
+          sampleData={{
+            example: {
+              hasPreviousApp: false,
+            },
+          }}
+          schema={z.object({
+            hasPreviousApp: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control }) => (
+            <FormBlock>
+              <FormField control={control} name='hasPreviousApp'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

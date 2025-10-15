@@ -6,8 +6,9 @@ import { LANGUAGE_OPTIONS } from '@/components/form/dropdown';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizDropdown, QuizMultiDropdown } from '@/components/quiz/dropdown';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -24,88 +25,90 @@ export default function LanguageProficiency() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          dialect: '',
-          language: '',
-        }}
-        onSuccess={({ dialect, english, language }) => {
-          setNativeLanguage({ dialect, language });
-          setEnglish(english ?? true);
-        }}
-        pageId='native-language'
-        sampleData={{
-          example: {
-            dialect: 'Mexico',
-            english: true,
-            language: 'es',
-          },
-        }}
-        schema={z.object({
-          dialect: z.string(),
-          english: required(z.boolean().nullable()).optional(),
-          language: z.string().nonempty(),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='language'>
-                <QuizFieldTitle />
-                <QuizDropdown options={LANGUAGE_OPTIONS} />
-              </FormField>
-              <FormField control={control} name='dialect'>
-                <QuizTextInput hint='optional' />
-              </FormField>
-            </FormBlock>
-
-            <ConditionalFormWrapper
-              active={(watch('language') ?? 'en') !== 'en'}
-              activeValue={null}
-              control={control}
-              name='english'
-            >
+      <QuizPage pageId='native-language'>
+        <QuizForm
+          defaultValues={{
+            dialect: '',
+            language: '',
+          }}
+          onSuccess={({ dialect, english, language }) => {
+            setNativeLanguage({ dialect, language });
+            setEnglish(english ?? true);
+          }}
+          sampleData={{
+            example: {
+              dialect: 'Mexico',
+              english: true,
+              language: 'es',
+            },
+          }}
+          schema={z.object({
+            dialect: z.string(),
+            english: required(z.boolean().nullable()).optional(),
+            language: z.string().nonempty(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
               <FormBlock>
-                <FormField control={control} name='english'>
+                <FormField control={control} name='language'>
                   <QuizFieldTitle />
-                  <FormBooleanInput />
+                  <QuizDropdown options={LANGUAGE_OPTIONS} />
+                </FormField>
+                <FormField control={control} name='dialect'>
+                  <QuizTextInput hint='optional' />
                 </FormField>
               </FormBlock>
-            </ConditionalFormWrapper>
-          </>
-        )}
-      </QuizFormPage>
 
-      <QuizFormPage
-        defaultValues={{
-          languages: [],
-        }}
-        onSuccess={({ languages }) => setOtherLanguages(languages)}
-        pageId='other-languages'
-        sampleData={{
-          example: {
-            languages: ['fr', 'de'],
-          },
-        }}
-        schema={z.object({
-          languages: z.array(z.string()),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='languages'>
-                <QuizFieldTitle />
-                <QuizMultiDropdown
-                  options={LANGUAGE_OPTIONS.filter(
-                    ({ value }) => !['en', 'es'].includes(value)
-                  )}
-                />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
+              <ConditionalFormWrapper
+                active={(watch('language') ?? 'en') !== 'en'}
+                activeValue={null}
+                control={control}
+                name='english'
+              >
+                <FormBlock>
+                  <FormField control={control} name='english'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='other-languages'>
+        <QuizForm
+          defaultValues={{
+            languages: [],
+          }}
+          onSuccess={({ languages }) => setOtherLanguages(languages)}
+          sampleData={{
+            example: {
+              languages: ['fr', 'de'],
+            },
+          }}
+          schema={z.object({
+            languages: z.array(z.string()),
+          })}
+        >
+          {({ control }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='languages'>
+                  <QuizFieldTitle />
+                  <QuizMultiDropdown
+                    options={LANGUAGE_OPTIONS.filter(
+                      ({ value }) => !['en', 'es'].includes(value)
+                    )}
+                  />
+                </FormField>
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

@@ -23,25 +23,24 @@ const QuizPageKeyContext = createRequiredContext<string>();
 export const QuizPageKeyProvider = QuizPageKeyContext.Provider;
 export const useQuizPageKey = () => useRequiredContext(QuizPageKeyContext);
 
+const QuizPageRefContext = createRequiredContext<
+  Ref<QuizPageHandle> | undefined
+>();
+export const QuizPageRefProvider = QuizPageRefContext.Provider;
+export const useQuizPageHandle = (init: () => QuizPageHandle) =>
+  useImperativeHandle(useRequiredContext(QuizPageRefContext), init);
+
 export function QuizPage({
   children,
-  onReset = () => {},
-  onSubmit = async () => true,
   pageId,
   pageKey = '',
   pageRef,
-}: PropsWithChildren<QuizPageProps> & {
-  onReset?: () => void;
-  onSubmit?: () => Promise<boolean>;
-}) {
-  useImperativeHandle(pageRef, () => ({
-    reset: onReset,
-    submit: onSubmit,
-  }));
-
+}: PropsWithChildren<QuizPageProps>) {
   return (
-    <QuizPageIdProvider value={pageId}>
-      <QuizPageKeyProvider value={pageKey}>{children}</QuizPageKeyProvider>
-    </QuizPageIdProvider>
+    <QuizPageRefProvider value={pageRef}>
+      <QuizPageIdProvider value={pageId}>
+        <QuizPageKeyProvider value={pageKey}>{children}</QuizPageKeyProvider>
+      </QuizPageIdProvider>
+    </QuizPageRefProvider>
   );
 }

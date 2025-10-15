@@ -14,8 +14,9 @@ import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormImageInput } from '@/components/form/image';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -43,194 +44,199 @@ export default function DemographicsAndBirth() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          sex: null,
-        }}
-        onSuccess={({ sex }) => {
-          setSex(sex);
-        }}
-        pageId='sex'
-        sampleData={{
-          example: {
-            sex: 'male',
-          },
-        }}
-        schema={z.object({
-          sex: required(SexEnum.nullable()),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='sex'>
-                <QuizFieldTitle />
-                <FormSexInput />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          date: null,
-          location: DEFAULT_FORM_SHORT_ADDRESS,
-        }}
-        onSuccess={({ date, location }) => {
-          setBirthLocation(location);
-          setDob(date);
-        }}
-        pageId='birth'
-        sampleData={{
-          example: {
-            date: new Date('1990-05-15'),
-            location: EXAMPLE_SHORT_ADDRESS,
-          },
-        }}
-        schema={z.object({
-          date: required(z.date().nullable()),
-          location: FormShortAddressSchema,
-        })}
-      >
-        {({ control, lens }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='date'>
-                <QuizFieldTitle />
-                <QuizDateInput />
-              </FormField>
-            </FormBlock>
-
-            <FormBlock>
-              <QuizFieldTitle name='location' />
-              <FormShortAddressInput lens={lens.focus('location')} />
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          birthNationality: '',
-          currentNationality: '',
-        }}
-        onSuccess={({ birthNationality, currentNationality }) => {
-          setBirthNationality(birthNationality);
-          setNationality(currentNationality);
-        }}
-        pageId='nationality'
-        sampleData={{
-          example: {
-            birthNationality: 'USA',
-            currentNationality: 'USA',
-          },
-        }}
-        schema={z.object({
-          birthNationality: z.string().nonempty(),
-          currentNationality: z.string().nonempty(),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='birthNationality'>
-                <QuizFieldTitle />
-                <QuizTextInput />
-              </FormField>
-            </FormBlock>
-
-            <FormBlock>
-              <FormField control={control} name='currentNationality'>
-                <QuizFieldTitle />
-                <QuizTextInput />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          ethnicity: '',
-          religion: '',
-        }}
-        onSuccess={({ ethnicity, religion }) => {
-          setEthnicity(ethnicity);
-          setReligion(religion);
-        }}
-        pageId='additional-info'
-        sampleData={{
-          example: {
-            ethnicity: 'Hispanic or Latino',
-            religion: 'Christianity',
-          },
-        }}
-        schema={z.object({
-          ethnicity: z.string(),
-          religion: z.string(),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='ethnicity'>
-                <QuizFieldTitle />
-                <QuizTextInput hint='optional' />
-              </FormField>
-            </FormBlock>
-
-            <FormBlock>
-              <FormField control={control} name='religion'>
-                <QuizFieldTitle />
-                <QuizTextInput hint='optional' />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          hasBirthCertificate: null,
-        }}
-        onSuccess={({ image }) => {
-          attachBirthCertificate(image ? new File(image) : null);
-        }}
-        pageId='birth-certificate'
-        sampleData={{
-          example: {
-            hasBirthCertificate: false,
-          },
-        }}
-        schema={z.object({
-          hasBirthCertificate: required(z.boolean().nullable()),
-          image: required(z.string().nullable()).optional(),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='hasBirthCertificate'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
-            </FormBlock>
-
-            <ConditionalFormWrapper
-              active={!!watch('hasBirthCertificate')}
-              activeValue={null}
-              control={control}
-              name='image'
-            >
-              <FormBlock animated>
-                <QuizFieldTitle />
-                <FormImageInput />
+      <QuizPage pageId='sex'>
+        <QuizForm
+          defaultValues={{
+            sex: null,
+          }}
+          onSuccess={({ sex }) => {
+            setSex(sex);
+          }}
+          sampleData={{
+            example: {
+              sex: 'male',
+            },
+          }}
+          schema={z.object({
+            sex: required(SexEnum.nullable()),
+          })}
+        >
+          {({ control }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='sex'>
+                  <QuizFieldTitle />
+                  <FormSexInput />
+                </FormField>
               </FormBlock>
-            </ConditionalFormWrapper>
-          </>
-        )}
-      </QuizFormPage>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='birth'>
+        <QuizForm
+          defaultValues={{
+            date: null,
+            location: DEFAULT_FORM_SHORT_ADDRESS,
+          }}
+          onSuccess={({ date, location }) => {
+            setBirthLocation(location);
+            setDob(date);
+          }}
+          sampleData={{
+            example: {
+              date: new Date('1990-05-15'),
+              location: EXAMPLE_SHORT_ADDRESS,
+            },
+          }}
+          schema={z.object({
+            date: required(z.date().nullable()),
+            location: FormShortAddressSchema,
+          })}
+        >
+          {({ control, lens }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='date'>
+                  <QuizFieldTitle />
+                  <QuizDateInput />
+                </FormField>
+              </FormBlock>
+
+              <FormBlock>
+                <QuizFieldTitle name='location' />
+                <FormShortAddressInput lens={lens.focus('location')} />
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='nationality'>
+        <QuizForm
+          defaultValues={{
+            birthNationality: '',
+            currentNationality: '',
+          }}
+          onSuccess={({ birthNationality, currentNationality }) => {
+            setBirthNationality(birthNationality);
+            setNationality(currentNationality);
+          }}
+          sampleData={{
+            example: {
+              birthNationality: 'USA',
+              currentNationality: 'USA',
+            },
+          }}
+          schema={z.object({
+            birthNationality: z.string().nonempty(),
+            currentNationality: z.string().nonempty(),
+          })}
+        >
+          {({ control }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='birthNationality'>
+                  <QuizFieldTitle />
+                  <QuizTextInput />
+                </FormField>
+              </FormBlock>
+
+              <FormBlock>
+                <FormField control={control} name='currentNationality'>
+                  <QuizFieldTitle />
+                  <QuizTextInput />
+                </FormField>
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='additional-info'>
+        <QuizForm
+          defaultValues={{
+            ethnicity: '',
+            religion: '',
+          }}
+          onSuccess={({ ethnicity, religion }) => {
+            setEthnicity(ethnicity);
+            setReligion(religion);
+          }}
+          sampleData={{
+            example: {
+              ethnicity: 'Hispanic or Latino',
+              religion: 'Christianity',
+            },
+          }}
+          schema={z.object({
+            ethnicity: z.string(),
+            religion: z.string(),
+          })}
+        >
+          {({ control }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='ethnicity'>
+                  <QuizFieldTitle />
+                  <QuizTextInput hint='optional' />
+                </FormField>
+              </FormBlock>
+
+              <FormBlock>
+                <FormField control={control} name='religion'>
+                  <QuizFieldTitle />
+                  <QuizTextInput hint='optional' />
+                </FormField>
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
+
+      <QuizPage pageId='birth-certificate'>
+        <QuizForm
+          defaultValues={{
+            hasBirthCertificate: null,
+          }}
+          onSuccess={({ image }) => {
+            attachBirthCertificate(image ? new File(image) : null);
+          }}
+          sampleData={{
+            example: {
+              hasBirthCertificate: false,
+            },
+          }}
+          schema={z.object({
+            hasBirthCertificate: required(z.boolean().nullable()),
+            image: required(z.string().nullable()).optional(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='hasBirthCertificate'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
+              </FormBlock>
+
+              <ConditionalFormWrapper
+                active={!!watch('hasBirthCertificate')}
+                activeValue={null}
+                control={control}
+                name='image'
+              >
+                <FormBlock animated>
+                  <QuizFieldTitle />
+                  <FormImageInput />
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

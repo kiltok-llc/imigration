@@ -4,8 +4,9 @@ import z from 'zod/v4';
 import { FormBlock } from '@/components/form/block';
 import { FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { required } from '@/lib/utils';
 
@@ -14,37 +15,38 @@ export default function PhysicalPresence() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          isInUsa: null,
-        }}
-        onSubmit={({ isInUsa }) => {
-          if (!isInUsa) {
-            router.navigate('../ineligible');
-            return false;
-          }
+      <QuizPage pageId='is-in-usa'>
+        <QuizForm
+          defaultValues={{
+            isInUsa: null,
+          }}
+          onSubmit={({ isInUsa }) => {
+            if (!isInUsa) {
+              router.navigate('../ineligible');
+              return false;
+            }
 
-          return true;
-        }}
-        pageId='is-in-usa'
-        sampleData={{
-          example: {
-            isInUsa: true,
-          },
-        }}
-        schema={z.object({
-          isInUsa: required(z.boolean().nullable()),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='isInUsa'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizFormPage>
+            return true;
+          }}
+          sampleData={{
+            example: {
+              isInUsa: true,
+            },
+          }}
+          schema={z.object({
+            isInUsa: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control }) => (
+            <FormBlock>
+              <FormField control={control} name='isInUsa'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

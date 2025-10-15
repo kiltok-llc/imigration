@@ -17,8 +17,9 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput, FormRadioGroup } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import {
@@ -49,207 +50,212 @@ export default function MaritalStatus() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          status: null,
-        }}
-        onSuccess={({ status }) => {
-          setMaritalStatus(status);
-        }}
-        pageId='marital-status'
-        sampleData={{
-          example: {
-            status: 'married',
-          },
-        }}
-        schema={z.object({
-          status: required(MaritalStatusEnum.nullable()),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='status'>
-                <QuizFieldTitle />
-                <FormRadioGroup>
-                  {MaritalStatusEnum.options.map((status) => (
-                    <QuizRadioItem key={status} value={status} />
-                  ))}
-                </FormRadioGroup>
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
-
-      {maritalStatus === 'married' && (
-        <QuizFormPage
+      <QuizPage pageId='marital-status'>
+        <QuizForm
           defaultValues={{
-            hasCertificate: null,
+            status: null,
           }}
-          onSuccess={({ certificate }) => {
-            if (certificate) {
-              setMarriageCertificate(certificate);
-            }
+          onSuccess={({ status }) => {
+            setMaritalStatus(status);
           }}
-          pageId='marriage-certificate'
           sampleData={{
             example: {
-              hasCertificate: false,
+              status: 'married',
             },
           }}
           schema={z.object({
-            certificate: required(z.string().nullable()).optional(),
-            hasCertificate: required(z.boolean().nullable()),
+            status: required(MaritalStatusEnum.nullable()),
           })}
         >
-          {({ control, watch }) => (
-            <>
-              <FormField control={control} name='hasCertificate'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
-
-              <ConditionalFormWrapper
-                active={!!watch('hasCertificate')}
-                activeValue={null}
-                control={control}
-                name='certificate'
-              >
-                <FormBlock animated>
-                  <QuizFieldTitle />
-                  <FormImageInput />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
-      )}
-
-      {maritalStatus !== 'single' && (
-        <QuizFormPage
-          defaultValues={{
-            date: null,
-            divorceDate: null,
-            location: DEFAULT_FORM_SHORT_ADDRESS,
-          }}
-          onSuccess={({ date, divorceDate, location }) => {
-            setMarriageLocation(location);
-            setMarriageDate(date);
-            setDivorceDate(divorceDate);
-          }}
-          pageId='marriage-info'
-          sampleData={{
-            example: {
-              date: new Date('2015-06-20'),
-              divorceDate: null,
-              location: EXAMPLE_SHORT_ADDRESS,
-            },
-          }}
-          schema={z.object({
-            date: required(z.date().nullable()),
-            divorceDate:
-              maritalStatus === 'divorced'
-                ? required(z.date().nullable())
-                : z.date().nullable(),
-            location: FormShortAddressSchema,
-          })}
-        >
-          {({ control, lens }) => (
+          {({ control }) => (
             <>
               <FormBlock>
-                <QuizFieldTitle name='location' />
-                <FormShortAddressInput lens={lens.focus('location')} />
-              </FormBlock>
-
-              <FormBlock>
-                <FormField control={control} name='date'>
+                <FormField control={control} name='status'>
                   <QuizFieldTitle />
-                  <QuizDateInput />
+                  <FormRadioGroup>
+                    {MaritalStatusEnum.options.map((status) => (
+                      <QuizRadioItem key={status} value={status} />
+                    ))}
+                  </FormRadioGroup>
                 </FormField>
-
-                {maritalStatus === 'divorced' && (
-                  <FormField control={control} name='divorceDate'>
-                    <QuizDateInput />
-                  </FormField>
-                )}
               </FormBlock>
             </>
           )}
-        </QuizFormPage>
-      )}
+        </QuizForm>
+      </QuizPage>
 
       {maritalStatus === 'married' && (
-        <QuizFormPage
-          defaultValues={DEFAULT_FORM_NAME}
-          onSuccess={(name) => {
-            setSpouseName(name);
-          }}
-          pageId='spouse-info'
-          sampleData={{
-            example: {
-              first: 'Ana',
-              last: 'Smith',
-              middle: 'Lucia',
-            },
-          }}
-          schema={FormNameSchema}
-        >
-          {({ lens }) => (
-            <FormBlock>
-              <QuizPageTitle />
-              <FormNameInput lens={lens} />
-            </FormBlock>
-          )}
-        </QuizFormPage>
-      )}
-
-      {maritalStatus === 'married' && (
-        <QuizFormPage
-          defaultValues={{
-            isInUsa: null,
-          }}
-          onSuccess={({ isInUsa, location }) => {
-            setSpouseIsInUsa(isInUsa);
-            setSpouseLocation(location ?? DEFAULT_LOCATION);
-          }}
-          pageId='spouse-location'
-          sampleData={{
-            example: {
-              isInUsa: true,
-              location: EXAMPLE_SHORT_ADDRESS,
-            },
-          }}
-          schema={z.object({
-            isInUsa: required(z.boolean().nullable()),
-            location: FormShortAddressSchema.optional(),
-          })}
-        >
-          {({ control, lens, watch }) => (
-            <>
-              <FormBlock>
-                <FormField control={control} name='isInUsa'>
+        <QuizPage pageId='marriage-certificate'>
+          <QuizForm
+            defaultValues={{
+              hasCertificate: null,
+            }}
+            onSuccess={({ certificate }) => {
+              if (certificate) {
+                setMarriageCertificate(certificate);
+              }
+            }}
+            sampleData={{
+              example: {
+                hasCertificate: false,
+              },
+            }}
+            schema={z.object({
+              certificate: required(z.string().nullable()).optional(),
+              hasCertificate: required(z.boolean().nullable()),
+            })}
+          >
+            {({ control, watch }) => (
+              <>
+                <FormField control={control} name='hasCertificate'>
                   <QuizFieldTitle />
                   <FormBooleanInput />
                 </FormField>
-              </FormBlock>
 
-              <ConditionalFormWrapper
-                active={!!watch('isInUsa')}
-                activeValue={DEFAULT_LOCATION}
-                control={control}
-                name='location'
-              >
-                <FormBlock animated>
-                  <QuizFieldTitle />
-                  <FormShortAddressInput
-                    lens={lens.focus('location').defined()}
-                  />
+                <ConditionalFormWrapper
+                  active={!!watch('hasCertificate')}
+                  activeValue={null}
+                  control={control}
+                  name='certificate'
+                >
+                  <FormBlock animated>
+                    <QuizFieldTitle />
+                    <FormImageInput />
+                  </FormBlock>
+                </ConditionalFormWrapper>
+              </>
+            )}
+          </QuizForm>
+        </QuizPage>
+      )}
+
+      {maritalStatus !== 'single' && (
+        <QuizPage pageId='marriage-info'>
+          <QuizForm
+            defaultValues={{
+              date: null,
+              divorceDate: null,
+              location: DEFAULT_FORM_SHORT_ADDRESS,
+            }}
+            onSuccess={({ date, divorceDate, location }) => {
+              setMarriageLocation(location);
+              setMarriageDate(date);
+              setDivorceDate(divorceDate);
+            }}
+            sampleData={{
+              example: {
+                date: new Date('2015-06-20'),
+                divorceDate: null,
+                location: EXAMPLE_SHORT_ADDRESS,
+              },
+            }}
+            schema={z.object({
+              date: required(z.date().nullable()),
+              divorceDate:
+                maritalStatus === 'divorced'
+                  ? required(z.date().nullable())
+                  : z.date().nullable(),
+              location: FormShortAddressSchema,
+            })}
+          >
+            {({ control, lens }) => (
+              <>
+                <FormBlock>
+                  <QuizFieldTitle name='location' />
+                  <FormShortAddressInput lens={lens.focus('location')} />
                 </FormBlock>
-              </ConditionalFormWrapper>
-            </>
-          )}
-        </QuizFormPage>
+
+                <FormBlock>
+                  <FormField control={control} name='date'>
+                    <QuizFieldTitle />
+                    <QuizDateInput />
+                  </FormField>
+
+                  {maritalStatus === 'divorced' && (
+                    <FormField control={control} name='divorceDate'>
+                      <QuizDateInput />
+                    </FormField>
+                  )}
+                </FormBlock>
+              </>
+            )}
+          </QuizForm>
+        </QuizPage>
+      )}
+
+      {maritalStatus === 'married' && (
+        <QuizPage pageId='spouse-info'>
+          <QuizForm
+            defaultValues={DEFAULT_FORM_NAME}
+            onSuccess={(name) => {
+              setSpouseName(name);
+            }}
+            sampleData={{
+              example: {
+                first: 'Ana',
+                last: 'Smith',
+                middle: 'Lucia',
+              },
+            }}
+            schema={FormNameSchema}
+          >
+            {({ lens }) => (
+              <FormBlock>
+                <QuizPageTitle />
+                <FormNameInput lens={lens} />
+              </FormBlock>
+            )}
+          </QuizForm>
+        </QuizPage>
+      )}
+
+      {maritalStatus === 'married' && (
+        <QuizPage pageId='spouse-location'>
+          <QuizForm
+            defaultValues={{
+              isInUsa: null,
+            }}
+            onSuccess={({ isInUsa, location }) => {
+              setSpouseIsInUsa(isInUsa);
+              setSpouseLocation(location ?? DEFAULT_LOCATION);
+            }}
+            sampleData={{
+              example: {
+                isInUsa: true,
+                location: EXAMPLE_SHORT_ADDRESS,
+              },
+            }}
+            schema={z.object({
+              isInUsa: required(z.boolean().nullable()),
+              location: FormShortAddressSchema.optional(),
+            })}
+          >
+            {({ control, lens, watch }) => (
+              <>
+                <FormBlock>
+                  <FormField control={control} name='isInUsa'>
+                    <QuizFieldTitle />
+                    <FormBooleanInput />
+                  </FormField>
+                </FormBlock>
+
+                <ConditionalFormWrapper
+                  active={!!watch('isInUsa')}
+                  activeValue={DEFAULT_LOCATION}
+                  control={control}
+                  name='location'
+                >
+                  <FormBlock animated>
+                    <QuizFieldTitle />
+                    <FormShortAddressInput
+                      lens={lens.focus('location').defined()}
+                    />
+                  </FormBlock>
+                </ConditionalFormWrapper>
+              </>
+            )}
+          </QuizForm>
+        </QuizPage>
       )}
     </QuizScreen>
   );

@@ -9,8 +9,9 @@ import {
   FormNameSchema,
 } from '@/components/form/name';
 import { FormBooleanInput } from '@/components/form/radio';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizCommaListInput, QuizTextInput } from '@/components/quiz/text';
 import {
@@ -29,117 +30,120 @@ export default function NameAndAliases() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={DEFAULT_FORM_NAME}
-        onSuccess={(name) => {
-          setName(name);
-        }}
-        pageId='basic-names'
-        sampleData={{
-          example: {
-            first: 'John',
-            last: 'Smith',
-            middle: 'Michael',
-          },
-        }}
-        schema={FormNameSchema}
-      >
-        {({ lens }) => (
-          <>
-            <FormBlock>
-              <QuizPageTitle />
-            </FormBlock>
+      <QuizPage pageId='basic-names'>
+        <QuizForm
+          defaultValues={DEFAULT_FORM_NAME}
+          onSuccess={(name) => {
+            setName(name);
+          }}
+          sampleData={{
+            example: {
+              first: 'John',
+              last: 'Smith',
+              middle: 'Michael',
+            },
+          }}
+          schema={FormNameSchema}
+        >
+          {({ lens }) => (
+            <>
+              <FormBlock>
+                <QuizPageTitle />
+              </FormBlock>
 
-            <FormBlock>
-              <FormNameInput lens={lens} />
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
+              <FormBlock>
+                <FormNameInput lens={lens} />
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
 
-      <QuizFormPage
-        defaultValues={{
-          maidenName: '',
-          otherNames: '',
-        }}
-        onSuccess={({ maidenName, otherNames }) => {
-          setMaidenName(maidenName);
-          setOtherNames(otherNames);
-        }}
-        pageId='additional-names'
-        sampleData={{
-          example: {
-            maidenName: 'Johnson',
-            otherNames: 'Johnny, Jon',
-          },
-        }}
-        schema={z.object({
-          maidenName: z.string(),
-          otherNames: stringList(z.array(z.string().nonempty())),
-        })}
-      >
-        {({ control }) => (
-          <>
-            <FormBlock>
-              <QuizPageTitle />
-            </FormBlock>
+      <QuizPage pageId='additional-names'>
+        <QuizForm
+          defaultValues={{
+            maidenName: '',
+            otherNames: '',
+          }}
+          onSuccess={({ maidenName, otherNames }) => {
+            setMaidenName(maidenName);
+            setOtherNames(otherNames);
+          }}
+          sampleData={{
+            example: {
+              maidenName: 'Johnson',
+              otherNames: 'Johnny, Jon',
+            },
+          }}
+          schema={z.object({
+            maidenName: z.string(),
+            otherNames: stringList(z.array(z.string().nonempty())),
+          })}
+        >
+          {({ control }) => (
+            <>
+              <FormBlock>
+                <QuizPageTitle />
+              </FormBlock>
 
-            <FormBlock>
-              <FormField control={control} name='maidenName'>
-                <QuizTextInput hint='optional' />
-              </FormField>
+              <FormBlock>
+                <FormField control={control} name='maidenName'>
+                  <QuizTextInput hint='optional' />
+                </FormField>
 
-              <FormField control={control} name='otherNames'>
-                <QuizCommaListInput hint='optional' />
-              </FormField>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
+                <FormField control={control} name='otherNames'>
+                  <QuizCommaListInput hint='optional' />
+                </FormField>
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
 
-      <QuizFormPage
-        defaultValues={{
-          hasAlias: null,
-        }}
-        onSuccess={({ aliases }) => {
-          setAliases(aliases ?? []);
-        }}
-        pageId='alias-information'
-        sampleData={{
-          example: {
-            aliases: 'J. Smith, Johnny Smith',
-            hasAlias: true,
-          },
-        }}
-        schema={z.object({
-          aliases: stringList(
-            z.array(z.string().nonempty()).nonempty()
-          ).optional(),
-          hasAlias: required(z.boolean().nullable()),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='hasAlias'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
+      <QuizPage pageId='alias-information'>
+        <QuizForm
+          defaultValues={{
+            hasAlias: null,
+          }}
+          onSuccess={({ aliases }) => {
+            setAliases(aliases ?? []);
+          }}
+          sampleData={{
+            example: {
+              aliases: 'J. Smith, Johnny Smith',
+              hasAlias: true,
+            },
+          }}
+          schema={z.object({
+            aliases: stringList(
+              z.array(z.string().nonempty()).nonempty()
+            ).optional(),
+            hasAlias: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='hasAlias'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
 
-              <ConditionalFormWrapper
-                active={!!watch('hasAlias')}
-                activeValue=''
-                control={control}
-                name='aliases'
-              >
-                <FormBlock animated>
-                  <QuizCommaListInput />
-                </FormBlock>
-              </ConditionalFormWrapper>
-            </FormBlock>
-          </>
-        )}
-      </QuizFormPage>
+                <ConditionalFormWrapper
+                  active={!!watch('hasAlias')}
+                  activeValue=''
+                  control={control}
+                  name='aliases'
+                >
+                  <FormBlock animated>
+                    <QuizCommaListInput />
+                  </FormBlock>
+                </ConditionalFormWrapper>
+              </FormBlock>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

@@ -7,8 +7,9 @@ import { FormCheckboxGroup } from '@/components/form/checkbox';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
 import { FormBooleanInput } from '@/components/form/radio';
 import { QuizCheckboxItem } from '@/components/quiz/checkbox';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { required } from '@/lib/utils';
@@ -28,125 +29,128 @@ export default function ReasonForLeaving() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          isEscapingHarm: null,
-        }}
-        onSubmit={({ isEscapingHarm }) => {
-          if (!isEscapingHarm) {
-            router.navigate('../ineligible');
-            return false;
-          }
+      <QuizPage pageId='is-escaping-harm'>
+        <QuizForm
+          defaultValues={{
+            isEscapingHarm: null,
+          }}
+          onSubmit={({ isEscapingHarm }) => {
+            if (!isEscapingHarm) {
+              router.navigate('../ineligible');
+              return false;
+            }
 
-          return true;
-        }}
-        pageId='is-escaping-harm'
-        sampleData={{
-          example: {
-            isEscapingHarm: true,
-          },
-        }}
-        schema={z.object({
-          isEscapingHarm: required(z.boolean().nullable()),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='isEscapingHarm'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizFormPage>
-
-      <QuizFormPage
-        defaultValues={{
-          customHarmReason: null,
-          harmReasons: [],
-        }}
-        onSubmit={({ harmReasons }) => {
-          if (harmReasons.includes('none')) {
-            router.navigate('../ineligible');
-            return false;
-          }
-
-          return true;
-        }}
-        pageId='harm-reasons'
-        sampleData={{
-          example: {
-            customHarmReason: 'Gender identity',
-            harmReasons: ['politics', 'other'],
-          },
-        }}
-        schema={z.object({
-          customHarmReason: z.string().nonempty().nullable(),
-          harmReasons: z.array(HarmReasonEnum).nonempty(),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
+            return true;
+          }}
+          sampleData={{
+            example: {
+              isEscapingHarm: true,
+            },
+          }}
+          schema={z.object({
+            isEscapingHarm: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control }) => (
             <FormBlock>
-              <FormField control={control} name='harmReasons'>
+              <FormField control={control} name='isEscapingHarm'>
                 <QuizFieldTitle />
-                <FormCheckboxGroup>
-                  {HarmReasonEnum.options.map((reason) => (
-                    <QuizCheckboxItem
-                      exclusive={reason === 'none'}
-                      key={reason}
-                      value={reason}
-                    />
-                  ))}
-                </FormCheckboxGroup>
+                <FormBooleanInput />
               </FormField>
             </FormBlock>
+          )}
+        </QuizForm>
+      </QuizPage>
 
-            <ConditionalFormWrapper
-              active={watch('harmReasons').includes('other')}
-              activeValue=''
-              control={control}
-              name='customHarmReason'
-            >
+      <QuizPage pageId='harm-reasons'>
+        <QuizForm
+          defaultValues={{
+            customHarmReason: null,
+            harmReasons: [],
+          }}
+          onSubmit={({ harmReasons }) => {
+            if (harmReasons.includes('none')) {
+              router.navigate('../ineligible');
+              return false;
+            }
+
+            return true;
+          }}
+          sampleData={{
+            example: {
+              customHarmReason: 'Gender identity',
+              harmReasons: ['politics', 'other'],
+            },
+          }}
+          schema={z.object({
+            customHarmReason: z.string().nonempty().nullable(),
+            harmReasons: z.array(HarmReasonEnum).nonempty(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
               <FormBlock>
-                <QuizTextInput />
+                <FormField control={control} name='harmReasons'>
+                  <QuizFieldTitle />
+                  <FormCheckboxGroup>
+                    {HarmReasonEnum.options.map((reason) => (
+                      <QuizCheckboxItem
+                        exclusive={reason === 'none'}
+                        key={reason}
+                        value={reason}
+                      />
+                    ))}
+                  </FormCheckboxGroup>
+                </FormField>
               </FormBlock>
-            </ConditionalFormWrapper>
-          </>
-        )}
-      </QuizFormPage>
 
-      <QuizFormPage
-        defaultValues={{
-          isHarmedByGov: null,
-        }}
-        onSubmit={({ isHarmedByGov }) => {
-          if (!isHarmedByGov) {
-            router.navigate('../ineligible');
-            return false;
-          }
+              <ConditionalFormWrapper
+                active={watch('harmReasons').includes('other')}
+                activeValue=''
+                control={control}
+                name='customHarmReason'
+              >
+                <FormBlock>
+                  <QuizTextInput />
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
 
-          return true;
-        }}
-        pageId='is-harmed-by-gov'
-        sampleData={{
-          example: {
-            isHarmedByGov: true,
-          },
-        }}
-        schema={z.object({
-          isHarmedByGov: required(z.boolean().nullable()),
-        })}
-      >
-        {({ control }) => (
-          <FormBlock>
-            <FormField control={control} name='isHarmedByGov'>
-              <QuizFieldTitle />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-        )}
-      </QuizFormPage>
+      <QuizPage pageId='is-harmed-by-gov'>
+        <QuizForm
+          defaultValues={{
+            isHarmedByGov: null,
+          }}
+          onSubmit={({ isHarmedByGov }) => {
+            if (!isHarmedByGov) {
+              router.navigate('../ineligible');
+              return false;
+            }
+
+            return true;
+          }}
+          sampleData={{
+            example: {
+              isHarmedByGov: true,
+            },
+          }}
+          schema={z.object({
+            isHarmedByGov: required(z.boolean().nullable()),
+          })}
+        >
+          {({ control }) => (
+            <FormBlock>
+              <FormField control={control} name='isHarmedByGov'>
+                <QuizFieldTitle />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }

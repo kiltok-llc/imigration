@@ -46,26 +46,6 @@ export const quizPageAtomFamily = <T>(
   return family;
 };
 
-export const useQuizPageAtomKeyStatic = ({
-  pageId,
-  pageKey,
-}: {
-  pageId: string;
-  pageKey: string;
-}) => {
-  const [_services, service = '', step = '', ...screens] = useLocalSegments();
-  const screen = screens.join('.');
-  const screenKey = useQuizScreenKey();
-  return {
-    pageId,
-    pageKey,
-    screen,
-    screenKey,
-    service,
-    step,
-  };
-};
-
 export const useQuizPageAtomKey = () => {
   const [_services, service = '', step = '', ...screens] = useLocalSegments();
   const screen = screens.join('.');

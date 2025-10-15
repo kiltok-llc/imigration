@@ -21,9 +21,9 @@ import {
 } from '@/components/form/name';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
-import { QuizPageProps } from '@/components/quiz/page';
+import { QuizPage, QuizPageProps } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import {
@@ -57,112 +57,111 @@ export function SiblingQuizPage({
   const lastName = useAtomValue(nameAtom).last;
 
   return (
-    <QuizFormPage
-      defaultValues={{
-        birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
-        dob: null,
-        livesInUsa: null,
-        name: {
-          ...DEFAULT_FORM_NAME,
-          last: lastName,
-        },
-        sex: null,
-      }}
-      onSuccess={({ dob, livesInUsa, name, sex }) => {
-        setDob(dob);
-        setLivesInUsa(livesInUsa);
-        setName(name);
-        setSex(sex);
-      }}
-      pageId={pageId}
-      pageKey={id}
-      pageRef={pageRef}
-      sampleData={{
-        example: {
-          birthLocation: EXAMPLE_SHORT_ADDRESS,
-          currentLocation: EXAMPLE_ADDRESS,
-          dob: new Date('2008-09-12'),
-          livesInUsa: true,
+    <QuizPage pageId={pageId} pageKey={id} pageRef={pageRef}>
+      <QuizForm
+        defaultValues={{
+          birthLocation: DEFAULT_FORM_SHORT_ADDRESS,
+          dob: null,
+          livesInUsa: null,
           name: {
-            first: 'Sofia',
-            last: lastName || 'Smith',
-            middle: 'Grace',
+            ...DEFAULT_FORM_NAME,
+            last: lastName,
           },
-          sex: 'female',
-        },
-      }}
-      schema={z.object({
-        birthLocation: required(FormShortAddressSchema),
-        currentLocation: FormAddressSchema.optional(),
-        dob: required(z.date().nullable()),
-        livesInUsa: required(z.boolean().nullable()),
-        name: FormNameSchema,
-        sex: required(SexEnum.nullable()),
-      })}
-    >
-      {({ control, lens, watch }) => (
-        <TranslationContextProvider
-          value={{
-            context: watch('name.first') ? 'named' : 'unnamed',
-            count: index + 1,
-            values: {
-              name: watch('name.first'),
-              ordinal: true,
-              total: numberOfSiblings,
+          sex: null,
+        }}
+        onSuccess={({ dob, livesInUsa, name, sex }) => {
+          setDob(dob);
+          setLivesInUsa(livesInUsa);
+          setName(name);
+          setSex(sex);
+        }}
+        sampleData={{
+          example: {
+            birthLocation: EXAMPLE_SHORT_ADDRESS,
+            currentLocation: EXAMPLE_ADDRESS,
+            dob: new Date('2008-09-12'),
+            livesInUsa: true,
+            name: {
+              first: 'Sofia',
+              last: lastName || 'Smith',
+              middle: 'Grace',
             },
-          }}
-        >
-          <QuizPageTitle />
-
-          <FormBlock>
-            <QuizFieldTitle name='name' variant='titleLarge' />
-            <FormNameInput lens={lens.focus('name')} />
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='sex'>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormSexInput />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='dob'>
-              <QuizFieldTitle variant='titleLarge' />
-              <QuizDateInput />
-            </FormField>
-          </FormBlock>
-
-          <FormBlock>
-            <QuizFieldTitle name='birth-location' variant='titleLarge' />
-            <FormShortAddressInput lens={lens.focus('birthLocation')} />
-          </FormBlock>
-
-          <FormBlock>
-            <FormField control={control} name='livesInUsa'>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormBooleanInput />
-            </FormField>
-          </FormBlock>
-
-          <ConditionalFormWrapper
-            active={!!watch('livesInUsa')}
-            activeValue={DEFAULT_FORM_ADDRESS}
-            control={control}
-            name='currentLocation'
+            sex: 'female',
+          },
+        }}
+        schema={z.object({
+          birthLocation: required(FormShortAddressSchema),
+          currentLocation: FormAddressSchema.optional(),
+          dob: required(z.date().nullable()),
+          livesInUsa: required(z.boolean().nullable()),
+          name: FormNameSchema,
+          sex: required(SexEnum.nullable()),
+        })}
+      >
+        {({ control, lens, watch }) => (
+          <TranslationContextProvider
+            value={{
+              context: watch('name.first') ? 'named' : 'unnamed',
+              count: index + 1,
+              values: {
+                name: watch('name.first'),
+                ordinal: true,
+                total: numberOfSiblings,
+              },
+            }}
           >
-            <FormBlock animated>
-              <QuizFieldTitle variant='titleLarge' />
-              <FormAddressInput
-                lens={lens
-                  .focus('currentLocation')
-                  .narrow<z.input<typeof FormAddressSchema>>()}
-              />
+            <QuizPageTitle />
+
+            <FormBlock>
+              <QuizFieldTitle name='name' variant='titleLarge' />
+              <FormNameInput lens={lens.focus('name')} />
             </FormBlock>
-          </ConditionalFormWrapper>
-        </TranslationContextProvider>
-      )}
-    </QuizFormPage>
+
+            <FormBlock>
+              <FormField control={control} name='sex'>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormSexInput />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='dob'>
+                <QuizFieldTitle variant='titleLarge' />
+                <QuizDateInput />
+              </FormField>
+            </FormBlock>
+
+            <FormBlock>
+              <QuizFieldTitle name='birth-location' variant='titleLarge' />
+              <FormShortAddressInput lens={lens.focus('birthLocation')} />
+            </FormBlock>
+
+            <FormBlock>
+              <FormField control={control} name='livesInUsa'>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormBooleanInput />
+              </FormField>
+            </FormBlock>
+
+            <ConditionalFormWrapper
+              active={!!watch('livesInUsa')}
+              activeValue={DEFAULT_FORM_ADDRESS}
+              control={control}
+              name='currentLocation'
+            >
+              <FormBlock animated>
+                <QuizFieldTitle variant='titleLarge' />
+                <FormAddressInput
+                  lens={lens
+                    .focus('currentLocation')
+                    .narrow<z.input<typeof FormAddressSchema>>()}
+                />
+              </FormBlock>
+            </ConditionalFormWrapper>
+          </TranslationContextProvider>
+        )}
+      </QuizForm>
+    </QuizPage>
   );
 }
 
@@ -171,54 +170,55 @@ export default function SiblingsDetails() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          hasSiblings: null,
-        }}
-        onSuccess={({ numSiblings }) => {
-          setSiblingIds(
-            stretchTo(siblingIds, numSiblings ?? 0, () => uuid.v4())
-          );
-        }}
-        pageId='sibling-information'
-        sampleData={{
-          example: {
-            hasSiblings: true,
-            numSiblings: '3',
-          },
-        }}
-        schema={z.object({
-          hasSiblings: required(z.boolean().nullable()),
-          numSiblings: z
-            .string()
-            // .regex(/^\d+$/)
-            .pipe(z.coerce.number<string>().int().positive())
-            .optional(),
-        })}
-      >
-        {({ control, watch }) => (
-          <>
-            <FormBlock>
-              <FormField control={control} name='hasSiblings'>
-                <QuizFieldTitle />
-                <FormBooleanInput />
-              </FormField>
-            </FormBlock>
-
-            <ConditionalFormWrapper
-              active={!!watch('hasSiblings')}
-              activeValue={'0'}
-              control={control}
-              name='numSiblings'
-            >
-              <FormBlock animated>
-                <QuizFieldTitle />
-                <QuizTextInput inputMode='numeric' />
+      <QuizPage pageId='sibling-information'>
+        <QuizForm
+          defaultValues={{
+            hasSiblings: null,
+          }}
+          onSuccess={({ numSiblings }) => {
+            setSiblingIds(
+              stretchTo(siblingIds, numSiblings ?? 0, () => uuid.v4())
+            );
+          }}
+          sampleData={{
+            example: {
+              hasSiblings: true,
+              numSiblings: '3',
+            },
+          }}
+          schema={z.object({
+            hasSiblings: required(z.boolean().nullable()),
+            numSiblings: z
+              .string()
+              // .regex(/^\d+$/)
+              .pipe(z.coerce.number<string>().int().positive())
+              .optional(),
+          })}
+        >
+          {({ control, watch }) => (
+            <>
+              <FormBlock>
+                <FormField control={control} name='hasSiblings'>
+                  <QuizFieldTitle />
+                  <FormBooleanInput />
+                </FormField>
               </FormBlock>
-            </ConditionalFormWrapper>
-          </>
-        )}
-      </QuizFormPage>
+
+              <ConditionalFormWrapper
+                active={!!watch('hasSiblings')}
+                activeValue={'0'}
+                control={control}
+                name='numSiblings'
+              >
+                <FormBlock animated>
+                  <QuizFieldTitle />
+                  <QuizTextInput inputMode='numeric' />
+                </FormBlock>
+              </ConditionalFormWrapper>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
 
       {siblingIds.map((id, index) => (
         <SiblingQuizPage id={id} index={index} key={id} pageId='sibling' />

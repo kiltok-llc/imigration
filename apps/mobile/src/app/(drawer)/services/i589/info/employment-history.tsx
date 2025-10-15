@@ -20,8 +20,9 @@ import {
   QuizFieldArrayAdd,
   QuizFieldArrayItemHeader,
 } from '@/components/quiz/fieldarray';
-import { QuizFormPage } from '@/components/quiz/form-page';
+import { QuizForm } from '@/components/quiz/form';
 import { QuizPageTitle } from '@/components/quiz/label';
+import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
 import { jobHistorySchema } from '@/lib/data/user';
@@ -31,79 +32,83 @@ export default function EmploymentHistory() {
 
   return (
     <QuizScreen>
-      <QuizFormPage
-        defaultValues={{
-          jobs: [DEFAULT_FORM_JOB],
-        }}
-        onSuccess={({ jobs }) => {
-          setJobHistory(
-            jobs.map(({ address, ...job }) => ({
-              address: {
-                ...address,
-                country: 'USA',
-              },
-              ...job,
-            }))
-          );
-        }}
-        pageId='jobs'
-        sampleData={{
-          example: {
-            jobs: [
-              {
-                address: EXAMPLE_ADDRESS,
-                employer: 'Restaurant ABC',
-                occupation: 'Server',
-                range: EXAMPLE_RANGE,
-              },
-              {
-                address: EXAMPLE_ADDRESS,
-                employer: 'Retail Store XYZ',
-                occupation: 'Sales Associate',
-                range: EXAMPLE_RANGE,
-              },
-            ],
-          },
-        }}
-        schema={z.object({
-          jobs: z.array(FormJobSchema),
-        })}
-      >
-        {({ control, lens }) => (
-          <>
-            <FormBlock>
-              <QuizPageTitle />
-            </FormBlock>
+      <QuizPage pageId='jobs'>
+        <QuizForm
+          defaultValues={{
+            jobs: [DEFAULT_FORM_JOB],
+          }}
+          onSuccess={({ jobs }) => {
+            setJobHistory(
+              jobs.map(({ address, ...job }) => ({
+                address: {
+                  ...address,
+                  country: 'USA',
+                },
+                ...job,
+              }))
+            );
+          }}
+          sampleData={{
+            example: {
+              jobs: [
+                {
+                  address: EXAMPLE_ADDRESS,
+                  employer: 'Restaurant ABC',
+                  occupation: 'Server',
+                  range: EXAMPLE_RANGE,
+                },
+                {
+                  address: EXAMPLE_ADDRESS,
+                  employer: 'Retail Store XYZ',
+                  occupation: 'Sales Associate',
+                  range: EXAMPLE_RANGE,
+                },
+              ],
+            },
+          }}
+          schema={z.object({
+            jobs: z.array(FormJobSchema),
+          })}
+        >
+          {({ control, lens }) => (
+            <>
+              <FormBlock>
+                <QuizPageTitle />
+              </FormBlock>
 
-            <FormArray control={control} name='jobs'>
-              <FormArrayItems>
-                {(idx) => (
-                  <FormBlock>
-                    <QuizFieldArrayItemHeader />
-                    <FormField control={control} name={`jobs.${idx}.employer`}>
-                      <QuizTextInput />
-                    </FormField>
-                    <FormField
-                      control={control}
-                      name={`jobs.${idx}.occupation`}
-                    >
-                      <QuizTextInput />
-                    </FormField>
-                    <FormAddressInput
-                      lens={lens.focus(`jobs.${idx}.address`)}
-                    />
-                    <FormRangeInput
-                      lens={lens.focus(`jobs.${idx}.range`)}
-                      optionalEnd
-                    />
-                  </FormBlock>
-                )}
-              </FormArrayItems>
-              <QuizFieldArrayAdd value={DEFAULT_FORM_JOB} />
-            </FormArray>
-          </>
-        )}
-      </QuizFormPage>
+              <FormArray control={control} name='jobs'>
+                <FormArrayItems>
+                  {(idx) => (
+                    <FormBlock>
+                      <QuizFieldArrayItemHeader />
+                      <FormField
+                        control={control}
+                        name={`jobs.${idx}.employer`}
+                      >
+                        <QuizTextInput />
+                      </FormField>
+                      <FormField
+                        control={control}
+                        name={`jobs.${idx}.occupation`}
+                      >
+                        <QuizTextInput />
+                      </FormField>
+                      <FormAddressInput
+                        lens={lens.focus(`jobs.${idx}.address`)}
+                      />
+                      <FormRangeInput
+                        lens={lens.focus(`jobs.${idx}.range`)}
+                        optionalEnd
+                      />
+                    </FormBlock>
+                  )}
+                </FormArrayItems>
+                <QuizFieldArrayAdd value={DEFAULT_FORM_JOB} />
+              </FormArray>
+            </>
+          )}
+        </QuizForm>
+      </QuizPage>
     </QuizScreen>
   );
 }
