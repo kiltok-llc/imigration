@@ -22,6 +22,8 @@
   },
   "prettier": "@repo/prettier-config",
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.52",
+    "@ai-sdk/react": "^2.0.76",
     "@cantoo/pdf-lib": "^2.5.1",
     "@dev-plugins/react-native-mmkv": "^0.3.1",
     "@dev-plugins/react-navigation": "^0.3.1",
@@ -45,7 +47,7 @@
     "@trpc/client": "catalog:",
     "@trpc/tanstack-react-query": "^11.5.1",
     "@ver0/deep-equal": "^1.0.0",
-    "cactus-react-native": "^0.2.10",
+    "ai": "^5.0.76",
     "expo": "54.0.13",
     "expo-asset": "12.0.9",
     "expo-blur": "15.0.7",

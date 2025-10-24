@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/matias/Code/imigration/**)",
+      "Bash(pnpm exec eslint:*)",
+      "Bash(pnpm --filter @repo/mobile build:check)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

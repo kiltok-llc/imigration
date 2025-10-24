@@ -1,45 +1,52 @@
 import { useHeaderHeight } from '@react-navigation/elements';
-import { useMutation } from '@tanstack/react-query';
-import { CactusOAICompatibleMessage } from 'cactus-react-native';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { PropsWithChildren, ReactNode, Ref, useEffect, useRef } from 'react';
+import { useResetAtom } from 'jotai/utils';
+import { PropsWithChildren, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput as RNTextInput, ScrollView } from 'react-native';
+import { TextInput as RNTextInput, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { TextInput, useTheme } from 'react-native-paper';
 import { Markdown } from 'react-native-remark';
-import uuid from 'react-native-uuid';
-import { toast } from 'sonner-native';
 import tw from 'twrnc';
 
-import { QuizPageProps, useQuizPageHandle } from '@/components/quiz/page';
+import { useQuizPageHandle } from '@/components/quiz/page';
+import { TransText } from '@/components/trans';
 import { ChatBubble, ChatThinkingDots } from '@/components/ui/chat';
+import {
+  Dialog,
+  DialogActionButton,
+  DialogActions,
+  DialogContent,
+} from '@/components/ui/dialog';
 import {
   HeaderMenuItem,
   HeaderMenuItemPortal,
 } from '@/components/ui/header-menu';
-import { CactusActionChip, useCactus } from '@/lib/cactus';
+import { UIMessage, useChat } from '@/lib/chat';
 import { nameAtom } from '@/lib/data/user';
+import { useQuizActions } from '@/lib/quiz/actions';
 import {
   QuizChatActionChip,
-  quizChatChipsAtom,
-  quizChatInputAtom,
-  quizChatMessagesAtom,
+  useQuizChatChipsAtom,
+  useQuizChatInputAtom,
+  useQuizChatMessagesAtom,
+  useQuizChatStateAtom,
 } from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
 import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
-import { useQuizPageAtomKey } from '@/lib/quiz/page';
+import { getQuizPageAtomId, useQuizPageAtomKey } from '@/lib/quiz/page';
 import { useT } from '@/lib/translation';
 
 const useBaseMessages = () => {
   const { t } = useTranslation();
   const i18nKey = useQuizPageLocaleKey('chat.messages');
-  return t(i18nKey, { returnObjects: true }) as CactusOAICompatibleMessage[];
+  // TODO need to parse arrays to multiline strings
+  return t(i18nKey, { returnObjects: true }) as UIMessage[];
 };
 
 export function QuizChat({
-  chips: availableChips,
-  prompt,
+  chips: _chips,
+  prompt: _prompt,
 }: {
   chips: QuizChatActionChip[];
   prompt: string;
@@ -47,64 +54,40 @@ export function QuizChat({
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
 
-  const t = useT();
-  const { cactus, status } = useCactus();
-  const [messages, setMessages] = useAtom(
-    quizChatMessagesAtom(useQuizPageAtomKey())
+  const baseMessages = useBaseMessages();
+  const [persistedMessages, setPersistedMessages] = useAtom(
+    useQuizChatMessagesAtom()
   );
-  const [input, setInput] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
-  const setChips = useSetAtom(quizChatChipsAtom(useQuizPageAtomKey()));
+  const setInput = useSetAtom(useQuizChatInputAtom());
+  const [state, setState] = useAtom(useQuizChatStateAtom());
+  const resetState = useResetAtom(useQuizChatStateAtom());
+  const [showEndInterviewDialog, setShowEndInterviewDialog] = useState(false);
+  const { handleContinue } = useQuizActions();
 
-  const { isPending: isThinking, mutate: handleSendInput } = useMutation({
-    meta: {
-      errorToastKey: 'chat.toast.chat-error',
-    },
-    mutationFn: async () => {
-      if (status !== 'initialized') {
-        toast.warning(t('chat.toast.not-ready'));
-        console.log(`Cactus not ready: ${status}`);
-        return;
-      }
-
-      const message = input.trim();
-      setMessages((messages) => [
-        ...messages,
-        { id: uuid.v4(), role: 'user', text: message },
-      ]);
-      setInput('');
-      setChips([]);
-
-      const response = await cactus.generateResponse(
-        [
-          { content: prompt, role: 'system' },
-          ...messages.map(({ role, text }) => ({
-            content: text,
-            role,
-          })),
-          { content: message, role: 'user' },
-        ],
-        availableChips,
-        (chip) => setChips((chips) => [...chips, chip])
-      );
-
-      // TODO -- what if state is reset while we are generating?
-      setMessages((messages) => [
-        ...messages,
-        {
-          id: uuid.v4(),
-          role: 'assistant',
-          text: response,
-        },
-      ]);
-    },
+  const chatId = getQuizPageAtomId(useQuizPageAtomKey(), 'chat');
+  const { messages, sendMessage, setMessages, status } = useChat({
+    id: chatId,
+    messages: [...baseMessages, ...persistedMessages],
+    resume: true,
   });
 
+  const handleReset = () => {
+    void setPersistedMessages([]);
+    setMessages(baseMessages);
+    setInput('');
+    resetState();
+  };
+
   useQuizPageHandle(() => ({
-    reset: () => {
-      setMessages([]);
-      setInput('');
+    reset: handleReset,
+    submit: async () => {
+      if (state === 'completed') {
+        return true;
+      }
+
+      setShowEndInterviewDialog(true);
+      return false;
     },
-    submit: async () => false,
   }));
 
   return (
@@ -113,39 +96,84 @@ export function QuizChat({
         <HeaderMenuItem
           i18nKey='chat.menu.reset'
           leadingIcon='refresh'
-          onPress={() => {
-            setMessages([]);
-            setInput('');
-            setChips([]);
-          }}
+          onPress={handleReset}
         />
       </HeaderMenuItemPortal>
+      <Dialog
+        onDismiss={() => setShowEndInterviewDialog(false)}
+        visible={showEndInterviewDialog}
+      >
+        <DialogContent>
+          <TransText i18nKey='chat.dialog.end.title' variant='titleLarge' />
+          <View>
+            <TransText
+              i18nKey='chat.dialog.end.subtitle'
+              variant='titleMedium'
+            />
+            <TransText
+              i18nKey='chat.dialog.end.description'
+              variant='bodyLarge'
+            />
+          </View>
+          <DialogActions>
+            <DialogActionButton
+              i18nKey='chat.dialog.end.cancel'
+              mode='contained-tonal'
+              onPress={() => setShowEndInterviewDialog(false)}
+            />
+            <DialogActionButton
+              i18nKey='chat.dialog.end.confirm'
+              onPress={() => {
+                setState('completed');
+                setShowEndInterviewDialog(false);
+                handleContinue?.();
+              }}
+            />
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
       <KeyboardAvoidingView
         behavior='padding'
         keyboardVerticalOffset={quizHeaderHeight + navHeaderHeight}
         style={tw`flex-1`}
       >
-        <QuizChatMessages isThinking={isThinking}>
-          <QuizChatChips />
-        </QuizChatMessages>
-        <QuizChatInput onSendInput={handleSendInput} />
+        <QuizChatMessages
+          isThinking={status === 'submitted'}
+          messages={messages}
+        />
+        <QuizChatInput onSubmit={(text) => sendMessage({ text })} />
       </KeyboardAvoidingView>
     </>
   );
 }
 
-function QuizChatChips() {
-  const chips = useAtomValue(quizChatChipsAtom(useQuizPageAtomKey()));
-  console.log('chips', chips);
-  // TODO
-  return null;
-}
+// function QuizChatChips({
+//   availableChips,
+// }: {
+//   availableChips: QuizChatActionChip[];
+// }) {
+//   const chipIds = useAtomValue(useQuizChatChipsAtom());
+//
+//   if (chipIds.length === 0) {
+//     return null;
+//   }
+//
+//   return (
+//     <View style={tw`mt-2 flex-row flex-wrap gap-2`}>
+//       {availableChips
+//         .filter(({ id }) => chipIds.includes(id))
+//         .map(({ id, render }) => (
+//           <View key={id}>{render()}</View>
+//         ))}
+//     </View>
+//   );
+// }
 
-function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
+function QuizChatInput({ onSubmit }: { onSubmit: (value: string) => void }) {
   const t = useT();
   const ref = useRef<RNTextInput>(null);
   const theme = useTheme();
-  const [value, setValue] = useAtom(quizChatInputAtom(useQuizPageAtomKey()));
+  const [value, setValue] = useAtom(useQuizChatInputAtom());
 
   return (
     <TextInput
@@ -153,7 +181,7 @@ function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
       mode='outlined'
       multiline={true}
       onChangeText={setValue}
-      onSubmitEditing={onSendInput}
+      onSubmitEditing={(e) => onSubmit(e.nativeEvent.text)}
       outlineStyle={tw`rounded-3xl`}
       placeholder={t('chat.placeholder')}
       ref={ref}
@@ -161,7 +189,7 @@ function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
         <TextInput.Icon
           color={value ? theme.colors.primary : theme.colors.outline}
           icon={value ? 'arrow-up-circle' : 'microphone'}
-          onPress={value ? onSendInput : () => {}}
+          onPress={value ? () => onSubmit(value) : () => {}}
         />
       }
       style={tw.style(`m-2`, { backgroundColor: theme.colors.surface })}
@@ -173,33 +201,26 @@ function QuizChatInput({ onSendInput }: { onSendInput: () => void }) {
 function QuizChatMessages({
   children,
   isThinking,
-}: PropsWithChildren<{ isThinking: boolean }>) {
+  messages,
+}: PropsWithChildren<{ isThinking: boolean; messages: UIMessage[] }>) {
   const name = useAtomValue(nameAtom).first;
-  const baseMessages = useBaseMessages();
-  const messages = useAtomValue(quizChatMessagesAtom(useQuizPageAtomKey()));
   const scrollRef = useRef<ScrollView>(null);
-  useEffect(() => {
-    scrollRef.current?.scrollToEnd();
-  }, [messages]);
 
   return (
-    <ScrollView contentContainerStyle={tw`p-2`} ref={scrollRef}>
-      {baseMessages.map(({ content, role }, idx) => (
-        <ChatBubble
-          key={`base-${idx}`}
-          label={role === 'user' ? name : 'Migri'}
-          side={role === 'user' ? 'right' : 'left'}
-        >
-          {Array.isArray(content) ? content.join('\n') : content}
-        </ChatBubble>
-      ))}
-      {messages.map(({ id, role, text }) => (
+    <ScrollView
+      contentContainerStyle={tw`p-2`}
+      onContentSizeChange={() => {
+        scrollRef.current?.scrollToEnd();
+      }}
+      ref={scrollRef}
+    >
+      {messages.map(({ id, parts: _parts, role }) => (
         <ChatBubble
           key={id}
           label={role === 'user' ? name : 'Migri'}
           side={role === 'user' ? 'right' : 'left'}
         >
-          {role === 'user' ? text : <Markdown markdown={text} />}
+          {role === 'user' ? 'TODO TEXT' : <Markdown markdown={'TODO TEXT'} />}
         </ChatBubble>
       ))}
       {isThinking && (

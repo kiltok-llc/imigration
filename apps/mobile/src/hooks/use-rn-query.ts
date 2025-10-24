@@ -9,7 +9,7 @@ import {
 
 import { useRefreshOnFocus } from '@/hooks/use-refresh-on-focus';
 
-export const useQuery = <Q, E, D, K extends QueryKey>(
+export const useRefocusQuery = <Q, E, D, K extends QueryKey>(
   opts: UseQueryOptions<Q, E, D, K>
 ) => {
   const isFocused = useIsFocused();
@@ -24,7 +24,7 @@ export const useQuery = <Q, E, D, K extends QueryKey>(
   return result;
 };
 
-export const useSuspenseQuery = <Q, E, D, K extends QueryKey>(
+export const useRefocusSuspenseQuery = <Q, E, D, K extends QueryKey>(
   opts: UseSuspenseQueryOptions<Q, E, D, K>
 ) => {
   const isFocused = useIsFocused();

@@ -33,6 +33,7 @@ export default defineConfig([
     extends: [baseConfig],
     ignores: ['eslint.config.mjs'],
     rules: {
+      'turbo/no-undeclared-env-vars': 'off', // we use eas to build so turbo caching isn't a concern
       'unicorn/no-array-sort': 'off', // https://github.com/facebook/hermes/pull/1298
     },
   },

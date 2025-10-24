@@ -19,7 +19,6 @@ import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
-import { useEnsureDownloadCactusModels } from '@/lib/cactus';
 import { JotaiProvider } from '@/lib/jotai';
 import { defaultStorage } from '@/lib/mmkv';
 import { QueryProvider } from '@/lib/query';
@@ -75,7 +74,6 @@ export function RootLayout() {
                 <PaperProvider theme={theme}>
                   <ThemeProvider value={navigationTheme}>
                     <SplashScreenBarrier>
-                      <EnsureCactusModelsDownloaded />
                       <MigriPortal />
                       <Stack
                         screenOptions={{
@@ -93,12 +91,6 @@ export function RootLayout() {
       </QueryProvider>
     </DevMenuProvider>
   );
-}
-
-function EnsureCactusModelsDownloaded() {
-  useEnsureDownloadCactusModels();
-
-  return null;
 }
 
 export { ErrorFallback as ErrorBoundary } from '@/components/ui/error';

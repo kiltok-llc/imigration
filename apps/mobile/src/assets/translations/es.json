@@ -1961,7 +1961,6 @@
       "not-ready": "Por favor espera, Migri se está preparando para chatear contigo.",
       "init-error": "Se produjo un error al iniciar el chat. Por favor, inténtalo de nuevo más tarde.",
       "destroy-error": "Se produjo un error con el chat. Si continúas teniendo problemas, reinicia la aplicación.",
-      "init-loading": "Inicializando chat...",
       "chat-error": "Se produjo un error con el chat. Por favor, inténtalo de nuevo más tarde."
     },
     "menu": {

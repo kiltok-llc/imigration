@@ -1,17 +1,32 @@
 {
   "chat": {
+    "chips": {
+      "end-interview": "Finish Interview"
+    },
     "toast": {
       "download-error": "There was an error downloading AI models. Please try again later.",
       "not-ready": "Please wait, Migri is getting ready to chat with you.",
       "init-error": "There was an error initializing the chat. Please try again later.",
       "destroy-error": "There was an error with the chat. If you continue to have issues, please restart the app.",
-      "init-loading": "Initializing chat...",
       "chat-error": "There was an error with the chat. Please try again later."
     },
     "menu": {
       "reset": "Reset chat"
     },
+    "dialog": {
+      "end": {
+        "confirm": "End Interview",
+        "cancel": "Cancel",
+        "subtitle": "Ready to end the interview now?",
+        "description": "Your progress will be saved, and you can always return to add more details later.",
+        "title": "Finish Interview"
+      }
+    },
     "placeholder": "Chat with Migri..."
+  },
+  "confirmation-dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "permission": {
     "camera": {

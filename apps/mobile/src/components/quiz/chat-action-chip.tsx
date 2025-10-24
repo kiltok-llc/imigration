@@ -1,10 +1,11 @@
 import { PropsWithChildren, ReactNode } from 'react';
 
 export function QuizChatActionChip({
-  description,
-  id,
-  name,
-  render,
+  // description,
+  // id,
+  // name,
+  // render,
+  ..._props
 }: {
   description: string;
   id: string;

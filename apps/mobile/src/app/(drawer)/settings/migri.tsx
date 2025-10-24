@@ -11,7 +11,7 @@ import {
   SettingsSection,
 } from '@/components/settings';
 import { Trans } from '@/components/trans';
-import { useQuery } from '@/hooks/use-rn-query';
+import { useRefocusQuery } from '@/hooks/use-rn-query';
 import { isMigriTriggersEnabledAtom, migriVoiceAtom } from '@/lib/migri';
 import { useSettingsPath } from '@/lib/settings';
 import { useT } from '@/lib/translation';
@@ -21,7 +21,7 @@ export default function Migri() {
     i18n: { language },
   } = useTranslation();
   const path = useSettingsPath();
-  const { data: voices = [] } = useQuery({
+  const { data: voices = [] } = useRefocusQuery({
     meta: {
       errorToastKey: `${path}.toast.voices-error`,
     },

@@ -11,29 +11,24 @@ import { clearMMKVKeys } from '@/lib/utils';
 
 const atoms = new Map<string, ReturnType<typeof atomFamily>>();
 
+export type QuizPageAtomKey = {
+  pageId: string;
+  pageKey: string;
+  screen: string;
+  screenKey: string;
+  service: string;
+  step: string;
+};
+
 export const quizPageAtomFamily = <T>(
   key: string,
   schema: z.ZodType<T>,
   initialValue: T
 ) => {
   const family = atomFamily(
-    ({
-      pageId,
-      pageKey,
-      screen,
-      screenKey,
-      service,
-      step,
-    }: {
-      pageId: string;
-      pageKey: string;
-      screen: string;
-      screenKey: string;
-      service: string;
-      step: string;
-    }) =>
+    (pageAtomKey: QuizPageAtomKey) =>
       atomWithMmkvStorage(
-        `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:${key}`,
+        getQuizPageAtomId(pageAtomKey, key),
         initialValue,
         schema,
         defaultStorage
@@ -45,6 +40,12 @@ export const quizPageAtomFamily = <T>(
 
   return family;
 };
+
+export const getQuizPageAtomId = (
+  { pageId, pageKey, screen, screenKey, service, step }: QuizPageAtomKey,
+  key: string
+) =>
+  `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:${key}`;
 
 export const useQuizPageAtomKey = () => {
   const [_services, service = '', step = '', ...screens] = useLocalSegments();

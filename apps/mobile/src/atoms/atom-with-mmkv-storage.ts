@@ -8,7 +8,7 @@ const createMMKVStorage = <Value>(
   storage: MMKV,
   schema: z.ZodType<Value>
 ): SyncStorage<Value> => ({
-  getItem(key, initialValue) {
+  getItem: (key, initialValue) => {
     const str = storage.getString(key);
     // console.debug(`storage.getItem(${key}) = ${str}`);
 
@@ -39,11 +39,11 @@ const createMMKVStorage = <Value>(
 
     return data;
   },
-  removeItem(key) {
+  removeItem: (key) => {
     // console.debug(`storage.removeItem(${key})`);
     storage.delete(key);
   },
-  setItem(key, value) {
+  setItem: (key, value) => {
     const { error } = schema.safeParse(value);
     if (error) {
       console.warn(
@@ -68,7 +68,7 @@ const createMMKVStorage = <Value>(
     // console.debug(`storage.setItem(${key}, ${str})`);
     storage.set(key, str);
   },
-  subscribe(key, callback) {
+  subscribe: (key, callback) => {
     const listener = storage.addOnValueChangedListener((changedKey) => {
       if (changedKey !== key) {
         return;
@@ -78,7 +78,7 @@ const createMMKVStorage = <Value>(
       // console.debug(`storage.subscribe(${key}) = ${str}`);
       if (str === undefined) {
         console.debug(
-          `MMKV value with key: ${key} was deleted, but subscription was active!`
+          `MMKV value with key: ${key} was deleted, but subscription is active!`
         );
         return;
       }

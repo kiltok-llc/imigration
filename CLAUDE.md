@@ -19,73 +19,31 @@ This is a monorepo containing an immigration services platform with a Next.js we
 - `pnpm build:check` — type-check all packages (Next lint + tsc for each workspace)
 - `pnpm clean` — clean all build artifacts and node_modules
 
-### Mobile App (`apps/mobile`)
+### Package-specific Commands
 
-- `pnpm --filter @repo/mobile dev` — start Expo development server
-- `pnpm --filter @repo/mobile dev:ios` — start Expo on iOS simulator
-- `pnpm --filter @repo/mobile dev:android` — start Expo on Android emulator
-- `pnpm --filter @repo/mobile build:check` — type-check mobile app
-- `pnpm --filter @repo/mobile ios` — run iOS app natively
-- `pnpm --filter @repo/mobile android` — run Android app natively
+For package-specific commands, see the CLAUDE.md file in each package directory:
 
-### Web Platform (`apps/platform`)
+- Mobile app: `apps/mobile/CLAUDE.md`
+- Web platform: `apps/platform/` (no specific CLAUDE.md yet)
+- Supabase: `packages/supabase/` (no specific CLAUDE.md yet)
 
-- `pnpm --filter @repo/platform dev` — start Next.js dev server with Turbopack
-- `pnpm --filter @repo/platform build` — build Next.js production bundle
-- `pnpm --filter @repo/platform build:check` — run Next lint and type-check
-
-### Supabase (`packages/supabase`)
-
-- `pnpm --filter @repo/supabase dev` — start local Supabase instance
-- `pnpm --filter @repo/supabase db:reset` — reset local database
-- `pnpm --filter @repo/supabase db:test` — run database tests
-- `pnpm --filter @repo/supabase db:diff` — show schema differences
-- `pnpm --filter @repo/supabase types:write` — regenerate TypeScript types from database schema (MUST run after schema changes)
-- `pnpm --filter @repo/supabase migrations:push` — push migrations to remote
-- `pnpm --filter @repo/supabase config:push` — push config to remote
-
-## Architecture
-
-### Monorepo Structure
+## Monorepo Structure
 
 **Apps:**
 
 - `apps/mobile` — React Native (Expo Router) mobile application
-  - Routes: `src/app/` using Expo Router file-based routing
-  - State: `src/atoms/` using Jotai for state management
-  - Components: `src/components/` with reusable UI components
-  - Hooks: `src/hooks/` for custom React hooks
-  - i18n: `src/i18n.ts` using react-i18next for internationalization
-  - Styling: Tailwind via `twrnc` library
-
 - `apps/platform` — Next.js 15 web application
-  - Routes: `src/app/` using Next.js App Router
-  - Components: `src/components/ui/` for shared UI components
-  - Server Actions: `src/actions/` for Next.js server actions
-  - Data fetching: `src/queries/` for data access patterns
-  - Lib utilities: `src/lib/` for shared utilities
-  - Styling: Tailwind CSS v4
 
 **Packages:**
 
 - `packages/api` — tRPC router and API procedures
-  - Exports type-safe API router with `appRouter` from `src/index.ts`
-  - tRPC context and configuration in `src/trpc.ts`
-  - Currently minimal, but intended for shared backend logic
-
 - `packages/supabase` — Database layer and Supabase tooling
-  - SQL migrations: `migrations/` directory
-  - Seed data: `seed.sql`
-  - Generated TypeScript types: `gen/database.types.ts` (auto-generated, don't edit manually)
-  - Helper utilities: `src/` directory
-  - Supabase config: `config.toml`
-  - Scripts: `scripts/` for database management utilities
 
 **Tooling:**
 
 - `tooling/*` — Shared ESLint, Prettier, and TypeScript configurations
 
-### Technology Stack
+## Technology Stack
 
 - **Package Manager:** pnpm with workspace protocol for internal packages
 - **Build System:** Turborepo for task caching and orchestration
@@ -104,14 +62,14 @@ This is a monorepo containing an immigration services platform with a Next.js we
 - **Testing:** Database tests via `supabase db test`
 - **i18n:** react-i18next (mobile), Next.js i18n (web)
 
-### Important Patterns
+## Important Patterns
 
-**Import Aliases:**
+### Import Aliases
 
 - Use `@/` alias for imports within each app (resolves to `src/`)
 - Use workspace protocol for package imports: `@repo/api`, `@repo/supabase`
 
-**Database Workflow:**
+### Database Workflow
 
 1. Make schema changes in `packages/supabase/migrations/`
 2. Run `pnpm --filter @repo/supabase db:reset` to apply locally
@@ -120,19 +78,13 @@ This is a monorepo containing an immigration services platform with a Next.js we
 5. Use `db:diff` to verify changes before pushing
 6. Push to remote with `migrations:push` or `config:push`
 
-**tRPC Usage:**
+### tRPC Usage
 
 - Define procedures in `packages/api/src/index.ts`
 - Mobile and web apps import the router and get full type safety
 - Use react-query integration via `@trpc/tanstack-react-query`
 
-**Mobile Navigation:**
-
-- Expo Router uses file-based routing in `apps/mobile/src/app/`
-- Onboarding flow controlled by `isOnboardingCompleteAtom`
-- Service-specific routes under `/services/[serviceId]/`
-
-**Shared Dependencies:**
+### Shared Dependencies
 
 - Both apps share `@repo/supabase` for database types and utilities
 - Both apps share `@repo/api` for tRPC procedures
@@ -164,3 +116,11 @@ Environment variables are validated using `@t3-oss/env-core` (mobile) and `@t3-o
 - **pnpm:** >=10.11.1 (specified as packageManager)
 - **React:** v19.1.0 (using react19 catalog)
 - **Patches:** Some dependencies are patched (see `patches/` and `pnpm-workspace.yaml` patchedDependencies)
+
+## Testing Guidelines
+
+Automated tests are minimal today, so rely on `pnpm build:check` and `lint:check` before every PR. Database changes must be accompanied by a passing `pnpm --filter @repo/supabase db:test`. When adding new suites, colocate `*.test.ts(x)` beside the code, keep them deterministic, and wire a Turbo task so `pnpm turbo run test` can scale across apps.
+
+## Commit & Pull Request Guidelines
+
+Follow Conventional Commits (`feat:`, `fix:`, `chore:`) to satisfy commitlint and keep history searchable. Scope changes narrowly, update Supabase types with `pnpm --filter @repo/supabase types:write` after schema edits, and ensure screenshots or recordings accompany UI-facing PRs. Keep PR descriptions concise, list affected packages, and link tracking issues when available.

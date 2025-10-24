@@ -33,5 +33,4 @@ onlyBuiltDependencies:
 
 patchedDependencies:
   react-native-reanimated: patches/react-native-reanimated.patch
-  cactus-react-native: patches/cactus-react-native.patch
   react-native-paper: patches/react-native-paper.patch
