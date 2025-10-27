@@ -26,6 +26,7 @@ import { QuizFieldTitle, QuizPageTitle } from '@/components/quiz/label';
 import { QuizPage, QuizPageProps } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
+import { SexEnum } from '@/lib/data/schema';
 import {
   siblingDobAtom,
   siblingIdsAtom,
@@ -34,7 +35,6 @@ import {
   siblingSexAtom,
 } from '@/lib/data/sibling';
 import { nameAtom } from '@/lib/data/user';
-import { SexEnum } from '@/lib/schemas';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required, stretchTo } from '@/lib/utils';
 

@@ -1,7 +1,7 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
@@ -11,7 +11,7 @@ import tw from 'twrnc';
 
 import { useQuizPageHandle } from '@/components/quiz/page';
 import { TransText } from '@/components/trans';
-import { ChatBubble, ChatThinkingDots } from '@/components/ui/chat';
+import { ChatMessage, ChatThinkingDots } from '@/components/ui/chat';
 import {
   Dialog,
   DialogActionButton,
@@ -22,7 +22,8 @@ import {
   HeaderMenuItem,
   HeaderMenuItemPortal,
 } from '@/components/ui/header-menu';
-import { UIMessage, useChat } from '@/lib/chat';
+import { UIMessage } from '@/lib/chat/schema';
+import { useChat } from '@/lib/chat/use-chat';
 import { nameAtom } from '@/lib/data/user';
 import { useQuizActions } from '@/lib/quiz/actions';
 import {
@@ -67,8 +68,10 @@ export function QuizChat({
   const chatId = getQuizPageAtomId(useQuizPageAtomKey(), 'chat');
   const { messages, sendMessage, setMessages, status } = useChat({
     id: chatId,
-    messages: [...baseMessages, ...persistedMessages],
-    resume: true,
+    // messages: [...baseMessages, ...persistedMessages],
+    messages: persistedMessages,
+    onData: (data) => console.log('data', data),
+    onFinish: () => console.log('finished'),
   });
 
   const handleReset = () => {
@@ -141,7 +144,12 @@ export function QuizChat({
           isThinking={status === 'submitted'}
           messages={messages}
         />
-        <QuizChatInput onSubmit={(text) => sendMessage({ text })} />
+        <QuizChatInput
+          onSubmit={(text) => {
+            setInput('');
+            void sendMessage({ text });
+          }}
+        />
       </KeyboardAvoidingView>
     </>
   );
@@ -203,7 +211,6 @@ function QuizChatMessages({
   isThinking,
   messages,
 }: PropsWithChildren<{ isThinking: boolean; messages: UIMessage[] }>) {
-  const name = useAtomValue(nameAtom).first;
   const scrollRef = useRef<ScrollView>(null);
 
   return (
@@ -214,20 +221,9 @@ function QuizChatMessages({
       }}
       ref={scrollRef}
     >
-      {messages.map(({ id, parts: _parts, role }) => (
-        <ChatBubble
-          key={id}
-          label={role === 'user' ? name : 'Migri'}
-          side={role === 'user' ? 'right' : 'left'}
-        >
-          {role === 'user' ? 'TODO TEXT' : <Markdown markdown={'TODO TEXT'} />}
-        </ChatBubble>
+      {messages.map((message) => (
+        <ChatMessage key={message.id} message={message} />
       ))}
-      {isThinking && (
-        <ChatBubble label='Migri' side='left'>
-          <ChatThinkingDots />
-        </ChatBubble>
-      )}
       {children}
     </ScrollView>
   );

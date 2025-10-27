@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { attachmentAtom } from '@/atoms/attachment-atom';
 import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
@@ -11,20 +11,21 @@ import {
   DEFAULT_PASSPORT,
   DEFAULT_SSN,
   DEFAULT_USCIS_NUMBER,
+  ImmigrationCourtStatusEnum,
   JobSchema,
   LocationSchema,
   NameSchema,
   PassportSchema,
   RangeSchema,
   SchoolInfoSchema,
+  SexEnum,
   SsnSchema,
   UsaEntrySchema,
   UscisNumberSchema,
 } from '@/lib/data/schema';
 import { defaultStorage } from '@/lib/mmkv';
-import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schemas';
 
-export const entriesAtom = atomWithMmkvStorage(
+export const entriesAtom = atomWithMMKVZod(
   'entries',
   [],
   z.array(UsaEntrySchema),
@@ -45,70 +46,70 @@ export const firstEntryAtom = atom(
       .sort(({ date: a }, { date: b }) => a!.getTime() - b!.getTime())[0]
 );
 
-export const alienNumberAtom = atomWithMmkvStorage(
+export const alienNumberAtom = atomWithMMKVZod(
   'alien-number',
   '',
   AlienNumberSchema,
   defaultStorage
 );
 
-export const statusExpirationAtom = atomWithMmkvStorage(
+export const statusExpirationAtom = atomWithMMKVZod(
   'status-expiration',
   null,
   z.date().nullable(),
   defaultStorage
 );
 
-export const immigrationCourtStatusAtom = atomWithMmkvStorage(
+export const immigrationCourtStatusAtom = atomWithMMKVZod(
   'immigration-court-status',
   null,
   ImmigrationCourtStatusEnum.nullable(),
   defaultStorage
 );
 
-export const nameAtom = atomWithMmkvStorage(
+export const nameAtom = atomWithMMKVZod(
   'name',
   DEFAULT_FORM_NAME,
   NameSchema,
   defaultStorage
 );
 
-export const maidenNameAtom = atomWithMmkvStorage(
+export const maidenNameAtom = atomWithMMKVZod(
   'maiden-name',
   '',
   z.string(),
   defaultStorage
 );
 
-export const otherNamesAtom = atomWithMmkvStorage(
+export const otherNamesAtom = atomWithMMKVZod(
   'other-names',
   [],
   z.array(z.string()),
   defaultStorage
 );
 
-export const aliasesAtom = atomWithMmkvStorage(
+export const aliasesAtom = atomWithMMKVZod(
   'aliases',
   [],
   z.array(z.string()),
   defaultStorage
 );
 
-export const passportAtom = atomWithMmkvStorage(
+export const passportAtom = atomWithMMKVZod(
   'passport',
   DEFAULT_PASSPORT,
   PassportSchema,
   defaultStorage
 );
 
-export const addressesAtom = atomWithMmkvStorage(
+export const addressesAtom = atomWithMMKVZod(
   'addresses',
   [],
   z.array(z.intersection(AddressSchema, RangeSchema)),
   defaultStorage
 );
 
-export const persecutionCountryAtom = atomWithMmkvStorage(
+export const persecutionCountryAtom = atomWithMMKVZod(
   'persecution-country',
   '',
   z.string(),
@@ -126,56 +127,56 @@ export const mostRecentInternalAddressAtom = atom((get) =>
 
 export const usaAddressAtom = atom((get) => get(addressesAtom)[0]);
 
-export const mailingAddressAtom = atomWithMmkvStorage(
+export const mailingAddressAtom = atomWithMMKVZod(
   'mailing-address',
   null,
   AddressSchema.nullable(),
   defaultStorage
 );
 
-export const jobHistorySchema = atomWithMmkvStorage(
+export const jobHistorySchema = atomWithMMKVZod(
   'job-history',
   [],
   z.array(JobSchema),
   defaultStorage
 );
 
-export const sexAtom = atomWithMmkvStorage(
+export const sexAtom = atomWithMMKVZod(
   'sex',
   null,
   SexEnum.nullable(),
   defaultStorage
 );
 
-export const nationalityAtom = atomWithMmkvStorage(
+export const nationalityAtom = atomWithMMKVZod(
   'nationality',
   '',
   z.string(),
   defaultStorage
 );
 
-export const ethnicityAtom = atomWithMmkvStorage(
+export const ethnicityAtom = atomWithMMKVZod(
   'ethnicity',
   '',
   z.string(),
   defaultStorage
 );
 
-export const religionAtom = atomWithMmkvStorage(
+export const religionAtom = atomWithMMKVZod(
   'religion',
   '',
   z.string(),
   defaultStorage
 );
 
-export const birthNationalityAtom = atomWithMmkvStorage(
+export const birthNationalityAtom = atomWithMMKVZod(
   'birth-nationality',
   '',
   z.string(),
   defaultStorage
 );
 
-export const birthLocationAtom = atomWithMmkvStorage(
+export const birthLocationAtom = atomWithMMKVZod(
   'birth-location',
   DEFAULT_LOCATION,
   LocationSchema,
@@ -185,14 +186,14 @@ export const birthLocationAtom = atomWithMmkvStorage(
 export const birthCertificateAttachmentAtom =
   attachmentAtom('birth-certificate');
 
-export const englishAtom = atomWithMmkvStorage(
+export const englishAtom = atomWithMMKVZod(
   'english',
   false,
   z.boolean(),
   defaultStorage
 );
 
-export const nativeLanguageAtom = atomWithMmkvStorage(
+export const nativeLanguageAtom = atomWithMMKVZod(
   'native-language',
   { dialect: '', language: '' },
   z.object({
@@ -202,49 +203,49 @@ export const nativeLanguageAtom = atomWithMmkvStorage(
   defaultStorage
 );
 
-export const otherLanguagesAtom = atomWithMmkvStorage(
+export const otherLanguagesAtom = atomWithMMKVZod(
   'other-languages',
   [],
   z.array(z.string()),
   defaultStorage
 );
 
-export const dobAtom = atomWithMmkvStorage(
+export const dobAtom = atomWithMMKVZod(
   'dob',
   null,
   z.date().nullable(),
   defaultStorage
 );
 
-export const ssnAtom = atomWithMmkvStorage(
+export const ssnAtom = atomWithMMKVZod(
   'ssn',
   DEFAULT_SSN,
   SsnSchema,
   defaultStorage
 );
 
-export const uscisNumberAtom = atomWithMmkvStorage(
+export const uscisNumberAtom = atomWithMMKVZod(
   'uscis-number',
   DEFAULT_USCIS_NUMBER,
   UscisNumberSchema,
   defaultStorage
 );
 
-export const phoneNumberAtom = atomWithMmkvStorage(
+export const phoneNumberAtom = atomWithMMKVZod(
   'phone-number',
   '',
   z.string(),
   defaultStorage
 );
 
-export const schoolInfoAtom = atomWithMmkvStorage(
+export const schoolInfoAtom = atomWithMMKVZod(
   'school-info',
   [],
   z.array(SchoolInfoSchema),
   defaultStorage
 );
 
-export const emailAtom = atomWithMmkvStorage(
+export const emailAtom = atomWithMMKVZod(
   'email',
   '',
   z.string(),

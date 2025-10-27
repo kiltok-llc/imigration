@@ -1,7 +1,5 @@
 import z from 'zod/v4';
 
-import { SchoolLevelEnum } from '@/lib/schemas';
-
 export const AlienNumberSchema = z.string();
 
 export const DEFAULT_ALIEN_NUMBER = '';
@@ -82,6 +80,24 @@ export const JobSchema = z.object({
 
 export const DEFAULT_JOB = JobSchema.parse({});
 
+export const SexEnum = z.enum(['male', 'female']);
+export const SchoolLevelEnum = z.enum([
+  'primary',
+  'secondary',
+  'vocational',
+  'university',
+]);
+export const MaritalStatusEnum = z.enum([
+  'single',
+  'married',
+  'divorced',
+  'widowed',
+]);
+export const ImmigrationCourtStatusEnum = z.enum([
+  'previously',
+  'currently',
+  'never',
+]);
 export const SchoolInfoSchema = z.object({
   address: AddressSchema.default(DEFAULT_ADDRESS),
   level: SchoolLevelEnum.nullable().default(null),

@@ -1,7 +1,7 @@
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { attachmentAtom } from '@/atoms/attachment-atom';
 import {
   AddressSchema,
@@ -12,16 +12,17 @@ import {
   DEFAULT_PASSPORT,
   DEFAULT_SSN,
   DEFAULT_USCIS_NUMBER,
+  ImmigrationCourtStatusEnum,
   NameSchema,
   PassportSchema,
+  SexEnum,
   SsnSchema,
   UsaEntrySchema,
   UscisNumberSchema,
 } from '@/lib/data/schema';
 import { defaultStorage } from '@/lib/mmkv';
-import { ImmigrationCourtStatusEnum, SexEnum } from '@/lib/schemas';
 
-export const childIdsAtom = atomWithMmkvStorage(
+export const childIdsAtom = atomWithMMKVZod(
   `child-ids`,
   [],
   z.array(z.uuid()),
@@ -29,20 +30,15 @@ export const childIdsAtom = atomWithMmkvStorage(
 );
 
 export const childDobAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
-    `child:${id}:dob`,
-    null,
-    z.date().nullable(),
-    defaultStorage
-  )
+  atomWithMMKVZod(`child:${id}:dob`, null, z.date().nullable(), defaultStorage)
 );
 
 export const childEthnicityAtom = atomFamily((id) =>
-  atomWithMmkvStorage(`child:${id}:ethnicity`, '', z.string(), defaultStorage)
+  atomWithMMKVZod(`child:${id}:ethnicity`, '', z.string(), defaultStorage)
 );
 
 export const childAlienNumberAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:alien-number`,
     DEFAULT_ALIEN_NUMBER,
     AlienNumberSchema,
@@ -51,7 +47,7 @@ export const childAlienNumberAtom = atomFamily((id) =>
 );
 
 export const childEntriesAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:entries`,
     [],
     z.array(UsaEntrySchema),
@@ -60,7 +56,7 @@ export const childEntriesAtom = atomFamily((id) =>
 );
 
 export const childStatusExpirationAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:status-expiration`,
     null,
     z.date().nullable(),
@@ -69,7 +65,7 @@ export const childStatusExpirationAtom = atomFamily((id) =>
 );
 
 export const childIsInUsaAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:is-in-usa`,
     null,
     z.boolean().nullable(),
@@ -78,7 +74,7 @@ export const childIsInUsaAtom = atomFamily((id) =>
 );
 
 export const childImmigrationCourtStatusAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:immigration-court-status`,
     null,
     ImmigrationCourtStatusEnum.nullable(),
@@ -87,16 +83,11 @@ export const childImmigrationCourtStatusAtom = atomFamily((id) =>
 );
 
 export const childNameAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
-    `child:${id}:name`,
-    DEFAULT_NAME,
-    NameSchema,
-    defaultStorage
-  )
+  atomWithMMKVZod(`child:${id}:name`, DEFAULT_NAME, NameSchema, defaultStorage)
 );
 
 export const childPassportAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:passport`,
     DEFAULT_PASSPORT,
     PassportSchema,
@@ -105,20 +96,15 @@ export const childPassportAtom = atomFamily((id) =>
 );
 
 export const childSexAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
-    `child:${id}:sex`,
-    null,
-    SexEnum.nullable(),
-    defaultStorage
-  )
+  atomWithMMKVZod(`child:${id}:sex`, null, SexEnum.nullable(), defaultStorage)
 );
 
 export const childSsnAtom = atomFamily((id) =>
-  atomWithMmkvStorage(`child:${id}:ssn`, DEFAULT_SSN, SsnSchema, defaultStorage)
+  atomWithMMKVZod(`child:${id}:ssn`, DEFAULT_SSN, SsnSchema, defaultStorage)
 );
 
 export const childUscisNumberAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:uscis-number`,
     DEFAULT_USCIS_NUMBER,
     UscisNumberSchema,
@@ -127,7 +113,7 @@ export const childUscisNumberAtom = atomFamily((id) =>
 );
 
 export const childLivesInUsaAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:lives-in-uds`,
     null,
     z.boolean().nullable(),
@@ -136,7 +122,7 @@ export const childLivesInUsaAtom = atomFamily((id) =>
 );
 
 export const childBirthCertificateAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:birth-certificate`,
     '',
     z.string(),
@@ -145,7 +131,7 @@ export const childBirthCertificateAtom = atomFamily((id) =>
 );
 
 export const childAddressAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `child:${id}:address`,
     DEFAULT_ADDRESS,
     AddressSchema,

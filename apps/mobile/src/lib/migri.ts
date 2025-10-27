@@ -1,32 +1,32 @@
 import { atom, getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import i18n from '@/i18n';
 import { defaultStorage } from '@/lib/mmkv';
 
-export const migriVoiceAtom = atomWithMmkvStorage(
+export const migriVoiceAtom = atomWithMMKVZod(
   'migri:voice',
   null,
   z.string().nullable(),
   defaultStorage
 );
 
-export const isMigriTriggersEnabledAtom = atomWithMmkvStorage(
+export const isMigriTriggersEnabledAtom = atomWithMMKVZod(
   'migri:triggers-enabled',
   true,
   z.boolean(),
   defaultStorage
 );
 
-export const isMigriSpeechEnabledAtom = atomWithMmkvStorage(
+export const isMigriSpeechEnabledAtom = atomWithMMKVZod(
   'migri:speech-enabled',
   false,
   z.boolean(),
   defaultStorage
 );
 
-export const migriCompletedEncounterIds = atomWithMmkvStorage<Set<string>>(
+export const migriCompletedEncounterIds = atomWithMMKVZod<Set<string>>(
   'migri:completed-encounter-ids',
   new Set(),
   z.set(z.string()),

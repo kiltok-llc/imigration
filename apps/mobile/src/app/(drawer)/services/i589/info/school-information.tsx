@@ -27,9 +27,8 @@ import { QuizPage } from '@/components/quiz/page';
 import { QuizRadioItem } from '@/components/quiz/radio';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
-import { DEFAULT_SCHOOL_INFO } from '@/lib/data/schema';
+import { DEFAULT_SCHOOL_INFO, SchoolLevelEnum } from '@/lib/data/schema';
 import { schoolInfoAtom } from '@/lib/data/user';
-import { SchoolLevelEnum } from '@/lib/schemas';
 import { required } from '@/lib/utils';
 
 export default function SchoolInformation() {

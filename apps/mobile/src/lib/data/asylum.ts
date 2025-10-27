@@ -1,51 +1,51 @@
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { defaultStorage } from '@/lib/mmkv';
 
-export const lateApplicationDetailsAtom = atomWithMmkvStorage(
+export const lateApplicationDetailsAtom = atomWithMMKVZod(
   'late-application-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const harmDetailsAtom = atomWithMmkvStorage(
+export const harmDetailsAtom = atomWithMMKVZod(
   'harm-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const fearDetailsAtom = atomWithMmkvStorage(
+export const fearDetailsAtom = atomWithMMKVZod(
   'fear-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const fearOfTortureDetailsAtom = atomWithMmkvStorage(
+export const fearOfTortureDetailsAtom = atomWithMMKVZod(
   'fear-of-torture-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const internationalCriminalHistoryDetailsAtom = atomWithMmkvStorage(
+export const internationalCriminalHistoryDetailsAtom = atomWithMMKVZod(
   'international-criminal-history-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const pastOrganizationalAffiliationsDetailsAtom = atomWithMmkvStorage(
+export const pastOrganizationalAffiliationsDetailsAtom = atomWithMMKVZod(
   'past-organizational-affiliations-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const currentOrganizationalAffiliationsDetailsAtom = atomWithMmkvStorage(
+export const currentOrganizationalAffiliationsDetailsAtom = atomWithMMKVZod(
   'current-organizational-affiliations-details',
   '',
   z.string(),
@@ -61,63 +61,63 @@ export const AsylumReasonEnum = z.enum([
   'torture',
 ]);
 
-export const reasonsForAsylumAtom = atomWithMmkvStorage(
+export const reasonsForAsylumAtom = atomWithMMKVZod(
   'reasons-for-asylum',
   [],
   z.array(AsylumReasonEnum),
   defaultStorage
 );
 
-export const hasPreviousApplicationsAtom = atomWithMmkvStorage(
+export const hasPreviousApplicationsAtom = atomWithMMKVZod(
   'has-previous-applications',
   null,
   z.boolean().nullable(),
   defaultStorage
 );
 
-export const previousApplicationDetailsAtom = atomWithMmkvStorage(
+export const previousApplicationDetailsAtom = atomWithMMKVZod(
   'previous-application-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const internationalImmigrationHistoryDetailsAtom = atomWithMmkvStorage(
+export const internationalImmigrationHistoryDetailsAtom = atomWithMMKVZod(
   'international-immigration-history-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const harmParticipationDetailsAtom = atomWithMmkvStorage(
+export const harmParticipationDetailsAtom = atomWithMMKVZod(
   'harm-participation-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const returnToCountryDetailsAtom = atomWithMmkvStorage(
+export const returnToCountryDetailsAtom = atomWithMMKVZod(
   'return-to-country-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const criminalHistoryDetailsAtom = atomWithMmkvStorage(
+export const criminalHistoryDetailsAtom = atomWithMMKVZod(
   'criminal-history-details',
   '',
   z.string(),
   defaultStorage
 );
 
-export const criminalHistoryDocuments = atomWithMmkvStorage(
+export const criminalHistoryDocuments = atomWithMMKVZod(
   'criminal-history-documents',
   [],
   z.array(z.string()),
   defaultStorage
 );
 
-export const criminalHistoryDocumentDetailsAtom = atomWithMmkvStorage(
+export const criminalHistoryDocumentDetailsAtom = atomWithMMKVZod(
   'criminal-history-document-details',
   '',
   z.string(),

@@ -1,39 +1,42 @@
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { DEFAULT_LOCATION, LocationSchema } from '@/lib/data/schema';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
+import {
+  DEFAULT_LOCATION,
+  LocationSchema,
+  MaritalStatusEnum,
+} from '@/lib/data/schema';
 import { defaultStorage } from '@/lib/mmkv';
-import { MaritalStatusEnum } from '@/lib/schemas';
 
-export const maritalStatusAtom = atomWithMmkvStorage(
+export const maritalStatusAtom = atomWithMMKVZod(
   'marital-status',
   null,
   MaritalStatusEnum.nullable(),
   defaultStorage
 );
 
-export const marriageCertificateAtom = atomWithMmkvStorage(
+export const marriageCertificateAtom = atomWithMMKVZod(
   'marriage-certificate',
   '',
   z.string(),
   defaultStorage
 );
 
-export const marriageLocationAtom = atomWithMmkvStorage(
+export const marriageLocationAtom = atomWithMMKVZod(
   'marriage-location',
   DEFAULT_LOCATION,
   LocationSchema,
   defaultStorage
 );
 
-export const marriageDateAtom = atomWithMmkvStorage(
+export const marriageDateAtom = atomWithMMKVZod(
   'marriage-date',
   null,
   z.date().nullable(),
   defaultStorage
 );
 
-export const divorceDateAtom = atomWithMmkvStorage(
+export const divorceDateAtom = atomWithMMKVZod(
   'divorce-date',
   null,
   z.date().nullable(),

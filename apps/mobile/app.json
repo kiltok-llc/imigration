@@ -5,7 +5,7 @@
   "slug": "imigration",
   "web": {
     "bundler": "metro",
-    "output": "static",
+    "output": "server",
     "favicon": "./src/assets/favicon.png"
   },
   "plugins": [

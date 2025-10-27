@@ -2,7 +2,7 @@ import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { useQuizPageId, useQuizPageKey } from '@/components/quiz/page';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
@@ -27,7 +27,7 @@ export const quizPageAtomFamily = <T>(
 ) => {
   const family = atomFamily(
     (pageAtomKey: QuizPageAtomKey) =>
-      atomWithMmkvStorage(
+      atomWithMMKVZod(
         getQuizPageAtomId(pageAtomKey, key),
         initialValue,
         schema,

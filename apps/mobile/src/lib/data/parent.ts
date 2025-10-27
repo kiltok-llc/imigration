@@ -1,7 +1,7 @@
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { DEFAULT_FORM_NAME } from '@/components/form/name';
 import {
   AddressSchema,
@@ -13,7 +13,7 @@ import {
 import { defaultStorage } from '@/lib/mmkv';
 
 export const parentAliveAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `parent:${id}:alive`,
     null,
     z.boolean().nullable(),
@@ -22,7 +22,7 @@ export const parentAliveAtom = atomFamily((id) =>
 );
 
 export const parentNameAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `parent:${id}:name`,
     DEFAULT_FORM_NAME,
     NameSchema,
@@ -31,7 +31,7 @@ export const parentNameAtom = atomFamily((id) =>
 );
 
 export const parentAddressAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `parent:${id}:address`,
     DEFAULT_ADDRESS,
     AddressSchema,
@@ -40,7 +40,7 @@ export const parentAddressAtom = atomFamily((id) =>
 );
 
 export const parentBirthLocation = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `parent:${id}:birth-location`,
     DEFAULT_LOCATION,
     LocationSchema,

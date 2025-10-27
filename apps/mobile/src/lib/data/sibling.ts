@@ -1,13 +1,12 @@
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { DEFAULT_FORM_NAME } from '@/components/form/name';
-import { NameSchema } from '@/lib/data/schema';
+import { NameSchema, SexEnum } from '@/lib/data/schema';
 import { defaultStorage } from '@/lib/mmkv';
-import { SexEnum } from '@/lib/schemas';
 
-export const siblingIdsAtom = atomWithMmkvStorage(
+export const siblingIdsAtom = atomWithMMKVZod(
   `sibling-ids`,
   [],
   z.array(z.uuid()),
@@ -15,7 +14,7 @@ export const siblingIdsAtom = atomWithMmkvStorage(
 );
 
 export const siblingNameAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `sibling:${id}:name`,
     DEFAULT_FORM_NAME,
     NameSchema,
@@ -24,16 +23,11 @@ export const siblingNameAtom = atomFamily((id) =>
 );
 
 export const siblingSexAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
-    `sibling:${id}:sex`,
-    null,
-    SexEnum.nullable(),
-    defaultStorage
-  )
+  atomWithMMKVZod(`sibling:${id}:sex`, null, SexEnum.nullable(), defaultStorage)
 );
 
 export const siblingDobAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `sibling:${id}:dob`,
     null,
     z.date().nullable(),
@@ -42,7 +36,7 @@ export const siblingDobAtom = atomFamily((id) =>
 );
 
 export const siblingLivesInUsaAtom = atomFamily((id) =>
-  atomWithMmkvStorage(
+  atomWithMMKVZod(
     `sibling:${id}:lives-in-usa`,
     null,
     z.boolean().nullable(),

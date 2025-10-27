@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { defaultStorage } from '@/lib/mmkv';
 
 export const I589StepEnum = z.enum([
@@ -15,7 +15,7 @@ export const I589StepEnum = z.enum([
   'appeal',
 ]);
 export type I589Step = z.infer<typeof I589StepEnum>;
-export const i589StepAtom = atomWithMmkvStorage(
+export const i589StepAtom = atomWithMMKVZod(
   `services:i589:step`,
   'eligibility',
   I589StepEnum,

@@ -4,14 +4,14 @@ import { atomFamily } from 'jotai/utils';
 import { useEffect } from 'react';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import { defaultStorage } from '@/lib/mmkv';
 import { useCurrentRouteUrl, useRouteUrls } from '@/lib/routes';
 
 export const quizRouteAtom = atomFamily(
   ({ service, step }: { service: string; step: string }) =>
-    atomWithMmkvStorage(
+    atomWithMMKVZod(
       `services:${service}:${step}:route`,
       null,
       z.string().nullable(),

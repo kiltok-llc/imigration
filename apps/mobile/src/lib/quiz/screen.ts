@@ -5,7 +5,7 @@ import { atomFamily } from 'jotai/utils';
 import { createContext, useCallback, useContext } from 'react';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { useLocalSegments } from '@/hooks/use-local-segments';
 import {
   createRequiredContext,
@@ -39,7 +39,7 @@ export const quizScreenAtomFamily = <T>(
       service: string;
       step: string;
     }) =>
-      atomWithMmkvStorage(
+      atomWithMMKVZod(
         `services:${service}:${step}:${screen}:${screenKey}:${key}`,
         initialValue,
         schema,

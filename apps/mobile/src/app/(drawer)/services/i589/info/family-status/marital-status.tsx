@@ -29,13 +29,12 @@ import {
   marriageDateAtom,
   marriageLocationAtom,
 } from '@/lib/data/marriage';
-import { DEFAULT_LOCATION } from '@/lib/data/schema';
+import { DEFAULT_LOCATION, MaritalStatusEnum } from '@/lib/data/schema';
 import {
   spouseIsInUsaAtom,
   spouseLocationAtom,
   spouseNameAtom,
 } from '@/lib/data/spouse';
-import { MaritalStatusEnum } from '@/lib/schemas';
 import { required } from '@/lib/utils';
 
 export default function MaritalStatus() {

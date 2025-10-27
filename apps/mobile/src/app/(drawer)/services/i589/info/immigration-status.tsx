@@ -36,6 +36,7 @@ import {
 import {
   DEFAULT_PASSPORT,
   DEFAULT_USA_ENTRY,
+  ImmigrationCourtStatusEnum,
   PassportTypeEnum,
 } from '@/lib/data/schema';
 import {
@@ -58,7 +59,6 @@ import {
   uscisNumberAtom,
 } from '@/lib/data/user';
 import { QuizScreenKeyProvider } from '@/lib/quiz/screen';
-import { ImmigrationCourtStatusEnum } from '@/lib/schemas';
 import { TranslationContextProvider } from '@/lib/translation';
 import { required } from '@/lib/utils';
 

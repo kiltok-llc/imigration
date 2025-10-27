@@ -1,4 +1,5 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { useAtomValue } from 'jotai';
+import React from 'react';
 import { View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import Animated, {
@@ -12,51 +13,57 @@ import Animated, {
 import tw from 'twrnc';
 import { useInterval } from 'usehooks-ts';
 
-export type Side = 'left' | 'right';
+import { UIMessage } from '@/lib/chat/schema';
+import { nameAtom } from '@/lib/data/user';
 
-export function ChatBubble({
-  children,
-  label,
-  side,
-}: PropsWithChildren<{
-  label: ReactNode;
-  side: Side;
-}>) {
+export function ChatMessage({
+  message: { id, parts, role },
+}: {
+  message: UIMessage;
+}) {
   const theme = useTheme();
+  const name = useAtomValue(nameAtom).first;
 
   return (
     <View style={tw`gap-1`}>
       <Text
-        style={tw.style(side === 'left' ? 'self-start' : 'self-end', {
-          color: theme.colors.onSurfaceVariant,
-        })}
+        style={tw.style(
+          role === 'user' && 'self-end',
+          role === 'assistant' && 'self-start',
+          { color: theme.colors.onSurfaceVariant }
+        )}
         variant='labelSmall'
       >
-        {label}
+        {role === 'user' ? name : 'Migri'}
       </Text>
       <Surface
         elevation={0}
         style={tw.style(
           'max-w-4/5 rounded-3xl px-4 py-3',
-          side === 'left' ? 'self-start' : 'self-end',
-          {
-            backgroundColor:
-              side === 'left'
-                ? theme.colors.secondaryContainer
-                : theme.colors.primary,
-          }
+          role === 'user' &&
+            tw.style('self-end', {
+              backgroundColor: theme.colors.secondaryContainer,
+            }),
+          role === 'assistant' &&
+            tw.style('self-start', {
+              backgroundColor: theme.colors.primary,
+            })
         )}
       >
         <Text
-          style={tw.style({
-            color:
-              side === 'left'
-                ? theme.colors.onSecondaryContainer
-                : theme.colors.onPrimary,
-          })}
+          style={tw.style(
+            role === 'user' && {
+              color: theme.colors.onSecondaryContainer,
+            },
+            role === 'assistant' && {
+              color: theme.colors.onPrimary,
+            }
+          )}
           variant='bodyLarge'
         >
-          {children}
+          {parts.map((part, i) => (
+            <ChatMessagePart key={`${id}-${i}`} part={part} />
+          ))}
         </Text>
       </Surface>
     </View>
@@ -92,6 +99,17 @@ export function ChatThinkingDots({
       ))}
     </View>
   );
+}
+
+function ChatMessagePart({ part }: { part: UIMessage['parts'][number] }) {
+  switch (part.type) {
+    case 'text': {
+      return <Text>{part.text}</Text>;
+    }
+    default: {
+      return <Text>{JSON.stringify(part)}</Text>;
+    }
+  }
 }
 
 function ChatThinkingDot({

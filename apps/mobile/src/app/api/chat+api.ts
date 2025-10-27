@@ -2,6 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
 
 export async function POST(req: Request) {
+  console.log(req);
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({

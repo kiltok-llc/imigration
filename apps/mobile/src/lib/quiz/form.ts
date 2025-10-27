@@ -2,7 +2,7 @@ import { isEqual } from '@ver0/deep-equal';
 import { atomFamily } from 'jotai/utils';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { defaultStorage } from '@/lib/mmkv';
 import { clearMMKVKeys } from '@/lib/utils';
 
@@ -22,7 +22,7 @@ export const quizFormAtom = atomFamily(
     service: string;
     step: string;
   }) =>
-    atomWithMmkvStorage(
+    atomWithMMKVZod(
       `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:values`,
       null,
       z.looseObject({}).nullable(),

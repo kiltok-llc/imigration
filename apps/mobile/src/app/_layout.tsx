@@ -19,7 +19,7 @@ import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
-import { JotaiProvider } from '@/lib/jotai';
+import { JotaiProvider } from '@/lib/jotai/jotai-provider';
 import { defaultStorage } from '@/lib/mmkv';
 import { QueryProvider } from '@/lib/query';
 import { navigationTheme, theme } from '@/lib/theme';

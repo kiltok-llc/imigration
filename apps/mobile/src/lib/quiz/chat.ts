@@ -3,14 +3,14 @@ import { atomFamily, atomWithStorage } from 'jotai/utils';
 import { ReactNode } from 'react';
 import z from 'zod/v4';
 
-import { atomWithMmkvStorage } from '@/atoms/atom-with-mmkv-storage';
-import { createChatMessageStorage, UIMessage } from '@/lib/chat';
+import { atomWithMMKVChatMessages } from '@/atoms/atom-with-chat-messages';
+import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { defaultStorage } from '@/lib/mmkv';
 import { useQuizPageAtomKey } from '@/lib/quiz/page';
 
 const atoms = new Map<string, ReturnType<typeof atomFamily>>();
 
-export const quizChatAtomFamily = <T>(
+export const quizChatMMKVAtomFamily = <T>(
   key: string,
   schema: z.ZodType<T>,
   initialValue: T
@@ -31,7 +31,7 @@ export const quizChatAtomFamily = <T>(
       service: string;
       step: string;
     }) =>
-      atomWithMmkvStorage(
+      atomWithMMKVZod(
         `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:chat:${key}`,
         initialValue,
         schema,
@@ -62,13 +62,10 @@ export const quizChatMessagesAtomFamily = (key: string) => {
       service: string;
       step: string;
     }) =>
-      atomWithStorage<UIMessage[]>(
+      atomWithMMKVChatMessages(
         `services:${service}:${step}:${screen}:${screenKey}:${pageId}:${pageKey}:chat:${key}`,
         [],
-        createChatMessageStorage(defaultStorage),
-        {
-          getOnInit: true,
-        }
+        defaultStorage
       ),
     isEqual
   );
@@ -78,27 +75,19 @@ export const quizChatMessagesAtomFamily = (key: string) => {
   return family;
 };
 
-const QuizChatMessageSchema = z.object({
-  id: z.string(),
-  role: z.enum(['user', 'assistant']),
-  text: z.string(),
-});
-
-export type QuizChatMessage = z.infer<typeof QuizChatMessageSchema>;
-
-export const quizChatMessagesAtom = quizChatMessagesAtomFamily(
-  'messages',
-  z.array(QuizChatMessageSchema),
-  []
-);
+export const quizChatMessagesAtom = quizChatMessagesAtomFamily('messages');
 export const useQuizChatMessagesAtom = () =>
   quizChatMessagesAtom(useQuizPageAtomKey());
 
-export const quizChatInputAtom = quizChatAtomFamily('input', z.string(), '');
+export const quizChatInputAtom = quizChatMMKVAtomFamily(
+  'input',
+  z.string(),
+  ''
+);
 export const useQuizChatInputAtom = () =>
   quizChatInputAtom(useQuizPageAtomKey());
 
-export const quizChatChipsAtom = quizChatAtomFamily(
+export const quizChatChipsAtom = quizChatMMKVAtomFamily(
   'chips',
   z.array(z.string()),
   []
@@ -106,7 +95,7 @@ export const quizChatChipsAtom = quizChatAtomFamily(
 export const useQuizChatChipsAtom = () =>
   quizChatChipsAtom(useQuizPageAtomKey());
 
-export const quizChatStateAtom = quizChatAtomFamily(
+export const quizChatStateAtom = quizChatMMKVAtomFamily(
   'state',
   z.enum(['in-progress', 'completed']),
   'in-progress'

@@ -72,7 +72,7 @@ apps/mobile/
 ## Data Management
 
 - Persist personal data exclusively through MMKV-backed jotai atoms defined in `@/lib/data`
-- Use `atomWithMmkvStorage` with a Zod schema, typed defaults, and the shared MMKV instance from `@/lib/mmkv`
+- Use `atomWithMMKVZod` with a Zod schema, typed defaults, and the shared MMKV instance from `@/lib/mmkv`
 - Keep each data domain (e.g., `user`, `spouse`) in its own file for clarity and separation
 - Never use async storage or other persistence mechanisms for user data
 

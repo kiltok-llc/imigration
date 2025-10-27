@@ -19,6 +19,7 @@ import { QuizFieldTitle } from '@/components/quiz/label';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
 import { QuizTextInput } from '@/components/quiz/text';
+import { SexEnum } from '@/lib/data/schema';
 import {
   birthCertificateAttachmentAtom,
   birthLocationAtom,
@@ -29,7 +30,6 @@ import {
   religionAtom,
   sexAtom,
 } from '@/lib/data/user';
-import { SexEnum } from '@/lib/schemas';
 import { required } from '@/lib/utils';
 
 export default function DemographicsAndBirth() {

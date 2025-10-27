@@ -3,6 +3,7 @@ import { z } from 'zod/v4';
 
 export const env = createEnv({
   client: {
+    EXPO_PUBLIC_API_BASE_URL: z.url(),
     EXPO_PUBLIC_GIT_COMMIT_HASH: z.string().optional(),
     EXPO_PUBLIC_SENTRY_ENVIRONMENT: z.string().optional(),
     EXPO_PUBLIC_SENTRY_TRACES_SAMPLE_RATE: z.coerce
@@ -21,6 +22,7 @@ export const env = createEnv({
    * the build.
    */
   runtimeEnvStrict: {
+    EXPO_PUBLIC_API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL,
     EXPO_PUBLIC_GIT_COMMIT_HASH: process.env.EXPO_PUBLIC_GIT_COMMIT_HASH,
     EXPO_PUBLIC_SENTRY_ENVIRONMENT: process.env.EXPO_PUBLIC_SENTRY_ENVIRONMENT,
     EXPO_PUBLIC_SENTRY_TRACES_SAMPLE_RATE:
