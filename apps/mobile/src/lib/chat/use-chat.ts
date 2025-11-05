@@ -8,7 +8,7 @@ import { UIMessage } from '@/lib/chat/schema';
 
 export const useChat = (options: UseChatOptions<UIMessage>) =>
   useVercelChat({
-    onError: (error) => console.log(error),
+    onError: (error) => console.error(error),
     transport: new DefaultChatTransport({
       api: `${env.EXPO_PUBLIC_API_BASE_URL}/api/chat`,
       fetch: expoFetch as unknown as typeof globalThis.fetch,

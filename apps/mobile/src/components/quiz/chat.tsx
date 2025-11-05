@@ -38,16 +38,33 @@ import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
 import { getQuizPageAtomId, useQuizPageAtomKey } from '@/lib/quiz/page';
 import { useT } from '@/lib/translation';
 
-const useBaseMessages = () => {
+const useBaseMessages = (prompt: string) => {
   const { t } = useTranslation();
   const i18nKey = useQuizPageLocaleKey('chat.messages');
-  // TODO need to parse arrays to multiline strings
-  return t(i18nKey, { returnObjects: true }) as UIMessage[];
+  const assistantMessages = t(i18nKey, { returnObjects: true }) as UIMessage[];
+  if (assistantMessages.some(({ metadata }) => !metadata?.transient)) {
+    throw new Error(`Assistant messages should be transient: ${i18nKey}.`);
+  }
+
+  const systemMessage: UIMessage = {
+    id: 'system-prompt',
+    metadata: {
+      transient: true,
+    },
+    parts: [
+      {
+        text: prompt,
+        type: 'text',
+      },
+    ],
+    role: 'system',
+  };
+  return [systemMessage, ...assistantMessages];
 };
 
 export function QuizChat({
   chips: _chips,
-  prompt: _prompt,
+  prompt,
 }: {
   chips: QuizChatActionChip[];
   prompt: string;
@@ -55,7 +72,7 @@ export function QuizChat({
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
 
-  const baseMessages = useBaseMessages();
+  const baseMessages = useBaseMessages(prompt);
   const [persistedMessages, setPersistedMessages] = useAtom(
     useQuizChatMessagesAtom()
   );
@@ -68,10 +85,13 @@ export function QuizChat({
   const chatId = getQuizPageAtomId(useQuizPageAtomKey(), 'chat');
   const { messages, sendMessage, setMessages, status } = useChat({
     id: chatId,
-    // messages: [...baseMessages, ...persistedMessages],
-    messages: persistedMessages,
-    onData: (data) => console.log('data', data),
-    onFinish: () => console.log('finished'),
+    messages: [...baseMessages, ...persistedMessages],
+    onFinish: ({ messages }) => {
+      const newPersistedMessages = messages.filter(
+        ({ metadata }) => !metadata?.transient
+      );
+      setPersistedMessages(newPersistedMessages);
+    },
   });
 
   const handleReset = () => {
@@ -147,7 +167,7 @@ export function QuizChat({
         <QuizChatInput
           onSubmit={(text) => {
             setInput('');
-            void sendMessage({ text });
+            void sendMessage({ text: text.trim() });
           }}
         />
       </KeyboardAvoidingView>
@@ -215,7 +235,7 @@ function QuizChatMessages({
 
   return (
     <ScrollView
-      contentContainerStyle={tw`p-2`}
+      contentContainerStyle={tw`gap-2 p-2`}
       onContentSizeChange={() => {
         scrollRef.current?.scrollToEnd();
       }}

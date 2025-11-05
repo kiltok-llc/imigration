@@ -1,7 +1,8 @@
 {
   "chat": {
     "chips": {
-      "end-interview": "Finish Interview"
+      "end-interview": "Finish Interview",
+      "upload-documents": "Upload Documents"
     },
     "toast": {
       "download-error": "There was an error downloading AI models. Please try again later.",
@@ -1161,16 +1162,25 @@
             "chat": {
               "messages": [
                 {
+                  "id": "assistant-prompt",
                   "role": "assistant",
-                  "content": "It has been more than a year since you entered the United States."
-                },
-                {
-                  "role": "assistant",
-                  "content": "For applications filed after one year of entry into the U.S., the government requires that you provide an explanation for why you did not file your application within one year of your entry."
-                },
-                {
-                  "role": "assistant",
-                  "content": "Can you tell me why you weren’t able to file your asylum application within the one-year deadline after arriving in the U.S.?\n(For example, were you sick, didn’t know about the rule, afraid, or something else?)"
+                  "metadata": {
+                    "transient": true
+                  },
+                  "parts": [
+                    {
+                      "type": "text",
+                      "text": "It has been more than a year since you entered the United States."
+                    },
+                    {
+                      "type": "text",
+                      "text": "For applications filed after one year of entry into the U.S., the government requires that you provide an explanation for why you did not file your application within one year of your entry."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Can you tell me why you weren’t able to file your asylum application within the one-year deadline after arriving in the U.S.?\n(For example, were you sick, didn’t know about the rule, afraid, or something else?)"
+                    }
+                  ]
                 }
               ]
             }
