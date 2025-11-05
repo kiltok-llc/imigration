@@ -1,6 +1,5 @@
 import { UseChatOptions, useChat as useVercelChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import Constants from 'expo-constants';
 import { fetch as expoFetch } from 'expo/fetch';
 
 import { env } from '@/env';

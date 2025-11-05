@@ -1,6 +1,5 @@
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { atomWithStorage } from 'jotai/utils';
 import { MMKV } from 'react-native-mmkv';
-import superjson from 'superjson';
 
 import { UIMessage } from '@/lib/chat/schema';
 import { createMMKVStorage } from '@/lib/jotai/create-mmkv-storage';

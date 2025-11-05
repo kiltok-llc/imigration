@@ -117,3 +117,5 @@ export const stretchTo = <T>(
   array.length < targetLength
     ? growTo(array, targetLength, fillValue)
     : shrinkTo(array, targetLength);
+export const prettifyDate = (date?: Date | null) =>
+  date?.toLocaleDateString('en-US', { dateStyle: 'long' }) ?? 'unknown';

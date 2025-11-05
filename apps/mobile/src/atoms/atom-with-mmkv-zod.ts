@@ -1,10 +1,8 @@
 import {
   atomWithStorage,
-  createJSONStorage,
   unstable_withStorageValidator as withStorageValidator,
 } from 'jotai/utils';
 import { MMKV } from 'react-native-mmkv';
-import superjson from 'superjson';
 import z from 'zod/v4';
 
 import { createMMKVStorage } from '@/lib/jotai/create-mmkv-storage';

@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai';
 import { QuizChat } from '@/components/quiz/chat';
 import { QuizPage } from '@/components/quiz/page';
 import { QuizScreen } from '@/components/quiz/screen';
+import { useLanguagePrompt } from '@/lib/chat/language';
 import { childIdsAtom } from '@/lib/data/child';
 import { maritalStatusAtom } from '@/lib/data/marriage';
 import {
@@ -14,11 +15,8 @@ import {
   usaAddressAtom,
 } from '@/lib/data/user';
 import { prettifyName } from '@/lib/data/utils';
-import { useInterviewControlChips } from '@/lib/lm/chat';
-import { prettifyDate } from '@/lib/lm/i589';
-import { useLanguagePrompt } from '@/lib/lm/language';
-import { useChipsPrompt } from '@/lib/lm/tools';
 import { useT } from '@/lib/translation';
+import { prettifyDate } from '@/lib/utils';
 
 export const useLateApplicationPrompt = () => {
   return [
@@ -87,21 +85,14 @@ export default function LateApplication() {
   const languagePrompt = useLanguagePrompt();
   const lateApplicationPrompt = useLateApplicationPrompt();
   const factsPrompt = useLateApplicationFactsPrompt();
-  const toolsPrompt = useChipsPrompt();
-
-  const interviewControlChips = useInterviewControlChips();
 
   return (
     <QuizScreen migriFAB={false}>
       <QuizPage pageId='late-application'>
         <QuizChat
-          chips={[...interviewControlChips]}
-          prompt={[
-            lateApplicationPrompt,
-            factsPrompt,
-            toolsPrompt,
-            languagePrompt,
-          ].join('\n\n')}
+          prompt={[lateApplicationPrompt, factsPrompt, languagePrompt].join(
+            '\n\n'
+          )}
         />
       </QuizPage>
     </QuizScreen>

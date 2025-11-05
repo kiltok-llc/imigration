@@ -1,17 +1,16 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { TextInput, useTheme } from 'react-native-paper';
-import { Markdown } from 'react-native-remark';
 import tw from 'twrnc';
 
 import { useQuizPageHandle } from '@/components/quiz/page';
 import { TransText } from '@/components/trans';
-import { ChatMessage, ChatThinkingDots } from '@/components/ui/chat';
+import { ChatMessage } from '@/components/ui/chat';
 import {
   Dialog,
   DialogActionButton,
@@ -24,11 +23,8 @@ import {
 } from '@/components/ui/header-menu';
 import { UIMessage } from '@/lib/chat/schema';
 import { useChat } from '@/lib/chat/use-chat';
-import { nameAtom } from '@/lib/data/user';
 import { useQuizActions } from '@/lib/quiz/actions';
 import {
-  QuizChatActionChip,
-  useQuizChatChipsAtom,
   useQuizChatInputAtom,
   useQuizChatMessagesAtom,
   useQuizChatStateAtom,
@@ -62,13 +58,7 @@ const useBaseMessages = (prompt: string) => {
   return [systemMessage, ...assistantMessages];
 };
 
-export function QuizChat({
-  chips: _chips,
-  prompt,
-}: {
-  chips: QuizChatActionChip[];
-  prompt: string;
-}) {
+export function QuizChat({ prompt }: { prompt: string }) {
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
 
@@ -175,28 +165,6 @@ export function QuizChat({
   );
 }
 
-// function QuizChatChips({
-//   availableChips,
-// }: {
-//   availableChips: QuizChatActionChip[];
-// }) {
-//   const chipIds = useAtomValue(useQuizChatChipsAtom());
-//
-//   if (chipIds.length === 0) {
-//     return null;
-//   }
-//
-//   return (
-//     <View style={tw`mt-2 flex-row flex-wrap gap-2`}>
-//       {availableChips
-//         .filter(({ id }) => chipIds.includes(id))
-//         .map(({ id, render }) => (
-//           <View key={id}>{render()}</View>
-//         ))}
-//     </View>
-//   );
-// }
-
 function QuizChatInput({ onSubmit }: { onSubmit: (value: string) => void }) {
   const t = useT();
   const ref = useRef<RNTextInput>(null);
@@ -228,7 +196,7 @@ function QuizChatInput({ onSubmit }: { onSubmit: (value: string) => void }) {
 
 function QuizChatMessages({
   children,
-  isThinking,
+  isThinking: _isThinking,
   messages,
 }: PropsWithChildren<{ isThinking: boolean; messages: UIMessage[] }>) {
   const scrollRef = useRef<ScrollView>(null);
