@@ -2,7 +2,7 @@
   "chat": {
     "chips": {
       "end-interview": "Finish Interview",
-      "upload-documents": "Upload Documents"
+      "submit-documents": "Submit Documents"
     },
     "toast": {
       "download-error": "There was an error downloading AI models. Please try again later.",
@@ -15,6 +15,11 @@
       "reset": "Reset chat"
     },
     "dialog": {
+      "upload": {
+        "title": "Submit Documents",
+        "cancel": "Cancel",
+        "confirm": "Submit"
+      },
       "end": {
         "confirm": "End Interview",
         "cancel": "Cancel",

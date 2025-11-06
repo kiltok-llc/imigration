@@ -28,6 +28,164 @@ export const FormDocumentSchema = z.object({
 
 export type FormDocument = z.infer<typeof FormDocumentSchema>;
 
+export function FormDocumentInput() {
+  const t = useT();
+  const theme = useTheme<Theme>();
+  const {
+    field: { disabled, onChange, value },
+    fieldState: { invalid },
+  } = useFormField();
+
+  const { isPending: isPendingDocument, mutate: handlePickDocument } =
+    useMutation({
+      async mutationFn() {
+        const { assets, canceled } = await DocumentPicker.getDocumentAsync();
+
+        if (canceled) {
+          toast.warning(t(`form.documents.cancelled`));
+          return;
+        }
+
+        onChange(
+          assets.map((asset) => ({
+            name: asset.name,
+            size: asset.size ?? null,
+            uri: asset.uri,
+          }))[0] ?? null
+        );
+      },
+    });
+
+  const { isPending: isPendingImage, mutate: handlePickImage } = useMutation({
+    async mutationFn() {
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync();
+
+      if (canceled) {
+        toast.warning(t(`form.documents.cancelled`));
+        return;
+      }
+
+      onChange(
+        assets.map((asset) => ({
+          name: asset.fileName ?? null,
+          size: asset.fileSize ?? null,
+          uri: asset.uri,
+        }))[0] ?? null
+      );
+    },
+  });
+
+  const isPending = isPendingDocument || isPendingImage;
+
+  return (
+    <View style={tw`mt-2 gap-4`}>
+      <View
+        style={[
+          tw.style(
+            'rounded-lg border-2 border-dashed p-4',
+            {
+              backgroundColor: theme.colors.surface,
+              borderColor: invalid
+                ? theme.colors.error
+                : theme.colors.outlineVariant,
+            },
+            isPending && 'opacity-0'
+          ),
+        ]}
+      >
+        <View
+          style={[
+            tw.style(
+              'absolute inset-0 items-center justify-center',
+              !isPending && 'opacity-0'
+            ),
+          ]}
+        >
+          <ActivityIndicator size='large' />
+        </View>
+        <View>
+          <View style={tw`items-center gap-6 py-2`}>
+            <View
+              style={tw.style('rounded-full p-4', {
+                backgroundColor: theme.colors.surfaceDisabled,
+              })}
+            >
+              <Icon
+                color={theme.colors.onSurface}
+                size={36}
+                source='file-plus'
+              />
+            </View>
+            <View style={tw`gap-2`}>
+              <TransText
+                i18nKey='form.documents.title'
+                style={tw`text-center`}
+                variant='titleMedium'
+              />
+              <TransText
+                i18nKey='form.documents.description'
+                style={tw`text-center`}
+              />
+            </View>
+            <View style={tw`w-full gap-2`}>
+              <TransButton
+                contentStyle={tw`justify-start`}
+                disabled={disabled}
+                i18nKey='form.documents.document.label'
+                icon='file-document'
+                labelStyle={tw.style({
+                  color: theme.colors.onSurface,
+                })}
+                mode='contained-tonal'
+                onPress={() => handlePickDocument()}
+              />
+              <TransButton
+                contentStyle={tw`justify-start`}
+                disabled={disabled}
+                i18nKey='form.documents.library.label'
+                icon='image'
+                labelStyle={{
+                  color: theme.colors.onSurface,
+                }}
+                mode='contained-tonal'
+                onPress={() => handlePickImage()}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      {value && (
+        <View
+          key={value.uri}
+          style={tw.style('flex-row rounded-lg border px-3 py-2', {
+            backgroundColor: theme.colors.surface,
+            borderColor: theme.colors.outlineVariant,
+          })}
+        >
+          <View style={tw`justify-center pr-2`}>
+            <DocumentIcon path={value.name ?? value.uri} />
+          </View>
+          <View style={tw`flex-1 justify-center`}>
+            <Text numberOfLines={1} variant='titleSmall'>
+              {value.name}
+            </Text>
+            <Text numberOfLines={1} variant='bodySmall'>
+              {prettyBytes(value.size ?? 0)}
+            </Text>
+          </View>
+          <View>
+            <IconButton
+              icon='trash-can-outline'
+              iconColor={theme.colors.error}
+              onPress={() => onChange(null)}
+            />
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
+
 export function FormDocumentsInput() {
   const t = useT();
   const theme = useTheme<Theme>();

@@ -1,13 +1,22 @@
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { PropsWithChildren, useRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { TextInput, useTheme } from 'react-native-paper';
 import tw from 'twrnc';
+import z from 'zod/v4';
 
+import {
+  FormDocumentInput,
+  FormDocumentSchema,
+  FormDocumentsInput,
+} from '@/components/form/document';
+import { FormField } from '@/components/form/field';
 import { useQuizPageHandle } from '@/components/quiz/page';
 import { TransText } from '@/components/trans';
 import { ChatMessage } from '@/components/ui/chat';
@@ -28,11 +37,13 @@ import {
   useQuizChatInputAtom,
   useQuizChatMessagesAtom,
   useQuizChatStateAtom,
+  useQuizShowUploadDialogAtom,
 } from '@/lib/quiz/chat';
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
 import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
 import { getQuizPageAtomId, useQuizPageAtomKey } from '@/lib/quiz/page';
 import { useT } from '@/lib/translation';
+import { required } from '@/lib/utils';
 
 const useBaseMessages = (prompt: string) => {
   const { t } = useTranslation();
@@ -112,6 +123,7 @@ export function QuizChat({ prompt }: { prompt: string }) {
           onPress={handleReset}
         />
       </HeaderMenuItemPortal>
+      <UploadDialog />
       <Dialog
         onDismiss={() => setShowEndInterviewDialog(false)}
         visible={showEndInterviewDialog}
@@ -214,5 +226,56 @@ function QuizChatMessages({
       ))}
       {children}
     </ScrollView>
+  );
+}
+
+function UploadDialog() {
+  const [showUploadDialog, setShowUploadDialog] = useAtom(
+    useQuizShowUploadDialogAtom()
+  );
+
+  const context = useForm({
+    defaultValues: { asset: null },
+    resolver: standardSchemaResolver(
+      z.object({
+        asset: required(FormDocumentSchema.nullable()),
+      })
+    ),
+  });
+
+  const { handleSubmit, reset } = context;
+
+  return (
+    <Dialog
+      onDismiss={() => setShowUploadDialog(false)}
+      visible={showUploadDialog}
+    >
+      <DialogContent>
+        <TransText i18nKey='chat.dialog.upload.title' variant='titleLarge' />
+        <View>
+          <FormProvider {...context}>
+            <FormField name='asset'>
+              <FormDocumentInput />
+            </FormField>
+          </FormProvider>
+        </View>
+        <DialogActions>
+          <DialogActionButton
+            i18nKey='chat.dialog.upload.cancel'
+            mode='contained-tonal'
+            onPress={() => {
+              reset();
+              setShowUploadDialog(false);
+            }}
+          />
+          <DialogActionButton
+            i18nKey='chat.dialog.upload.confirm'
+            onPress={handleSubmit(({ asset }) => {
+              console.log(asset);
+            })}
+          />
+        </DialogActions>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,4 +1,5 @@
 import { isEqual } from '@ver0/deep-equal';
+import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { ReactNode } from 'react';
 import z from 'zod/v4';
@@ -8,7 +9,20 @@ import { atomWithMMKVZod } from '@/atoms/atom-with-mmkv-zod';
 import { defaultStorage } from '@/lib/mmkv';
 import { useQuizPageAtomKey } from '@/lib/quiz/page';
 
-const atoms = new Map<string, ReturnType<typeof atomFamily>>();
+const persistedAtoms = new Map<string, ReturnType<typeof atomFamily>>();
+
+export const quizChatAtomFamily = <T>(initialValue: T) =>
+  atomFamily(
+    (_key: {
+      pageId: string;
+      pageKey: string | undefined;
+      screen: string;
+      screenKey: string | undefined;
+      service: string;
+      step: string;
+    }) => atom(initialValue),
+    isEqual
+  );
 
 export const quizChatMMKVAtomFamily = <T>(
   key: string,
@@ -40,7 +54,7 @@ export const quizChatMMKVAtomFamily = <T>(
     isEqual
   );
 
-  atoms.set(key, family as ReturnType<typeof atomFamily>);
+  persistedAtoms.set(key, family as ReturnType<typeof atomFamily>);
 
   return family;
 };
@@ -70,10 +84,14 @@ export const quizChatMessagesAtomFamily = (key: string) => {
     isEqual
   );
 
-  atoms.set(key, family as ReturnType<typeof atomFamily>);
+  persistedAtoms.set(key, family as ReturnType<typeof atomFamily>);
 
   return family;
 };
+
+export const quizShowUploadDialogAtom = quizChatAtomFamily(false);
+export const useQuizShowUploadDialogAtom = () =>
+  quizShowUploadDialogAtom(useQuizPageAtomKey());
 
 export const quizChatMessagesAtom = quizChatMessagesAtomFamily('messages');
 export const useQuizChatMessagesAtom = () =>

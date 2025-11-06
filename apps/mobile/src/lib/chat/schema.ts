@@ -12,7 +12,7 @@ export const metadataSchema = z.object({
   transient: z.boolean().optional(),
 });
 
-const ActionChipTypeEnum = z.enum(['end-interview', 'upload-documents']);
+const ActionChipTypeEnum = z.enum(['end-interview', 'submit-documents']);
 
 export type ActionChipType = z.infer<typeof ActionChipTypeEnum>;
 
@@ -24,7 +24,7 @@ export const tools = {
       "Calling this tool will add the specified action chips to the assistant's response.",
       'Types of chips:',
       '- end-interview: Use PROACTIVELY when it seems like the user has no more relevant information to share or they might want to end the interview.',
-      '- upload-documents: Use PROACTIVELY when the user might have documents, photos, or screenshots to share that could help their case.',
+      '- submit-documents: Use PROACTIVELY when the user might have documents, photos, or screenshots to share that could help their case.',
     ].join('\n'),
     execute: async () => ({}),
     inputSchema: z.object({

@@ -1,4 +1,4 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import React, { ComponentProps } from 'react';
 import { View } from 'react-native';
 import { Chip, Surface, Text, useTheme } from 'react-native-paper';
@@ -17,6 +17,7 @@ import { Trans } from '@/components/trans';
 import { ActionChipType, UIMessage } from '@/lib/chat/schema';
 import { nameAtom } from '@/lib/data/user';
 import { useQuizActions } from '@/lib/quiz/actions';
+import { useQuizShowUploadDialogAtom } from '@/lib/quiz/chat';
 
 export function ChatMessage({
   message: { id, parts, role },
@@ -112,9 +113,10 @@ function ChatActionChip({
   ...props
 }: Partial<ComponentProps<typeof Chip>> & { type: ActionChipType }) {
   const { handleContinue } = useQuizActions();
+  const setShowUploadDialog = useSetAtom(useQuizShowUploadDialogAtom());
   const icon = {
     'end-interview': 'exit-run',
-    'upload-documents': 'upload',
+    'submit-documents': 'upload',
   }[type];
 
   return (
@@ -126,8 +128,8 @@ function ChatActionChip({
             handleContinue?.();
             break;
           }
-          case 'upload-documents': {
-            console.log('uploading documents');
+          case 'submit-documents': {
+            setShowUploadDialog(true);
             break;
           }
         }
