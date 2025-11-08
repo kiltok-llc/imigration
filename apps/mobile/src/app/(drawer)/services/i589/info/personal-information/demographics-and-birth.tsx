@@ -10,8 +10,8 @@ import {
   FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
+import { FormImageInput } from '@/components/form/document';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
-import { FormImageInput } from '@/components/form/image';
 import { FormBooleanInput, FormSexInput } from '@/components/form/radio';
 import { QuizDateInput } from '@/components/quiz/date';
 import { QuizForm } from '@/components/quiz/form';

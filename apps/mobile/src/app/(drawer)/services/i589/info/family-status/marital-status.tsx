@@ -8,8 +8,8 @@ import {
   FormShortAddressSchema,
 } from '@/components/form/address';
 import { FormBlock } from '@/components/form/block';
+import { FormImageInput } from '@/components/form/document';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
-import { FormImageInput } from '@/components/form/image';
 import {
   DEFAULT_FORM_NAME,
   FormNameInput,

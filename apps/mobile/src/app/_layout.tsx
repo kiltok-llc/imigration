@@ -19,6 +19,7 @@ import { MigriPortal } from '@/components/migri/migri-portal';
 import { SplashScreenBarrier } from '@/components/splash-screen-barrier';
 import { env } from '@/env';
 import { DevMenuProvider } from '@/hooks/use-dev-menu-items';
+import { AuthProvider } from '@/lib/auth';
 import { JotaiProvider } from '@/lib/jotai/jotai-provider';
 import { defaultStorage } from '@/lib/mmkv';
 import { QueryProvider } from '@/lib/query';
@@ -67,6 +68,7 @@ export function RootLayout() {
     <DevMenuProvider>
       <QueryProvider>
         <JotaiProvider>
+          <AuthProvider />
           <ReducedMotionConfig mode={ReduceMotion.Never} />
           <TRPCProvider>
             <GestureHandlerRootView style={tw`flex-1`}>

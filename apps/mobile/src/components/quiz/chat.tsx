@@ -1,22 +1,39 @@
+import { useChat } from '@ai-sdk/react';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useMutation } from '@tanstack/react-query';
+import { DefaultChatTransport } from 'ai';
+import { Directory, File, Paths } from 'expo-file-system';
+import { fetch as expoFetch } from 'expo/fetch';
+import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { PropsWithChildren, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { TextInput as RNTextInput, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { TextInput, useTheme } from 'react-native-paper';
+import {
+  FAB,
+  IconButton,
+  Menu,
+  Modal,
+  Portal,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import tw from 'twrnc';
 import z from 'zod/v4';
 
 import {
+  FormDocument,
   FormDocumentInput,
   FormDocumentSchema,
-  FormDocumentsInput,
+  FormMultiDocumentInput,
+  PickDocumentType,
+  usePickMutation,
 } from '@/components/form/document';
-import { FormField } from '@/components/form/field';
+import { FormField, useFormField } from '@/components/form/field';
 import { useQuizPageHandle } from '@/components/quiz/page';
 import { TransText } from '@/components/trans';
 import { ChatMessage } from '@/components/ui/chat';
@@ -26,14 +43,17 @@ import {
   DialogActions,
   DialogContent,
 } from '@/components/ui/dialog';
+import { SingleDocumentInput } from '@/components/ui/document';
 import {
   HeaderMenuItem,
   HeaderMenuItemPortal,
 } from '@/components/ui/header-menu';
+import { env } from '@/env';
+import { sessionAtom } from '@/lib/auth';
 import { UIMessage } from '@/lib/chat/schema';
-import { useChat } from '@/lib/chat/use-chat';
 import { useQuizActions } from '@/lib/quiz/actions';
 import {
+  quizShowUploadDialogAtom,
   useQuizChatInputAtom,
   useQuizChatMessagesAtom,
   useQuizChatStateAtom,
@@ -42,6 +62,7 @@ import {
 import { quizHeaderHeightAtom } from '@/lib/quiz/header';
 import { useQuizPageLocaleKey } from '@/lib/quiz/locale';
 import { getQuizPageAtomId, useQuizPageAtomKey } from '@/lib/quiz/page';
+import { supabase } from '@/lib/supabase/client';
 import { useT } from '@/lib/translation';
 import { required } from '@/lib/utils';
 
@@ -69,6 +90,8 @@ const useBaseMessages = (prompt: string) => {
   return [systemMessage, ...assistantMessages];
 };
 
+const defaultStore = getDefaultStore();
+
 export function QuizChat({ prompt }: { prompt: string }) {
   const quizHeaderHeight = useAtomValue(quizHeaderHeightAtom);
   const navHeaderHeight = useHeaderHeight();
@@ -82,17 +105,31 @@ export function QuizChat({ prompt }: { prompt: string }) {
   const resetState = useResetAtom(useQuizChatStateAtom());
   const [showEndInterviewDialog, setShowEndInterviewDialog] = useState(false);
   const { handleContinue } = useQuizActions();
-
   const chatId = getQuizPageAtomId(useQuizPageAtomKey(), 'chat');
+  const setShowUploadDialog = useSetAtom(useQuizShowUploadDialogAtom());
+
+  // Workaround for https://github.com/vercel/ai/issues/7819
+  const headersRef = useRef<Record<string, string>>({});
+  const session = useAtomValue(sessionAtom);
+  headersRef.current = {
+    Authorization: `Bearer ${session?.access_token}`,
+  };
+
   const { messages, sendMessage, setMessages, status } = useChat({
     id: chatId,
     messages: [...baseMessages, ...persistedMessages],
+    onError: (error) => console.error(error),
     onFinish: ({ messages }) => {
       const newPersistedMessages = messages.filter(
         ({ metadata }) => !metadata?.transient
       );
       setPersistedMessages(newPersistedMessages);
     },
+    transport: new DefaultChatTransport({
+      api: `${env.EXPO_PUBLIC_API_BASE_URL}/api/chat`,
+      fetch: expoFetch as unknown as typeof globalThis.fetch,
+      headers: () => headersRef.current,
+    }),
   });
 
   const handleReset = () => {
@@ -122,8 +159,31 @@ export function QuizChat({ prompt }: { prompt: string }) {
           leadingIcon='refresh'
           onPress={handleReset}
         />
+        <HeaderMenuItem
+          i18nKey='chat.menu.submit'
+          leadingIcon='upload'
+          onPress={() => setShowUploadDialog(true)}
+        />
       </HeaderMenuItemPortal>
-      <UploadDialog />
+      <SubmitDocumentDialog
+        onSubmit={({ name, remoteUrl, type, uri }) => {
+          void sendMessage({
+            files: [
+              {
+                filename: name,
+                mediaType: type,
+                providerMetadata: {
+                  local: {
+                    localUri: uri,
+                  },
+                },
+                type: 'file',
+                url: remoteUrl,
+              },
+            ],
+          });
+        }}
+      />
       <Dialog
         onDismiss={() => setShowEndInterviewDialog(false)}
         visible={showEndInterviewDialog}
@@ -182,6 +242,7 @@ function QuizChatInput({ onSubmit }: { onSubmit: (value: string) => void }) {
   const ref = useRef<RNTextInput>(null);
   const theme = useTheme();
   const [value, setValue] = useAtom(useQuizChatInputAtom());
+  const [open, setOpen] = useState(false);
 
   return (
     <TextInput
@@ -197,7 +258,7 @@ function QuizChatInput({ onSubmit }: { onSubmit: (value: string) => void }) {
         <TextInput.Icon
           color={value ? theme.colors.primary : theme.colors.outline}
           icon={value ? 'arrow-up-circle' : 'microphone'}
-          onPress={value ? () => onSubmit(value) : () => {}}
+          onPress={value ? () => onSubmit(value) : () => setOpen(true)}
         />
       }
       style={tw.style(`m-2`, { backgroundColor: theme.colors.surface })}
@@ -221,24 +282,33 @@ function QuizChatMessages({
       }}
       ref={scrollRef}
     >
-      {messages.map((message) => (
-        <ChatMessage key={message.id} message={message} />
+      {messages.map((message, i) => (
+        <ChatMessage key={`${message.id}-${i}`} message={message} />
       ))}
       {children}
     </ScrollView>
   );
 }
 
-function UploadDialog() {
+const ChatDocumentSchema = FormDocumentSchema.extend({
+  remoteUrl: z.string(),
+});
+export type ChatDocument = z.infer<typeof ChatDocumentSchema>;
+
+function SubmitDocumentDialog({
+  onSubmit,
+}: {
+  onSubmit: (doc: ChatDocument) => void;
+}) {
   const [showUploadDialog, setShowUploadDialog] = useAtom(
     useQuizShowUploadDialogAtom()
   );
 
   const context = useForm({
-    defaultValues: { asset: null },
+    defaultValues: { document: null },
     resolver: standardSchemaResolver(
       z.object({
-        asset: required(FormDocumentSchema.nullable()),
+        document: required(ChatDocumentSchema.nullable()),
       })
     ),
   });
@@ -247,15 +317,18 @@ function UploadDialog() {
 
   return (
     <Dialog
-      onDismiss={() => setShowUploadDialog(false)}
+      onDismiss={() => {
+        reset();
+        setShowUploadDialog(false);
+      }}
       visible={showUploadDialog}
     >
       <DialogContent>
         <TransText i18nKey='chat.dialog.upload.title' variant='titleLarge' />
         <View>
           <FormProvider {...context}>
-            <FormField name='asset'>
-              <FormDocumentInput />
+            <FormField name='document'>
+              <SubmitDocumentInput />
             </FormField>
           </FormProvider>
         </View>
@@ -270,12 +343,73 @@ function UploadDialog() {
           />
           <DialogActionButton
             i18nKey='chat.dialog.upload.confirm'
-            onPress={handleSubmit(({ asset }) => {
-              console.log(asset);
+            onPress={handleSubmit(({ document }) => {
+              onSubmit(document);
+              reset();
+              setShowUploadDialog(false);
             })}
           />
         </DialogActions>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function SubmitDocumentInput() {
+  const session = useAtomValue(sessionAtom);
+  const {
+    field: { disabled, onChange, value },
+    fieldState: { invalid },
+  } = useFormField();
+
+  const { mutateAsync: pickDocument } = usePickMutation();
+  const { isPending, mutate: handlePickAndUpload } = useMutation({
+    meta: {
+      errorToastKey: 'chat.toast.file-error',
+    },
+    mutationFn: async (type: PickDocumentType) => {
+      const [document] = await pickDocument({ type });
+      if (!document) {
+        return;
+      }
+
+      const { name, type: contentType, uri } = document;
+      const file = new File(uri);
+      const localDir = new Directory(Paths.document, uuid.v4());
+      localDir.create();
+      file.move(localDir);
+
+      const path = `${session!.user.id}/${uuid.v4()}-${name.replaceAll('/', '_')}`;
+      const { data, error } = await supabase.storage
+        .from('chat_content')
+        .upload(path, await file.bytes(), { contentType });
+
+      if (error) {
+        throw error;
+      }
+
+      // authenticated URL, we will pass our auth header to chat api so it can be accessed
+      const { fullPath } = data;
+      const remoteUrl = `${env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/authenticated/${fullPath}`;
+
+      onChange({
+        ...document,
+        remoteUrl,
+        uri: file.uri,
+      });
+    },
+  });
+
+  return (
+    <SingleDocumentInput
+      disabled={disabled}
+      handlePickCamera={() => handlePickAndUpload('camera')}
+      handlePickDocument={() => handlePickAndUpload('document')}
+      handlePickImage={() => handlePickAndUpload('library')}
+      invalid={invalid}
+      isPending={isPending}
+      onChange={onChange}
+      value={value}
+    />
   );
 }

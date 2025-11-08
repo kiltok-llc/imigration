@@ -9,10 +9,12 @@
       "not-ready": "Please wait, Migri is getting ready to chat with you.",
       "init-error": "There was an error initializing the chat. Please try again later.",
       "destroy-error": "There was an error with the chat. If you continue to have issues, please restart the app.",
-      "chat-error": "There was an error with the chat. Please try again later."
+      "chat-error": "There was an error with the chat. Please try again later.",
+      "file-error": "There was an error uploading the files. Please try again."
     },
     "menu": {
-      "reset": "Reset chat"
+      "reset": "Reset chat",
+      "submit": "Submit documents"
     },
     "dialog": {
       "upload": {
@@ -49,10 +51,20 @@
   },
   "or": "or",
   "form": {
+    "document": {
+      "description": "You can submit a file or image of any format.",
+      "delete": {
+        "label": "Remove"
+      }
+    },
     "documents": {
+      "error": "There was an error selecting the documents. Please try again.",
       "cancelled": "Document selection was cancelled.",
       "title": "Submit files, documents, or photos",
       "description": "You can submit any number of files and images of any format.",
+      "camera": {
+        "label": "Open Camera"
+      },
       "document": {
         "label": "Browse Documents"
       },
@@ -66,14 +78,12 @@
     },
     "image": {
       "camera": {
-        "cancelled": "Camera action was cancelled.",
         "label": "Open camera"
       },
       "clear": {
         "label": "Clear image"
       },
       "library": {
-        "cancelled": "Image selection was cancelled.",
         "label": "Tap to submit photo"
       }
     },

@@ -23,8 +23,8 @@ export const tools = {
       'Use chips AS OFTEN AS POSSIBLE. They MASSIVELY improve the user experience.',
       "Calling this tool will add the specified action chips to the assistant's response.",
       'Types of chips:',
-      '- end-interview: Use PROACTIVELY when it seems like the user has no more relevant information to share or they might want to end the interview.',
-      '- submit-documents: Use PROACTIVELY when the user might have documents, photos, or screenshots to share that could help their case.',
+      '- end-interview: Use PROACTIVELY when it seems like the user could be running out of info to share or might want to end the interview soon.',
+      '- submit-documents: Use PROACTIVELY when it seems like the user could have documents, photos, or screenshots to share.',
     ].join('\n'),
     execute: async () => ({}),
     inputSchema: z.object({

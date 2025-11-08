@@ -3,8 +3,8 @@ import uuid from 'react-native-uuid';
 import z from 'zod/v4';
 
 import { FormBlock } from '@/components/form/block';
+import { FormImageInput } from '@/components/form/document';
 import { ConditionalFormWrapper, FormField } from '@/components/form/field';
-import { FormImageInput } from '@/components/form/image';
 import {
   DEFAULT_FORM_NAME,
   FormNameInput,

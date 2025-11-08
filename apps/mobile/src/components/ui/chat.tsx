@@ -1,6 +1,8 @@
+import { FileUIPart } from 'ai';
+import { Image } from 'expo-image';
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { ComponentProps } from 'react';
-import { View } from 'react-native';
+import React, { ComponentProps, PropsWithChildren } from 'react';
+import { View, ViewStyle } from 'react-native';
 import { Chip, Surface, Text, useTheme } from 'react-native-paper';
 import Animated, {
   Easing,
@@ -11,6 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import tw from 'twrnc';
+import { JsonValue } from 'type-fest';
 import { useInterval } from 'usehooks-ts';
 
 import { Trans } from '@/components/trans';
@@ -20,7 +23,7 @@ import { useQuizActions } from '@/lib/quiz/actions';
 import { useQuizShowUploadDialogAtom } from '@/lib/quiz/chat';
 
 export function ChatMessage({
-  message: { id, parts, role },
+  message: { id, metadata, parts, role },
 }: {
   message: UIMessage;
 }) {
@@ -141,6 +144,71 @@ function ChatActionChip({
   );
 }
 
+function ChatBubble({
+  children,
+  role,
+  style,
+}: PropsWithChildren<{ role: string; style?: ViewStyle }>) {
+  const theme = useTheme();
+
+  return (
+    <Surface
+      elevation={0}
+      style={[
+        tw.style(
+          'max-w-4/5 rounded-3xl px-4 py-3',
+          role === 'user' && 'self-end',
+          role === 'user' && {
+            backgroundColor: theme.colors.secondaryContainer,
+          },
+          role === 'assistant' && 'self-start',
+          role === 'assistant' && {
+            backgroundColor: theme.colors.primary,
+          }
+        ),
+        style,
+      ]}
+    >
+      {children}
+    </Surface>
+  );
+}
+
+function ChatFile({
+  filename,
+  mediaType,
+  providerMetadata,
+  role,
+  url,
+}: FileUIPart & {
+  role: string;
+}) {
+  const theme = useTheme();
+
+  if (mediaType.split('/')[0] === 'image') {
+    const source = providerMetadata?.local?.localUri?.toString() ?? url;
+    return (
+      <Image
+        alt={filename}
+        contentFit='cover'
+        source={source}
+        style={tw.style(
+          'aspect-1 w-3/5 rounded-3xl px-4 py-3',
+          role === 'user' && 'self-end',
+          role === 'user' && {
+            backgroundColor: theme.colors.secondaryContainer,
+          },
+          role === 'assistant' && 'self-start',
+          role === 'assistant' && {
+            backgroundColor: theme.colors.primary,
+          }
+        )}
+      />
+    );
+  }
+  return <ChatText role={role} text={filename ?? 'Unknown file'} />;
+}
+
 function ChatMessagePart({
   part,
   role,
@@ -149,35 +217,25 @@ function ChatMessagePart({
   role: string;
 }) {
   switch (part.type) {
+    case 'file': {
+      return <ChatFile role={role} {...part} />;
+    }
     case 'step-start': {
       return null;
     }
     case 'text': {
-      return <ChatTextBubble role={role} text={part.text} />;
+      return <ChatText role={role} {...part} />;
     }
   }
 
   console.warn('Unknown message part type:', part.type, { part, role });
 }
 
-function ChatTextBubble({ role, text }: { role: string; text: string }) {
+function ChatText({ role, text }: { role: string; text: string }) {
   const theme = useTheme();
 
   return (
-    <Surface
-      elevation={0}
-      style={tw.style(
-        'max-w-4/5 rounded-3xl px-4 py-3',
-        role === 'user' && 'self-end',
-        role === 'user' && {
-          backgroundColor: theme.colors.secondaryContainer,
-        },
-        role === 'assistant' && 'self-start',
-        role === 'assistant' && {
-          backgroundColor: theme.colors.primary,
-        }
-      )}
-    >
+    <ChatBubble role={role}>
       <Text
         style={tw.style(
           role === 'user' && {
@@ -191,7 +249,7 @@ function ChatTextBubble({ role, text }: { role: string; text: string }) {
       >
         {text}
       </Text>
-    </Surface>
+    </ChatBubble>
   );
 }
 

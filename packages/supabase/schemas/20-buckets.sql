@@ -18,6 +18,6 @@ end;
 $$;
 
 insert into
-  storage.buckets (id, name, public)
+  storage.buckets (id, name, public, file_size_limit)
 values
-  ('documents', 'documents', true);
+  ('chat_content', 'chat_content', false, 10000000);
