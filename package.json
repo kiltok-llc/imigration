@@ -28,9 +28,9 @@
     "typescript": "catalog:",
     "vercel": "^46.1.1"
   },
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": "^22.16.0",
-    "pnpm": ">=10.11.1"
+    "pnpm": ">=10.34.5"
   }
 }
