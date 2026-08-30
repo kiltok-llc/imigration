@@ -80,7 +80,7 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-error-boundary": "^6.0.0",
-    "react-hook-form": "^7.62.0",
+    "react-hook-form": "^7.87.0",
     "react-i18next": "^15.7.3",
     "react-merge-refs": "^3.0.2",
     "react-native": "0.81.5",
