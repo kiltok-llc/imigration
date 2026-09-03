@@ -39,7 +39,7 @@
     "@repo/supabase": "workspace:*",
     "@repo/tsconfig": "workspace:*",
     "@sentry/react-native": "~7.2.0",
-    "@shopify/react-native-skia": "2.2.12",
+    "@shopify/react-native-skia": "2.11.2",
     "@supabase-cache-helpers/postgrest-core": "^0.12.3",
     "@supabase-cache-helpers/postgrest-react-query": "^1.13.6",
     "@t3-oss/env-core": "^0.13.8",
