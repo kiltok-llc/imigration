@@ -86,7 +86,7 @@
     "react-native": "0.81.5",
     "react-native-advanced-input-mask": "1.4.2",
     "react-native-circular-progress": "^1.4.1",
-    "react-native-date-picker": "5.0.12",
+    "react-native-date-picker": "5.0.13",
     "react-native-fast-confetti": "^1.1.1",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-keyboard-controller": "^1.18.5",
